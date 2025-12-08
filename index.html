@@ -1,0 +1,891 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="V5 Medical LTD - Professional Global Medical Consumables Supplier. ISO/CE/FDA certified medical devices including surgical sutures, surgical packs, injection solutions.">
+    <meta name="keywords" content="medical consumables, surgical sutures, medical devices, surgical packs, medical supplier, ISO certified">
+    <title>V5 Medical LTD - Global Medical Consumables Supplier</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        accent: '#2563eb',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .hero-gradient {
+                background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            }
+            .whatsapp-float {
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                background: #25D366;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 50px;
+                box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+                z-index: 1000;
+                transition: all 0.3s ease;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .whatsapp-float:hover {
+                transform: scale(1.1);
+                box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+            }
+            .nav-scrolled {
+                background: white;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            .product-icon {
+                font-size: 4rem;
+            }
+            .smooth-scroll {
+                scroll-behavior: smooth;
+            }
+        }
+    </style>
+</head>
+<body class="smooth-scroll font-sans">
+    
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-3 cursor-pointer">
+                    <!-- Updated Logo -->
+                    <img src="https://www.imgur.la/images/2025/12/08/V5-logo.png" alt="V5 Medical LTD Logo" class="h-12 md:h-16">
+                    <div>
+                        <div class="font-bold text-xl text-white" id="nav-title">V5 Medical LTD</div>
+                        <div class="text-xs text-blue-100" id="nav-subtitle"> Global Medical Supplier</div>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#home" class="nav-link font-semibold text-blue-100 hover:text-white transition">Home</a>
+                    <a href="#about" class="nav-link font-semibold text-blue-100 hover:text-white transition">About Us</a>
+                    <a href="#products" class="nav-link font-semibold text-blue-100 hover:text-white transition">Products</a>
+                    <a href="#contact" class="nav-link font-semibold text-blue-100 hover:text-white transition">Contact</a>
+                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full font-semibold transition flex items-center gap-2">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-white">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#home" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Home</a>
+                <a href="#about" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">About Us</a>
+                <a href="#products" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Products</a>
+                <a href="#contact" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Contact</a>
+                <a href="https://wa.me/447895047944" target="_blank" class="block w-full bg-green-500 text-white px-4 py-2 rounded-lg text-center font-semibold">
+                    WhatsApp Contact
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="text-white py-32 px-4 mt-20" style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('https://www.imgur.la/images/2025/12/08/v5m11111.jpeg') center center / cover no-repeat;">
+        <div class="max-w-7xl mx-auto text-center">
+        <!-- Hero Section Logo - Updated with transparent PNG -->
+         <div class="mb-8 flex justify-center">
+          <!-- 透明Logo直接展示，移除所有背景样式 -->
+         <div>
+          <img src="https://www.imgur.la/images/2025/12/08/250717V5MED-LOGO.png" 
+             alt="V5 Medical LTD Logo" 
+             class="h-32 md:h-40 mx-auto drop-shadow-lg"> <!-- 增加了高度和轻微阴影 -->
+    </div>
+</div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                V5 Medical LTD
+            </h1>
+            <p class="text-2xl md:text-3xl mb-4 font-light">
+                Global Medical Consumables Supplier
+            </p>
+            <p class="text-xl md:text-2xl mb-12 text-blue-100">
+                More Sophisticated, More Professional, More Secure
+            </p>
+            
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 shadow-lg transition transform hover:scale-105">
+                    <i class="fab fa-whatsapp"></i> WhatsApp Contact
+                </a>
+                <a href="https://files.v5md.com/catalog.pdf" target="_blank" class="bg-white hover:bg-gray-100 text-blue-900 px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 shadow-lg transition transform hover:scale-105">
+                    <i class="fas fa-download"></i> Download Catalog
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Company Introduction -->
+    <section class="py-20 px-4 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    Professional Medical Device Solutions Provider
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Based in Kunshan Development Zone, Jiangsu, China, we are committed to providing quality medical consumables with legal compliance and standardized development.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-4 gap-8 mt-16">
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center card-hover">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-award text-3xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Quality-Centered</h3>
+                    <p class="text-gray-600 text-sm">ISO/CE/FDA certified products with medical-grade materials</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center card-hover">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-bullseye text-3xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Market-Oriented</h3>
+                    <p class="text-gray-600 text-sm">Rapid response to customer needs with flexible cooperation</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center card-hover">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-users text-3xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Talent-Based</h3>
+                    <p class="text-gray-600 text-sm">Professional medical device team with continuous innovation</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center card-hover">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-heart text-3xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Service-Focused</h3>
+                    <p class="text-gray-600 text-sm">Global service network with efficient logistics system</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-4">Our Product Range</h2>
+            <p class="text-center text-gray-600 mb-12">Comprehensive medical consumables solutions</p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-12 text-center">
+                        <div class="product-icon">🧵</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Absorbable Surgical Sutures</h3>
+                        <p class="text-gray-500 text-sm mb-4">可吸收缝合线</p>
+                        <p class="text-gray-600 mb-4">Medical grade absorbable sutures including Catgut, PGA, and PDO</p>
+                        <ul class="space-y-2 mb-4">
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                Catgut Sutures
+                            </li>
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                PGA Sutures
+                            </li>
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                PDO Sutures
+                            </li>
+                        </ul>
+                        <div class="flex gap-2">
+                            <a href="https://wa.me/447895047944" target="_blank" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition text-center text-sm">
+                                Inquire
+                            </a>
+                            <a href="https://files.v5md.com/catalog.pdf" target="_blank" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition text-center text-sm">
+                                PDF Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-12 text-center">
+                        <div class="product-icon">📦</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Surgical Packs</h3>
+                        <p class="text-gray-500 text-sm mb-4">手术包</p>
+                        <p class="text-gray-600 mb-4">Complete sterile surgical pack solutions</p>
+                        <ul class="space-y-2 mb-4">
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                Universal Pack
+                            </li>
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                Delivery Pack
+                            </li>
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                Orthopedic Pack
+                            </li>
+                        </ul>
+                        <div class="flex gap-2">
+                            <a href="https://wa.me/447895047944" target="_blank" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition text-center text-sm">
+                                Inquire
+                            </a>
+                            <a href="https://files.v5md.com/catalog.pdf" target="_blank" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition text-center text-sm">
+                                PDF Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-12 text-center">
+                        <div class="product-icon">💉</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Injection & Infusion</h3>
+                        <p class="text-gray-500 text-sm mb-4">注射输液方案</p>
+                        <p class="text-gray-600 mb-4">Syringes, needles, and infusion sets</p>
+                        <ul class="space-y-2 mb-4">
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                Medical Grade PP
+                            </li>
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                Sterile
+                            </li>
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                Non-pyrogenic
+                            </li>
+                        </ul>
+                        <div class="flex gap-2">
+                            <a href="https://wa.me/447895047944" target="_blank" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition text-center text-sm">
+                                Inquire
+                            </a>
+                            <a href="https://files.v5md.com/catalog.pdf" target="_blank" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition text-center text-sm">
+                                PDF Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-12 text-center">
+                        <div class="product-icon">🏥</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Gauze & Dressing</h3>
+                        <p class="text-gray-500 text-sm mb-4">纱布与敷料</p>
+                        <p class="text-gray-600 mb-4">Sterile gauze swabs and surgical dressing</p>
+                        <ul class="space-y-2 mb-4">
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                Multiple sizes
+                            </li>
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                Sterile/Non-sterile
+                            </li>
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                8-12 ply
+                            </li>
+                        </ul>
+                        <div class="flex gap-2">
+                            <a href="https://wa.me/447895047944" target="_blank" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition text-center text-sm">
+                                Inquire
+                            </a>
+                            <a href="https://files.v5md.com/catalog.pdf" target="_blank" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition text-center text-sm">
+                                PDF Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-12 text-center">
+                        <div class="product-icon">🦷</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Dental Consumables</h3>
+                        <p class="text-gray-500 text-sm mb-4">牙科耗材</p>
+                        <p class="text-gray-600 mb-4">Complete dental kit solutions</p>
+                        <ul class="space-y-2 mb-4">
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                Dental Kits
+                            </li>
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                Professional Grade
+                            </li>
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                ISO Certified
+                            </li>
+                        </ul>
+                        <div class="flex gap-2">
+                            <a href="https://wa.me/447895047944" target="_blank" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition text-center text-sm">
+                                Inquire
+                            </a>
+                            <a href="https://files.v5md.com/dental-kit.pdf" target="_blank" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition text-center text-sm">
+                                PDF Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-12 text-center">
+                        <div class="product-icon">📍</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Surgical Needles</h3>
+                        <p class="text-gray-500 text-sm mb-4">医用缝合针</p>
+                        <p class="text-gray-600 mb-4">Various surgical needle types and designs</p>
+                        <ul class="space-y-2 mb-4">
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                Round Body
+                            </li>
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                Cutting
+                            </li>
+                            <li class="text-sm text-gray-600 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                Tapered Point
+                            </li>
+                        </ul>
+                        <div class="flex gap-2">
+                            <a href="https://wa.me/447895047944" target="_blank" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition text-center text-sm">
+                                Inquire
+                            </a>
+                            <a href="https://files.v5md.com/catalog.pdf" target="_blank" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition text-center text-sm">
+                                PDF Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 px-4 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-12">About V5 Medical LTD</h2>
+            
+            <!-- Corporate Culture -->
+            <div class="mb-16">
+                <h3 class="text-3xl font-bold mb-8 text-blue-900">Our Corporate Culture</h3>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-gradient-to-br from-blue-50 to-white p-8 rounded-xl shadow-lg">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-microscope text-3xl text-blue-600"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-4">严谨 Rigor</h4>
+                        <p class="text-gray-700">Strict quality control system ensuring every product meets international medical standards</p>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-blue-50 to-white p-8 rounded-xl shadow-lg">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-users text-3xl text-blue-600"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-4">和谐 Harmony</h4>
+                        <p class="text-gray-700">Building long-term trust relationships with partners for mutual development</p>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-blue-50 to-white p-8 rounded-xl shadow-lg">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-chart-line text-3xl text-blue-600"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-4">进步 Progress</h4>
+                        <p class="text-gray-700">Continuous improvement, following standardized development path</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Philosophy -->
+            <div class="mb-16 bg-gradient-to-r from-blue-900 to-blue-700 text-white p-12 rounded-2xl">
+                <h3 class="text-3xl font-bold mb-8 text-center">Our Business Philosophy</h3>
+                <div class="grid md:grid-cols-5 gap-6">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-users text-2xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">Talent as Foundation</h4>
+                        <p class="text-sm text-blue-100">Professional team as core competitiveness</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-bullseye text-2xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">Market as Direction</h4>
+                        <p class="text-sm text-blue-100">Deep understanding of global market needs</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-award text-2xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">Quality as Core</h4>
+                        <p class="text-sm text-blue-100">Strict quality management ensuring safety</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-heart text-2xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">Service as Purpose</h4>
+                        <p class="text-sm text-blue-100">Comprehensive pre-sale and after-sale service</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-lightbulb text-2xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">Efficiency as Goal</h4>
+                        <p class="text-sm text-blue-100">Optimized supply chain for rapid delivery</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certifications -->
+            <div class="mb-16">
+                <h3 class="text-3xl font-bold mb-8 text-blue-900">Certifications & Compliance</h3>
+                <p class="text-gray-600 mb-8 text-lg">
+                    We uphold our commitment to "legal operation" and "standardized development path"
+                </p>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-lg text-center border-2 border-blue-100">
+                        <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-certificate text-4xl text-blue-600"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">ISO 13485</h4>
+                        <p class="text-gray-600">Medical Device Quality Management System</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg text-center border-2 border-blue-100">
+                        <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-check-circle text-4xl text-blue-600"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">CE Mark</h4>
+                        <p class="text-gray-600">European Medical Device Certification</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg text-center border-2 border-blue-100">
+                        <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-shield-alt text-4xl text-blue-600"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">FDA Registered</h4>
+                        <p class="text-gray-600">US FDA Registration</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company Info -->
+            <div class="bg-gray-50 p-8 rounded-xl">
+                <h3 class="text-2xl font-bold mb-6">Company Information</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-2">Full Name</h4>
+                        <p class="text-gray-900">SUZHOU V5 MEDICAL TECHNOLOGY CO., LTD.</p>
+                    </div>
+                    <div class="ml-4">
+      <h4 class="font-semibold text-gray-700 mb-2">Office Phone</h4>
+                        <p class="text-gray-900">+86-512 8781 1988</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-2">Address</h4>
+                        <p class="text-gray-900">No. 168, Luying Road, Kunshan Development Zone, Jiangsu, China</p>
+                    </div>
+                    <div class="ml-4">
+      <h4 class="font-semibold text-gray-700 mb-2">Market Regions</h4>
+                        <p class="text-gray-900">UK, Europe, Middle East, Africa & Multiple Asian Countries</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-12">Contact Us</h2>
+            
+            <!-- Contact Cards -->
+            <div class="grid md:grid-cols-4 gap-6 mb-16">
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-6 rounded-xl shadow-lg text-center">
+                    <i class="fab fa-whatsapp text-5xl mb-4"></i>
+                    <h3 class="font-bold mb-2">WhatsApp</h3>
+                    <p class="text-sm mb-3">+44 078 9504 7944</p>
+                    <a href="https://wa.me/447895047944" target="_blank" class="inline-block bg-white text-green-600 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-100 transition">
+                        Chat Now
+                    </a>
+                </div>
+                
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-6 rounded-xl shadow-lg text-center">
+                    <i class="fas fa-envelope text-5xl mb-4"></i>
+                    <h3 class="font-bold mb-2">Email</h3>
+                    <div class="text-xs space-y-1">
+                        <p>sales@v5md.com</p>
+                        <p>order@v5md.com</p>
+                        <p>info@v5md.com</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-6 rounded-xl shadow-lg text-center">
+                    <i class="fas fa-phone text-5xl mb-4"></i>
+                    <h3 class="font-bold mb-2">Office Phone</h3>
+                    <p class="text-sm">+86-512 8781 1988</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-red-500 to-red-600 text-white p-6 rounded-xl shadow-lg text-center">
+                    <i class="fas fa-map-marker-alt text-5xl mb-4"></i>
+                    <h3 class="font-bold mb-2">Address</h3>
+                    <p class="text-xs">No. 168, Luying Road, Kunshan, Jiangsu, China</p>
+                </div>
+            </div>
+
+            <!-- Inquiry Form -->
+            <div class="bg-white p-8 rounded-2xl shadow-xl">
+                <h3 class="text-3xl font-bold mb-8">Online Inquiry Form</h3>
+                <form id="inquiry-form" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Company Name *</label>
+                            <input type="text" id="company" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Contact Person *</label>
+                            <input type="text" id="person" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Email Address *</label>
+                            <input type="email" id="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Phone / WhatsApp</label>
+                            <input type="tel" id="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Country *</label>
+                            <input type="text" id="country" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Product Interest</label>
+                            <select id="product" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select Product Category</option>
+                                <option value="sutures">Surgical Sutures</option>
+                                <option value="packs">Surgical Packs</option>
+                                <option value="injection">Injection & Infusion</option>
+                                <option value="dental">Dental Consumables</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Message / Requirements *</label>
+                        <textarea id="message" required rows="6" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-lg text-lg font-semibold transition flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Send Inquiry
+                    </button>
+                </form>
+            </div>
+
+            <!-- Cooperation Process -->
+            <div class="mt-16">
+                <h3 class="text-3xl font-bold text-center mb-12">Cooperation Process</h3>
+                <div class="grid md:grid-cols-5 gap-4">
+                    <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                        <div class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">1</div>
+                        <h4 class="font-bold mb-2">Initial Contact</h4>
+                        <p class="text-sm text-gray-600">Contact via WhatsApp/Email</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                        <div class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">2</div>
+                        <h4 class="font-bold mb-2">Requirement Analysis</h4>
+                        <p class="text-sm text-gray-600">Professional team analyzes needs</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                        <div class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">3</div>
+                        <h4 class="font-bold mb-2">Quotation & Samples</h4>
+                        <p class="text-sm text-gray-600">Detailed quote and samples</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                        <div class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">4</div>
+                        <h4 class="font-bold mb-2">Contract & Production</h4>
+                        <p class="text-sm text-gray-600">Sign contract, arrange production</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                        <div class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">5</div>
+                        <h4 class="font-bold mb-2">Quality & Delivery</h4>
+                        <p class="text-sm text-gray-600">Quality control and logistics</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="https://www.imgur.la/images/2025/12/08/V5-logo.png" alt="V5 Medical LTD Logo" class="h-12">
+                        <h3 class="text-xl font-bold">V5 Medical LTD</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Professional Medical Consumables Supplier</p>
+                    <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
+                </div>
+                
+                <div class="ml-6 md:ml-8">
+                    <h4 class="font-semibold mb-4 text-lg">Quick Links</h4>
+                    <div class="space-y-2">
+                        <a href="#home" class="block text-gray-400 hover:text-white transition text-sm">Home</a>
+                        <a href="#about" class="block text-gray-400 hover:text-white transition text-sm">About Us</a>
+                        <a href="#products" class="block text-gray-400 hover:text-white transition text-sm">Products</a>
+                        <a href="#contact" class="block text-gray-400 hover:text-white transition text-sm">Contact</a>
+                        <a href="https://files.v5md.com/catalog.pdf" target="_blank" class="block text-gray-400 hover:text-white transition text-sm">Product Catalog</a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4 text-lg">Contact</h4>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <p class="flex items-center gap-2">
+                            <i class="fab fa-whatsapp text-green-400"></i>
+                            <span>+44 078 9504 7944</span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fab fa-whatsapp text-green-400"></i>
+                            <span>+86 180 1266 9897 (backup)</span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fas fa-envelope"></i>
+                            <span>sales@v5md.com</span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fab fa-google text-red-400"></i>
+                            <span>v5md.com@gmail.com</span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fas fa-phone"></i>
+                            <span>+86-512 8781 1988</span>
+                        </p>
+                        <p class="flex items-start gap-2">
+                            <i class="fas fa-map-marker-alt mt-1"></i>
+                            <span>No. 168, Luying Road, Kunshan Development Zone, Jiangsu, China</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4 text-lg">Downloads</h4>
+                    <div class="space-y-2 mb-6">
+                        <a href="https://files.v5md.com/catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition text-sm">
+                            <i class="fas fa-file-pdf text-red-400"></i>
+                            <span>Product Catalog</span>
+                        </a>
+                        <a href="https://files.v5md.com/dental-kit.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition text-sm">
+                            <i class="fas fa-file-pdf text-red-400"></i>
+                            <span>Dental Kit</span>
+                        </a>
+                        <a href="https://files.v5md.com/price-list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition text-sm">
+                            <i class="fas fa-file-pdf text-red-400"></i>
+                            <span>Price List</span>
+                        </a>
+                    </div>
+                    
+                    <h4 class="font-semibold mb-4 text-lg">Follow Us</h4>
+                    <div class="flex gap-4">
+                        <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-800 hover:bg-green-600 rounded-full flex items-center justify-center transition">
+                            <i class="fab fa-whatsapp text-xl"></i>
+                        </a>
+                        <a href="mailto:sales@v5md.com" class="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </a>
+                        <a href="https://linkedin.com/company/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-800 hover:bg-blue-500 rounded-full flex items-center justify-center transition">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="https://x.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-800 hover:bg-blue-400 rounded-full flex items-center justify-center transition">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8">
+                <div class="grid md:grid-cols-2 gap-4 text-center md:text-left">
+                    <div class="text-sm text-gray-400">
+                        <p>© 2024 V5 Medical LTD. All rights reserved.</p>
+                        <p class="mt-1">SUZHOU V5 MEDICAL TECHNOLOGY CO., LTD.</p>
+                    </div>
+                    <div class="text-sm text-gray-400 md:text-right">
+                        <p>ISO 13485 | CE Mark | FDA Registered</p>
+                        <p class="mt-1">Legal Operation | Standardized Development</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" class="whatsapp-float">
+        <i class="fab fa-whatsapp text-2xl"></i>
+        <span>Chat with us</span>
+    </a>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        const navTitle = document.getElementById('nav-title');
+        const navSubtitle = document.getElementById('nav-subtitle');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-scrolled');
+                navTitle.classList.remove('text-white');
+                navTitle.classList.add('text-blue-900');
+                navSubtitle.classList.remove('text-blue-100');
+                navSubtitle.classList.add('text-gray-600');
+                navLinks.forEach(link => {
+                    link.classList.remove('text-blue-100', 'hover:text-white');
+                    link.classList.add('text-gray-600', 'hover:text-blue-600');
+                });
+            } else {
+                navbar.classList.remove('nav-scrolled');
+                navTitle.classList.add('text-white');
+                navTitle.classList.remove('text-blue-900');
+                navSubtitle.classList.add('text-blue-100');
+                navSubtitle.classList.remove('text-gray-600');
+                navLinks.forEach(link => {
+                    link.classList.add('text-blue-100', 'hover:text-white');
+                    link.classList.remove('text-gray-600', 'hover:text-blue-600');
+                });
+            }
+        });
+
+        // Form submission
+        document.getElementById('inquiry-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const company = document.getElementById('company').value;
+            const person = document.getElementById('person').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const country = document.getElementById('country').value;
+            const product = document.getElementById('product').value;
+            const message = document.getElementById('message').value;
+            
+            const mailtoLink = `mailto:sales@v5md.com,order@v5md.com?subject=Inquiry from ${encodeURIComponent(company)}&body=Company: ${encodeURIComponent(company)}%0D%0AContact: ${encodeURIComponent(person)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0APhone: ${encodeURIComponent(phone)}%0D%0ACountry: ${encodeURIComponent(country)}%0D%0AProduct Interest: ${encodeURIComponent(product)}%0D%0A%0D%0AMessage:%0D%0A${encodeURIComponent(message)}`;
+            
+            window.location.href = mailtoLink;
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize navbar state
+        window.addEventListener('load', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-scrolled');
+                navTitle.classList.remove('text-white');
+                navTitle.classList.add('text-blue-900');
+                navSubtitle.classList.remove('text-blue-100');
+                navSubtitle.classList.add('text-gray-600');
+                navLinks.forEach(link => {
+                    link.classList.remove('text-blue-100', 'hover:text-white');
+                    link.classList.add('text-gray-600', 'hover:text-blue-600');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
