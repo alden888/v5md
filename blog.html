@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="V5 Medical LTD Blog - See our shipment photos, videos, and success stories">
+    <meta name="keywords" content="medical supplier blog, shipment photos, medical device delivery, success stories">
+    <meta name="author" content="V5 Medical LTD">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="V5 Medical Blog - Shipment Photos & Success Stories">
+    <meta property="og:description" content="View our latest shipment photos, delivery videos, and customer success stories">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://v5md.com/blog.html">
+    <meta property="og:image" content="https://v5md.com/v5medlogo.png">
+    <meta property="og:site_name" content="V5 Medical LTD">
+
+    <title>V5 Medical Blog - Shipment Photos & Success Stories</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+      
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        accent: '#2563eb',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .hero-gradient {
+                background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            }
+            .blog-card {
+                transition: all 0.3s ease;
+            }
+            .blog-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            }
+            .category-badge {
+                transition: all 0.2s ease;
+            }
+            .category-badge:hover {
+                transform: scale(1.05);
+            }
+            .video-container {
+                position: relative;
+                padding-bottom: 56.25%;
+                height: 0;
+                overflow: hidden;
+                border-radius: 0.75rem;
+            }
+            .video-container iframe,
+            .video-container video {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border: 0;
+            }
+            .gallery-item {
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+            .gallery-item:hover {
+                transform: scale(1.03);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+            .lightbox {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.9);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+            .lightbox.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+            .lightbox img {
+                max-width: 90%;
+                max-height: 90%;
+                object-fit: contain;
+                border-radius: 0.5rem;
+            }
+            .lightbox-close {
+                position: absolute;
+                top: 20px;
+                right: 30px;
+                color: white;
+                font-size: 2rem;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+            .lightbox-close:hover {
+                transform: scale(1.2);
+            }
+            .blog-pagination {
+                display: flex;
+                justify-content: center;
+                gap: 1rem;
+                margin-top: 2rem;
+            }
+            .pagination-btn {
+                padding: 0.5rem 1rem;
+                border-radius: 0.5rem;
+                background: white;
+                color: #1e40af;
+                border: 1px solid #e2e8f0;
+                transition: all 0.2s ease;
+            }
+            .pagination-btn:hover {
+                background: #1e40af;
+                color: white;
+                border-color: #1e40af;
+            }
+            .pagination-btn.active {
+                background: #1e40af;
+                color: white;
+                border-color: #1e40af;
+            }
+        }
+    </style>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JE15YSMC2W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-JE15YSMC2W');
+    </script>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-blue-900/90">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='index.html'">
+                    <img src="v5logo.png" alt="V5 Medical LTD Logo" class="h-12 md:h-16">
+                    <div>
+                        <div class="font-bold text-xl text-white" id="nav-title">V5 Medical LTD</div>
+                        <div class="text-xs text-blue-100" id="nav-subtitle"> Global Medical Supplier</div>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="index.html#home" class="nav-link font-semibold text-blue-100 hover:text-white transition">Home</a>
+                    <a href="index.html#about" class="nav-link font-semibold text-blue-100 hover:text-white transition">About Us</a>
+                    <a href="index.html#products" class="nav-link font-semibold text-blue-100 hover:text-white transition">Products</a>
+                    <a href="blog.html" class="nav-link font-semibold text-white bg-blue-600 px-4 py-2 rounded-lg">Blog</a>
+                    <a href="index.html#contact" class="nav-link font-semibold text-blue-100 hover:text-white transition">Contact</a>
+                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full font-semibold transition flex items-center gap-2">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-white">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-4 space-y-3">
+                <a href="index.html#home" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Home</a>
+                <a href="index.html#about" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">About Us</a>
+                <a href="index.html#products" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Products</a>
+                <a href="blog.html" class="block px-4 py-2 rounded-lg bg-blue-500 text-white">Blog</a>
+                <a href="index.html#contact" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Contact</a>
+                <a href="https://wa.me/447895047944" target="_blank" class="block w-full bg-green-500 text-white px-4 py-2 rounded-lg text-center font-semibold">
+                    WhatsApp Contact
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Blog Hero Section -->
+    <section class="text-white py-32 px-4 mt-20" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                Our Blog
+            </h1>
+            <p class="text-2xl md:text-3xl mb-4 font-light">
+                Shipment Photos & Success Stories
+            </p>
+            <p class="text-xl md:text-2xl mb-12 text-blue-100 max-w-3xl mx-auto">
+                See our latest shipments, delivery videos, and customer success stories from around the world
+            </p>
+            
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="#latest-posts" class="bg-white hover:bg-gray-100 text-blue-900 px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 shadow-lg transition transform hover:scale-105">
+                    <i class="fas fa-newspaper"></i> View Latest Posts
+                </a>
+                <a href="#categories" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 shadow-lg transition transform hover:scale-105">
+                    <i class="fas fa-th-large"></i> Browse Categories
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categories" class="py-16 px-4 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12">Blog Categories</h2>
+            
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="category-badge bg-blue-50 hover:bg-blue-100 p-6 rounded-xl text-center cursor-pointer" onclick="filterPosts('shipments')">
+                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-ship text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Shipments</h3>
+                    <p class="text-gray-600 text-sm">View our latest delivery photos and videos</p>
+                    <span class="inline-block mt-3 bg-blue-600 text-white px-3 py-1 rounded-full text-sm">12 posts</span>
+                </div>
+                
+                <div class="category-badge bg-green-50 hover:bg-green-100 p-6 rounded-xl text-center cursor-pointer" onclick="filterPosts('success-stories')">
+                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-trophy text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Success Stories</h3>
+                    <p class="text-gray-600 text-sm">Customer testimonials and success stories</p>
+                    <span class="inline-block mt-3 bg-green-600 text-white px-3 py-1 rounded-full text-sm">8 posts</span>
+                </div>
+                
+                <div class="category-badge bg-purple-50 hover:bg-purple-100 p-6 rounded-xl text-center cursor-pointer" onclick="filterPosts('quality-control')">
+                    <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-check-circle text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Quality Control</h3>
+                    <p class="text-gray-600 text-sm">Our strict quality assurance process</p>
+                    <span class="inline-block mt-3 bg-purple-600 text-white px-3 py-1 rounded-full text-sm">6 posts</span>
+                </div>
+                
+                <div class="category-badge bg-orange-50 hover:bg-orange-100 p-6 rounded-xl text-center cursor-pointer" onclick="filterPosts('company-updates')">
+                    <div class="w-16 h-16 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-bullhorn text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Company Updates</h3>
+                    <p class="text-gray-600 text-sm">Latest news and company developments</p>
+                    <span class="inline-block mt-3 bg-orange-600 text-white px-3 py-1 rounded-full text-sm">5 posts</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Posts Section -->
+    <section id="latest-posts" class="py-20 px-4 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-4xl font-bold">Latest Blog Posts</h2>
+                <div class="flex gap-3">
+                    <button class="category-filter-btn active px-4 py-2 rounded-lg bg-blue-600 text-white" data-category="all">All</button>
+                    <button class="category-filter-btn px-4 py-2 rounded-lg bg-white text-gray-600 hover:bg-gray-100" data-category="shipments">Shipments</button>
+                    <button class="category-filter-btn px-4 py-2 rounded-lg bg-white text-gray-600 hover:bg-gray-100" data-category="success-stories">Success</button>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-posts-container">
+                <!-- Blog Post 1 -->
+                <div class="blog-card bg-white rounded-xl shadow-lg overflow-hidden" data-category="shipments">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1542281286-9e0a16bb7366?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Medical shipment to UK hospital" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">Shipment</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="fas fa-calendar-alt text-gray-400"></i>
+                            <span class="text-gray-500 text-sm">October 15, 2024</span>
+                            <i class="fas fa-map-marker-alt text-gray-400 ml-2"></i>
+                            <span class="text-gray-500 text-sm">UK Hospital</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Successful Delivery to London Hospital</h3>
+                        <p class="text-gray-600 mb-4">Our latest shipment of surgical sutures and medical supplies successfully delivered to a major hospital in London. See the photos of the delivery process.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-blue-600 font-semibold">12 Photos • 1 Video</span>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition" onclick="openBlogPost('london-hospital-shipment')">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Post 2 -->
+                <div class="blog-card bg-white rounded-xl shadow-lg overflow-hidden" data-category="success-stories">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1581090464777-f7ef2a8a0fda?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Customer testimonial from Dubai clinic" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm">Success Story</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="fas fa-calendar-alt text-gray-400"></i>
+                            <span class="text-gray-500 text-sm">October 10, 2024</span>
+                            <i class="fas fa-map-marker-alt text-gray-400 ml-2"></i>
+                            <span class="text-gray-500 text-sm">Dubai, UAE</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">5-Star Feedback from Dubai Clinic</h3>
+                        <p class="text-gray-600 mb-4">Read what our satisfied customer from Dubai has to say about our products and services. They've been using our medical supplies for over a year now.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-blue-600 font-semibold">Customer Interview</span>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition" onclick="openBlogPost('dubai-customer-testimonial')">
+                                Read Testimonial
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Post 3 -->
+                <div class="blog-card bg-white rounded-xl shadow-lg overflow-hidden" data-category="shipments">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Medical supplies delivery to Nigeria" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">Shipment</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="fas fa-calendar-alt text-gray-400"></i>
+                            <span class="text-gray-500 text-sm">October 5, 2024</span>
+                            <i class="fas fa-map-marker-alt text-gray-400 ml-2"></i>
+                            <span class="text-gray-500 text-sm">Lagos, Nigeria</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Humanitarian Aid Shipment to Nigeria</h3>
+                        <p class="text-gray-600 mb-4">Our team successfully delivered essential medical supplies to hospitals in Lagos, Nigeria as part of our humanitarian aid program. Watch the delivery video.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-blue-600 font-semibold">8 Photos • 1 Video</span>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition" onclick="openBlogPost('nigeria-humanitarian-aid')">
+                                View Shipment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Post 4 -->
+                <div class="blog-card bg-white rounded-xl shadow-lg overflow-hidden" data-category="quality-control">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1581579438333-24c46039a08d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Quality control laboratory" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-purple-600 text-white px-3 py-1 rounded-full text-sm">Quality Control</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="fas fa-calendar-alt text-gray-400"></i>
+                            <span class="text-gray-500 text-sm">September 28, 2024</span>
+                            <i class="fas fa-flask text-gray-400 ml-2"></i>
+                            <span class="text-gray-500 text-sm">Lab Report</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">New Quality Control Laboratory</h3>
+                        <p class="text-gray-600 mb-4">We've expanded our quality control facilities with a new state-of-the-art laboratory. Learn about our rigorous testing processes and quality standards.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-blue-600 font-semibold">Lab Photos</span>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition" onclick="openBlogPost('quality-control-lab')">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Post 5 -->
+                <div class="blog-card bg-white rounded-xl shadow-lg overflow-hidden" data-category="success-stories">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Hospital partnership in Germany" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm">Success Story</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="fas fa-calendar-alt text-gray-400"></i>
+                            <span class="text-gray-500 text-sm">September 20, 2024</span>
+                            <i class="fas fa-map-marker-alt text-gray-400 ml-2"></i>
+                            <span class="text-gray-500 text-sm">Berlin, Germany</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Long-Term Partnership with Berlin Hospital</h3>
+                        <p class="text-gray-600 mb-4">We're proud to announce our 3-year partnership with one of Berlin's leading hospitals. See how our products have helped improve patient care.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-blue-600 font-semibold">Partnership Details</span>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition" onclick="openBlogPost('berlin-hospital-partnership')">
+                                View Story
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Post 6 -->
+                <div class="blog-card bg-white rounded-xl shadow-lg overflow-hidden" data-category="company-updates">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="New warehouse facility" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-orange-600 text-white px-3 py-1 rounded-full text-sm">Company Update</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="fas fa-calendar-alt text-gray-400"></i>
+                            <span class="text-gray-500 text-sm">September 15, 2024</span>
+                            <i class="fas fa-building text-gray-400 ml-2"></i>
+                            <span class="text-gray-500 text-sm">New Facility</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">New Distribution Center Opening</h3>
+                        <p class="text-gray-600 mb-4">We're expanding our operations with a new distribution center to better serve our global customers. Faster delivery times coming soon!</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-blue-600 font-semibold">Facility Tour</span>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition" onclick="openBlogPost('new-distribution-center')">
+                                See Photos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="blog-pagination">
+                <button class="pagination-btn">Previous</button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <button class="pagination-btn">Next</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Shipment Gallery -->
+    <section class="py-20 px-4 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-12">Featured Shipment Gallery</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="gallery-item bg-gray-100 rounded-xl overflow-hidden" onclick="openLightbox('https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')">
+                    <img src="https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Medical shipment preparation" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h4 class="font-semibold mb-1">Shipment Preparation</h4>
+                        <p class="text-sm text-gray-600">Careful packaging of medical supplies</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item bg-gray-100 rounded-xl overflow-hidden" onclick="openLightbox('https://images.unsplash.com/photo-1542281286-9e0a16bb7366?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')">
+                    <img src="https://images.unsplash.com/photo-1542281286-9e0a16bb7366?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Warehouse inventory" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h4 class="font-semibold mb-1">Warehouse Inventory</h4>
+                        <p class="text-sm text-gray-600">Organized storage of medical products</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item bg-gray-100 rounded-xl overflow-hidden" onclick="openLightbox('https://images.unsplash.com/photo-1581090464777-f7ef2a8a0fda?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')">
+                    <img src="https://images.unsplash.com/photo-1581090464777-f7ef2a8a0fda?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Delivery to hospital" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h4 class="font-semibold mb-1">Hospital Delivery</h4>
+                        <p class="text-sm text-gray-600">On-time delivery to medical facilities</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item bg-gray-100 rounded-xl overflow-hidden" onclick="openLightbox('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')">
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Quality inspection" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h4 class="font-semibold mb-1">Quality Inspection</h4>
+                        <p class="text-sm text-gray-600">Rigorous quality control checks</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <a href="#latest-posts" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition transform hover:scale-105">
+                    View All Shipment Photos
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Testimonials -->
+    <section class="py-20 px-4 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-12">Video Testimonials</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Video 1 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Customer Testimonial from UK Hospital" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">UK Hospital Testimonial</h3>
+                        <p class="text-gray-600 mb-4">Watch what the procurement manager of a major UK hospital has to say about our products and services.</p>
+                        <div class="flex items-center gap-2 text-gray-500 text-sm">
+                            <i class="fas fa-user"></i>
+                            <span>Mr. John Smith, Procurement Manager</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video 2 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Shipment Process Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Our Shipment Process</h3>
+                        <p class="text-gray-600 mb-4">Take a behind-the-scenes look at how we prepare and deliver medical supplies to our global customers.</p>
+                        <div class="flex items-center gap-2 text-gray-500 text-sm">
+                            <i class="fas fa-video"></i>
+                            <span>Process Overview Video</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 px-4 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-6">Ready to Partner With Us?</h2>
+            <p class="text-xl mb-8">Join our satisfied customers around the world and experience the V5 Medical difference</p>
+            
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="index.html#contact" class="bg-white hover:bg-gray-100 text-blue-900 px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 shadow-lg transition transform hover:scale-105">
+                    <i class="fas fa-phone"></i> Contact Us Today
+                </a>
+                <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 shadow-lg transition transform hover:scale-105">
+                    <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="v5logo.png" alt="V5 Medical LTD Logo" class="h-12">
+                        <h3 class="text-xl font-bold">V5 Medical LTD</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Professional Medical Consumables Supplier</p>
+                    <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4 text-lg">Quick Links</h4>
+                    <div class="space-y-2">
+                        <a href="index.html#home" class="block text-gray-400 hover:text-white transition text-sm">Home</a>
+                        <a href="index.html#about" class="block text-gray-400 hover:text-white transition text-sm">About Us</a>
+                        <a href="index.html#products" class="block text-gray-400 hover:text-white transition text-sm">Products</a>
+                        <a href="blog.html" class="block text-white bg-blue-600 px-3 py-1 rounded text-sm">Blog</a>
+                        <a href="index.html#contact" class="block text-gray-400 hover:text-white transition text-sm">Contact</a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4 text-lg">Contact</h4>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <p class="flex items-center gap-2">
+                            <i class="fab fa-whatsapp text-green-400"></i>
+                            <span>+44 078 9504 7944</span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fas fa-envelope text-blue-400"></i>
+                            <span>sales@v5md.com</span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fas fa-phone"></i>
+                            <span>+86-512 8781 1988</span>
+                        </p>
+                        <p class="flex items-start gap-2">
+                            <i class="fas fa-map-marker-alt mt-1"></i>
+                            <span>No. 168, Luying Road, Kunshan Development Zone, Jiangsu, China</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4 text-lg">Follow Us</h4>
+                    <div class="flex gap-4 mb-6">
+                        <a href="#" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center transition">
+                            <i class="fab fa-facebook-f text-white"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-blue-400 hover:bg-blue-500 rounded-full flex items-center justify-center transition">
+                            <i class="fab fa-twitter text-white"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-blue-800 hover:bg-blue-900 rounded-full flex items-center justify-center transition">
+                            <i class="fab fa-linkedin-in text-white"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-pink-600 hover:bg-pink-700 rounded-full flex items-center justify-center transition">
+                            <i class="fab fa-instagram text-white"></i>
+                        </a>
+                    </div>
+                    <h4 class="font-semibold mb-4 text-lg">Newsletter</h4>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="px-4 py-2 rounded-l-lg text-gray-900 flex-1">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-lg transition">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8">
+                <div class="grid md:grid-cols-2 gap-4 text-center md:text-left">
+                    <div class="text-sm text-gray-400">
+                        <p>© 2024 V5 Medical LTD. All rights reserved.</p>
+                        <p class="mt-1">SUZHOU V5 MEDICAL TECHNOLOGY CO., LTD.</p>
+                    </div>
+                    <div class="text-sm text-gray-400 md:text-right">
+                        <p>ISO 13485 | CE Mark | FDA Registered</p>
+                        <p class="mt-1">Legal Operation | Standardized Development</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/447895047944" target="_blank" class="whatsapp-float" style="position: fixed; bottom: 30px; right: 30px; background: #25D366; color: white; padding: 15px 20px; border-radius: 50px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4); z-index: 1000; transition: all 0.3s ease; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+        <i class="fab fa-whatsapp text-2xl"></i>
+        <span>Chat with us</span>
+    </a>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-image" src="" alt="Enlarged image">
+    </div>
+
+    <!-- Blog Post Modal -->
+    <div id="blog-post-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 id="modal-title" class="text-2xl font-bold"></h3>
+                    <button onclick="closeBlogPost()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div id="modal-content" class="space-y-6">
+                    <!-- Content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        const navTitle = document.getElementById('nav-title');
+        const navSubtitle = document.getElementById('nav-subtitle');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-scrolled');
+                navTitle.classList.remove('text-white');
+                navTitle.classList.add('text-blue-900');
+                navSubtitle.classList.remove('text-blue-100');
+                navSubtitle.classList.add('text-gray-600');
+                navLinks.forEach(link => {
+                    link.classList.remove('text-blue-100', 'hover:text-white');
+                    link.classList.add('text-gray-600', 'hover:text-blue-600');
+                });
+            } else {
+                navbar.classList.remove('nav-scrolled');
+                navTitle.classList.add('text-white');
+                navTitle.classList.remove('text-blue-900');
+                navSubtitle.classList.add('text-blue-100');
+                navSubtitle.classList.remove('text-gray-600');
+                navLinks.forEach(link => {
+                    link.classList.add('text-blue-100', 'hover:text-white');
+                    link.classList.remove('text-gray-600', 'hover:text-blue-600');
+                });
+            }
+        });
+
+        // Initialize navbar state
+        window.addEventListener('load', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-scrolled');
+                navTitle.classList.remove('text-white');
+                navTitle.classList.add('text-blue-900');
+                navSubtitle.classList.remove('text-blue-100');
+                navSubtitle.classList.add('text-gray-600');
+                navLinks.forEach(link => {
+                    link.classList.remove('text-blue-100', 'hover:text-white');
+                    link.classList.add('text-gray-600', 'hover:text-blue-600');
+                });
+            }
+        });
+
+        // Blog Post Filtering
+        function filterPosts(category) {
+            const posts = document.querySelectorAll('.blog-card');
+            const filterBtns = document.querySelectorAll('.category-filter-btn');
+            
+            // Update filter buttons
+            filterBtns.forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-600', 'text-white');
+                btn.classList.add('bg-white', 'text-gray-600', 'hover:bg-gray-100');
+            });
+            
+            event.target.classList.add('active', 'bg-blue-600', 'text-white');
+            event.target.classList.remove('bg-white', 'text-gray-600', 'hover:bg-gray-100');
+            
+            // Filter posts
+            posts.forEach(post => {
+                if (category === 'all' || post.dataset.category === category) {
+                    post.style.display = 'block';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        }
+
+        // Lightbox functionality
+        function openLightbox(imageSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            
+            lightboxImage.src = imageSrc;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close lightbox when clicking outside image
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+
+        // Blog Post Modal
+        function openBlogPost(postId) {
+            const modal = document.getElementById('blog-post-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalContent = document.getElementById('modal-content');
+            
+            // Sample content for different posts
+            let content = '';
+            
+            switch(postId) {
+                case 'london-hospital-shipment':
+                    modalTitle.textContent = 'Successful Delivery to London Hospital';
+                    content = `
+                        <div class="space-y-6">
+                            <div class="flex items-center gap-3 text-gray-500 text-sm">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>October 15, 2024</span>
+                                <i class="fas fa-map-marker-alt ml-2"></i>
+                                <span>London, UK</span>
+                                <span class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs ml-2">Shipment</span>
+                            </div>
+                            
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <img src="https://images.unsplash.com/photo-1542281286-9e0a16bb7366?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Delivery to London hospital" class="w-full rounded-lg shadow-lg">
+                                <img src="https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Medical supplies being unloaded" class="w-full rounded-lg shadow-lg">
+                            </div>
+                            
+                            <p class="text-gray-700 leading-relaxed">
+                                We are proud to announce the successful delivery of our latest shipment to St. Mary's Hospital in London. This shipment included over 5,000 units of surgical sutures, 2,000 surgical packs, and various other medical supplies.
+                            </p>
+                            
+                            <p class="text-gray-700 leading-relaxed">
+                                The delivery was completed on time and in perfect condition, thanks to our dedicated logistics team and strict quality control processes. The hospital's procurement team expressed their satisfaction with both the products and the delivery service.
+                            </p>
+                            
+                            <h4 class="text-xl font-semibold text-gray-900">Shipment Details:</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check-circle text-green-500"></i>
+                                    Absorbable Surgical Sutures: 5,000 units
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check-circle text-green-500"></i>
+                                    Surgical Packs: 2,000 units
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check-circle text-green-500"></i>
+                                    Gauze and Dressing: 10,000 units
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check-circle text-green-500"></i>
+                                    Delivery Time: 7 days from order
+                                </li>
+                            </ul>
+                            
+                            <div class="bg-blue-50 p-6 rounded-lg">
+                                <h4 class="font-semibold text-blue-900 mb-2">Customer Feedback:</h4>
+                                <p class="text-gray-700 italic">"The quality of V5 Medical's products is exceptional, and their delivery service is reliable. We've been working with them for over a year now and have never been disappointed."</p>
+                                <p class="text-right text-gray-600 mt-2">— Sarah Johnson, Procurement Manager</p>
+                            </div>
+                            
+                            <div class="text-center mt-8">
+                                <a href="https://wa.me/447895047944" target="_blank" class="inline-block bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition">
+                                    <i class="fab fa-whatsapp mr-2"></i> Inquire About Similar Products
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'dubai-customer-testimonial':
+                    modalTitle.textContent = '5-Star Feedback from Dubai Clinic';
+                    content = `
+                        <div class="space-y-6">
+                            <div class="flex items-center gap-3 text-gray-500 text-sm">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>October 10, 2024</span>
+                                <i class="fas fa-map-marker-alt ml-2"></i>
+                                <span>Dubai, UAE</span>
+                                <span class="bg-green-600 text-white px-2 py-1 rounded-full text-xs ml-2">Success Story</span>
+                            </div>
+                            
+                            <img src="https://images.unsplash.com/photo-1581090464777-f7ef2a8a0fda?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Dubai clinic team" class="w-full rounded-lg shadow-lg">
+                            
+                            <h4 class="text-xl font-semibold text-gray-900">Customer Testimonial:</h4>
+                            <div class="bg-green-50 p-8 rounded-lg">
+                                <p class="text-gray-700 text-lg leading-relaxed mb-4">
+                                    "We've been using V5 Medical's products for over a year now, and we couldn't be happier with the quality and service. Their surgical sutures are of the highest standard, and their delivery is always on time, even to our location in Dubai."
+                                </p>
+                                <p class="text-gray-700 text-lg leading-relaxed mb-4">
+                                    "What impresses us most is their attention to detail and commitment to quality. Every shipment arrives in perfect condition, and their customer service team is always available to answer any questions we have."
+                                </p>
+                                <p class="text-gray-700 text-lg leading-relaxed">
+                                    "We highly recommend V5 Medical to any medical facility looking for a reliable supplier of high-quality medical consumables."
+                                </p>
+                                <div class="text-right mt-6">
+                                    <p class="font-semibold text-gray-900">Dr. Ahmed Al-Mansoori</p>
+                                    <p class="text-gray-600">Medical Director, Al-Mansoori Clinic</p>
+                                    <div class="flex justify-end mt-2">
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h4 class="text-xl font-semibold text-gray-900">Products Used:</h4>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div class="bg-white p-4 rounded-lg shadow border">
+                                    <h5 class="font-semibold mb-2">Absorbable Sutures</h5>
+                                    <p class="text-sm text-gray-600">PGA and PDO sutures</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow border">
+                                    <h5 class="font-semibold mb-2">Surgical Packs</h5>
+                                    <p class="text-sm text-gray-600">General surgery packs</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow border">
+                                    <h5 class="font-semibold mb-2">Dental Kits</h5>
+                                    <p class="text-sm text-gray-600">Complete dental solutions</p>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-8">
+                                <a href="index.html#contact" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+                                    <i class="fas fa-comment mr-2"></i> Share Your Story
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                // Add more cases for other blog posts
+                default:
+                    modalTitle.textContent = 'Blog Post Details';
+                    content = '<p class="text-gray-700">Content coming soon...</p>';
+            }
+            
+            modalContent.innerHTML = content;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBlogPost() {
+            const modal = document.getElementById('blog-post-modal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('blog-post-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBlogPost();
+            }
+        });
+
+        // Filter button click handlers
+        document.querySelectorAll('.category-filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterPosts(this.dataset.category);
+            });
+        });
+
+        // Initialize
+        window.addEventListener('load', function() {
+            // Preload images for better performance
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                const src = img.src;
+                img.src = '';
+                img.src = src;
+            });
+        });
+    </script>
+</body>
+</html>
