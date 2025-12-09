@@ -370,8 +370,8 @@
                     <a href="#home" class="nav-link font-semibold text-blue-100 hover:text-white transition" onclick="trackNavigationClick('Home')">Home</a>
                     <a href="#about" class="nav-link font-semibold text-blue-100 hover:text-white transition" onclick="trackNavigationClick('About Us')">About Us</a>
                     <a href="#products" class="nav-link font-semibold text-blue-100 hover:text-white transition" onclick="trackNavigationClick('Products')">Products</a>
+                    <a href="blog.html" class="nav-link font-semibold text-white bg-blue-600 px-4 py-2 rounded-lg" onclick="trackNavigationClick('Blog')">Blog</a>
                     <a href="#contact" class="nav-link font-semibold text-blue-100 hover:text-white transition" onclick="trackNavigationClick('Contact')">Contact</a>
-                    <a href="privacy.html" class="nav-link font-semibold text-white bg-blue-600 px-4 py-2 rounded-lg" onclick="trackNavigationClick('Privacy Policy')">Privacy Policy</a>
                     <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full font-semibold transition flex items-center gap-2" onclick="trackWhatsAppClick()">
                         <i class="fab fa-whatsapp"></i> WhatsApp
                     </a>
@@ -390,8 +390,8 @@
                 <a href="#home" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600" onclick="trackNavigationClick('Home')">Home</a>
                 <a href="#about" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600" onclick="trackNavigationClick('About Us')">About Us</a>
                 <a href="#products" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600" onclick="trackNavigationClick('Products')">Products</a>
+                <a href="blog.html" class="block px-4 py-2 rounded-lg bg-blue-500 text-white" onclick="trackNavigationClick('Blog')">Blog</a>
                 <a href="#contact" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600" onclick="trackNavigationClick('Contact')">Contact</a>
-                <a href="privacy.html" class="block px-4 py-2 rounded-lg bg-blue-500 text-white" onclick="trackNavigationClick('Privacy Policy')">Privacy Policy</a>
                 <a href="https://wa.me/447895047944" target="_blank" class="block w-full bg-green-500 text-white px-4 py-2 rounded-lg text-center font-semibold" onclick="trackWhatsAppClick()">
                     WhatsApp Contact
                 </a>
@@ -427,6 +427,9 @@
                 </a>
                 <a href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf" target="_blank" class="bg-white hover:bg-gray-100 text-blue-900 px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 shadow-lg transition transform hover:scale-105" onclick="trackPDFDownload('Product Catalog')">
                     <i class="fas fa-download"></i> Download Catalog
+                </a>
+                <a href="blog.html" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 shadow-lg transition transform hover:scale-105" onclick="trackNavigationClick('Blog')">
+                    <i class="fas fa-newspaper"></i> View Our Blog
                 </a>
             </div>
         </div>
@@ -690,6 +693,69 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Preview Section -->
+    <section class="py-20 px-4 bg-blue-50">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-12">Latest From Our Blog</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Blog Preview 1 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <img src="https://images.unsplash.com/photo-1542281286-9e0a16bb7366?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="London hospital shipment" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs">Shipment</span>
+                            <span class="text-gray-500 text-sm">October 15, 2024</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Successful Delivery to London Hospital</h3>
+                        <p class="text-gray-600 mb-4">Our latest shipment of surgical sutures and medical supplies successfully delivered to a major hospital in London.</p>
+                        <a href="blog.html#london-hospital-shipment" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition" onclick="trackNavigationClick('Blog Post')">
+                            Read More <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Blog Preview 2 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <img src="https://images.unsplash.com/photo-1581090464777-f7ef2a8a0fda?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dubai customer testimonial" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-green-600 text-white px-2 py-1 rounded-full text-xs">Success Story</span>
+                            <span class="text-gray-500 text-sm">October 10, 2024</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">5-Star Feedback from Dubai Clinic</h3>
+                        <p class="text-gray-600 mb-4">Read what our satisfied customer from Dubai has to say about our products and services.</p>
+                        <a href="blog.html#dubai-customer-testimonial" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition" onclick="trackNavigationClick('Blog Post')">
+                            Read More <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Blog Preview 3 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <img src="https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Nigeria humanitarian aid" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs">Shipment</span>
+                            <span class="text-gray-500 text-sm">October 5, 2024</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Humanitarian Aid Shipment to Nigeria</h3>
+                        <p class="text-gray-600 mb-4">Our team successfully delivered essential medical supplies to hospitals in Lagos, Nigeria.</p>
+                        <a href="blog.html#nigeria-humanitarian-aid" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition" onclick="trackNavigationClick('Blog Post')">
+                            Read More <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="blog.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition transform hover:scale-105" onclick="trackNavigationClick('Blog')">
+                    <i class="fas fa-newspaper mr-2"></i> View All Blog Posts
+                </a>
             </div>
         </div>
     </section>
@@ -994,8 +1060,9 @@
                         <a href="#home" class="block text-gray-400 hover:text-white transition text-sm" onclick="trackNavigationClick('Home')">Home</a>
                         <a href="#about" class="block text-gray-400 hover:text-white transition text-sm" onclick="trackNavigationClick('About Us')">About Us</a>
                         <a href="#products" class="block text-gray-400 hover:text-white transition text-sm" onclick="trackNavigationClick('Products')">Products</a>
+                        <a href="blog.html" class="block text-white bg-blue-600 px-3 py-1 rounded text-sm" onclick="trackNavigationClick('Blog')">Blog</a>
                         <a href="#contact" class="block text-gray-400 hover:text-white transition text-sm" onclick="trackNavigationClick('Contact')">Contact</a>
-                        <a href="privacy.html" class="block text-white bg-blue-600 px-3 py-1 rounded text-sm" onclick="trackNavigationClick('Privacy Policy')">Privacy Policy</a>
+                        <a href="privacy.html" class="block text-gray-400 hover:text-white transition text-sm" onclick="trackNavigationClick('Privacy Policy')">Privacy Policy</a>
                         <a href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf" target="_blank" class="block text-gray-400 hover:text-white transition text-sm" onclick="trackPDFDownload('Product Catalog')">Product Catalog</a>
                     </div>
                 </div>
