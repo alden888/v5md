@@ -1,5 +1,5 @@
 /wa        https://api.whatsapp.com/send/?phone=447895047944&text=Hi%20V5%20Medical%2C%20I%20am%20interested%20in%20your%20medical%20consumables.%20Please%20contact%20me. 302
 /whatsapp  https://api.whatsapp.com/send/?phone=447895047944&text=Hi%20V5%20Medical%2C%20I%20am%20interested%20in%20your%20medical%20consumables.%20Please%20contact%20me. 302
 /chat      https://api.whatsapp.com/send/?phone=447895047944 302
-/catalog   /Catalog.pdf 200
-/price     /price-list.pdf 200
+/catalog   https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf 200
+/price     https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/price-list.pdf 200
