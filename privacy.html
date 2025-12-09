@@ -43,6 +43,45 @@
         }
     </script>
     
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JE15YSMC2W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-JE15YSMC2W', {
+            'page_title': document.title,
+            'page_path': window.location.pathname,
+            'anonymize_ip': true,
+            'cookie_expires': 2592000
+        });
+
+        function trackNavigationClick(sectionName) {
+            gtag('event', 'navigation_click', {
+                'section': sectionName,
+                'event_category': 'Navigation',
+                'event_label': 'Navigate to ' + sectionName
+            });
+        }
+
+        function trackPDFDownload(pdfName) {
+            gtag('event', 'download', {
+                'file_name': pdfName,
+                'file_type': 'pdf',
+                'event_category': 'Downloads',
+                'event_label': pdfName
+            });
+        }
+
+        function trackWhatsAppClick() {
+            gtag('event', 'whatsapp_click', {
+                'event_category': 'Contact',
+                'event_label': 'WhatsApp Contact'
+            });
+        }
+    </script>
+    
     <!-- Tailwind Config -->
     <script>
         tailwind.config = {
@@ -95,7 +134,7 @@
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-blue-900/90">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-20">
-                <div class="flex items-center gap-3 cursor-pointer">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="trackNavigationClick('Home')">
                     <img src="v5logo.png" alt="V5 Medical LTD Logo" class="h-12 md:h-16">
                     <div>
                         <div class="font-bold text-xl text-white" id="nav-title">V5 Medical LTD</div>
@@ -105,12 +144,12 @@
 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center gap-8">
-                    <a href="index.html#home" class="nav-link font-semibold text-blue-100 hover:text-white transition">Home</a>
-                    <a href="index.html#about" class="nav-link font-semibold text-blue-100 hover:text-white transition">About Us</a>
-                    <a href="index.html#products" class="nav-link font-semibold text-blue-100 hover:text-white transition">Products</a>
-                    <a href="index.html#contact" class="nav-link font-semibold text-blue-100 hover:text-white transition">Contact</a>
-                    <a href="privacy.html" class="nav-link font-semibold text-white bg-blue-600 px-4 py-2 rounded-lg">Privacy Policy</a>
-                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full font-semibold transition flex items-center gap-2">
+                    <a href="index.html#home" class="nav-link font-semibold text-blue-100 hover:text-white transition" onclick="trackNavigationClick('Home')">Home</a>
+                    <a href="index.html#about" class="nav-link font-semibold text-blue-100 hover:text-white transition" onclick="trackNavigationClick('About Us')">About Us</a>
+                    <a href="index.html#products" class="nav-link font-semibold text-blue-100 hover:text-white transition" onclick="trackNavigationClick('Products')">Products</a>
+                    <a href="index.html#contact" class="nav-link font-semibold text-blue-100 hover:text-white transition" onclick="trackNavigationClick('Contact')">Contact</a>
+                    <a href="privacy.html" class="nav-link font-semibold text-white bg-blue-600 px-4 py-2 rounded-lg" onclick="trackNavigationClick('Privacy Policy')">Privacy Policy</a>
+                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full font-semibold transition flex items-center gap-2" onclick="trackWhatsAppClick()">
                         <i class="fab fa-whatsapp"></i> WhatsApp
                     </a>
                 </div>
@@ -125,12 +164,12 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
             <div class="px-4 py-4 space-y-3">
-                <a href="index.html#home" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Home</a>
-                <a href="index.html#about" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">About Us</a>
-                <a href="index.html#products" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Products</a>
-                <a href="index.html#contact" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Contact</a>
-                <a href="privacy.html" class="block px-4 py-2 rounded-lg bg-blue-500 text-white">Privacy Policy</a>
-                <a href="https://wa.me/447895047944" target="_blank" class="block w-full bg-green-500 text-white px-4 py-2 rounded-lg text-center font-semibold">
+                <a href="index.html#home" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600" onclick="trackNavigationClick('Home')">Home</a>
+                <a href="index.html#about" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600" onclick="trackNavigationClick('About Us')">About Us</a>
+                <a href="index.html#products" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600" onclick="trackNavigationClick('Products')">Products</a>
+                <a href="index.html#contact" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600" onclick="trackNavigationClick('Contact')">Contact</a>
+                <a href="privacy.html" class="block px-4 py-2 rounded-lg bg-blue-500 text-white" onclick="trackNavigationClick('Privacy Policy')">Privacy Policy</a>
+                <a href="https://wa.me/447895047944" target="_blank" class="block w-full bg-green-500 text-white px-4 py-2 rounded-lg text-center font-semibold" onclick="trackWhatsAppClick()">
                     WhatsApp Contact
                 </a>
             </div>
@@ -242,7 +281,7 @@
                         <ul class="space-y-2 text-gray-700">
                             <li class="flex items-start gap-2">
                                 <i class="fas fa-check-circle text-blue-500 mt-1"></i>
-                                <span>IP address</span>
+                                <span>IP address (anonymized)</span>
                             </li>
                             <li class="flex items-start gap-2">
                                 <i class="fas fa-check-circle text-blue-500 mt-1"></i>
@@ -263,6 +302,10 @@
                             <li class="flex items-start gap-2">
                                 <i class="fas fa-check-circle text-blue-500 mt-1"></i>
                                 <span>Device information (e.g., mobile or desktop)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check-circle text-blue-500 mt-1"></i>
+                                <span>Click patterns and interactions with the Site</span>
                             </li>
                         </ul>
                     </div>
@@ -309,6 +352,14 @@
                             </h3>
                             <p class="text-gray-700">To detect, prevent, and address technical issues, fraud, or security breaches.</p>
                         </div>
+                        
+                        <div class="bg-blue-50 p-6 rounded-xl md:col-span-2">
+                            <h3 class="text-lg font-semibold text-blue-900 mb-3 flex items-center gap-2">
+                                <i class="fas fa-chart-bar text-blue-600"></i>
+                                Analytics and Reporting
+                            </h3>
+                            <p class="text-gray-700">To understand user behavior, measure website performance, and optimize our marketing efforts using Google Analytics.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -334,7 +385,7 @@
                             <li class="flex items-start gap-3">
                                 <i class="fas fa-cookie-bite text-blue-500 mt-1"></i>
                                 <div>
-                                    <span class="font-semibold">Performance Cookies:</span> These cookies collect information about how visitors use our website, such as which pages are visited most often.
+                                    <span class="font-semibold">Performance Cookies:</span> These cookies collect information about how visitors use our website, such as which pages are visited most often. We use Google Analytics for this purpose.
                                 </div>
                             </li>
                             <li class="flex items-start gap-3">
@@ -373,6 +424,14 @@
                         
                         <div class="bg-gray-50 p-6 rounded-xl">
                             <h3 class="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                                <i class="fas fa-chart-line text-blue-600"></i>
+                                Google Analytics
+                            </h3>
+                            <p class="text-gray-700">We use Google Analytics (ID: G-JE15YSMC2W) to analyze website traffic and user behavior. Google Analytics uses cookies to collect anonymous information about how visitors use our site. We have enabled IP anonymization to ensure compliance with data protection regulations.</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-6 rounded-xl">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
                                 <i class="fas fa-paper-plane text-blue-600"></i>
                                 Formspree
                             </h3>
@@ -387,7 +446,7 @@
                             <p class="text-gray-700">We provide WhatsApp contact links for direct communication. WhatsApp's privacy policy applies to these communications.</p>
                         </div>
                         
-                        <div class="bg-gray-50 p-6 rounded-xl">
+                        <div class="bg-gray-50 p-6 rounded-xl md:col-span-2">
                             <h3 class="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
                                 <i class="fas fa-cloud text-blue-600"></i>
                                 Cloud Storage
@@ -558,10 +617,10 @@
             <h2 class="text-3xl font-bold mb-6">Have Questions About Our Privacy Practices?</h2>
             <p class="text-xl text-blue-100 mb-8">We're here to help you understand how we protect your information</p>
             <div class="flex flex-wrap gap-4 justify-center">
-                <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 shadow-lg transition transform hover:scale-105">
+                <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 shadow-lg transition transform hover:scale-105" onclick="trackWhatsAppClick()">
                     <i class="fab fa-whatsapp"></i> Chat on WhatsApp
                 </a>
-                <a href="index.html#contact" class="bg-white hover:bg-gray-100 text-blue-900 px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 shadow-lg transition transform hover:scale-105">
+                <a href="index.html#contact" class="bg-white hover:bg-gray-100 text-blue-900 px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 shadow-lg transition transform hover:scale-105" onclick="trackNavigationClick('Contact')">
                     <i class="fas fa-envelope"></i> Send Inquiry
                 </a>
             </div>
@@ -584,12 +643,12 @@
                 <div class="ml-6 md:ml-8">
                     <h4 class="font-semibold mb-4 text-lg">Quick Links</h4>
                     <div class="space-y-2">
-                        <a href="index.html#home" class="block text-gray-400 hover:text-white transition text-sm">Home</a>
-                        <a href="index.html#about" class="block text-gray-400 hover:text-white transition text-sm">About Us</a>
-                        <a href="index.html#products" class="block text-gray-400 hover:text-white transition text-sm">Products</a>
-                        <a href="index.html#contact" class="block text-gray-400 hover:text-white transition text-sm">Contact</a>
-                        <a href="privacy.html" class="block text-white bg-blue-600 px-3 py-1 rounded text-sm">Privacy Policy</a>
-                        <a href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf" target="_blank" class="block text-gray-400 hover:text-white transition text-sm">Product Catalog</a>
+                        <a href="index.html#home" class="block text-gray-400 hover:text-white transition text-sm" onclick="trackNavigationClick('Home')">Home</a>
+                        <a href="index.html#about" class="block text-gray-400 hover:text-white transition text-sm" onclick="trackNavigationClick('About Us')">About Us</a>
+                        <a href="index.html#products" class="block text-gray-400 hover:text-white transition text-sm" onclick="trackNavigationClick('Products')">Products</a>
+                        <a href="index.html#contact" class="block text-gray-400 hover:text-white transition text-sm" onclick="trackNavigationClick('Contact')">Contact</a>
+                        <a href="privacy.html" class="block text-white bg-blue-600 px-3 py-1 rounded text-sm" onclick="trackNavigationClick('Privacy Policy')">Privacy Policy</a>
+                        <a href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf" target="_blank" class="block text-gray-400 hover:text-white transition text-sm" onclick="trackPDFDownload('Product Catalog')">Product Catalog</a>
                     </div>
                 </div>
                 
@@ -622,15 +681,15 @@
                 <div>
                     <h4 class="font-semibold mb-4 text-lg">Downloads</h4>
                     <div class="space-y-2 mb-6">
-                        <a href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition text-sm">
+                        <a href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition text-sm" onclick="trackPDFDownload('Product Catalog')">
                             <i class="fas fa-file-pdf text-red-400"></i>
                             <span>Product Catalog</span>
                         </a>
-                        <a href="https://files.v5md.com/dental-kit.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition text-sm">
+                        <a href="https://files.v5md.com/dental-kit.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition text-sm" onclick="trackPDFDownload('Dental Kit')">
                             <i class="fas fa-file-pdf text-red-400"></i>
                             <span>Dental Kit</span>
                         </a>
-                        <a href="https://files.v5md.com/price-list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition text-sm">
+                        <a href="https://files.v5md.com/price-list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition text-sm" onclick="trackPDFDownload('Price List')">
                             <i class="fas fa-file-pdf text-red-400"></i>
                             <span>Price List</span>
                         </a>
@@ -638,7 +697,7 @@
                     
                     <h4 class="font-semibold mb-4 text-lg">Follow Us</h4>
                     <div class="flex gap-4">
-                        <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-800 hover:bg-green-600 rounded-full flex items-center justify-center transition">
+                        <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-800 hover:bg-green-600 rounded-full flex items-center justify-center transition" onclick="trackWhatsAppClick()">
                             <i class="fab fa-whatsapp text-xl"></i>
                         </a>
                         <a href="mailto:sales@v5md.com" class="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition">
@@ -670,7 +729,7 @@
     </footer>
 
     <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" class="whatsapp-float">
+    <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" class="whatsapp-float" onclick="trackWhatsAppClick()">
         <i class="fab fa-whatsapp text-2xl"></i>
         <span>Chat with us</span>
     </a>
