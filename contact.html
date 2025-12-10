@@ -126,8 +126,38 @@
         <p>&copy; 2024 V5 Medical LTD. All rights reserved.</p>
     </footer>
 
+    <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <script src="js/main.js"></script>
+
+    <script>
+        // 定义强制关闭动画的函数
+        function forceRemoveLoader() {
+            const loader = document.querySelector('.page-loader');
+            if (loader) {
+                // 1. 先变透明
+                loader.style.opacity = '0';
+                // 2. 0.5秒后强制隐藏 (使用 style.display 覆盖 CSS 类)
+                setTimeout(() => {
+                    loader.style.display = 'none'; 
+                }, 500);
+            }
+        }
+
+        // 触发机制 A: 页面结构加载完 (最快)
+        document.addEventListener('DOMContentLoaded', forceRemoveLoader);
+
+        // 触发机制 B: 所有资源加载完
+        window.addEventListener('load', forceRemoveLoader);
+
+        // 触发机制 C: 终极保险 (如果上面都失效，2秒后强制暴力移除)
+        setTimeout(forceRemoveLoader, 2000);
+    </script>
+</body>
+</html>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
 </body>
+
 </html>
