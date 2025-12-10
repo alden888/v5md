@@ -518,12 +518,55 @@
         });
     </script>
     
+    <div class="fixed top-4 right-4 z-50 bg-white/90 backdrop-blur-sm shadow-lg rounded-full px-4 py-2 flex items-center gap-2 border border-blue-100 hover:shadow-xl transition-all duration-300 group">
+        <i class="fas fa-globe text-blue-600 text-lg group-hover:rotate-180 transition-transform duration-500"></i>
+        <div id="google_translate_element" class="h-6 overflow-hidden flex items-center"></div>
+    </div>
+
+    <style>
+        /* 移除 Google 翻译顶部的横幅（如果有） */
+        .goog-te-banner-frame { display: none !important; }
+        body { top: 0px !important; }
+
+        /* 美化下拉框容器 */
+        .goog-te-gadget-simple {
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            font-size: 14px !important;
+            display: flex !important;
+            align-items: center !important;
+            cursor: pointer !important;
+        }
+
+        /* 隐藏 Google 的 Logo 图标 */
+        .goog-te-gadget-simple img {
+            display: none !important;
+        }
+
+        /* 调整文字样式 */
+        .goog-te-gadget-simple span {
+            color: #1e40af !important; /* 蓝色文字 */
+            font-weight: 600 !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+        
+        /* 隐藏下拉箭头旁的分割线 */
+        .goog-te-gadget-simple .goog-te-menu-value {
+            margin: 0 !important;
+        }
+        .goog-te-gadget-simple .goog-te-menu-value span {
+            border-left: none !important;
+        }
+    </style>
+
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script type="text/javascript">
       function googleTranslateElementInit() {
         new google.translate.TranslateElement({
           pageLanguage: 'en',
-          includedLanguages: 'en,ar,es,fr,ru,nl,de,it,pt,ja,ko,tr,pl,vi,hi,id,th,sv,zh-CN,zh-TW',
+          // 这里包含了主要的贸易语言，去掉了不常用的，提升加载速度
+          includedLanguages: 'en,zh-CN,zh-TW,ar,es,fr,ru,de,it,pt,ja,ko,vi,th,id',
           layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
           autoDisplay: false
         }, 'google_translate_element');
