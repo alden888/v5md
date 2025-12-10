@@ -3,56 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="About V5 Medical LTD - Corporate Culture, History, and Compliance. ISO certified medical supplier in China.">
-    <title>About Us | V5 Medical LTD</title>
+    
+    <meta name="description" content="About V5 Medical LTD - A Global Medical Consumables Supplier committed to Quality, Legality, and Standardization. ISO 13485/CE/FDA Certified.">
+    <meta name="keywords" content="V5 Medical profile, medical supplier china, corporate culture, ISO 13485 manufacturer">
+    <meta name="author" content="V5 Medical LTD">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="About Us - V5 Medical LTD">
+    <meta property="og:description" content="Professional Global Medical Consumables Supplier. More Sophisticated, More Professional, More Secure.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://v5md.com/about.html">
+    <meta property="og:image" content="https://v5md.com/images/v5medlogo.png">
+    <meta property="og:site_name" content="V5 Medical LTD">
+
+    <link rel="canonical" href="https://v5md.com/about.html">
+
+    <title>About Us | V5 Medical LTD - Professional Medical Supplier</title>
+    
+    <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="images/icons/favicon.ico">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
-<body class="font-sans bg-white">
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        accent: '#2563eb'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
 
-    <nav class="bg-blue-900 text-white p-4 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold flex items-center gap-2">
-                <img src="v5logo.png" class="h-8"> V5 Medical
-            </a>
-            <div class="hidden md:flex gap-6 font-semibold">
-                <a href="index.html" class="hover:text-blue-200">Home</a>
-                <a href="about.html" class="text-blue-200">About Us</a>
-                <a href="catalog.html" class="hover:text-blue-200">Products</a>
-                <a href="contact.html" class="hover:text-blue-200">Contact</a>
+    <style>
+        .page-loader { position: fixed; inset: 0; background: #1e40af; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
+    </style>
+</head>
+
+<body class="smooth-scroll font-sans text-gray-800">
+  
+    <div id="loader" class="page-loader">
+        <i class="fas fa-circle-notch fa-spin text-white text-4xl"></i>
+    </div>  
+
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-blue-900/90 text-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="images/v5logo.png" 
+                         onerror="this.src='v5logo.png'; this.onerror=null;" 
+                         class="h-12 w-auto" 
+                         alt="V5 Medical Logo">
+                    <div>
+                        <div class="font-bold text-xl leading-none">V5 Medical LTD</div>
+                        <div class="text-xs text-blue-200">Global Medical Supplier</div>
+                    </div>
+                </a>
+
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="index.html" class="font-semibold hover:text-blue-200 transition">Home</a>
+                    <a href="about.html" class="font-semibold text-white border-b-2 border-white transition">About Us</a>
+                    <a href="catalog.html" class="font-semibold hover:text-blue-200 transition">Products</a>
+                    <a href="blog.html" class="font-semibold hover:text-blue-200 transition">Blog</a>
+                    <a href="contact.html" class="font-semibold hover:text-blue-200 transition">Contact</a>
+                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 px-5 py-2 rounded-full font-semibold transition flex items-center gap-2">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+
+                <button id="mobile-menu-btn" class="md:hidden text-white" aria-label="Toggle Menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t text-gray-800 absolute w-full left-0 top-20 shadow-xl">
+            <div class="px-4 py-4 space-y-3">
+                <a href="index.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600">Home</a>
+                <a href="about.html" class="block px-4 py-2 rounded-lg bg-blue-50 text-blue-600 font-bold">About Us</a>
+                <a href="catalog.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600">Products</a>
+                <a href="blog.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600">Blog</a>
+                <a href="contact.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600">Contact</a>
+                <a href="https://wa.me/447895047944" target="_blank" class="block w-full bg-green-500 text-white px-4 py-2 rounded-lg text-center font-semibold">WhatsApp Contact</a>
             </div>
         </div>
     </nav>
 
-    <div class="bg-gray-100 py-16 text-center">
-        <h1 class="text-4xl font-bold text-blue-900 mb-4">About V5 Medical</h1>
-        <p class="text-xl text-gray-600">More Sophisticated, More Professional, More Secure</p>
+    <div class="relative h-[400px] flex items-center justify-center text-white text-center px-4 overflow-hidden bg-blue-900">
+        <div class="absolute inset-0 z-0 opacity-40" style="background-image: url('images/hero-bg.jpg'); background-size: cover; background-position: center;"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-blue-900/90 to-blue-900/60 z-0"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto mt-16">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 drop-shadow-md">About V5 Medical LTD</h1>
+            <p class="text-xl md:text-2xl text-blue-100 font-light italic">
+                "More Sophisticated, More Professional, More Secure"
+            </p>
+        </div>
     </div>
 
-    <section class="py-20 px-4">
+    <section class="py-20 px-4 bg-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Professional Medical Device Solutions Provider</h2>
+            <p class="text-lg text-gray-600 leading-relaxed mb-8">
+                Based in <strong>Kunshan Development Zone, Jiangsu, China</strong>, SUZHOU V5 MEDICAL TECHNOLOGY CO., LTD. is a global supplier dedicated to the sales of high-quality medical devices. We uphold the commitment of "Quality First, Legal Operation" and strive to provide first-class services to our international partners through a standardized development path.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8 text-left bg-gray-50 p-8 rounded-xl border border-gray-100">
+                <div>
+                    <h4 class="font-bold text-blue-900 mb-2">Our Mission</h4>
+                    <p class="text-gray-600">To advance together with the elites of the medical device industry.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-blue-900 mb-2">Our Vision</h4>
+                    <p class="text-gray-600">To become a trusted global partner in medical consumables supply.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-4 bg-gray-50">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-12 text-blue-900">Our Corporate Culture</h2>
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="text-center p-8 bg-blue-50 rounded-xl shadow-sm hover:shadow-md transition">
-                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl">
+                <div class="text-center p-8 bg-white rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-600 text-3xl">
                         <i class="fas fa-microscope"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-3">严谨 (Rigor)</h3>
                     <p class="text-gray-600">Strict quality control system ensuring every product meets international medical standards.</p>
                 </div>
-                <div class="text-center p-8 bg-blue-50 rounded-xl shadow-sm hover:shadow-md transition">
-                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl">
+                <div class="text-center p-8 bg-white rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-600 text-3xl">
                         <i class="fas fa-handshake"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-3">和谐 (Harmony)</h3>
-                    <p class="text-gray-600">Building long-term trust relationships with partners for mutual development.</p>
+                    <p class="text-gray-600">Building long-term trust relationships with partners for mutual development and success.</p>
                 </div>
-                <div class="text-center p-8 bg-blue-50 rounded-xl shadow-sm hover:shadow-md transition">
-                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl">
+                <div class="text-center p-8 bg-white rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-600 text-3xl">
                         <i class="fas fa-chart-line"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-3">进步 (Progress)</h3>
-                    <p class="text-gray-600">Continuous improvement, following a standardized development path.</p>
+                    <p class="text-gray-600">Continuous improvement and innovation, following a standardized development path.</p>
                 </div>
             </div>
         </div>
@@ -62,62 +163,211 @@
         <div class="max-w-6xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-12">Our Business Philosophy</h2>
             <div class="grid md:grid-cols-5 gap-6 text-center">
-                <div class="p-4">
-                    <i class="fas fa-users text-4xl mb-4 text-blue-300"></i>
+                <div class="p-4 group">
+                    <i class="fas fa-users text-4xl mb-4 text-blue-300 group-hover:text-white transition"></i>
                     <h4 class="font-bold text-lg mb-2">Talent as Foundation</h4>
-                    <p class="text-sm opacity-80">Professional team is our core competitiveness</p>
+                    <p class="text-sm opacity-80">Professional medical team is our core competitiveness</p>
                 </div>
-                <div class="p-4">
-                    <i class="fas fa-compass text-4xl mb-4 text-blue-300"></i>
+                <div class="p-4 group">
+                    <i class="fas fa-compass text-4xl mb-4 text-blue-300 group-hover:text-white transition"></i>
                     <h4 class="font-bold text-lg mb-2">Market as Direction</h4>
-                    <p class="text-sm opacity-80">Rapid response to international needs</p>
+                    <p class="text-sm opacity-80">Rapid response to international market needs</p>
                 </div>
-                <div class="p-4">
-                    <i class="fas fa-shield-alt text-4xl mb-4 text-blue-300"></i>
+                <div class="p-4 group">
+                    <i class="fas fa-shield-alt text-4xl mb-4 text-blue-300 group-hover:text-white transition"></i>
                     <h4 class="font-bold text-lg mb-2">Quality as Core</h4>
-                    <p class="text-sm opacity-80">Strict safety and reliability</p>
+                    <p class="text-sm opacity-80">Strict safety management and reliability</p>
                 </div>
-                <div class="p-4">
-                    <i class="fas fa-heart text-4xl mb-4 text-blue-300"></i>
+                <div class="p-4 group">
+                    <i class="fas fa-heart text-4xl mb-4 text-blue-300 group-hover:text-white transition"></i>
                     <h4 class="font-bold text-lg mb-2">Service as Purpose</h4>
-                    <p class="text-sm opacity-80">First-class pre-sales & after-sales</p>
+                    <p class="text-sm opacity-80">First-class pre-sales & after-sales support</p>
                 </div>
-                <div class="p-4">
-                    <i class="fas fa-tachometer-alt text-4xl mb-4 text-blue-300"></i>
+                <div class="p-4 group">
+                    <i class="fas fa-tachometer-alt text-4xl mb-4 text-blue-300 group-hover:text-white transition"></i>
                     <h4 class="font-bold text-lg mb-2">Efficiency as Goal</h4>
-                    <p class="text-sm opacity-80">Optimized supply chain delivery</p>
+                    <p class="text-sm opacity-80">Optimized supply chain for fast delivery</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-20 px-4">
-        <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-3xl font-bold mb-4 text-blue-900">Certifications & Compliance</h2>
-            <p class="text-gray-600 mb-12">We uphold our commitment to "Legal Operation" and "Standardized Development".</p>
-            
-            <div class="flex flex-wrap justify-center gap-12 items-center">
-                <div class="flex flex-col items-center">
-                    <div class="w-32 h-32 bg-gray-200 rounded-lg flex items-center justify-center mb-4">
-                        <span class="text-gray-500 font-bold">ISO 13485</span>
+    <section class="py-20 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4 text-blue-900">Certifications & Compliance</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    We uphold our commitment to "Legal Operation" and "Standardized Development". Our products meet strict international standards.
+                </p>
+                
+                <div class="flex flex-wrap justify-center gap-8 items-center mt-10">
+                    <div class="flex flex-col items-center p-6 bg-gray-50 rounded-xl w-64 border border-gray-100">
+                        <i class="fas fa-certificate text-5xl text-blue-600 mb-4"></i>
+                        <h4 class="text-xl font-bold text-gray-900">ISO 13485</h4>
+                        <p class="text-sm text-gray-500 mt-2">Quality Management System</p>
                     </div>
-                    <p class="font-bold">Quality Management</p>
+                    <div class="flex flex-col items-center p-6 bg-gray-50 rounded-xl w-64 border border-gray-100">
+                        <i class="fas fa-check-circle text-5xl text-blue-600 mb-4"></i>
+                        <h4 class="text-xl font-bold text-gray-900">CE Mark</h4>
+                        <p class="text-sm text-gray-500 mt-2">EU Medical Certification</p>
+                    </div>
+                    <div class="flex flex-col items-center p-6 bg-gray-50 rounded-xl w-64 border border-gray-100">
+                        <i class="fas fa-globe-americas text-5xl text-blue-600 mb-4"></i>
+                        <h4 class="text-xl font-bold text-gray-900">FDA Registered</h4>
+                        <p class="text-sm text-gray-500 mt-2">US Market Compliance</p>
+                    </div>
                 </div>
-                <div class="flex flex-col items-center">
-                    <div class="w-32 h-32 bg-gray-200 rounded-lg flex items-center justify-center mb-4">
-                        <span class="text-gray-500 font-bold">CE Mark</span>
+            </div>
+
+            <div class="border-t pt-16">
+                <h3 class="text-2xl font-bold text-blue-900 mb-8 text-center">Company Information</h3>
+                <div class="grid md:grid-cols-2 gap-8 bg-blue-50 p-8 rounded-2xl">
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-bold text-gray-700">Company Name</h4>
+                            <p class="text-gray-900">SUZHOU V5 MEDICAL TECHNOLOGY CO., LTD.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-700">Registered Address</h4>
+                            <p class="text-gray-900">No. 168, Luying Road, Kunshan Development Zone, Jiangsu, China</p>
+                        </div>
                     </div>
-                    <p class="font-bold">EU Certification</p>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="w-32 h-32 bg-gray-200 rounded-lg flex items-center justify-center mb-4">
-                        <span class="text-gray-500 font-bold">FDA</span>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-bold text-gray-700">Operating Regions</h4>
+                            <p class="text-gray-900">Global (Key Markets: UK, Europe, Asia, Africa)</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-700">Supply Chain</h4>
+                            <p class="text-gray-900">Strategic partnerships with premium manufacturers in Shandong, Suqian, and Shenzhen.</p>
+                        </div>
                     </div>
-                    <p class="font-bold">US Registration</p>
                 </div>
             </div>
         </div>
     </section>
+
+    <footer class="bg-gray-900 text-white py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-8 mb-12">
+                
+                <div class="md:col-span-3">
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="images/v5logo.png" 
+                             onerror="this.src='v5logo.png'; this.onerror=null;" 
+                             class="h-10 w-auto" 
+                             alt="Logo">
+                        <span class="text-xl font-bold">V5 Medical LTD</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Professional Global Medical Consumables Supplier</p>
+                    <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
+                </div>
+                
+                <div class="hidden md:block md:col-span-1"></div>
+
+                <div class="md:col-span-2">
+                    <h4 class="font-bold mb-4 text-lg text-white">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="index.html" class="hover:text-white transition">Home</a></li>
+                        <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="catalog.html" class="hover:text-white transition">Products</a></li>
+                        <li><a href="blog.html" class="hover:text-white transition">Blog & News</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
+                        <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="md:col-span-3 pl-0 md:pl-4">
+                    <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
+                    <div class="space-y-3 text-sm text-gray-400">
+                        <p class="flex items-center gap-2">
+                            <i class="fab fa-whatsapp text-green-500 w-5"></i> 
+                            <span>+44 078 9504 7944 (UK)</span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fab fa-whatsapp text-green-500 w-5"></i> 
+                            <span>+86 180 1266 9897 (Backup)</span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fas fa-envelope text-blue-400 w-5"></i> 
+                            <span>sales@v5md.com</span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fab fa-google text-red-400 w-5"></i> 
+                            <span>v5md.com@gmail.com</span>
+                        </p>
+                        <p class="flex items-start gap-2">
+                            <i class="fas fa-map-marker-alt mt-1 w-5"></i> 
+                            <span>No. 168, Luying Road, Kunshan, Jiangsu, China</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-3 pl-0 md:pl-4">
+                    <h4 class="font-bold mb-4 text-lg text-white">Downloads</h4>
+                    <div class="space-y-2 mb-8 text-sm">
+                        <a href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition">
+                            <i class="fas fa-file-pdf text-red-400"></i> Product Catalog
+                        </a>
+                        <a href="https://files.v5md.com/dental-kit.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition">
+                            <i class="fas fa-file-pdf text-red-400"></i> Dental Kit
+                        </a>
+                        <a href="https://files.v5md.com/price-list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition">
+                            <i class="fas fa-file-pdf text-red-400"></i> Price List
+                        </a>
+                    </div>
+                    
+                    <h4 class="font-bold mb-4 text-lg text-white">Follow Us</h4>
+                    <div class="flex gap-3 flex-wrap">
+                        <a href="https://www.tiktok.com/@v5med" target="_blank" class="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center hover:bg-black transition text-white"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.facebook.com/v5med" target="_blank" class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/v5med" target="_blank" class="w-9 h-9 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 rounded-full flex items-center justify-center transition text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="https://linkedin.com/company/v5med" target="_blank" class="w-9 h-9 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 transition text-white"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://x.com/v5med" target="_blank" class="w-9 h-9 rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.youtube.com/@v5med" target="_blank" class="w-9 h-9 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 mt-8">
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-white mb-4">Ready for Your Next Order?</p>
+                    <div class="flex flex-wrap justify-center gap-6 items-center text-blue-200 text-sm md:text-base">
+                        <span class="flex items-center gap-2"><i class="fas fa-globe-americas text-blue-500"></i> We deliver to 40+ countries</span>
+                        <span class="hidden md:inline text-gray-600">|</span>
+                        <span class="flex items-center gap-2"><i class="fas fa-certificate text-green-500"></i> ISO/CE/FDA Certified</span>
+                        <span class="hidden md:inline text-gray-600">|</span>
+                        <span class="flex items-center gap-2"><i class="fas fa-shipping-fast text-yellow-500"></i> Fast Shipping</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-8 text-sm text-gray-500">
+                <p>© 2024 V5 Medical LTD. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const loader = document.getElementById('loader');
+            if(loader) {
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 500);
+                }, 100);
+            }
+        });
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            if(loader) loader.style.display = 'none';
+        }, 2000);
+    </script>
+    
+    <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
