@@ -4,421 +4,456 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <meta name="description" content="V5 Medical LTD - Global Manufacturer of Surgical Sutures, Packs, and Medical Devices. ISO/CE/FDA Certified. One-stop solution.">
-    <meta name="keywords" content="surgical sutures, medical packs, injection infusion, medical supplier china, V5 Medical">
+    <meta name="description" content="V5 Medical Product Catalog - Full range of Surgical Sutures, Medical Packs, Syringes, and Protective Wear. ISO 13485 Certified.">
+    <meta name="keywords" content="surgical sutures pga, medical packs, disposable syringes, surgical gowns, V5 Medical catalog">
     <meta name="author" content="V5 Medical LTD">
     <meta name="robots" content="index, follow">
 
-    <meta property="og:title" content="V5 Medical - Global Medical Consumables Supplier">
-    <meta property="og:description" content="ISO/CE/FDA certified medical devices. Surgical Sutures, Packs, Syringes. Serving 40+ countries.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://v5md.com">
-    <meta property="og:image" content="images/v5medlogo.png">
-
-    <title>V5 Medical LTD - Professional Global Medical Supplier</title>
+    <title>Product Catalog | V5 Medical LTD - Global Supplier</title>
     
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="images/icons/favicon.ico">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        primary: '#1e40af', // 医疗蓝
-                        secondary: '#3b82f6',
-                        accent: '#2563eb'
-                    },
+                    colors: { primary: '#1e40af', secondary: '#3b82f6', accent: '#2563eb' },
                     fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
                 }
             }
         }
     </script>
-
+    
     <style>
-        html { scroll-behavior: smooth; }
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
-        
-        /* WhatsApp Float */
-        .whatsapp-float {
-            position: fixed; bottom: 30px; right: 30px; background: #25D366; color: white;
-            padding: 15px 20px; border-radius: 50px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
-            z-index: 1000; transition: all 0.3s ease; display: flex; align-items: center; gap: 10px;
-        }
-        .whatsapp-float:hover { transform: scale(1.1); }
-        
-        /* Loader */
-        .page-loader { position: fixed; inset: 0; background: #1e40af; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
-        
-        /* Google Translate Beautify */
-        .goog-te-gadget-simple {
-            background: rgba(30, 64, 175, 0.9) !important; border: none !important;
-            border-radius: 50px !important; padding: 8px 16px !important;
-            font-weight: bold !important; color: white !important;
-        }
-        .goog-te-gadget-simple img { display: none !important; }
-        .goog-te-gadget-simple span { color: white !important; }
-        
-        /* Mobile fixes */
-        @media (max-width: 768px) {
-            .whatsapp-float span { display: none; }
-            .whatsapp-float { padding: 12px; border-radius: 50%; bottom: 80px; }
-        }
+        /* Sidebar Styling */
+        .category-group summary { list-style: none; }
+        .category-group summary::-webkit-details-marker { display: none; }
+        .category-link { transition: all 0.2s; border-left: 3px solid transparent; }
+        .category-link:hover, .category-link.active { color: #1e40af; border-left-color: #1e40af; background-color: #eff6ff; padding-left: 10px; }
+        .product-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
     </style>
 </head>
 
-<body class="font-sans text-gray-800">
+<body class="smooth-scroll font-sans text-gray-800 bg-gray-50">
   
-    <div id="loader" class="page-loader">
-        <i class="fas fa-circle-notch fa-spin text-white text-4xl"></i>
-    </div>  
+    <div id="loader" class="page-loader"><div class="loader-spinner"></div></div>
 
-    <nav class="fixed w-full z-50 bg-blue-900/95 backdrop-blur-sm text-white shadow-lg transition-all duration-300">
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-blue-900/90 text-white">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-20">
-                <a href="#" class="flex items-center gap-3">
+                <a href="index.html" class="flex items-center gap-3">
                     <img src="images/v5logo.png" onerror="this.src='v5logo.png'" class="h-10 w-auto" alt="Logo">
                     <div>
-                        <div class="font-bold text-xl leading-none">V5 Medical LTD</div>
-                        <div class="text-xs text-blue-200">Global Medical Supplier</div>
+                        <div class="font-bold text-xl leading-none">V5 Medical</div>
+                        <div class="text-xs text-blue-200">Global Supplier</div>
                     </div>
                 </a>
-
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="#home" class="hover:text-blue-200 transition">Home</a>
-                    <a href="#about" class="hover:text-blue-200 transition">About</a>
-                    <a href="#products" class="hover:text-blue-200 transition">Products</a>
-                    <a href="#compliance" class="hover:text-blue-200 transition">Certificates</a>
-                    <a href="#contact" class="bg-green-500 hover:bg-green-600 px-5 py-2 rounded-full font-bold transition">
-                        Contact Us
-                    </a>
+                <div class="hidden md:flex gap-8">
+                    <a href="index.html" class="nav-link text-blue-100 hover:text-white">Home</a>
+                    <a href="about.html" class="nav-link text-blue-100 hover:text-white">About Us</a>
+                    <a href="catalog.html" class="nav-link text-white font-bold border-b-2 border-white">Products</a>
+                    <a href="blog.html" class="nav-link text-blue-100 hover:text-white">Blog</a>
+                    <a href="contact.html" class="nav-link text-blue-100 hover:text-white">Contact</a>
                 </div>
-
-                <button id="mobile-menu-btn" class="md:hidden text-white text-2xl">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <button id="mobile-menu-btn" class="md:hidden text-white"><i class="fas fa-bars text-2xl"></i></button>
             </div>
         </div>
-        
-        <div id="mobile-menu" class="hidden md:hidden bg-white text-gray-800 border-t">
-            <div class="px-4 py-4 space-y-2">
-                <a href="#home" class="block px-4 py-2 rounded hover:bg-blue-50">Home</a>
-                <a href="#about" class="block px-4 py-2 rounded hover:bg-blue-50">About</a>
-                <a href="#products" class="block px-4 py-2 rounded hover:bg-blue-50">Products</a>
-                <a href="#contact" class="block px-4 py-2 bg-green-500 text-white rounded text-center font-bold">Contact Us</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white text-gray-800 border-t absolute w-full shadow-xl">
+            <div class="px-4 py-4 space-y-3">
+                <a href="index.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50">Home</a>
+                <a href="about.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50">About Us</a>
+                <a href="catalog.html" class="block px-4 py-2 rounded-lg bg-blue-50 text-blue-600 font-bold">Products</a>
+                <a href="blog.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50">Blog</a>
+                <a href="contact.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50">Contact</a>
             </div>
         </div>
     </nav>
 
-    <section id="home" class="relative h-[600px] flex items-center justify-center text-white text-center px-4 overflow-hidden pt-20">
-        <div class="absolute inset-0 z-0">
-            <img src="images/hero-bg.jpg" onerror="this.src='hero-bg.jpg'; this.style.backgroundColor='#1e40af'" class="w-full h-full object-cover opacity-60 bg-blue-900" alt="Background">
-            <div class="absolute inset-0 bg-gradient-to-b from-blue-900/80 to-blue-900/40"></div>
+    <div class="bg-gray-100 pt-32 pb-12 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold text-blue-900 mb-4">Product Catalog</h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">ISO 13485 Certified Medical Consumables</p>
         </div>
-
-        <div class="relative z-10 max-w-4xl mx-auto">
-            <img src="images/v5medlogo.png" onerror="this.style.display='none'" class="h-32 mx-auto mb-8 drop-shadow-lg" alt="V5 Medical">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-md">
-                Global Medical Consumables<br>Manufacturer & Supplier
-            </h1>
-            <p class="text-xl md:text-2xl mb-8 text-blue-100 font-light">
-                ISO 13485 / CE / FDA Certified · Serving 40+ Countries
-            </p>
-            <div class="flex flex-wrap gap-4 justify-center">
-                <a href="#contact" class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg transition transform hover:scale-105">
-                    <i class="fas fa-paper-plane mr-2"></i> Get Quote
-                </a>
-                <a href="#products" class="bg-white text-blue-900 px-8 py-4 rounded-full text-lg font-bold shadow-lg transition transform hover:scale-105">
-                    <i class="fas fa-th-large mr-2"></i> Products
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="py-20 px-4 bg-white">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Choose V5 Medical?</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Based in Kunshan, China, we provide high-quality medical consumables with legal compliance and a standardized development path.</p>
-            </div>
-            
-            <div class="grid md:grid-cols-4 gap-8">
-                <div class="text-center p-6 bg-blue-50 rounded-xl card-hover">
-                    <i class="fas fa-award text-4xl text-blue-600 mb-4"></i>
-                    <h3 class="font-bold text-lg mb-2">Quality First</h3>
-                    <p class="text-sm text-gray-600">Strict QC system ensuring international standards.</p>
-                </div>
-                <div class="text-center p-6 bg-blue-50 rounded-xl card-hover">
-                    <i class="fas fa-globe text-4xl text-blue-600 mb-4"></i>
-                    <h3 class="font-bold text-lg mb-2">Global Reach</h3>
-                    <p class="text-sm text-gray-600">Trusted by hospitals in 40+ countries.</p>
-                </div>
-                <div class="text-center p-6 bg-blue-50 rounded-xl card-hover">
-                    <i class="fas fa-shipping-fast text-4xl text-blue-600 mb-4"></i>
-                    <h3 class="font-bold text-lg mb-2">Fast Delivery</h3>
-                    <p class="text-sm text-gray-600">Optimized supply chain for quick turnaround.</p>
-                </div>
-                <div class="text-center p-6 bg-blue-50 rounded-xl card-hover">
-                    <i class="fas fa-hand-holding-heart text-4xl text-blue-600 mb-4"></i>
-                    <h3 class="font-bold text-lg mb-2">Service Oriented</h3>
-                    <p class="text-sm text-gray-600">Professional pre-sales and after-sales support.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="products" class="py-20 px-4 bg-gray-50">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Core Product Catalog</h2>
-                <p class="text-gray-600">Explore our comprehensive range of medical solutions.</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-48 bg-blue-100 flex items-center justify-center">
-                        <i class="fas fa-cut text-6xl text-blue-300"></i>
-                    </div>
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold mb-3">Surgical Sutures</h3>
-                        <p class="text-gray-600 mb-4">Complete range of Absorbable (PGA, PDO, Catgut) & Non-absorbable (Silk, Nylon) sutures with needles.</p>
-                        <ul class="text-sm text-gray-500 mb-6 space-y-1">
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>High Tensile Strength</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Smooth Tissue Passage</li>
-                        </ul>
-                        <a href="#contact" class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">Inquire Now</a>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-48 bg-green-100 flex items-center justify-center">
-                        <i class="fas fa-box-open text-6xl text-green-300"></i>
-                    </div>
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold mb-3">Surgical Packs</h3>
-                        <p class="text-gray-600 mb-4">Sterile custom packs for various procedures: Universal, C-Section, Orthopedic, and more.</p>
-                        <ul class="text-sm text-gray-500 mb-6 space-y-1">
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>EO Sterilization</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Customized Components</li>
-                        </ul>
-                        <a href="#contact" class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">Inquire Now</a>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-48 bg-purple-100 flex items-center justify-center">
-                        <i class="fas fa-syringe text-6xl text-purple-300"></i>
-                    </div>
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold mb-3">Injection & Infusion</h3>
-                        <p class="text-gray-600 mb-4">High-quality disposable syringes, needles, infusion sets, and blood collection sets.</p>
-                        <ul class="text-sm text-gray-500 mb-6 space-y-1">
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Medical Grade PP</li>
-                            <li><i class="fas fa-check text-green-500 mr-2"></i>Non-toxic / Pyrogen-free</li>
-                        </ul>
-                        <a href="#contact" class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">Inquire Now</a>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-48 bg-orange-100 flex items-center justify-center">
-                        <i class="fas fa-band-aid text-6xl text-orange-300"></i>
-                    </div>
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold mb-3">Gauze & Dressing</h3>
-                        <p class="text-gray-600 mb-4">Cotton gauze swabs, balls, bandages, and advanced wound care dressings.</p>
-                        <a href="#contact" class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">Inquire Now</a>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-48 bg-teal-100 flex items-center justify-center">
-                        <i class="fas fa-tooth text-6xl text-teal-300"></i>
-                    </div>
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold mb-3">Dental Consumables</h3>
-                        <p class="text-gray-600 mb-4">Disposable dental kits, bibs, needles, and other clinic essentials.</p>
-                        <a href="#contact" class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">Inquire Now</a>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-48 bg-gray-100 flex items-center justify-center">
-                        <i class="fas fa-download text-6xl text-gray-400"></i>
-                    </div>
-                    <div class="p-8 text-center flex flex-col justify-center h-full">
-                        <h3 class="text-2xl font-bold mb-3">Download Catalog</h3>
-                        <p class="text-gray-600 mb-6">Get our full product list and specifications in PDF format.</p>
-                        <a href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf" target="_blank" class="block text-center border-2 border-blue-600 text-blue-600 py-2 rounded-lg hover:bg-blue-600 hover:text-white transition">
-                            <i class="fas fa-file-pdf mr-2"></i> Download PDF
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="compliance" class="py-16 bg-white border-t">
-        <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-3xl font-bold mb-10 text-gray-900">Certifications & Compliance</h2>
-            <div class="flex flex-wrap justify-center gap-12 text-gray-700">
-                <div class="flex flex-col items-center">
-                    <i class="fas fa-certificate text-5xl text-blue-900 mb-4"></i>
-                    <span class="font-bold text-xl">ISO 13485</span>
-                    <span class="text-sm">Quality Management</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <i class="fas fa-check-circle text-5xl text-blue-900 mb-4"></i>
-                    <span class="font-bold text-xl">CE Mark</span>
-                    <span class="text-sm">EU Compliance</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <i class="fas fa-globe-americas text-5xl text-blue-900 mb-4"></i>
-                    <span class="font-bold text-xl">FDA Registered</span>
-                    <span class="text-sm">US Compliance</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="py-20 px-4 bg-blue-900 text-white">
-        <div class="max-w-4xl mx-auto text-center mb-12">
-            <h2 class="text-4xl font-bold mb-4">Contact Us</h2>
-            <p class="text-blue-200">We respond to all inquiries within 24 hours.</p>
-        </div>
-
-        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
-            <div class="space-y-8 text-center md:text-left">
-                <div>
-                    <h3 class="text-2xl font-bold mb-4">Get in Touch</h3>
-                    <p class="mb-2"><i class="fas fa-map-marker-alt w-6 text-red-400"></i> No. 168, Luying Road, Kunshan, Jiangsu, China</p>
-                    <p class="mb-2"><i class="fas fa-phone w-6 text-green-400"></i> +86-512 8781 1988</p>
-                    <p class="mb-2"><i class="fas fa-envelope w-6 text-blue-400"></i> sales@v5md.com</p>
-                </div>
-                
-                <div class="bg-white/10 p-6 rounded-xl backdrop-blur-sm">
-                    <h4 class="font-bold mb-3">Quick Connect</h4>
-                    <a href="https://wa.me/447895047944" target="_blank" class="block mb-2 hover:text-green-400">
-                        <i class="fab fa-whatsapp w-6"></i> +44 078 9504 7944 (Global)
-                    </a>
-                    <a href="https://wa.me/8618012669897" target="_blank" class="block hover:text-green-400">
-                        <i class="fab fa-whatsapp w-6"></i> +86 180 1266 9897 (Backup)
-                    </a>
-                </div>
-
-                <div class="flex justify-center md:justify-start gap-4">
-                    <a href="#" class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-500"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center hover:bg-blue-600"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-500"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-
-            <div class="bg-white text-gray-800 p-8 rounded-2xl shadow-xl">
-                <form action="https://formspree.io/f/xdkqlygg" method="POST" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-bold mb-1">Company / Name</label>
-                        <input type="text" name="name" required class="w-full p-3 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold mb-1">Email</label>
-                        <input type="email" name="email" required class="w-full p-3 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold mb-1">Product Interest</label>
-                        <select name="product" class="w-full p-3 border rounded-lg bg-gray-50">
-                            <option>Surgical Sutures</option>
-                            <option>Surgical Packs</option>
-                            <option>Injection & Infusion</option>
-                            <option>Other</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold mb-1">Message</label>
-                        <textarea name="message" rows="3" required class="w-full p-3 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">
-                        Send Inquiry
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-black text-gray-500 py-6 text-center text-sm">
-        <p>&copy; 2024 SUZHOU V5 MEDICAL TECHNOLOGY CO., LTD. All rights reserved.</p>
-    </footer>
-
-    <a href="https://wa.me/447895047944" target="_blank" class="whatsapp-float">
-        <i class="fab fa-whatsapp text-2xl"></i>
-        <span>Chat with us</span>
-    </a>
-
-    <div class="fixed top-4 right-4 z-50 bg-white/90 backdrop-blur-sm shadow-lg rounded-full px-4 py-2 flex items-center gap-2 border border-blue-100 hover:shadow-xl transition-all duration-300 group">
-        <i class="fas fa-globe text-blue-600 text-lg group-hover:rotate-180 transition-transform duration-500"></i>
-        <div id="google_translate_element"></div>
     </div>
 
-    <style>
-        /* 隐藏顶部横幅 */
-        body { top: 0px !important; }
-        .goog-te-banner-frame { display: none !important; }
+    <div class="max-w-7xl mx-auto px-4 py-12">
+        <div class="grid lg:grid-cols-4 gap-8">
+            
+            <aside class="lg:col-span-1 space-y-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 sticky top-24">
+                    <h3 class="font-bold text-lg mb-4 text-gray-900 flex items-center gap-2">
+                        <i class="fas fa-search text-blue-600"></i> Search
+                    </h3>
+                    <div class="relative mb-6">
+                        <input type="text" id="searchInput" placeholder="Search name, code (e.g. PGA)..." 
+                               class="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
 
-        /* 隐藏 Google 自带的小图标 */
-        .goog-te-gadget-icon {
-            display: none !important;
-        }
+                    <h3 class="font-bold text-lg mb-4 text-gray-900 flex items-center gap-2">
+                        <i class="fas fa-filter text-blue-600"></i> Categories
+                    </h3>
+                    <div class="space-y-1 text-sm text-gray-600" id="categoryFilters">
+                        <div class="cursor-pointer category-link active py-2" onclick="filterCategory('all', this)">
+                            <i class="fas fa-th-large mr-2"></i> All Products
+                        </div>
+                        
+                        <details class="category-group" open>
+                            <summary class="cursor-pointer font-semibold py-2 flex justify-between items-center hover:text-blue-600">
+                                <span><i class="fas fa-cut mr-2 w-5"></i> Surgical Sutures</span>
+                                <i class="fas fa-chevron-down text-xs transition-transform group-open:rotate-180"></i>
+                            </summary>
+                            <div class="pl-6 space-y-1 mt-1 border-l-2 border-gray-100">
+                                <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('absorbable', this)">Absorbable</div>
+                                <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('non-absorbable', this)">Non-Absorbable</div>
+                                <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('needle', this)">Surgical Needles</div>
+                            </div>
+                        </details>
 
-        /* 美化核心容器 */
-        .goog-te-gadget-simple {
-            background-color: transparent !important;
-            border: none !important;
-            padding: 0 !important;
-            font-size: 14px !important;
-            line-height: 20px !important;
-            display: flex !important;
-            align-items: center !important;
-            cursor: pointer !important;
-        }
+                        <details class="category-group">
+                            <summary class="cursor-pointer font-semibold py-2 flex justify-between items-center hover:text-blue-600">
+                                <span><i class="fas fa-box-open mr-2 w-5"></i> Surgical Packs</span>
+                                <i class="fas fa-chevron-down text-xs transition-transform group-open:rotate-180"></i>
+                            </summary>
+                            <div class="pl-6 space-y-1 mt-1 border-l-2 border-gray-100">
+                                <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('universal', this)">Universal/General</div>
+                                <div class="cursor-pointer py-1 category-link hover:text-blue-600" onclick="filterCategory('specialty-pack', this)">Specialty Packs</div>
+                            </div>
+                        </details>
 
-        /* 美化文字颜色 */
-        .goog-te-gadget-simple span {
-            color: #1e40af !important; /* V5 Medical 蓝色 */
-            font-weight: 600 !important;
-        }
+                        <div class="cursor-pointer font-semibold py-2 category-link hover:text-blue-600" onclick="filterCategory('injection', this)">
+                            <i class="fas fa-syringe mr-2 w-5"></i> Injection & Infusion
+                        </div>
+                        
+                        <div class="cursor-pointer font-semibold py-2 category-link hover:text-blue-600" onclick="filterCategory('gauze', this)">
+                            <i class="fas fa-band-aid mr-2 w-5"></i> Gauze & Dressing
+                        </div>
 
-        /* 隐藏分割线，让布局更紧凑 */
-        .goog-te-gadget-simple .goog-te-menu-value {
-            margin: 0 !important;
-            border: none !important;
-        }
-        .goog-te-gadget-simple .goog-te-menu-value span {
-            border-left: none !important;
-        }
-        
-        /* 修复下拉箭头的位置 */
-        .goog-te-gadget-simple .goog-te-menu-value img {
-            display: none !important; /* 隐藏默认箭头图片，如果需要可以自定义 */
-        }
-    </style>
+                        <div class="cursor-pointer font-semibold py-2 category-link hover:text-blue-600" onclick="filterCategory('dental', this)">
+                            <i class="fas fa-tooth mr-2 w-5"></i> Dental Consumables
+                        </div>
 
+                        <div class="cursor-pointer font-semibold py-2 category-link hover:text-blue-600" onclick="filterCategory('protective', this)">
+                            <i class="fas fa-user-md mr-2 w-5"></i> Protective Wear
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-600 to-blue-800 p-6 rounded-xl text-white shadow-lg text-center">
+                    <i class="fas fa-file-pdf text-4xl mb-3 opacity-90"></i>
+                    <h3 class="font-bold text-lg mb-2">2024 Full Catalog</h3>
+                    <p class="text-blue-100 text-xs mb-4">Download comprehensive PDF specifications.</p>
+                    <a href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf" target="_blank" class="inline-block w-full bg-white text-blue-900 font-bold py-2 rounded-lg hover:bg-gray-100 transition shadow-sm">
+                        Download PDF
+                    </a>
+                </div>
+            </aside>
+
+            <main class="lg:col-span-3">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-800">Product List</h2>
+                    <span class="text-sm text-gray-500">Showing <span id="visible-count" class="font-bold text-blue-600">All</span> items</span>
+                </div>
+
+                <div id="product-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" data-category="absorbable sutures pga" data-name="PGA Surgical Suture">
+                        <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                            <img src="images/products/sutures_securos_picture06.jpg" onerror="this.src='https://images.unsplash.com/photo-1584017911766-d451b3d0e843?w=500'" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="PGA Suture">
+                            <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold">CE/ISO</span>
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col">
+                            <div class="mb-2">
+                                <h3 class="font-bold text-lg text-gray-900 leading-tight">PGA Suture</h3>
+                                <p class="text-gray-500 text-sm">可吸收聚乙醇酸缝合线</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">Braided</span>
+                                <span class="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded">Violet</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                <span class="text-xs font-mono text-gray-400">Cat.# NQ-PGA</span>
+                                <a href="product-detail.html" class="text-sm font-bold text-blue-600 hover:text-blue-800">Details &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" data-category="absorbable sutures catgut" data-name="Chromic Catgut">
+                        <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                            <img src="images/products/catgut.jpg" onerror="this.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=500'" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Catgut">
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col">
+                            <div class="mb-2">
+                                <h3 class="font-bold text-lg text-gray-900 leading-tight">Chromic Catgut</h3>
+                                <p class="text-gray-500 text-sm">铬制羊肠线</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="text-xs bg-yellow-50 text-yellow-700 px-2 py-1 rounded">Natural</span>
+                                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">Twisted</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                <span class="text-xs font-mono text-gray-400">Cat.# NQ-CC</span>
+                                <a href="product-detail.html" class="text-sm font-bold text-blue-600 hover:text-blue-800">Details &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" data-category="non-absorbable sutures silk" data-name="Silk Braided Suture">
+                        <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                            <img src="images/products/silk.jpg" onerror="this.src='https://images.unsplash.com/photo-1559757175-5700dde675bc?w=500'" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Silk Suture">
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col">
+                            <div class="mb-2">
+                                <h3 class="font-bold text-lg text-gray-900 leading-tight">Silk Braided</h3>
+                                <p class="text-gray-500 text-sm">真丝编织缝合线</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="text-xs bg-gray-800 text-white px-2 py-1 rounded">Black</span>
+                                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">Non-Absorbable</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                <span class="text-xs font-mono text-gray-400">Cat.# NQ-SK</span>
+                                <a href="product-detail.html" class="text-sm font-bold text-blue-600 hover:text-blue-800">Details &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" data-category="surgical packs universal" data-name="Universal Surgical Pack">
+                        <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                            <img src="images/products/SURGICAL SUTURE KIT.jpg" onerror="this.src='https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500'" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Pack">
+                            <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded font-bold">Sterile</span>
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col">
+                            <div class="mb-2">
+                                <h3 class="font-bold text-lg text-gray-900 leading-tight">Universal Pack</h3>
+                                <p class="text-gray-500 text-sm">通用手术包</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">SMS Fabric</span>
+                                <span class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded">EO Gas</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                <span class="text-xs font-mono text-gray-400">Cat.# NQ-UPK</span>
+                                <a href="contact.html" class="text-sm font-bold text-blue-600 hover:text-blue-800">Inquire &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" data-category="injection syringe" data-name="Disposable Syringe 3-Part">
+                        <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                            <img src="images/products/medical syringe.jpg" onerror="this.src='https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?w=500'" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Syringe">
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col">
+                            <div class="mb-2">
+                                <h3 class="font-bold text-lg text-gray-900 leading-tight">3-Part Syringe</h3>
+                                <p class="text-gray-500 text-sm">一次性注射器</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">Luer Lock/Slip</span>
+                                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">1ml-50ml</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                <span class="text-xs font-mono text-gray-400">Cat.# NQ-SY3P</span>
+                                <a href="contact.html" class="text-sm font-bold text-blue-600 hover:text-blue-800">Inquire &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" data-category="dental" data-name="Disposable Dental Kit">
+                        <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                            <img src="images/products/dental-kit.jpg" onerror="this.src='https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=500'" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Dental Kit">
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col">
+                            <div class="mb-2">
+                                <h3 class="font-bold text-lg text-gray-900 leading-tight">Dental Kit</h3>
+                                <p class="text-gray-500 text-sm">一次性牙科检查包</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="text-xs bg-teal-50 text-teal-700 px-2 py-1 rounded">3-in-1</span>
+                                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">Sterile</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                <span class="text-xs font-mono text-gray-400">Cat.# NQ-DK</span>
+                                <a href="contact.html" class="text-sm font-bold text-blue-600 hover:text-blue-800">Inquire &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" data-category="protective gown" data-name="Surgical Gown">
+                        <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                            <img src="images/products/gown.jpg" onerror="this.src='https://images.unsplash.com/photo-1584634731339-252c581abfc5?w=500'" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Gown">
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col">
+                            <div class="mb-2">
+                                <h3 class="font-bold text-lg text-gray-900 leading-tight">Surgical Gown</h3>
+                                <p class="text-gray-500 text-sm">手术衣</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">SMS/SMMS</span>
+                                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">Reinforced</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                <span class="text-xs font-mono text-gray-400">Cat.# NQ-SG</span>
+                                <a href="contact.html" class="text-sm font-bold text-blue-600 hover:text-blue-800">Inquire &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col" data-category="gauze swab" data-name="Gauze Swab">
+                        <div class="h-48 relative overflow-hidden bg-gray-100 group">
+                            <img src="images/products/gauze.jpg" onerror="this.src='https://images.unsplash.com/photo-1583947581924-860b8b98299d?w=500'" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Gauze">
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col">
+                            <div class="mb-2">
+                                <h3 class="font-bold text-lg text-gray-900 leading-tight">Gauze Swabs</h3>
+                                <p class="text-gray-500 text-sm">纱布片</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">100% Cotton</span>
+                                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">X-ray optional</span>
+                            </div>
+                            <div class="mt-auto flex items-center justify-between border-t pt-3">
+                                <span class="text-xs font-mono text-gray-400">Cat.# NQ-GS</span>
+                                <a href="contact.html" class="text-sm font-bold text-blue-600 hover:text-blue-800">Inquire &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="no-results" class="hidden text-center py-16 bg-white rounded-xl border border-dashed border-gray-300 mt-6">
+                    <i class="fas fa-search text-gray-300 text-5xl mb-4"></i>
+                    <h3 class="text-lg font-bold text-gray-900">No products found</h3>
+                    <p class="text-gray-500 mb-4">Try adjusting your search or filters.</p>
+                    <button onclick="resetFilters()" class="text-blue-600 font-bold hover:underline">Clear Filters</button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 text-white py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-8 mb-12">
+                <div class="md:col-span-3">
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="images/v5logo.png" onerror="this.src='v5logo.png'" class="h-10 w-auto" alt="Logo">
+                        <span class="text-xl font-bold">V5 Medical LTD</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Professional Global Medical Consumables Supplier</p>
+                    <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
+                </div>
+                <div class="hidden md:block md:col-span-1"></div>
+                <div class="md:col-span-2">
+                    <h4 class="font-bold mb-4 text-lg">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="index.html" class="hover:text-white transition">Home</a></li>
+                        <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="catalog.html" class="hover:text-white transition">Products</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="md:col-span-3 pl-0 md:pl-4">
+                    <h4 class="font-bold mb-4 text-lg">Contact Info</h4>
+                    <div class="space-y-3 text-sm text-gray-400">
+                        <p><i class="fab fa-whatsapp text-green-500 w-5"></i> +44 078 9504 7944</p>
+                        <p><i class="fas fa-envelope text-blue-400 w-5"></i> sales@v5md.com</p>
+                        <p><i class="fas fa-map-marker-alt w-5 text-red-500"></i> Jiangsu, China</p>
+                    </div>
+                </div>
+                <div class="md:col-span-3 pl-0 md:pl-4">
+                    <h4 class="font-bold mb-4 text-lg">Follow Us</h4>
+                    <div class="flex gap-3">
+                        <a href="#" class="text-white hover:text-blue-500"><i class="fab fa-linkedin text-2xl"></i></a>
+                        <a href="#" class="text-white hover:text-blue-600"><i class="fab fa-facebook text-2xl"></i></a>
+                        <a href="#" class="text-white hover:text-red-600"><i class="fab fa-youtube text-2xl"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-sm text-gray-500">
+                <p>&copy; 2024 V5 Medical LTD. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <script type="text/javascript">
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-          pageLanguage: 'en',
-          // 包含您需要的语言
-          includedLanguages: 'en,zh-CN,zh-TW,ar,es,fr,ru,nl,de,it,pt,ja,ko,tr,pl,vi,hi,id,th,sv',
-          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false
-        }, 'google_translate_element');
-      }
+
+    <script>
+        // Failsafe Loader Removal
+        window.addEventListener('DOMContentLoaded', () => {
+            const loader = document.getElementById('loader');
+            if(loader) {
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 500);
+                }, 100);
+            }
+        });
+
+        // Search & Filter Logic
+        const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.product-card');
+        const noResults = document.getElementById('no-results');
+        const countLabel = document.getElementById('visible-count');
+
+        function updateGrid() {
+            const searchTerm = searchInput.value.toLowerCase();
+            let visibleCount = 0;
+            let activeCategory = document.querySelector('.category-link.active')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || 'all';
+
+            cards.forEach(card => {
+                const name = card.dataset.name.toLowerCase();
+                const category = card.dataset.category.toLowerCase();
+                const catNo = card.querySelector('.font-mono')?.innerText.toLowerCase() || '';
+                
+                // Logic: Matches Search Term AND Matches Category
+                const matchesSearch = name.includes(searchTerm) || category.includes(searchTerm) || catNo.includes(searchTerm);
+                const matchesCategory = activeCategory === 'all' || category.includes(activeCategory);
+
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update UI
+            noResults.classList.toggle('hidden', visibleCount > 0);
+            countLabel.textContent = visibleCount;
+        }
+
+        // Event Listeners
+        searchInput.addEventListener('keyup', updateGrid);
+
+        function filterCategory(category, element) {
+            // Update active styling
+            document.querySelectorAll('.category-link').forEach(el => el.classList.remove('active'));
+            if(element) element.classList.add('active');
+            
+            // Clear search when switching categories for better UX
+            searchInput.value = '';
+            
+            // Re-run grid update
+            updateGrid();
+            
+            // Scroll to top of grid on mobile
+            if(window.innerWidth < 1024) {
+                document.getElementById('product-grid').scrollIntoView({behavior: 'smooth'});
+            }
+        }
+
+        function resetFilters() {
+            searchInput.value = '';
+            filterCategory('all', document.querySelector('.category-link'));
+        }
     </script>
 </body>
 </html>
-
-
-
-
