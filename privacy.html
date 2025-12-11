@@ -294,11 +294,66 @@
         }, 2000);
     </script>
     
-    <div id="google_translate_element" class="fixed top-4 right-4 z-50 bg-white/90 backdrop-blur-sm shadow-lg rounded-full px-4 py-2 flex items-center gap-2 border border-blue-100 hover:shadow-xl transition-all duration-300 group">
+    <div class="fixed top-4 right-4 z-50 bg-white/90 backdrop-blur-sm shadow-lg rounded-full px-4 py-2 flex items-center gap-2 border border-blue-100 hover:shadow-xl transition-all duration-300 group">
         <i class="fas fa-globe text-blue-600 text-lg group-hover:rotate-180 transition-transform duration-500"></i>
-        <div id="google_translate_element" class="h-6 overflow-hidden flex items-center"></div>
+        <div id="google_translate_element"></div>
     </div>
+
+    <style>
+        /* 隐藏顶部横幅 */
+        body { top: 0px !important; }
+        .goog-te-banner-frame { display: none !important; }
+
+        /* 隐藏 Google 自带的小图标 */
+        .goog-te-gadget-icon {
+            display: none !important;
+        }
+
+        /* 美化核心容器 */
+        .goog-te-gadget-simple {
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            font-size: 14px !important;
+            line-height: 20px !important;
+            display: flex !important;
+            align-items: center !important;
+            cursor: pointer !important;
+        }
+
+        /* 美化文字颜色 */
+        .goog-te-gadget-simple span {
+            color: #1e40af !important; /* V5 Medical 蓝色 */
+            font-weight: 600 !important;
+        }
+
+        /* 隐藏分割线，让布局更紧凑 */
+        .goog-te-gadget-simple .goog-te-menu-value {
+            margin: 0 !important;
+            border: none !important;
+        }
+        .goog-te-gadget-simple .goog-te-menu-value span {
+            border-left: none !important;
+        }
+        
+        /* 修复下拉箭头的位置 */
+        .goog-te-gadget-simple .goog-te-menu-value img {
+            display: none !important; /* 隐藏默认箭头图片，如果需要可以自定义 */
+        }
+    </style>
+
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          // 包含您需要的语言
+          includedLanguages: 'en,zh-CN,zh-TW,ar,es,fr,ru,nl,de,it,pt,ja,ko,tr,pl,vi,hi,id,th,sv',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false
+        }, 'google_translate_element');
+      }
+    </script>
 
 </body>
 </html>
