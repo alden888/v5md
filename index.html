@@ -129,9 +129,24 @@
             object-contain;
         }
         
-        /* Critical path CSS for hero section */
+        /* Updated Hero Gradient - Lighter and more transparent */
         .hero-gradient {
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(30, 64, 175, 0.85) 50%, rgba(37, 99, 235, 0.8) 100%);
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.9) 0%, 
+                rgba(240, 249, 255, 0.85) 25%, 
+                rgba(191, 219, 254, 0.75) 50%, 
+                rgba(240, 249, 255, 0.85) 75%, 
+                rgba(255, 255, 255, 0.9) 100%
+            );
+        }
+        
+        /* Text shadow for better readability on light background */
+        .hero-text-shadow {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-subtext-shadow {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -139,7 +154,7 @@
 <body class="smooth-scroll font-sans text-gray-800 relative">
 
     <!-- Navigation -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-blue-900/90 text-white">
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/95 text-gray-800 shadow-md">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='index.html';">
@@ -148,25 +163,25 @@
                          class="h-12 w-auto" 
                          alt="V5 Medical LTD Logo">
                     <div>
-                        <div class="font-bold text-xl leading-none">V5 Medical LTD</div>
-                        <div class="text-xs text-blue-200">Global Medical Supplier</div>
+                        <div class="font-bold text-xl leading-none text-blue-900">V5 Medical LTD</div>
+                        <div class="text-xs text-blue-600">Global Medical Supplier</div>
                     </div>
                 </div>
 
                 <div class="hidden md:flex items-center gap-8">
-                    <a href="index.html" class="nav-link font-semibold text-white transition">Home</a>
-                    <a href="about.html" class="nav-link font-semibold text-blue-100 hover:text-white transition">About Us</a>
-                    <a href="catalog.html" class="nav-link font-semibold text-blue-100 hover:text-white transition">Products</a>
+                    <a href="index.html" class="nav-link font-semibold text-blue-900 transition">Home</a>
+                    <a href="about.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">About Us</a>
+                    <a href="catalog.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">Products</a>
                     <a href="blog.html" class="nav-link font-semibold text-white bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700">Blog</a>
-                    <a href="contact.html" class="nav-link font-semibold text-blue-100 hover:text-white transition">Contact</a>
+                    <a href="contact.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">Contact</a>
                     <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" 
-                       class="bg-green-500 hover:bg-green-600 px-5 py-2 rounded-full font-semibold transition flex items-center gap-2" 
+                       class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-full font-semibold transition flex items-center gap-2" 
                        onclick="trackWhatsAppClick()">
                         <i class="fab fa-whatsapp"></i> WhatsApp
                     </a>
                 </div>
 
-                <button id="mobile-menu-btn" class="md:hidden text-white" aria-label="Toggle Menu">
+                <button id="mobile-menu-btn" class="md:hidden text-gray-800" aria-label="Toggle Menu">
                     <i class="fas fa-bars text-2xl"></i>
                 </button>
             </div>
@@ -175,11 +190,11 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t text-gray-800 absolute w-full left-0 top-20 shadow-xl">
             <div class="px-4 py-4 space-y-3">
-                <a href="index.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Home</a>
-                <a href="about.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">About Us</a>
-                <a href="catalog.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Products</a>
+                <a href="index.html" class="block px-4 py-2 rounded-lg text-blue-900 font-semibold">Home</a>
+                <a href="about.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900">About Us</a>
+                <a href="catalog.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900">Products</a>
                 <a href="blog.html" class="block px-4 py-2 rounded-lg bg-blue-500 text-white">Blog</a>
-                <a href="contact.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Contact</a>
+                <a href="contact.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900">Contact</a>
                 <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" 
                    class="block w-full bg-green-500 text-white px-4 py-2 rounded-lg text-center font-semibold" 
                    onclick="trackWhatsAppClick()">
@@ -189,12 +204,12 @@
         </div>
     </nav>
 
-    <!-- Hero Section - Optimized for Conversion -->
-    <div class="relative h-[600px] flex items-center justify-center text-white text-center px-4 overflow-hidden">
+    <!-- Hero Section - Optimized with Lighter Background -->
+    <div class="relative h-[600px] flex items-center justify-center text-center px-4 overflow-hidden">
         <div class="absolute inset-0 z-0">
             <img src="images/hero-bg.jpg" 
-                 onerror="this.src='hero-bg.jpg'; this.style.backgroundColor='#1e3a8a';" 
-                 class="w-full h-full object-cover opacity-60 bg-blue-900" 
+                 onerror="this.src='hero-bg.jpg'; this.style.backgroundColor='#f0f9ff';" 
+                 class="w-full h-full object-cover opacity-90" 
                  alt="Medical Manufacturing Facility">
             <div class="absolute inset-0 hero-gradient"></div>
         </div>
@@ -205,11 +220,11 @@
                  class="h-32 mx-auto mb-8 drop-shadow-lg" 
                  alt="V5 Medical LTD">
             
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 drop-shadow-md">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 text-blue-900 hero-text-shadow">
                 Factory Direct Medical Consumables<br>
-                <span class="text-3xl md:text-5xl text-blue-200">ISO & CE Certified</span>
+                <span class="text-3xl md:text-5xl text-blue-700">ISO & CE Certified</span>
             </h1>
-            <p class="text-xl md:text-2xl mb-8 text-blue-100 font-light">
+            <p class="text-xl md:text-2xl mb-8 text-gray-700 font-light hero-subtext-shadow">
                 Stop paying middleman fees. 20+ years exporting to 40+ countries.
             </p>
             
@@ -222,7 +237,7 @@
                 </a>
                 <a href="pdf/Catalog.pdf" 
                    target="_blank" rel="noopener noreferrer"
-                   class="bg-white text-blue-900 px-8 py-4 rounded-full text-lg font-bold shadow-lg transition hover:scale-105 hover:bg-gray-100"
+                   class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg transition hover:scale-105"
                    onclick="trackPDFDownload('Product Catalog')">
                     <i class="fas fa-download mr-2"></i> Download Catalog
                 </a>
@@ -645,11 +660,11 @@
             const navbar = document.getElementById('navbar');
             if (navbar) {
                 if (window.scrollY > 100) {
-                    navbar.classList.add('bg-blue-900');
-                    navbar.classList.remove('bg-blue-900/90');
+                    navbar.classList.add('shadow-lg');
+                    navbar.classList.remove('shadow-md');
                 } else {
-                    navbar.classList.add('bg-blue-900/90');
-                    navbar.classList.remove('bg-blue-900');
+                    navbar.classList.add('shadow-md');
+                    navbar.classList.remove('shadow-lg');
                 }
             }
         });
