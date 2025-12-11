@@ -3,105 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="V5 Medical LTD Privacy Policy - We are committed to protecting your privacy and personal information.">
-    <meta name="keywords" content="privacy policy, V5 Medical, medical supplier, data protection">
+    
+    <meta name="description" content="V5 Medical LTD Privacy Policy - We are committed to protecting your privacy and personal information. Learn how we handle your data.">
+    <meta name="keywords" content="privacy policy, V5 Medical, data protection, GDPR compliance, medical supplier privacy">
     <meta name="author" content="V5 Medical LTD">
     <meta name="robots" content="index, follow">
 
-    <meta property="og:title" content="V5 Medical LTD - Privacy Policy">
-    <meta property="og:description" content="V5 Medical LTD Privacy Policy - We are committed to protecting your privacy and personal information.">
+    <meta property="og:title" content="Privacy Policy - V5 Medical LTD">
+    <meta property="og:description" content="We are committed to protecting your privacy and personal information.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://v5md.com/privacy.html">
-    <meta property="og:image" content="https://v5md.com/v5medlogo.png">
+    <meta property="og:image" content="https://v5md.com/images/v5medlogo.png">
     <meta property="og:site_name" content="V5 Medical LTD">
 
     <link rel="canonical" href="https://v5md.com/privacy.html">
 
-    <title>V5 Medical LTD - Privacy Policy</title>
+    <title>Privacy Policy | V5 Medical LTD</title>
     
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="images/icons/favicon.ico">
       
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <link rel="stylesheet" href="css/style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#1e40af', secondary: '#3b82f6', accent: '#2563eb' },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
 
     <style>
-        .privacy-section {
-            margin-bottom: 2.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .privacy-heading {
-            color: #1e40af;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        
-        .privacy-subheading {
-            color: #1e3a8a;
-            font-weight: 600;
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
-        }
-        
-        .privacy-list {
-            list-style-type: disc;
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .privacy-list li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .policy-date {
-            background-color: #eff6ff;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
+        .privacy-section { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e5e7eb; }
+        .privacy-heading { color: #1e40af; font-weight: 700; margin-bottom: 1rem; }
+        .privacy-subheading { color: #1e3a8a; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .privacy-list { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
+        .privacy-list li { margin-bottom: 0.5rem; }
+        .policy-date { background-color: #eff6ff; padding: 1rem; border-radius: 0.5rem; margin-bottom: 2rem; text-align: center; }
+        /* Loader Fallback */
+        .page-loader { position: fixed; inset: 0; background: #1e40af; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
     </style>
 </head>
-<body class="smooth-scroll font-sans bg-gray-50">
 
-    <div class="page-loader"><div class="loader-spinner"></div></div>
+<body class="smooth-scroll font-sans bg-gray-50 text-gray-800">
 
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-blue-900/90">
+    <div id="loader" class="page-loader">
+        <i class="fas fa-circle-notch fa-spin text-white text-4xl"></i>
+    </div>
+
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-blue-900/90 text-white">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-20">
                 <a href="index.html" class="flex items-center gap-3">
-                    <img src="v5logo.png" alt="V5 Logo" class="h-12">
+                    <img src="images/v5logo.png" onerror="this.src='v5logo.png'" class="h-10 w-auto" alt="Logo">
                     <div>
-                        <div class="font-bold text-xl text-white" id="nav-title">V5 Medical</div>
-                        <div class="text-xs text-blue-100" id="nav-subtitle">Global Supplier</div>
+                        <div class="font-bold text-xl leading-none">V5 Medical</div>
+                        <div class="text-xs text-blue-200">Global Supplier</div>
                     </div>
                 </a>
-                <div class="hidden md:flex gap-8">
-                    <a href="index.html" class="nav-link text-blue-100 hover:text-white">Home</a>
-                    <a href="about.html" class="nav-link text-blue-100 hover:text-white">About Us</a>
-                    <a href="catalog.html" class="nav-link text-blue-100 hover:text-white">Products</a>
-                    <a href="blog.html" class="nav-link text-blue-100 hover:text-white">Blog</a>
-                    <a href="contact.html" class="nav-link text-blue-100 hover:text-white">Contact</a>
+
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="index.html" class="font-semibold hover:text-blue-200 transition">Home</a>
+                    <a href="about.html" class="font-semibold hover:text-blue-200 transition">About Us</a>
+                    <a href="catalog.html" class="font-semibold hover:text-blue-200 transition">Products</a>
+                    <a href="blog.html" class="font-semibold hover:text-blue-200 transition">Blog</a>
+                    <a href="contact.html" class="font-semibold hover:text-blue-200 transition">Contact</a>
+                    <a href="privacy.html" class="font-semibold text-white border-b-2 border-white transition">Privacy</a>
                 </div>
-                
-                <button id="mobile-menu-btn" class="md:hidden text-white">
-                    <i class="fas fa-bars text-2xl"></i>
-                </button>
+
+                <button id="mobile-menu-btn" class="md:hidden text-white"><i class="fas fa-bars text-2xl"></i></button>
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+        <div id="mobile-menu" class="hidden md:hidden bg-white text-gray-800 border-t absolute w-full shadow-xl">
             <div class="px-4 py-4 space-y-3">
-                <a href="index.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Home</a>
-                <a href="about.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">About Us</a>
-                <a href="catalog.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Products</a>
-                <a href="blog.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Blog</a>
-                <a href="contact.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Contact</a>
+                <a href="index.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50">Home</a>
+                <a href="about.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50">About Us</a>
+                <a href="catalog.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50">Products</a>
+                <a href="blog.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50">Blog</a>
+                <a href="contact.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50">Contact</a>
+                <a href="privacy.html" class="block px-4 py-2 rounded-lg bg-blue-50 text-blue-600 font-bold">Privacy Policy</a>
             </div>
         </div>
     </nav>
@@ -109,7 +96,7 @@
     <section class="pt-32 pb-20 px-4">
         <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8 md:p-12">
             <div class="text-center mb-12">
-                <img src="v5medlogo.png" alt="V5 Medical LTD Logo" class="h-24 mx-auto mb-6">
+                <img src="images/v5medlogo.png" onerror="this.style.display='none'" class="h-24 mx-auto mb-6" alt="V5 Medical LTD">
                 <h1 class="text-4xl font-bold text-gray-900 mb-4">Privacy Policy</h1>
                 <div class="policy-date">
                     <p class="text-blue-900 font-semibold">Last Updated: January 1, 2024</p>
@@ -134,23 +121,40 @@
                 </p>
                 <h3 class="text-xl privacy-subheading">2.1 Information You Provide to Us</h3>
                 <ul class="privacy-list text-gray-700">
-                    <li>Contact information, such as your name, company name, email address, phone number, and postal address</li>
-                    <li>Business information, such as your job title, company details, and industry</li>
-                    <li>Communication preferences and interests</li>
-                    <li>Information provided through our contact forms, inquiries, or other communications with us</li>
+                    <li>Contact information, such as your name, company name, email address, phone number, and postal address.</li>
+                    <li>Business information, such as your job title, company details, and industry.</li>
+                    <li>Communication preferences and interests.</li>
+                    <li>Information provided through our contact forms, inquiries, or other communications with us.</li>
                 </ul>
 
                 <h3 class="text-xl privacy-subheading">2.2 Information Collected Automatically</h3>
                 <ul class="privacy-list text-gray-700">
-                    <li>Website usage information, such as pages visited, time spent on pages, and navigation patterns</li>
-                    <li>Device information, such as IP address, browser type, operating system, and device identifiers</li>
-                    <li>Referral source and search terms used to find our website</li>
-                    <li>Information collected through cookies and similar technologies (see Section 6 for more details)</li>
+                    <li>Website usage information, such as pages visited, time spent on pages, and navigation patterns.</li>
+                    <li>Device information, such as IP address, browser type, operating system, and device identifiers.</li>
+                    <li>Information collected through cookies and similar technologies.</li>
                 </ul>
             </div>
 
             <div class="privacy-section">
-                <h2 class="text-2xl privacy-heading">11. Contact Us</h2>
+                <h2 class="text-2xl privacy-heading">3. How We Use Your Information</h2>
+                <ul class="privacy-list text-gray-700">
+                    <li>To provide and improve our products and services.</li>
+                    <li>To respond to your inquiries, requests, and provide customer support.</li>
+                    <li>To process orders, quotations, and business transactions.</li>
+                    <li>To analyze website usage and improve our website design and functionality.</li>
+                    <li>To comply with legal obligations and protect our legitimate business interests.</li>
+                </ul>
+            </div>
+
+            <div class="privacy-section">
+                <h2 class="text-2xl privacy-heading">4. Data Security</h2>
+                <p class="text-gray-700">
+                    We take reasonable technical, administrative, and physical measures to protect your personal information from unauthorized access, use, disclosure, alteration, or destruction. However, no method of transmission over the internet is 100% secure.
+                </p>
+            </div>
+
+            <div class="privacy-section">
+                <h2 class="text-2xl privacy-heading">5. Contact Us</h2>
                 <p class="text-gray-700 mb-4">
                     If you have any questions or concerns about this Privacy Policy or our privacy practices, please contact us:
                 </p>
@@ -198,23 +202,102 @@
     </section>
 
     <footer class="bg-gray-900 text-white py-12 px-4">
-        <div class="max-w-7xl mx-auto text-center">
-            <p>&copy; 2024 V5 Medical LTD. All rights reserved.</p>
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-8 mb-12">
+                <div class="md:col-span-3">
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="images/v5logo.png" onerror="this.src='v5logo.png'" class="h-10 w-auto" alt="Logo">
+                        <span class="text-xl font-bold">V5 Medical LTD</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Professional Global Medical Consumables Supplier</p>
+                    <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
+                </div>
+                
+                <div class="hidden md:block md:col-span-1"></div>
+
+                <div class="md:col-span-2">
+                    <h4 class="font-bold mb-4 text-lg text-white">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="index.html" class="hover:text-white transition">Home</a></li>
+                        <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="catalog.html" class="hover:text-white transition">Products</a></li>
+                        <li><a href="blog.html" class="hover:text-white transition">Blog & News</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
+                        <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="md:col-span-3 pl-0 md:pl-4">
+                    <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
+                    <div class="space-y-3 text-sm text-gray-400">
+                        <p><i class="fab fa-whatsapp text-green-500 w-5"></i> +44 078 9504 7944 (UK)</p>
+                        <p><i class="fab fa-whatsapp text-green-500 w-5"></i> +86 180 1266 9897 (Backup)</p>
+                        <p><i class="fas fa-envelope text-blue-400 w-5"></i> sales@v5md.com</p>
+                        <p><i class="fab fa-google text-red-400 w-5"></i> v5md.com@gmail.com</p>
+                        <p><i class="fas fa-map-marker-alt mt-1 w-5"></i> Jiangsu, China</p>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-3 pl-0 md:pl-4">
+                    <h4 class="font-bold mb-4 text-lg text-white">Downloads & Social</h4>
+                    <div class="space-y-2 mb-8 text-sm">
+                        <a href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Product Catalog</a>
+                        <a href="https://files.v5md.com/dental-kit.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Dental Kit</a>
+                        <a href="https://files.v5md.com/price-list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Price List</a>
+                    </div>
+                    
+                    <div class="flex gap-3 flex-wrap">
+                        <a href="https://www.tiktok.com/@v5med" target="_blank" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-black transition text-white"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.facebook.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 rounded-full flex items-center justify-center transition text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="https://linkedin.com/company/v5med" target="_blank" class="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 transition text-white"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://x.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.youtube.com/@v5med" target="_blank" class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 mt-8">
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-white mb-4">Ready for Your Next Order?</p>
+                    <div class="flex flex-wrap justify-center gap-6 items-center text-blue-200 text-sm md:text-base">
+                        <span class="flex items-center gap-2"><i class="fas fa-globe-americas text-blue-500"></i> We deliver to 40+ countries</span>
+                        <span class="hidden md:inline text-gray-600">|</span>
+                        <span class="flex items-center gap-2"><i class="fas fa-certificate text-green-500"></i> ISO/CE/FDA Certified</span>
+                        <span class="hidden md:inline text-gray-600">|</span>
+                        <span class="flex items-center gap-2"><i class="fas fa-shipping-fast text-yellow-500"></i> Fast Shipping</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-8 text-sm text-gray-500">
+                <p>© 2024 V5 Medical LTD. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
-    <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" class="whatsapp-float">
-        <i class="fab fa-whatsapp text-2xl"></i>
-        <span>Chat with us</span>
-    </a>
-    
-    <button id="back-to-top" class="back-to-top" aria-label="Back to top">
-        <i class="fas fa-arrow-up text-xl"></i>
-    </button>
-
-    <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
-
     <script src="js/main.js"></script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const loader = document.getElementById('loader');
+            if(loader) {
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 500);
+                }, 100);
+            }
+        });
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            if(loader) loader.style.display = 'none';
+        }, 2000);
+    </script>
+    
+    <div id="google_translate_element" class="fixed top-4 right-4 z-50 bg-white/90 backdrop-blur-sm shadow-lg rounded-full px-4 py-2 flex items-center gap-2 border border-blue-100 hover:shadow-xl transition-all duration-300 group">
+        <i class="fas fa-globe text-blue-600 text-lg group-hover:rotate-180 transition-transform duration-500"></i>
+        <div id="google_translate_element" class="h-6 overflow-hidden flex items-center"></div>
+    </div>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
