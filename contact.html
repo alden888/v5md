@@ -33,7 +33,12 @@
                     colors: {
                         primary: '#1e40af',
                         secondary: '#3b82f6',
-                        accent: '#2563eb'
+                        accent: '#2563eb',
+                        usd: '#22c55e',
+                        eur: '#3b82f6',
+                        gbp: '#ef4444',
+                        try: '#f59e0b',
+                        hkd: '#8b5cf6'
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif']
@@ -45,6 +50,95 @@
 
     <style>
         .page-loader { position: fixed; inset: 0; background: #1e40af; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
+        
+        /* Payment section styling */
+        .payment-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .currency-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .currency-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .currency-card:hover::before {
+            left: 100%;
+        }
+        
+        .currency-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .security-note {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .security-note::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .payment-button {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .payment-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .payment-button:hover::before {
+            left: 100%;
+        }
+        
+        .payment-button:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.3);
+        }
+        
+        .currency-symbol {
+            font-size: 3rem;
+            font-weight: bold;
+            line-height: 1;
+        }
     </style>
 </head>
 
@@ -58,7 +152,7 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-20">
                 <a href="index.html" class="flex items-center gap-3">
-                    <img src="images/v5logo.png" 
+                    <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png" 
                          onerror="this.src='v5logo.png'; this.onerror=null;" 
                          class="h-12 w-auto" 
                          alt="V5 Medical Logo">
@@ -196,6 +290,95 @@
         </div>
     </section>
 
+    <!-- Added Payment Methods Section -->
+    <section class="py-16 px-4 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="payment-section p-10 rounded-3xl">
+                <div class="text-center mb-10">
+                    <h3 class="text-3xl font-bold text-blue-900 mb-4">Secure & Cost-Effective Payment Options</h3>
+                    <p class="text-gray-600 max-w-3xl mx-auto text-lg">
+                        To support our global partners and minimize your transaction costs, we accept local bank transfers in multiple currencies. 
+                        You can pay directly in your local currency without incurring high international SWIFT fees.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-5 gap-6 mb-10">
+                    <!-- USD -->
+                    <div class="currency-card bg-gradient-to-br from-usd/5 to-usd/10 rounded-xl p-6 text-center border border-usd/20">
+                        <div class="currency-symbol text-usd mb-3">$</div>
+                        <h4 class="text-xl font-bold text-gray-900 mb-2">USD</h4>
+                        <p class="text-sm text-gray-600 mb-3">United States Dollar</p>
+                        <div class="text-xs text-usd font-semibold bg-usd/10 px-3 py-1 rounded-full">
+                            ACH / Wire Transfer
+                        </div>
+                    </div>
+
+                    <!-- EUR -->
+                    <div class="currency-card bg-gradient-to-br from-eur/5 to-eur/10 rounded-xl p-6 text-center border border-eur/20">
+                        <div class="currency-symbol text-eur mb-3">€</div>
+                        <h4 class="text-xl font-bold text-gray-900 mb-2">EUR</h4>
+                        <p class="text-sm text-gray-600 mb-3">Euro</p>
+                        <div class="text-xs text-eur font-semibold bg-eur/10 px-3 py-1 rounded-full">
+                            SEPA Transfer
+                        </div>
+                    </div>
+
+                    <!-- GBP -->
+                    <div class="currency-card bg-gradient-to-br from-gbp/5 to-gbp/10 rounded-xl p-6 text-center border border-gbp/20">
+                        <div class="currency-symbol text-gbp mb-3">£</div>
+                        <h4 class="text-xl font-bold text-gray-900 mb-2">GBP</h4>
+                        <p class="text-sm text-gray-600 mb-3">British Pound</p>
+                        <div class="text-xs text-gbp font-semibold bg-gbp/10 px-3 py-1 rounded-full">
+                            UK Local Transfer
+                        </div>
+                    </div>
+
+                    <!-- TRY -->
+                    <div class="currency-card bg-gradient-to-br from-try/5 to-try/10 rounded-xl p-6 text-center border border-try/20">
+                        <div class="currency-symbol text-try mb-3">₺</div>
+                        <h4 class="text-xl font-bold text-gray-900 mb-2">TRY</h4>
+                        <p class="text-sm text-gray-600 mb-3">Turkish Lira</p>
+                        <div class="text-xs text-try font-semibold bg-try/10 px-3 py-1 rounded-full">
+                            Turkish Transfer
+                        </div>
+                    </div>
+
+                    <!-- HKD -->
+                    <div class="currency-card bg-gradient-to-br from-hkd/5 to-hkd/10 rounded-xl p-6 text-center border border-hkd/20">
+                        <div class="currency-symbol text-hkd mb-3">HK$</div>
+                        <h4 class="text-xl font-bold text-gray-900 mb-2">HKD</h4>
+                        <p class="text-sm text-gray-600 mb-3">Hong Kong Dollar</p>
+                        <div class="text-xs text-hkd font-semibold bg-hkd/10 px-3 py-1 rounded-full">
+                            HK Local Transfer
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-note rounded-xl p-8 text-white mb-10">
+                    <div class="flex items-start gap-6">
+                        <i class="fas fa-shield-alt text-3xl mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-xl mb-3">Important Security Note</h4>
+                            <p class="text-white/90 text-lg">
+                                To ensure fund security, please only make payments to the bank account details listed on our official Proforma Invoice (PI). 
+                                We do not publish sensitive banking information online to prevent fraud.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <a href="https://wa.me/447895047944?text=I'd like to request a quote and Proforma Invoice" 
+                       target="_blank" rel="noopener noreferrer"
+                       class="payment-button text-white px-12 py-5 rounded-xl font-bold text-lg inline-flex items-center gap-3">
+                        <i class="fas fa-file-invoice-dollar mr-2"></i>
+                        Request a Quote & PI
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="py-16 bg-blue-50 border-t border-blue-100">
         <div class="max-w-7xl mx-auto px-4">
             <h2 class="text-3xl font-bold text-center text-blue-900 mb-12">Cooperation Process</h2>
@@ -235,7 +418,7 @@
                 
                 <div class="md:col-span-3">
                     <div class="flex items-center gap-2 mb-4">
-                        <img src="images/v5logo.png" 
+                        <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png" 
                              onerror="this.src='v5logo.png'; this.onerror=null;" 
                              class="h-10 w-auto" 
                              alt="Logo">
@@ -356,5 +539,3 @@
 
 </body>
 </html>
-
-
