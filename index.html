@@ -262,6 +262,30 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
+        
+        /* Hero button container styling */
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        /* Responsive button sizing */
+        @media (max-width: 768px) {
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .hero-buttons a {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 
@@ -341,33 +365,23 @@
                 Stop paying middleman fees. 20+ years exporting to 40+ countries with ISO 13485, CE, and FDA certifications.
             </p>
             
-            <!-- 主要操作按钮 -->
-            <div class="flex flex-wrap gap-4 justify-center mb-8">
-                <a href="https://wa.me/447895047944?text=I'm interested in your medical products" 
-                   target="_blank" rel="noopener noreferrer"
-                   class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg transition hover:scale-105 hover:shadow-2xl animate-pulse-scale"
-                   onclick="trackWhatsAppClick()">
-                    <i class="fas fa-comments mr-2"></i> Chat Now
-                </a>
+            <!-- 下载链接 - 三个按钮放在一排 -->
+            <div class="hero-buttons">
                 <a href="pdf/Catalog.pdf" 
                    target="_blank" rel="noopener noreferrer"
-                   class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg transition hover:scale-105"
+                   class="download-btn bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg transition hover:scale-105 animate-pulse-scale"
                    onclick="trackPDFDownload('Product Catalog')">
                     <i class="fas fa-download mr-2"></i> Download Catalog
                 </a>
-            </div>
-            
-            <!-- 额外下载链接 - 放在主要按钮下方 -->
-            <div class="flex flex-wrap gap-4 justify-center">
                 <a href="pdf/Quotations for dental products.pdf" 
                    target="_blank" rel="noopener noreferrer"
-                   class="download-btn bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg text-md font-semibold shadow-md"
+                   class="download-btn bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg transition hover:scale-105"
                    onclick="trackPDFDownload('Dental Kit')">
                     <i class="fas fa-file-pdf mr-2"></i> Dental Kit
                 </a>
                 <a href="pdf/price list.pdf" 
                    target="_blank" rel="noopener noreferrer"
-                   class="download-btn bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg text-md font-semibold shadow-md"
+                   class="download-btn bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg transition hover:scale-105"
                    onclick="trackPDFDownload('Price List')">
                     <i class="fas fa-file-pdf mr-2"></i> Price List
                 </a>
