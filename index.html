@@ -4,24 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="V5 Medical LTD - Factory Direct Medical Consumables. ISO/CE/FDA certified surgical sutures, packs, injection solutions. 20+ years exporting to 40+ countries.">
-    <meta name="keywords" content="medical consumables, surgical sutures, medical devices, surgical packs, medical supplier, ISO certified">
+    <!-- SEO Meta Tags - Optimized for Search Engines -->
+    <meta name="description" content="V5 Medical LTD - Factory Direct Medical Consumables Supplier. ISO/CE/FDA certified surgical sutures, packs, injection solutions. 20+ years exporting to 40+ countries.">
+    <meta name="keywords" content="medical consumables, surgical sutures, medical devices, surgical packs, medical supplier, ISO certified, CE certified, FDA registered, factory direct medical supplies">
     <meta name="author" content="V5 Medical LTD">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="googlebot" content="index, follow">
 
-    <!-- Open Graph Meta Tags -->
+    <!-- Open Graph Meta Tags - Enhanced for Social Sharing -->
     <meta property="og:title" content="V5 Medical LTD - Global Medical Consumables Supplier">
-    <meta property="og:description" content="ISO/CE/FDA certified medical devices including surgical sutures, surgical packs, injection solutions.">
+    <meta property="og:description" content="ISO/CE/FDA certified medical devices including surgical sutures, surgical packs, injection solutions. Factory direct pricing with 20+ years of exporting experience.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://v5md.com">
     <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png">
     <meta property="og:site_name" content="V5 Medical LTD">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:updated_time" content="2024-01-01T00:00:00+00:00">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="V5 Medical LTD - Global Medical Consumables Supplier">
+    <meta name="twitter:description" content="ISO/CE/FDA certified medical devices including surgical sutures, surgical packs, injection solutions. Factory direct pricing with 20+ years of exporting experience.">
+    <meta name="twitter:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png">
+    <meta name="twitter:site" content="@v5med">
 
     <link rel="canonical" href="https://v5md.com">
 
-    <title>V5 Medical LTD - Global Medical Consumables Supplier</title>
+    <!-- Schema.org Structured Data - Added for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalOrganization",
+      "name": "V5 Medical LTD",
+      "url": "https://v5md.com",
+      "logo": "https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+44-078-9504-7944",
+        "contactType": "customer service",
+        "availableLanguage": ["English", "Chinese"]
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "No. 168, Luying Road",
+        "addressLocality": "Kunshan",
+        "addressRegion": "Jiangsu",
+        "postalCode": "215300",
+        "addressCountry": "CN"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "V5 Medical Product Catalog",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "Surgical Sutures",
+            "url": "https://v5md.com/catalog.html#sutures"
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Surgical Packs",
+            "url": "https://v5md.com/catalog.html#packs"
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Injection & Infusion",
+            "url": "https://v5md.com/catalog.html#injection"
+          }
+        ]
+      },
+      "makesOffer": {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "MedicalDevice",
+          "name": "Medical Consumables",
+          "description": "ISO/CE/FDA certified medical devices including surgical sutures, surgical packs, injection solutions"
+        },
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "priceType": "factory price"
+        }
+      }
+    }
+    </script>
+
+    <title>V5 Medical LTD - Global Medical Consumables Supplier | ISO/CE/FDA Certified</title>
     
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
     <link rel="shortcut icon" type="image/x-icon" href="images/icons/favicon.ico">
@@ -79,6 +146,13 @@
             gtag('event', 'email_click', { 
                 event_category: 'Lead Generation',
                 event_label: 'Email Link Click'
+            });
+        }
+        
+        function trackProductClick(productName) {
+            gtag('event', 'product_click', { 
+                event_category: 'Product Interest',
+                event_label: 'Product Click: ' + productName
             });
         }
     </script>
@@ -147,6 +221,46 @@
         
         .hero-subtext-shadow {
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Testimonial styling */
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* FAQ styling */
+        .faq-question {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            color: #1e40af;
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-answer.show {
+            max-height: 500px;
+        }
+        
+        /* Download button styling */
+        .download-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -224,10 +338,11 @@
                 <span class="text-3xl md:text-5xl text-blue-700">ISO & CE Certified</span>
             </h1>
             <p class="text-xl md:text-2xl mb-8 text-gray-700 font-light hero-subtext-shadow">
-                Stop paying middleman fees. 20+ years exporting to 40+ countries.
+                Stop paying middleman fees. 20+ years exporting to 40+ countries with ISO 13485, CE, and FDA certifications.
             </p>
             
-            <div class="flex flex-wrap gap-4 justify-center">
+            <!-- 主要操作按钮 -->
+            <div class="flex flex-wrap gap-4 justify-center mb-8">
                 <a href="https://wa.me/447895047944?text=I'm interested in your medical products" 
                    target="_blank" rel="noopener noreferrer"
                    class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg transition hover:scale-105 hover:shadow-2xl animate-pulse-scale"
@@ -239,6 +354,22 @@
                    class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg transition hover:scale-105"
                    onclick="trackPDFDownload('Product Catalog')">
                     <i class="fas fa-download mr-2"></i> Download Catalog
+                </a>
+            </div>
+            
+            <!-- 额外下载链接 - 放在主要按钮下方 -->
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="pdf/Quotations for dental products.pdf" 
+                   target="_blank" rel="noopener noreferrer"
+                   class="download-btn bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg text-md font-semibold shadow-md"
+                   onclick="trackPDFDownload('Dental Kit')">
+                    <i class="fas fa-file-pdf mr-2"></i> Dental Kit
+                </a>
+                <a href="pdf/price list.pdf" 
+                   target="_blank" rel="noopener noreferrer"
+                   class="download-btn bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg text-md font-semibold shadow-md"
+                   onclick="trackPDFDownload('Price List')">
+                    <i class="fas fa-file-pdf mr-2"></i> Price List
                 </a>
             </div>
         </div>
@@ -264,55 +395,66 @@
                     <div class="text-3xl font-bold text-orange-600 mb-1">10K+</div>
                     <div class="text-sm text-gray-600">Happy Customers</div>
                 </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-red-600 mb-1">500+</div>
+                    <div class="text-sm text-gray-600">Product Specifications</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Factory Showcase - Added for Credibility -->
+    <!-- Company Introduction - Added for Content Richness -->
     <section class="py-16 px-4 bg-gray-50">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Manufacturing Facility</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-                    State-of-the-art production lines ensuring consistent quality and compliance with international standards.
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Why Choose V5 Medical?</h2>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        V5 Medical LTD is a professional global supplier of high-quality medical consumables with over 20 years of experience in the industry. We are committed to providing factory-direct pricing without middleman markups, ensuring our customers get the best value for their investment.
+                    </p>
+                    <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                        Our strategic partnerships with leading manufacturers in Shandong, Suqian, and Shenzhen allow us to offer a comprehensive range of medical products that meet international quality standards. All our products are ISO 13485 certified, CE marked, and FDA registered.
+                    </p>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-check text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Factory Direct Pricing</h3>
+                                <p class="text-gray-600 text-sm">Eliminate middleman costs with our direct manufacturing relationships</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-check text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Quality Assurance</h3>
+                                <p class="text-gray-600 text-sm">ISO 13485, CE, and FDA certifications ensure product safety and reliability</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-check text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Global Logistics</h3>
+                                <p class="text-gray-600 text-sm">Fast delivery to 40+ countries with reliable shipping partners</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="about.html" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                        Learn More About Us <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
                 <div class="rounded-xl overflow-hidden shadow-xl">
                     <img src="images/products/SURGICAL SUTURE KIT.jpg" 
                          onerror="this.src='https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'; this.onerror=null;" 
-                         class="w-full h-80 object-cover" 
+                         class="w-full h-auto" 
                          alt="V5 Medical Manufacturing Facility">
-                </div>
-                <div class="space-y-6">
-                    <div class="flex items-start gap-4">
-                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-industry text-2xl text-blue-600"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-semibold mb-2">Advanced Production Lines</h3>
-                            <p class="text-gray-600">Automated manufacturing processes with strict quality control at every stage.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-certificate text-2xl text-green-600"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-semibold mb-2">ISO Certified</h3>
-                            <p class="text-gray-600">Compliant with international medical device quality management standards.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-ship text-2xl text-purple-600"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-semibold mb-2">Global Logistics</h3>
-                            <p class="text-gray-600">Fast delivery to 40+ countries with reliable shipping partners.</p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -322,7 +464,7 @@
     <section class="py-20 px-4">
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-4xl font-bold mb-4 text-gray-900">Core Product Lines</h2>
-            <p class="text-gray-600 mb-12 text-lg">Factory direct prices for surgical, injection, and dental solutions.</p>
+            <p class="text-gray-600 mb-12 text-lg">Factory direct prices for surgical, injection, and dental solutions. All products are ISO 13485 certified and meet international quality standards.</p>
             
             <div class="grid md:grid-cols-3 gap-8 mb-12">
                 <!-- Product 1: Surgical Sutures -->
@@ -333,11 +475,12 @@
                             <i class="fas fa-cut text-3xl text-blue-600"></i>
                         </div>
                         <h3 class="text-2xl font-bold mb-3">Surgical Sutures</h3>
-                        <p class="text-gray-600 mb-6">Absorbable (PGA, PDO) & Non-absorbable sutures. Factory direct pricing.</p>
+                        <p class="text-gray-600 mb-6">Absorbable (PGA, PDO) & Non-absorbable sutures with excellent tensile strength and absorption properties. Available in various sizes and needle configurations.</p>
                         
                         <div class="flex gap-2 justify-center">
-                            <a href="product-detail.html" 
-                               class="flex-1 bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-100 transition">
+                            <a href="product-detail.html?product=pga-suture" 
+                               class="flex-1 bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-100 transition"
+                               onclick="trackProductClick('PGA Suture')">
                                 View Specs
                             </a>
                             <a href="https://wa.me/447895047944?text=I'm interested in Surgical Sutures - factory price" 
@@ -358,11 +501,12 @@
                             <i class="fas fa-box-open text-3xl text-green-600"></i>
                         </div>
                         <h3 class="text-2xl font-bold mb-3">Surgical Packs</h3>
-                        <p class="text-gray-600 mb-6">Sterile Universal, Delivery, Orthopedic packs. Custom solutions available.</p>
+                        <p class="text-gray-600 mb-6">Sterile Universal, Delivery, Orthopedic packs with customized configurations. Made from high-quality SMS material with AAMI Level 3 protection.</p>
                         
                         <div class="flex gap-2 justify-center">
-                            <a href="catalog.html" 
-                               class="flex-1 bg-green-50 text-green-600 px-4 py-2 rounded-lg font-semibold hover:bg-green-100 transition">
+                            <a href="catalog.html#surgical-packs" 
+                               class="flex-1 bg-green-50 text-green-600 px-4 py-2 rounded-lg font-semibold hover:bg-green-100 transition"
+                               onclick="trackProductClick('Surgical Packs')">
                                 View Catalog
                             </a>
                             <a href="https://wa.me/447895047944?text=I'm interested in Surgical Packs - custom quote" 
@@ -383,11 +527,12 @@
                             <i class="fas fa-syringe text-3xl text-purple-600"></i>
                         </div>
                         <h3 class="text-2xl font-bold mb-3">Injection & Infusion</h3>
-                        <p class="text-gray-600 mb-6">Disposable syringes, needles, infusion sets. Bulk pricing available.</p>
+                        <p class="text-gray-600 mb-6">Disposable syringes, needles, infusion sets with luer lock/slip options. Available in 1ml-60ml capacities with sterile packaging.</p>
                         
                         <div class="flex gap-2 justify-center">
-                            <a href="catalog.html" 
-                               class="flex-1 bg-purple-50 text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-purple-100 transition">
+                            <a href="catalog.html#syringes" 
+                               class="flex-1 bg-purple-50 text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-purple-100 transition"
+                               onclick="trackProductClick('Syringes')">
                                 View Details
                             </a>
                             <a href="https://wa.me/447895047944?text=I'm interested in Injection products - bulk price" 
@@ -414,7 +559,7 @@
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-gray-900 mb-4">International Certifications</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Our products meet the highest international standards for quality and safety.
+                    Our products meet the highest international standards for quality and safety, ensuring compliance with global regulatory requirements.
                 </p>
             </div>
             
@@ -428,7 +573,7 @@
                              alt="ISO 13485 Certification">
                     </div>
                     <h3 class="text-2xl font-bold mb-3 text-gray-900">ISO 13485</h3>
-                    <p class="text-gray-600 mb-4">Medical Device Quality Management System</p>
+                    <p class="text-gray-600 mb-4">Medical Device Quality Management System certification ensures our manufacturing processes meet international standards for medical devices.</p>
                     <div class="flex items-center text-blue-600">
                         <i class="fas fa-check-circle mr-2"></i>
                         <span class="text-sm font-semibold">2016 Standard</span>
@@ -444,7 +589,7 @@
                              alt="CE Mark Certification">
                     </div>
                     <h3 class="text-2xl font-bold mb-3 text-gray-900">CE Mark</h3>
-                    <p class="text-gray-600 mb-4">European Conformity for Medical Devices</p>
+                    <p class="text-gray-600 mb-4">European Conformity marking indicates our products comply with EU Directive 93/42/EEC for medical devices.</p>
                     <div class="flex items-center text-blue-600">
                         <i class="fas fa-check-circle mr-2"></i>
                         <span class="text-sm font-semibold">EU Directive 93/42/EEC</span>
@@ -460,7 +605,7 @@
                              alt="FDA Registration">
                     </div>
                     <h3 class="text-2xl font-bold mb-3 text-gray-900">FDA Registered</h3>
-                    <p class="text-gray-600 mb-4">US Food and Drug Administration</p>
+                    <p class="text-gray-600 mb-4">US Food and Drug Administration registration allows us to supply medical devices to the American market.</p>
                     <div class="flex items-center text-blue-600">
                         <i class="fas fa-check-circle mr-2"></i>
                         <span class="text-sm font-semibold">Medical Device Listing</span>
@@ -470,12 +615,288 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Testimonials Section - Added for Social Proof -->
+    <section class="py-16 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">What Our Customers Say</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Hear from healthcare professionals and distributors who trust V5 Medical for their medical supply needs.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md testimonial-card">
+                    <div class="flex items-center mb-6">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">
+                        "V5 Medical has been our reliable supplier for over 5 years. Their surgical sutures are of excellent quality and their customer service is exceptional. The factory direct pricing has helped us reduce costs significantly."
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
+                            DR
+                        </div>
+                        <div class="ml-4">
+                            <div class="font-semibold text-gray-900">Dr. Michael Johnson</div>
+                            <div class="text-sm text-gray-600">Hospital Director, UK</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md testimonial-card">
+                    <div class="flex items-center mb-6">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">
+                        "The surgical packs from V5 Medical are exactly what we needed. They are sterile, well-organized, and the customization options are perfect for our specific requirements. Delivery is always on time."
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold">
+                            MS
+                        </div>
+                        <div class="ml-4">
+                            <div class="font-semibold text-gray-900">Maria Sanchez</div>
+                            <div class="text-sm text-gray-600">Surgical Nurse, Spain</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md testimonial-card">
+                    <div class="flex items-center mb-6">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">
+                        "As a medical distributor, we appreciate V5 Medical's reliability and consistent quality. Their ISO certifications give us confidence in the products we supply to our customers across Africa."
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold">
+                            AK
+                        </div>
+                        <div class="ml-4">
+                            <div class="font-semibold text-gray-900">Adeolu Kalu</div>
+                            <div class="text-sm text-gray-600">Medical Distributor, Nigeria</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section - Added for Content Richness -->
+    <section class="py-16 px-4 bg-gray-50">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+                <p class="text-lg text-gray-600">
+                    Find answers to common questions about our products and services.
+                </p>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- FAQ Item 1 -->
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="faq-question flex justify-between items-center" onclick="toggleFaq(1)">
+                        <h3 class="text-xl font-semibold text-gray-900">What certifications do your products have?</h3>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform" id="faq-icon-1"></i>
+                    </div>
+                    <div class="faq-answer mt-4 text-gray-600" id="faq-answer-1">
+                        <p>All our products are ISO 13485 certified, CE marked, and FDA registered. This ensures they meet international quality standards for medical devices and can be used in healthcare facilities worldwide.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="faq-question flex justify-between items-center" onclick="toggleFaq(2)">
+                        <h3 class="text-xl font-semibold text-gray-900">What is your minimum order quantity?</h3>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform" id="faq-icon-2"></i>
+                    </div>
+                    <div class="faq-answer mt-4 text-gray-600" id="faq-answer-2">
+                        <p>Our minimum order quantity varies by product category. For most items, we accept orders starting from 1 carton. For custom surgical packs or large-volume orders, please contact us for specific MOQ requirements.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="faq-question flex justify-between items-center" onclick="toggleFaq(3)">
+                        <h3 class="text-xl font-semibold text-gray-900">How long does delivery take?</h3>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform" id="faq-icon-3"></i>
+                    </div>
+                    <div class="faq-answer mt-4 text-gray-600" id="faq-answer-3">
+                        <p>Standard delivery time is 7-14 days for stock items. For custom orders or large quantities, delivery time may be 2-4 weeks. We work with reliable shipping partners to ensure fast and secure delivery to 40+ countries.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="faq-question flex justify-between items-center" onclick="toggleFaq(4)">
+                        <h3 class="text-xl font-semibold text-gray-900">Do you provide samples?</h3>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform" id="faq-icon-4"></i>
+                    </div>
+                    <div class="faq-answer mt-4 text-gray-600" id="faq-answer-4">
+                        <p>Yes, we provide samples for quality evaluation. Sample costs and shipping fees apply, which can be deducted from your first order. Contact our sales team to request samples of specific products.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="faq-question flex justify-between items-center" onclick="toggleFaq(5)">
+                        <h3 class="text-xl font-semibold text-gray-900">What payment methods do you accept?</h3>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform" id="faq-icon-5"></i>
+                    </div>
+                    <div class="faq-answer mt-4 text-gray-600" id="faq-answer-5">
+                        <p>We accept T/T (bank transfer), L/C (letter of credit), and other secure payment methods. For new customers, we typically require a 30% deposit with the balance due before shipment. We also offer secure local bank transfers in multiple currencies to minimize transaction costs.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <p class="text-gray-600 mb-4">Have more questions?</p>
+                <a href="contact.html" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                    Contact Our Support Team <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Preview Section - Added for Content Freshness -->
+    <section class="py-16 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Latest Medical Insights</h2>
+                <p class="text-lg text-gray-600">
+                    Stay updated with the latest news and insights from the medical industry.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Blog Post 1 -->
+                <article class="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition">
+                    <img src="https://images.unsplash.com/photo-1584634731339-252c581abfc5?w=600" 
+                         alt="Medical industry trends" 
+                         class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span class="flex items-center gap-2"><i class="fas fa-calendar-alt"></i> January 15, 2024</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">
+                            <a href="blog.html#medical-trends-2024" class="hover:text-blue-600 transition">
+                                Medical Device Trends in 2024: What to Expect
+                            </a>
+                        </h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">
+                            The medical device industry is constantly evolving with new technologies and regulatory changes. In this article, we explore the key trends that will shape the industry in 2024...
+                        </p>
+                        <a href="blog.html#medical-trends-2024" class="text-blue-600 font-semibold hover:underline flex items-center gap-2">
+                            Read More <i class="fas fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                </article>
+                
+                <!-- Blog Post 2 -->
+                <article class="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition">
+                    <img src="https://images.unsplash.com/photo-1582003492749-3d5d85b8e947?w=600" 
+                         alt="Surgical suture guide" 
+                         class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span class="flex items-center gap-2"><i class="fas fa-calendar-alt"></i> December 28, 2023</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">
+                            <a href="blog.html#suture-guide" class="hover:text-blue-600 transition">
+                                Choosing the Right Surgical Suture: A Comprehensive Guide
+                            </a>
+                        </h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">
+                            Selecting the appropriate surgical suture is critical for successful patient outcomes. This guide covers the different types of sutures, their absorption properties...
+                        </p>
+                        <a href="blog.html#suture-guide" class="text-blue-600 font-semibold hover:underline flex items-center gap-2">
+                            Read More <i class="fas fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                </article>
+                
+                <!-- Blog Post 3 -->
+                <article class="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition">
+                    <img src="https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?w=600" 
+                         alt="Medical supply chain" 
+                         class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span class="flex items-center gap-2"><i class="fas fa-calendar-alt"></i> November 10, 2023</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">
+                            <a href="blog.html#supply-chain" class="hover:text-blue-600 transition">
+                                Ensuring Medical Supply Chain Resilience in Uncertain Times
+                            </a>
+                        </h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">
+                            The global pandemic highlighted the importance of robust medical supply chains. Learn about the strategies V5 Medical uses to maintain supply continuity...
+                        </p>
+                        <a href="blog.html#supply-chain" class="text-blue-600 font-semibold hover:underline flex items-center gap-2">
+                            Read More <i class="fas fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="blog.html" class="inline-block border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 hover:text-white transition">
+                    View All Blog Posts <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 px-4 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Get Started?</h2>
+            <p class="text-xl mb-8 text-blue-100">
+                Contact us today to discuss your medical supply needs and get a competitive quote.
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="https://wa.me/447895047944?text=I want to discuss my medical supply needs" 
+                   target="_blank" rel="noopener noreferrer"
+                   class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg transition hover:scale-105"
+                   onclick="trackWhatsAppClick()">
+                    <i class="fab fa-whatsapp mr-2"></i> Chat on WhatsApp
+                </a>
+                <a href="contact.html" 
+                   class="bg-white text-blue-900 px-8 py-4 rounded-full text-lg font-bold shadow-lg transition hover:scale-105">
+                    <i class="fas fa-envelope mr-2"></i> Send Inquiry
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer - 重新设计的布局 -->
     <footer class="bg-gray-900 text-white py-12 px-4">
         <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-12 gap-8 mb-12">
-                
-                <!-- Company Info -->
+            <!-- 主要内容区域 -->
+            <div class="grid md:grid-cols-10 gap-8 mb-12">
+                <!-- 左侧：Company Info -->
                 <div class="md:col-span-3">
                     <div class="flex items-center gap-2 mb-4">
                         <img src="images/v5logo.png" 
@@ -490,8 +911,6 @@
                     <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
                 </div>
                 
-                <div class="hidden md:block md:col-span-1"></div>
-
                 <!-- Quick Links -->
                 <div class="md:col-span-2">
                     <h4 class="font-bold mb-4 text-lg text-white">Quick Links</h4>
@@ -505,8 +924,21 @@
                     </ul>
                 </div>
                 
+                <!-- Product Categories -->
+                <div class="md:col-span-2">
+                    <h4 class="font-bold mb-4 text-lg text-white">Product Categories</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="catalog.html#sutures" class="hover:text-white transition">Surgical Sutures</a></li>
+                        <li><a href="catalog.html#packs" class="hover:text-white transition">Surgical Packs</a></li>
+                        <li><a href="catalog.html#syringes" class="hover:text-white transition">Syringes & Needles</a></li>
+                        <li><a href="catalog.html#infusion" class="hover:text-white transition">Infusion Sets</a></li>
+                        <li><a href="catalog.html#dressings" class="hover:text-white transition">Gauze Dressings</a></li>
+                        <li><a href="catalog.html#protection" class="hover:text-white transition">Protective Equipment</a></li>
+                    </ul>
+                </div>
+                
                 <!-- Contact Info -->
-                <div class="md:col-span-3 pl-0 md:pl-4">
+                <div class="md:col-span-3">
                     <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
                     <div class="space-y-3 text-sm text-gray-400">
                         <p class="flex items-center gap-2">
@@ -531,33 +963,19 @@
                         </p>
                     </div>
                 </div>
-                
-                <!-- Downloads & Social -->
-                <div class="md:col-span-3 pl-0 md:pl-4">
-                    <h4 class="font-bold mb-4 text-lg text-white">Downloads</h4>
-                    <div class="space-y-2 mb-8 text-sm">
-                        <a href="pdf/Catalog.pdf" 
-                           target="_blank" 
-                           onclick="trackPDFDownload('Product Catalog')"
-                           class="flex items-center gap-2 text-gray-400 hover:text-white transition">
-                            <i class="fas fa-file-pdf text-red-400"></i> Product Catalog
-                        </a>
-                        <a href="pdf/Quotations for dental products.pdf" 
-                           target="_blank" 
-                           onclick="trackPDFDownload('Dental Kit')"
-                           class="flex items-center gap-2 text-gray-400 hover:text-white transition">
-                            <i class="fas fa-file-pdf text-red-400"></i> Dental Kit
-                        </a>
-                        <a href="pdf/price list.pdf" 
-                           target="_blank" 
-                           onclick="trackPDFDownload('Price List')"
-                           class="flex items-center gap-2 text-gray-400 hover:text-white transition">
-                            <i class="fas fa-file-pdf text-red-400"></i> Price List
-                        </a>
+            </div>
+            
+            <!-- 底部区域：Follow Us 在左边，社交媒体图标在右边 -->
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <!-- 左侧：Follow Us -->
+                    <div class="mb-6 md:mb-0">
+                        <h4 class="font-bold text-lg text-white mb-4">Follow Us</h4>
+                        <p class="text-gray-400 text-sm">Connect with us on social media for the latest updates</p>
                     </div>
                     
-                    <h4 class="font-bold mb-4 text-lg text-white">Follow Us</h4>
-                    <div class="flex gap-3 flex-wrap">
+                    <!-- 右侧：社交媒体图标 -->
+                    <div class="flex gap-3">
                         <a href="https://linkedin.com/company/v5med" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 transition text-white" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                         <a href="https://www.youtube.com/@v5med" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition text-white" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                         <a href="https://www.facebook.com/v5med" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition text-white" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -568,6 +986,7 @@
                 </div>
             </div>
             
+            <!-- Call to Action -->
             <div class="border-t border-gray-800 pt-8 mt-8">
                 <div class="text-center">
                     <p class="text-2xl font-bold text-white mb-4">Ready for Your Next Order?</p>
@@ -581,6 +1000,7 @@
                 </div>
             </div>
             
+            <!-- Copyright -->
             <div class="text-center mt-8 text-sm text-gray-500">
                 <p>© 2025 V5 Medical LTD. All rights reserved.</p>
             </div>
@@ -687,6 +1107,25 @@
                     imageObserver.observe(image);
                 });
             }
+        });
+
+        // FAQ Toggle Function
+        function toggleFaq(id) {
+            const answer = document.getElementById(`faq-answer-${id}`);
+            const icon = document.getElementById(`faq-icon-${id}`);
+            
+            if (answer && icon) {
+                answer.classList.toggle('show');
+                icon.classList.toggle('rotate-180');
+            }
+        }
+
+        // Product Click Tracking
+        document.querySelectorAll('[onclick*="trackProductClick"]').forEach(button => {
+            button.addEventListener('click', function() {
+                const productName = this.getAttribute('onclick').match(/'([^']+)'/)[1];
+                trackProductClick(productName);
+            });
         });
     </script>
 
