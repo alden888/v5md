@@ -81,6 +81,25 @@ const params = new URLSearchParams(window.location.search);
 const id = params.get('product');
 const product = finalProductDatabase[id];
 
+// FAQ fallback templates by category
+const faqTemplates = {
+  'Surgical Sutures': [
+    { q: 'Is this suture absorbable?', a: p => p.absorbable ? 'Yes, this is an absorbable surgical suture.' : 'No, this is a non-absorbable surgical suture.' },
+    { q: 'What certifications does this product have?', a: () => 'This product is manufactured under ISO 13485 quality system and complies with CE and FDA requirements.' },
+    { q: 'Can you provide OEM or private labeling?', a: () => 'Yes, OEM and private label services are available based on order quantity.' }
+  ],
+  'Syringes': [
+    { q: 'Is this syringe sterile?', a: () => 'Yes, the syringe is EO sterilized and supplied in sterile packaging.' },
+    { q: 'What materials are used?', a: p => `The syringe is made from ${p.material || 'medical-grade plastic'}.` },
+    { q: 'Can you customize packaging?', a: () => 'Yes, OEM packaging and branding are available.' }
+  ],
+  'Protective Equipment': [
+    { q: 'Is this product disposable?', a: () => 'Yes, this product is designed for single use.' },
+    { q: 'Does it meet international standards?', a: () => 'Yes, it complies with relevant CE and ISO standards.' },
+    { q: 'What is the MOQ?', a: () => 'MOQ depends on specification and packaging requirements.' }
+  ]
+};
+
 if (!product) {
   document.body.innerHTML = '<div class="p-12 text-center"><h1 class="text-2xl font-bold">Product Not Found</h1><a href="catalog.html" class="text-blue-600">Back to catalog</a></div>';
   throw new Error('Product not found');
@@ -141,8 +160,12 @@ related.forEach(p => {
 const faqContainer = document.getElementById('product-faq');
 const faqSchema = [];
 
-if (product.faq && product.faq.length) {
-  product.faq.forEach(item => {
+const finalFAQ = (product.faq && product.faq.length)
+  ? product.faq
+  : (faqTemplates[product.category] || []).map(t => ({ q: t.q, a: typeof t.a === 'function' ? t.a(product) : t.a }));
+
+if (finalFAQ.length) {
+  finalFAQ.forEach(item => {
     const block = document.createElement('div');
     block.innerHTML = `<p class="font-semibold">Q: ${item.q}</p><p class="text-gray-700 mt-1">A: ${item.a}</p>`;
     faqContainer.appendChild(block);
