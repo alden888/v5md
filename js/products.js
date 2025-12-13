@@ -80,3 +80,31 @@ catalogProducts.forEach(p => {
     relatedProducts: []
   };
 });
+
+{
+  id: "pga-suture",
+  name: "PGA Absorbable Surgical Suture",
+  category: "Surgical Sutures",
+  categoryName: "Surgical Sutures",
+
+  image: "images/products/pga.jpg",
+
+  seoDescription: "PGA absorbable surgical sutures manufactured under ISO 13485, CE and FDA standards. Reliable wound closure for general surgery.",
+
+  description: "PGA sutures are synthetic absorbable sutures suitable for general and soft tissue surgery.",
+
+  features: [
+    "Absorbable synthetic material",
+    "Smooth tissue passage",
+    "High tensile strength retention"
+  ],
+
+  specs: {
+    "Material": "PGA",
+    "Absorption Time": "60–90 days",
+    "Sizes": "USP 6/0 – 2",
+    "Sterilization": "EO",
+    "OEM": "Available"
+  }
+}
+
