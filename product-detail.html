@@ -94,6 +94,41 @@
       if (!container) return;
 
       const related = Object.values(finalProductDatabase)
+        .filter(p => p.id !== product.id)
+        .map(p => {
+          let score = 0;
+          if (p.category === product.category) score += 3;
+          if (p.department && product.department && p.department === product.department) score += 2;
+          if (p.absorbable && product.absorbable && p.absorbable === product.absorbable) score += 2;
+          if (p.material && product.material && p.material === product.material) score += 1;
+          return { ...p, score };
+        })
+        .filter(p => p.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 4);
+
+      if (related.length === 0) {
+        container.innerHTML = '<p class="text-gray-500">No related products available.</p>';
+        return;
+      }
+
+      container.innerHTML = related.map(p => `
+        <div class="bg-white rounded-xl shadow-sm border hover:shadow-lg transition overflow-hidden">
+          <div class="h-40 bg-gray-100">
+            <img src="${p.images?.[0] || 'images/products/default-product.jpg'}" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4">
+            <h3 class="font-bold text-sm mb-2">${p.name}</h3>
+            <p class="text-xs text-gray-500 mb-2">${p.category}</p>
+            <a href="product-detail.html?product=${p.id}" class="text-blue-600 font-semibold text-sm">View Details →</a>
+          </div>
+        </div>
+      `).join('');
+    }(product) {
+      const container = document.getElementById('related-products');
+      if (!container) return;
+
+      const related = Object.values(finalProductDatabase)
         .filter(p => p.category === product.category && p.id !== product.id)
         .slice(0, 4);
 
@@ -187,4 +222,5 @@
 
 </body>
 </html>
+
 
