@@ -614,5 +614,3 @@ This repository contains confidential business information of V5 Medical LTD. Un
 
 
 ![Website](https://img.shields.io/badge/Website-v5md.com-4285F4?style=flat-square\&logo=google-chrome)
-
-> （注：文档部分内容可能由 AI 生成）
