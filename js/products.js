@@ -108,3 +108,18 @@ catalogProducts.forEach(p => {
   }
 }
 
+faq: [
+  {
+    q: "Is this suture CE and FDA certified?",
+    a: "Yes, this product is manufactured under ISO 13485 quality system and complies with CE and FDA requirements."
+  },
+  {
+    q: "Can you provide OEM or private labeling?",
+    a: "Yes, OEM and private label services are available based on order quantity."
+  },
+  {
+    q: "What is the minimum order quantity?",
+    a: "MOQ depends on specification and packaging requirements. Please contact us for details."
+  }
+]
+
