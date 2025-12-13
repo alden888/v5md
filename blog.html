@@ -13,14 +13,14 @@
     <meta property="og:description" content="View our latest shipment photos, delivery videos, and customer success stories">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://v5md.com/blog.html">
-    <meta property="og:image" content="https://v5md.com/v5medlogo.png">
+    <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png">
     <meta property="og:site_name" content="V5 Medical LTD">
 
     <title>V5 Medical Blog - Shipment Photos & Success Stories</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="images/icons/favicon.ico">
       
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -235,46 +235,52 @@
     </script>
 </head>
 <body class="font-sans bg-gray-50">
-    <!-- Navigation -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-blue-900/90">
+    <!-- Navigation - Matched with index.html -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/95 text-gray-800 shadow-md">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='index.html'">
-                    <img src="v5logo.png" alt="V5 Medical LTD Logo" class="h-12 md:h-16">
+                    <img src="images/v5logo.png" onerror="this.src='v5logo.png'; this.onerror=null;" 
+                         class="h-12 w-auto" 
+                         alt="V5 Medical LTD Logo">
                     <div>
-                        <div class="font-bold text-xl text-white" id="nav-title">V5 Medical LTD</div>
-                        <div class="text-xs text-blue-100" id="nav-subtitle"> Global Medical Supplier</div>
+                        <div class="font-bold text-xl leading-none text-blue-900">V5 Medical LTD</div>
+                        <div class="text-xs text-blue-600">Global Medical Supplier</div>
                     </div>
                 </div>
 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center gap-8">
-                    <a href="index.html#home" class="nav-link font-semibold text-blue-100 hover:text-white transition">Home</a>
-                    <a href="index.html#about" class="nav-link font-semibold text-blue-100 hover:text-white transition">About Us</a>
-                    <a href="index.html#products" class="nav-link font-semibold text-blue-100 hover:text-white transition">Products</a>
-                    <a href="blog.html" class="nav-link font-semibold text-white bg-blue-600 px-4 py-2 rounded-lg">Blog</a>
-                    <a href="index.html#contact" class="nav-link font-semibold text-blue-100 hover:text-white transition">Contact</a>
-                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full font-semibold transition flex items-center gap-2">
+                    <a href="index.html" class="nav-link font-semibold text-blue-900 transition">Home</a>
+                    <a href="about.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">About Us</a>
+                    <a href="catalog.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">Products</a>
+                    <a href="blog.html" class="nav-link font-semibold text-white bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700">Blog</a>
+                    <a href="contact.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">Contact</a>
+                    <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" 
+                       class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-full font-semibold transition flex items-center gap-2" 
+                       onclick="trackWhatsAppClick()">
                         <i class="fab fa-whatsapp"></i> WhatsApp
                     </a>
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="md:hidden text-white">
+                <button id="mobile-menu-btn" class="md:hidden text-gray-800" aria-label="Toggle Menu">
                     <i class="fas fa-bars text-2xl"></i>
                 </button>
             </div>
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t text-gray-800 absolute w-full left-0 top-20 shadow-xl">
             <div class="px-4 py-4 space-y-3">
-                <a href="index.html#home" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Home</a>
-                <a href="index.html#about" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">About Us</a>
-                <a href="index.html#products" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Products</a>
+                <a href="index.html" class="block px-4 py-2 rounded-lg text-blue-900 font-semibold">Home</a>
+                <a href="about.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900">About Us</a>
+                <a href="catalog.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900">Products</a>
                 <a href="blog.html" class="block px-4 py-2 rounded-lg bg-blue-500 text-white">Blog</a>
-                <a href="index.html#contact" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600">Contact</a>
-                <a href="https://wa.me/447895047944" target="_blank" class="block w-full bg-green-500 text-white px-4 py-2 rounded-lg text-center font-semibold">
+                <a href="contact.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900">Contact</a>
+                <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" 
+                   class="block w-full bg-green-500 text-white px-4 py-2 rounded-lg text-center font-semibold" 
+                   onclick="trackWhatsAppClick()">
                     WhatsApp Contact
                 </a>
             </div>
@@ -617,143 +623,177 @@
         </div>
     </section>
 
-    <!-- Call to Action -->
-    <section class="py-20 px-4 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+    <!-- Call to Action - Matched with index.html -->
+    <section class="py-16 px-4 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
         <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-6">Ready to Partner With Us?</h2>
-            <p class="text-xl mb-8">Join our satisfied customers around the world and experience the V5 Medical difference</p>
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Get Started?</h2>
+            <p class="text-xl mb-8 text-blue-100">
+                Contact us today to discuss your medical supply needs and get a competitive quote.
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center mb-8">
+                <a href="https://wa.me/447895047944?text=I want to discuss my medical supply needs" 
+                   target="_blank" rel="noopener noreferrer"
+                   class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg transition hover:scale-105"
+                   onclick="trackWhatsAppClick()">
+                    <i class="fab fa-whatsapp mr-2"></i> Chat on WhatsApp
+                </a>
+                <a href="contact.html" 
+                   class="bg-white text-blue-900 px-8 py-4 rounded-full text-lg font-bold shadow-lg transition hover:scale-105">
+                    <i class="fas fa-envelope mr-2"></i> Send Inquiry
+                </a>
+            </div>
             
-            <div class="flex flex-wrap gap-4 justify-center">
-                <a href="index.html#contact" class="bg-white hover:bg-gray-100 text-blue-900 px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 shadow-lg transition transform hover:scale-105">
-                    <i class="fas fa-phone"></i> Contact Us Today
-                </a>
-                <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2 shadow-lg transition transform hover:scale-105">
-                    <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                </a>
+            <!-- Trust indicators -->
+            <div class="flex flex-wrap justify-center gap-6 items-center text-blue-200 text-sm md:text-base">
+                <span class="flex items-center gap-2"><i class="fas fa-globe-americas text-blue-500"></i> We deliver to 40+ countries</span>
+                <span class="hidden md:inline text-blue-300">|</span>
+                <span class="flex items-center gap-2"><i class="fas fa-certificate text-green-500"></i> ISO/CE/FDA Certified</span>
+                <span class="hidden md:inline text-blue-300">|</span>
+                <span class="flex items-center gap-2"><i class="fas fa-shipping-fast text-yellow-500"></i> Fast Shipping</span>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Footer - Matched with index.html -->
     <footer class="bg-gray-900 text-white py-12 px-4">
         <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-4 gap-8 mb-8">
-                <div>
+            <!-- 主要内容区域 -->
+            <div class="grid md:grid-cols-10 gap-8 mb-12">
+                <!-- 左侧：Company Info -->
+                <div class="md:col-span-3">
                     <div class="flex items-center gap-2 mb-4">
-                        <img src="v5logo.png" alt="V5 Medical LTD Logo" class="h-12">
-                        <h3 class="text-xl font-bold">V5 Medical LTD</h3>
+                        <img src="images/v5logo.png" 
+                             onerror="this.src='v5logo.png'; this.onerror=null;" 
+                             class="h-10 w-auto" 
+                             alt="V5 Medical Logo">
+                        <span class="text-xl font-bold">V5 Medical LTD</span>
                     </div>
-                    <p class="text-gray-400 text-sm mb-4">Professional Medical Consumables Supplier</p>
+                    <p class="text-gray-400 text-sm mb-4">Professional Global Medical Consumables Supplier</p>
+                    <p class="text-gray-400 text-sm mb-4">Factory Direct Medical Consumables Manufacturer</p> 
+                    <p class="text-gray-400 text-sm italic">20+ Years Exporting Experience</p>
                     <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
                 </div>
                 
-                <div>
-                    <h4 class="font-semibold mb-4 text-lg">Quick Links</h4>
-                    <div class="space-y-2">
-                        <a href="index.html#home" class="block text-gray-400 hover:text-white transition text-sm">Home</a>
-                        <a href="index.html#about" class="block text-gray-400 hover:text-white transition text-sm">About Us</a>
-                        <a href="index.html#products" class="block text-gray-400 hover:text-white transition text-sm">Products</a>
-                        <a href="blog.html" class="block text-white bg-blue-600 px-3 py-1 rounded text-sm">Blog</a>
-                        <a href="index.html#contact" class="block text-gray-400 hover:text-white transition text-sm">Contact</a>
-                    </div>
+                <!-- Quick Links - 向右移动一点 -->
+                <div class="md:col-span-2 pl-8">
+                    <h4 class="font-bold mb-4 text-lg text-white">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="index.html" class="hover:text-white transition">Home</a></li>
+                        <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="catalog.html" class="hover:text-white transition">Products</a></li>
+                        <li><a href="blog.html" class="hover:text-white transition">Blog & News</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
+                        <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
+                    </ul>
                 </div>
                 
-                <div>
-                    <h4 class="font-semibold mb-4 text-lg">Contact</h4>
-                    <div class="space-y-2 text-sm text-gray-400">
+                <!-- Product Categories -->
+                <div class="md:col-span-2">
+                    <h4 class="font-bold mb-4 text-lg text-white">Product Categories</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="catalog.html#sutures" class="hover:text-white transition">Surgical Sutures</a></li>
+                        <li><a href="catalog.html#packs" class="hover:text-white transition">Surgical Packs</a></li>
+                        <li><a href="catalog.html#syringes" class="hover:text-white transition">Syringes & Needles</a></li>
+                        <li><a href="catalog.html#infusion" class="hover:text-white transition">Infusion Sets</a></li>
+                        <li><a href="catalog.html#dressings" class="hover:text-white transition">Gauze Dressings</a></li>
+                        <li><a href="catalog.html#protection" class="hover:text-white transition">Protective Equipment</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="md:col-span-3">
+                    <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
+                    <div class="space-y-3 text-sm text-gray-400">
                         <p class="flex items-center gap-2">
-                            <i class="fab fa-whatsapp text-green-400"></i>
-                            <span>+44 078 9504 7944</span>
+                            <i class="fab fa-whatsapp text-green-500 w-5"></i> 
+                            <span>+44 078 9504 7944 (UK)</span>
                         </p>
                         <p class="flex items-center gap-2">
-                            <i class="fas fa-envelope text-blue-400"></i>
-                            <span>sales@v5md.com</span>
+                            <i class="fab fa-whatsapp text-green-500 w-5"></i> 
+                            <span>+86 180 1266 9897 (Backup)</span>
                         </p>
                         <p class="flex items-center gap-2">
-                            <i class="fas fa-phone"></i>
-                            <span>+86-512 8781 1988</span>
+                            <i class="fas fa-envelope text-blue-400 w-5"></i> 
+                            <a href="mailto:sales@v5md.com" class="hover:text-white transition" onclick="trackEmailClick()">sales@v5md.com</a>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fab fa-google text-red-400 w-5"></i> 
+                            <a href="mailto:v5md.com@gmail.com" class="hover:text-white transition" onclick="trackEmailClick()">v5md.com@gmail.com</a>
                         </p>
                         <p class="flex items-start gap-2">
-                            <i class="fas fa-map-marker-alt mt-1"></i>
-                            <span>No. 168, Luying Road, Kunshan Development Zone, Jiangsu, China</span>
+                            <i class="fas fa-map-marker-alt mt-1 w-5"></i> 
+                            <span>No. 168, Luying Road, Kunshan, Jiangsu, China</span>
                         </p>
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 class="font-semibold mb-4 text-lg">Follow Us</h4>
-                    <div class="flex gap-4 mb-6">
-                        <!-- Facebook -->
-                        <a href="https://www.facebook.com/v5med" target="_blank" rel="noopener noreferrer" 
-                           class="w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center transition transform hover:scale-110"
-                           onclick="trackWhatsAppClick()">
-                            <i class="fab fa-facebook-f text-xl text-white"></i>
-                        </a>
-
-                        <!-- Instagram -->
-                        <a href="https://www.instagram.com/v5med" target="_blank" rel="noopener noreferrer" 
-                           class="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 rounded-full flex items-center justify-center transition transform hover:scale-110"
-                           onclick="trackWhatsAppClick()">
-                            <i class="fab fa-instagram text-xl text-white"></i>
-                        </a>
-
-                        <!-- LinkedIn -->
-                        <a href="https://linkedin.com/company/v5med" target="_blank" rel="noopener noreferrer" 
-                           class="w-10 h-10 bg-blue-700 hover:bg-blue-800 rounded-full flex items-center justify-center transition transform hover:scale-110">
-                            <i class="fab fa-linkedin-in text-xl text-white"></i>
-                        </a>
-
-                        <!-- X (Twitter) -->
-                        <a href="https://x.com/v5med" target="_blank" rel="noopener noreferrer" 
-                           class="w-10 h-10 bg-black hover:bg-gray-800 rounded-full flex items-center justify-center transition transform hover:scale-110">
-                            <i class="fab fa-twitter text-xl text-white"></i>
-                        </a>
-                    </div>
-                    <h4 class="font-semibold mb-4 text-lg">Newsletter</h4>
-                    <div class="flex">
-                        <input type="email" placeholder="Your email" class="px-4 py-2 rounded-l-lg text-gray-900 flex-1">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-lg transition">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
                     </div>
                 </div>
             </div>
             
+            <!-- 底部区域：Follow Us 在左边，社交媒体图标在右边 -->
             <div class="border-t border-gray-800 pt-8">
-                <div class="grid md:grid-cols-2 gap-4 text-center md:text-left">
-                    <div class="text-sm text-gray-400">
-                        <p>© 2025 V5 Medical LTD. All rights reserved.</p>
-                        <p class="mt-1">SUZHOU V5 MEDICAL TECHNOLOGY CO., LTD.</p>
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <!-- 左侧：Follow Us -->
+                    <div class="mb-6 md:mb-0">
+                        <h4 class="font-bold text-lg text-white mb-4">Follow Us</h4>
+                        <p class="text-gray-400 text-sm">Connect with us on social media for the latest updates</p>
                     </div>
-                    <div class="text-sm text-gray-400 md:text-right">
-                        <p>ISO 13485 | CE Mark | FDA Registered</p>
-                        <p class="mt-1">Legal Operation | Standardized Development</p>
+                    
+                    <!-- 右侧：社交媒体图标 - 向左移动一点 -->
+                    <div class="flex gap-6 mr-8">
+                        <a href="https://linkedin.com/company/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 transition text-white" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        
+                        <a href="https://www.youtube.com/@v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition text-white" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        
+                        <a href="https://www.facebook.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition text-white" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        
+                        <a href="https://www.instagram.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 flex items-center justify-center transition text-white" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        
+                        <a href="https://www.tiktok.com/@v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-black transition text-white" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        
+                        <a href="https://x.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition text-white" aria-label="X (Twitter)"><i class="fab fa-twitter"></i></a>
+                    
                     </div>
                 </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="text-center mt-8 text-sm text-gray-500">
+                <p>© 2025 V5 Medical LTD. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <!-- Google Translate - Matched with index.html -->
     <div id="google_translate_element" class="fixed top-4 right-4 z-50 bg-blue-900 text-white px-3 py-1 rounded-full shadow-lg flex items-center gap-2">
-    🌍 Translate
-</div>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<script type="text/javascript">
-  function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-      pageLanguage: 'en',
-      includedLanguages: 'en,ar,es,fr,ru,nl,de,it,pt,ja,ko,tr,pl,vi,hi,id,th,sv,zh-CN,zh-TW',
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-      autoDisplay: false
-    }, 'google_translate_element');
-  }
-</script>
+        🌍 Translate
+    </div>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,ar,es,fr,ru,nl,de,it,pt,ja,ko,tr,pl,vi,hi,id,th,sv,zh-CN,zh-TW',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
 
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/447895047944" target="_blank" class="whatsapp-float" style="position: fixed; bottom: 30px; right: 30px; background: #25D366; color: white; padding: 15px 20px; border-radius: 50px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4); z-index: 1000; transition: all 0.3s ease; text-decoration: none; display: flex; align-items: center; gap: 10px;">
-        <i class="fab fa-whatsapp text-2xl"></i>
-        <span>Chat with us</span>
+    <!-- WhatsApp Float Button - Matched with index.html -->
+    <a href="https://wa.me/447895047944" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       onclick="trackWhatsAppClick()"
+       class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center z-50 transition-all duration-300 hover:scale-110 group"
+       aria-label="Contact us on WhatsApp">
+        <i class="fab fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i>
     </a>
+
+    <!-- Back to Top Button - Added to match index.html -->
+    <button id="back-to-top" 
+            class="fixed bottom-24 right-6 bg-blue-900 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 opacity-0 invisible hover:bg-blue-700 z-40" 
+            aria-label="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <!-- Lightbox -->
     <div class="lightbox" id="lightbox">
@@ -778,64 +818,84 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
+    <!-- JavaScript - Updated to match index.html functionality -->
     <script>
+        // Back to Top Logic
+        const backToTopBtn = document.getElementById('back-to-top');
+        if (backToTopBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
         // Mobile Menu Toggle
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                const icon = mobileMenuBtn.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-times');
+                }
             });
-        });
 
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        const navTitle = document.getElementById('nav-title');
-        const navSubtitle = document.getElementById('nav-subtitle');
-        const navLinks = document.querySelectorAll('.nav-link');
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    const icon = mobileMenuBtn.querySelector('i');
+                    if (icon) {
+                        icon.classList.add('fa-bars');
+                        icon.classList.remove('fa-times');
+                    }
+                });
+            });
+        }
 
+        // Navigation scroll effect
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('nav-scrolled');
-                navTitle.classList.remove('text-white');
-                navTitle.classList.add('text-blue-900');
-                navSubtitle.classList.remove('text-blue-100');
-                navSubtitle.classList.add('text-gray-600');
-                navLinks.forEach(link => {
-                    link.classList.remove('text-blue-100', 'hover:text-white');
-                    link.classList.add('text-gray-600', 'hover:text-blue-600');
-                });
-            } else {
-                navbar.classList.remove('nav-scrolled');
-                navTitle.classList.add('text-white');
-                navTitle.classList.remove('text-blue-900');
-                navSubtitle.classList.add('text-blue-100');
-                navSubtitle.classList.remove('text-gray-600');
-                navLinks.forEach(link => {
-                    link.classList.add('text-blue-100', 'hover:text-white');
-                    link.classList.remove('text-gray-600', 'hover:text-blue-600');
-                });
+            const navbar = document.getElementById('navbar');
+            if (navbar) {
+                if (window.scrollY > 100) {
+                    navbar.classList.add('shadow-lg');
+                    navbar.classList.remove('shadow-md');
+                } else {
+                    navbar.classList.add('shadow-md');
+                    navbar.classList.remove('shadow-lg');
+                }
             }
         });
 
-        // Initialize navbar state
-        window.addEventListener('load', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('nav-scrolled');
-                navTitle.classList.remove('text-white');
-                navTitle.classList.add('text-blue-900');
-                navSubtitle.classList.remove('text-blue-100');
-                navSubtitle.classList.add('text-gray-600');
-                navLinks.forEach(link => {
-                    link.classList.remove('text-blue-100', 'hover:text-white');
-                    link.classList.add('text-gray-600', 'hover:text-blue-600');
+        // Image lazy loading for performance
+        document.addEventListener("DOMContentLoaded", function() {
+            const lazyImages = document.querySelectorAll("img");
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const image = entry.target;
+                            image.classList.add('opacity-100');
+                            image.classList.remove('opacity-0');
+                            imageObserver.unobserve(image);
+                        }
+                    });
+                });
+                
+                lazyImages.forEach(image => {
+                    imageObserver.observe(image);
                 });
             }
         });
@@ -1017,7 +1077,7 @@
                             </div>
                             
                             <div class="text-center mt-8">
-                                <a href="index.html#contact" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition" onclick="trackNavigationClick('Contact')">
+                                <a href="contact.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition" onclick="trackNavigationClick('Contact')">
                                     <i class="fas fa-comment mr-2"></i> Share Your Story
                                 </a>
                             </div>
