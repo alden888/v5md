@@ -2,126 +2,148 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Medical Consumables Catalog | V5 Medical LTD</title>
-  <meta name="description" content="Browse medical consumables catalog including surgical sutures, syringes, protective equipment and disposable medical supplies. OEM supported. CE, FDA, ISO 13485." />
+  <title>Medical Products Catalog | V5 Medical LTD</title>
+  <meta name="description" content="Browse the complete medical products catalog of V5 Medical LTD. Surgical sutures, syringes, PPE, disposable medical consumables. ISO 13485, CE, FDA certified supplier." />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="index, follow" />
 
-  <!-- Canonical -->
   <link rel="canonical" href="https://v5md.com/catalog.html" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Medical Consumables Catalog | V5 Medical LTD" />
-  <meta property="og:description" content="Certified medical consumables manufacturer and supplier. Surgical sutures, syringes, PPE and more." />
+  <meta property="og:title" content="Medical Products Catalog | V5 Medical LTD" />
+  <meta property="og:description" content="Certified medical consumables manufacturer & supplier. OEM supported." />
   <meta property="og:image" content="https://v5md.com/images/v5medlogo.png" />
 
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css" />
   <script src="js/products.js"></script>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body>
 
-<!-- Header -->
-<header class="bg-blue-900 text-white">
-  <div class="max-w-7xl mx-auto px-6 py-6">
-    <h1 class="text-3xl font-bold">Medical Consumables Catalog</h1>
-    <p class="text-blue-200 mt-1">ISO 13485 · CE · FDA Certified Manufacturer & Supplier</p>
-    <div class="mt-4 flex gap-3 flex-wrap">
-      <a href="contact.html" class="bg-green-500 px-4 py-2 rounded text-white font-semibold">Request Quotation</a>
-      <a href="https://wa.me/8617801350225" class="bg-white text-blue-900 px-4 py-2 rounded font-semibold">WhatsApp Inquiry</a>
-    </div>
+<!-- ================= HEADER ================= -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <img src="images/v5medlogo.png" alt="V5 Medical LTD" />
+    </a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="catalog.html" class="active">Products</a>
+      <a href="quality.html">Quality</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html" class="nav-cta">Contact</a>
+    </nav>
   </div>
 </header>
 
-<!-- Category Navigation -->
-<nav class="bg-white shadow">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex gap-4 flex-wrap" id="category-nav"></div>
-</nav>
-
-<!-- Product List -->
-<main class="max-w-7xl mx-auto px-6 py-10">
-  <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
-</main>
-
-<!-- SEO Category Text -->
-<section id="category-seo" class="max-w-7xl mx-auto px-6 py-10">
-  <h2 id="category-seo-title" class="text-2xl font-bold mb-4"></h2>
-  <div id="category-seo-text" class="prose max-w-none text-gray-700"></div>
-</section>
-
-<!-- Footer CTA -->
-<section class="bg-blue-900 text-white">
-  <div class="max-w-7xl mx-auto px-6 py-10 text-center">
-    <h2 class="text-2xl font-bold">Looking for a Reliable Medical Supplier?</h2>
-    <p class="mt-2 text-blue-200">Contact V5 Medical for fast quotation and OEM solutions.</p>
-    <div class="mt-6 flex justify-center gap-4 flex-wrap">
-      <a href="contact.html" class="bg-green-500 px-6 py-3 rounded font-semibold">Get Quotation</a>
-      <a href="https://wa.me/8617801350225" class="bg-white text-blue-900 px-6 py-3 rounded font-semibold">WhatsApp Now</a>
-    </div>
+<!-- ================= HERO ================= -->
+<section class="page-hero" style="background-image:url('images/hero-bg.jpg')">
+  <div class="container">
+    <h1>Medical Products Catalog</h1>
+    <p>ISO 13485 · CE · FDA Certified Manufacturer & Supplier</p>
   </div>
 </section>
 
+<!-- ================= CATEGORY NAV ================= -->
+<section class="category-nav">
+  <div class="container" id="category-nav"></div>
+</section>
+
+<!-- ================= PRODUCT GRID ================= -->
+<main class="container product-catalog">
+  <div id="product-grid" class="product-grid"></div>
+</main>
+
+<!-- ================= CATEGORY SEO CONTENT ================= -->
+<section class="category-seo container" id="category-seo">
+  <h2 id="category-seo-title"></h2>
+  <div id="category-seo-text"></div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Need Quotation or OEM Solution?</h2>
+    <p>Contact V5 Medical for fast response and professional support.</p>
+    <a href="contact.html" class="btn-primary">Request Quotation</a>
+    <a href="https://wa.me/8617801350225" class="btn-secondary">WhatsApp Inquiry</a>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <img src="images/v5medlogo.png" alt="V5 Medical" class="footer-logo" />
+      <p>Professional medical consumables supplier serving global markets.</p>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="about.html">About Us</a>
+      <a href="quality.html">Quality Management</a>
+      <a href="blog.html">News & Blog</a>
+    </div>
+    <div>
+      <h4>Products</h4>
+      <a href="catalog.html">Product Catalog</a>
+      <a href="contact.html">OEM Service</a>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 V5 Medical LTD. All rights reserved.</div>
+</footer>
+
 <script>
-// ===== Utilities =====
 const params = new URLSearchParams(window.location.search);
 const currentCategory = params.get('category');
 
-// ===== Render Categories =====
+// ===== Categories =====
 const categories = [...new Set(Object.values(finalProductDatabase).map(p => p.category))];
 const nav = document.getElementById('category-nav');
 
-const allBtn = document.createElement('a');
-allBtn.href = 'catalog.html';
-allBtn.textContent = 'All Products';
-allBtn.className = !currentCategory ? 'font-bold text-blue-700' : 'text-gray-600';
-nav.appendChild(allBtn);
+const allLink = document.createElement('a');
+allLink.href = 'catalog.html';
+allLink.textContent = 'All Products';
+allLink.className = !currentCategory ? 'active' : '';
+nav.appendChild(allLink);
 
 categories.forEach(cat => {
   const a = document.createElement('a');
   a.href = `catalog.html?category=${encodeURIComponent(cat)}`;
   a.textContent = cat;
-  a.className = currentCategory === cat ? 'font-bold text-blue-700' : 'text-gray-600';
+  if (currentCategory === cat) a.className = 'active';
   nav.appendChild(a);
 });
 
-// ===== Render Products =====
+// ===== Products =====
 const grid = document.getElementById('product-grid');
 Object.values(finalProductDatabase)
   .filter(p => !currentCategory || p.category === currentCategory)
   .forEach(p => {
     const card = document.createElement('div');
-    card.className = 'bg-white rounded shadow hover:shadow-lg transition';
+    card.className = 'product-card';
     card.innerHTML = `
-      <img src="${p.image}" alt="${p.name}" class="h-48 w-full object-contain p-4" />
-      <div class="p-4">
-        <h3 class="font-semibold text-sm mb-2">${p.name}</h3>
-        <a href="product-detail.html?product=${p.id}" class="inline-block text-blue-600 font-semibold">View Details →</a>
-      </div>`;
+      <img src="${p.image}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <a href="product-detail.html?product=${p.id}" class="btn-link">View Details</a>
+    `;
     grid.appendChild(card);
   });
 
-// ===== Category SEO Text =====
-const categorySeoTemplates = {
-  'Surgical Sutures': () => `
-    <p>Surgical sutures are critical medical consumables used for wound closure in various surgical procedures. V5 Medical supplies a comprehensive range of absorbable and non-absorbable surgical sutures manufactured under ISO 13485 quality systems.</p>
-    <p>Our surgical sutures include materials such as PGA, PGLA, PDO, silk, nylon, and polypropylene, designed to provide reliable tensile strength and predictable performance.</p>
-    <p>All products comply with CE and FDA requirements, and OEM or private labeling services are available for distributors and healthcare institutions worldwide.</p>
-  `,
-  'Syringes': () => `
-    <p>Disposable medical syringes are widely used in hospitals, clinics, and laboratories for injection and aspiration. V5 Medical offers EO sterilized syringes manufactured from medical-grade materials.</p>
-    <p>Our syringes provide clear graduation marks, smooth plunger action, and secure needle connections.</p>
-    <p>OEM branding and customized packaging solutions are available.</p>
-  `,
-  'Protective Equipment': () => `
-    <p>Medical protective equipment is essential for infection control and healthcare safety. V5 Medical supplies masks, gowns, caps, and shoe covers meeting international standards.</p>
-    <p>Our products are suitable for hospitals, laboratories, and cleanroom environments.</p>
-    <p>Bulk supply and private label options are supported.</p>
-  `
+// ===== SEO Text =====
+const seoMap = {
+  'Surgical Sutures': `<p>Surgical sutures are essential medical consumables used for wound closure in various surgical procedures. V5 Medical supplies a full range of absorbable and non-absorbable sutures manufactured under ISO 13485 systems.</p><p>OEM and private labeling services are available. All products comply with CE and FDA standards.</p>`,
+  'Syringes': `<p>Disposable medical syringes supplied by V5 Medical are EO sterilized and manufactured from medical-grade materials for hospital and clinical use.</p>`,
+  'Protective Equipment': `<p>Medical protective equipment from V5 Medical supports infection control and safety in healthcare environments worldwide.</p>`
 };
 
-if (currentCategory && categorySeoTemplates[currentCategory]) {
+if (currentCategory && seoMap[currentCategory]) {
   document.getElementById('category-seo-title').textContent = `${currentCategory} Manufacturer & Supplier`;
-  document.getElementById('category-seo-text').innerHTML = categorySeoTemplates[currentCategory]();
+  document.getElementById('category-seo-text').innerHTML = seoMap[currentCategory];
 }
 </script>
 
