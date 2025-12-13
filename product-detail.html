@@ -4,204 +4,174 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Dynamic SEO Meta -->
-  <title id="meta-title">Product Details | V5 Medical LTD</title>
-  <meta id="meta-description" name="description" content="Medical consumables product details by V5 Medical LTD. ISO 13485, CE, FDA certified supplier." />
+  <title id="meta-title">Medical Product | V5 Medical LTD</title>
+  <meta name="description" id="meta-description" content="ISO 13485, CE & FDA certified medical consumables. Factory direct supplier from China." />
   <meta name="robots" content="index, follow" />
+  <link rel="canonical" id="canonical-link" href="https://v5md.com/product-detail.html" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="product" />
-  <meta property="og:title" id="og-title" content="" />
-  <meta property="og:description" id="og-description" content="" />
-  <meta property="og:image" id="og-image" content="" />
+  <meta property="og:title" id="og-title" content="Medical Product" />
+  <meta property="og:description" id="og-description" content="Factory direct medical consumables supplier" />
+  <meta property="og:image" id="og-image" content="https://v5md.com/images/v5medlogo.png" />
+  <meta property="og:url" id="og-url" content="https://v5md.com/product-detail.html" />
 
-  <!-- Schema.org Product -->
-  <script type="application/ld+json" id="schema-product"></script>
-
-  <link rel="canonical" id="canonical-url" href="" />
-
+  <!-- CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="js/products.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
+
 <body class="bg-gray-50 text-gray-800">
 
-<header class="bg-blue-900 text-white p-6">
-  <div class="max-w-7xl mx-auto">
-    <a href="catalog.html" class="text-blue-200 hover:underline">← Back to Catalog</a>
-    <h1 id="product-name" class="text-3xl font-bold mt-2"></h1>
-    <p id="product-subtitle" class="text-blue-200"></p>
-  </div>
-</header>
-
-<main class="max-w-7xl mx-auto p-6 grid md:grid-cols-2 gap-8">
-  <!-- Image -->
-  <div>
-    <img id="product-image" src="" alt="" class="w-full rounded-xl shadow" />
-  </div>
-
-  <!-- Info -->
-  <div>
-    <h2 class="text-xl font-bold mb-2">Product Overview</h2>
-    <p id="product-description" class="mb-4"></p>
-
-    <ul id="product-features" class="list-disc pl-5 space-y-1"></ul>
-
-    <div class="mt-6">
-      <h3 class="font-semibold mb-2">Certifications</h3>
-      <div class="flex gap-4">
-        <img src="images/quality/ce-mark.png" alt="CE" class="h-10" />
-        <img src="images/quality/iso13485-2016.jpg" alt="ISO 13485" class="h-10" />
-        <img src="images/quality/fda.jpg" alt="FDA" class="h-10" />
+<!-- HEADER -->
+<nav class="fixed w-full z-50 bg-white shadow">
+  <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="location.href='index.html'">
+      <img src="images/v5logo.png" class="h-12" alt="V5 Medical" />
+      <div>
+        <div class="font-bold text-xl text-blue-900">V5 Medical LTD</div>
+        <div class="text-xs text-blue-600">Global Medical Supplier</div>
       </div>
     </div>
-
-    <div class="mt-8">
-      <a href="contact.html" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">Request Quotation</a>
+    <div class="hidden md:flex gap-8 items-center">
+      <a href="index.html">Home</a>
+      <a href="catalog.html">Products</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 text-white px-5 py-2 rounded-full font-semibold">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+      </a>
     </div>
   </div>
+</nav>
+
+<!-- MAIN -->
+<main class="pt-32 pb-20">
+  <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12">
+
+    <!-- IMAGE -->
+    <div>
+      <img id="product-image" src="images/products/placeholder.jpg" class="rounded-xl shadow" alt="Product Image" />
+    </div>
+
+    <!-- INFO -->
+    <div>
+      <h1 id="product-name" class="text-4xl font-bold mb-4"></h1>
+      <p id="product-short" class="text-gray-600 mb-6"></p>
+
+      <ul id="product-highlights" class="space-y-2 mb-8"></ul>
+
+      <div class="flex gap-4 mb-10">
+        <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 text-white px-8 py-4 rounded-full font-bold text-lg">
+          <i class="fab fa-whatsapp"></i> Get Price Now
+        </a>
+        <a href="contact.html" class="border border-blue-600 text-blue-600 px-8 py-4 rounded-full font-bold">Email Inquiry</a>
+      </div>
+
+      <!-- CERT -->
+      <div class="flex gap-6 items-center">
+        <img src="images/quality/ce-mark.png" class="h-12" alt="CE" />
+        <img src="images/quality/iso13485-2016.jpg" class="h-12" alt="ISO 13485" />
+        <img src="images/quality/fda.jpg" class="h-12" alt="FDA" />
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAILS -->
+  <section class="mt-24 bg-white py-16">
+    <div class="max-w-5xl mx-auto px-4">
+      <h2 class="text-3xl font-bold mb-6">Product Description</h2>
+      <div id="product-description" class="prose max-w-none"></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="mt-24">
+    <div class="max-w-5xl mx-auto px-4">
+      <h2 class="text-3xl font-bold mb-8">Frequently Asked Questions</h2>
+      <div id="product-faq" class="space-y-4"></div>
+    </div>
+  </section>
+
 </main>
 
-<section class="max-w-7xl mx-auto p-6">
-  <h2 class="text-xl font-bold mb-4">Related Products</h2>
-  <div id="related-products" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"></div>
-</section>
-
-<section class="max-w-7xl mx-auto p-6">
-  <h2 class="text-xl font-bold mb-4">Specifications</h2>
-  <table id="product-specs" class="w-full border text-sm"></table>
-</section>
-
-<section class="max-w-7xl mx-auto p-6">
-  <h2 class="text-xl font-bold mb-4">Frequently Asked Questions</h2>
-  <div id="product-faq" class="space-y-4"></div>
-</section>
+<!-- FOOTER -->
+<footer class="bg-gray-900 text-white py-12 text-center text-sm text-gray-400">
+  © 2025 V5 Medical LTD. All rights reserved.
+</footer>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const id = params.get('product');
-const product = finalProductDatabase[id];
-
-// FAQ fallback templates by category
-const faqTemplates = {
-  'Surgical Sutures': [
-    { q: 'Is this suture absorbable?', a: p => p.absorbable ? 'Yes, this is an absorbable surgical suture.' : 'No, this is a non-absorbable surgical suture.' },
-    { q: 'What certifications does this product have?', a: () => 'This product is manufactured under ISO 13485 quality system and complies with CE and FDA requirements.' },
-    { q: 'Can you provide OEM or private labeling?', a: () => 'Yes, OEM and private label services are available based on order quantity.' }
-  ],
-  'Syringes': [
-    { q: 'Is this syringe sterile?', a: () => 'Yes, the syringe is EO sterilized and supplied in sterile packaging.' },
-    { q: 'What materials are used?', a: p => `The syringe is made from ${p.material || 'medical-grade plastic'}.` },
-    { q: 'Can you customize packaging?', a: () => 'Yes, OEM packaging and branding are available.' }
-  ],
-  'Protective Equipment': [
-    { q: 'Is this product disposable?', a: () => 'Yes, this product is designed for single use.' },
-    { q: 'Does it meet international standards?', a: () => 'Yes, it complies with relevant CE and ISO standards.' },
-    { q: 'What is the MOQ?', a: () => 'MOQ depends on specification and packaging requirements.' }
-  ]
+// ================= PRODUCT DATABASE (赚钱优先示例) =================
+const productDB = {
+  'pga-suture': {
+    name: 'PGA Absorbable Surgical Suture',
+    short: 'High tensile strength absorbable suture for general surgery.',
+    image: 'images/products/SURGICAL SUTURE KIT.jpg',
+    highlights: [
+      'Absorbable PGA material',
+      'Smooth tissue passage',
+      'ISO 13485, CE, FDA approved',
+      'OEM & private label available'
+    ],
+    description: `
+      <p>PGA absorbable surgical sutures are widely used in general surgery, gynecology, orthopedics, and other clinical procedures.</p>
+      <p>Manufactured under strict ISO 13485 quality systems, our PGA sutures provide predictable absorption and reliable knot security.</p>
+      <p>Available in multiple USP sizes with various needle types. OEM packaging and branding supported.</p>
+    `,
+    faq: [
+      ['What is the absorption time?', 'Complete absorption occurs within 60–90 days.'],
+      ['Do you support OEM?', 'Yes, OEM and private labeling are fully supported.'],
+      ['What certifications do you have?', 'CE, ISO 13485 and FDA.']
+    ],
+    seo: {
+      title: 'PGA Absorbable Surgical Suture Manufacturer | V5 Medical',
+      description: 'ISO 13485, CE, FDA certified PGA absorbable surgical sutures. Factory direct supplier with OEM service.'
+    }
+  }
 };
+
+// ================= RENDER ENGINE =================
+const params = new URLSearchParams(window.location.search);
+const key = params.get('product');
+const product = productDB[key];
 
 if (!product) {
-  document.body.innerHTML = '<div class="p-12 text-center"><h1 class="text-2xl font-bold">Product Not Found</h1><a href="catalog.html" class="text-blue-600">Back to catalog</a></div>';
-  throw new Error('Product not found');
+  location.href = 'catalog.html';
 }
 
-// SEO
-const fullTitle = `${product.name} | ${product.categoryName} | V5 Medical LTD`;
-document.title = fullTitle;
-document.getElementById('meta-title').textContent = fullTitle;
-document.getElementById('meta-description').setAttribute('content', product.seoDescription);
-document.getElementById('canonical-url').href = `https://v5md.com/product-detail.html?product=${id}`;
-
-document.getElementById('og-title').content = fullTitle;
-document.getElementById('og-description').content = product.seoDescription;
-document.getElementById('og-image').content = product.image;
-
-// Content
+// Inject content
 document.getElementById('product-name').textContent = product.name;
-document.getElementById('product-subtitle').textContent = product.subtitle || '';
+document.getElementById('product-short').textContent = product.short;
 document.getElementById('product-image').src = product.image;
-document.getElementById('product-image').alt = product.name;
-document.getElementById('product-description').textContent = product.description;
 
-// Features
-const featureList = document.getElementById('product-features');
-product.features.forEach(f => {
+// Highlights
+const hl = document.getElementById('product-highlights');
+product.highlights.forEach(h => {
   const li = document.createElement('li');
-  li.textContent = f;
-  featureList.appendChild(li);
+  li.innerHTML = '✔ ' + h;
+  hl.appendChild(li);
 });
 
-// Specs
-const specsTable = document.getElementById('product-specs');
-Object.entries(product.specs).forEach(([k, v]) => {
-  const row = `<tr><td class="border px-3 py-2 font-semibold">${k}</td><td class="border px-3 py-2">${v}</td></tr>`;
-  specsTable.insertAdjacentHTML('beforeend', row);
-});
-
-// Related Products
-const relatedContainer = document.getElementById('related-products');
-
-const related = Object.values(finalProductDatabase)
-  .filter(p => p.id !== product.id && p.category === product.category)
-  .slice(0, 4);
-
-related.forEach(p => {
-  const card = document.createElement('a');
-  card.href = `product-detail.html?product=${p.id}`;
-  card.className = 'block border rounded-lg p-4 hover:shadow';
-  card.innerHTML = `
-    <img src="${p.image}" alt="${p.name}" class="h-32 w-full object-contain mb-2" />
-    <h3 class="font-semibold text-sm">${p.name}</h3>
-  `;
-  relatedContainer.appendChild(card);
-});
+// Description
+document.getElementById('product-description').innerHTML = product.description;
 
 // FAQ
-const faqContainer = document.getElementById('product-faq');
-const faqSchema = [];
+const faqBox = document.getElementById('product-faq');
+product.faq.forEach(([q, a]) => {
+  const div = document.createElement('div');
+  div.className = 'bg-white p-4 rounded shadow';
+  div.innerHTML = `<strong>${q}</strong><p class="mt-2">${a}</p>`;
+  faqBox.appendChild(div);
+});
 
-const finalFAQ = (product.faq && product.faq.length)
-  ? product.faq
-  : (faqTemplates[product.category] || []).map(t => ({ q: t.q, a: typeof t.a === 'function' ? t.a(product) : t.a }));
-
-if (finalFAQ.length) {
-  finalFAQ.forEach(item => {
-    const block = document.createElement('div');
-    block.innerHTML = `<p class="font-semibold">Q: ${item.q}</p><p class="text-gray-700 mt-1">A: ${item.a}</p>`;
-    faqContainer.appendChild(block);
-
-    faqSchema.push({
-      "@type": "Question",
-      "name": item.q,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": item.a
-      }
-    });
-  });
-}
-
-// Schema
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": product.name,
-  "image": product.image,
-  "description": product.seoDescription,
-  "brand": { "@type": "Brand", "name": "V5 Medical LTD" }
-};
-
-const schemas = [schema];
-
-if (faqSchema.length) {
-  schemas.push({
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqSchema
-  });
-}
-
-document.getElementById('schema-product').textContent = JSON.stringify(schemas);
+// SEO
+document.getElementById('meta-title').textContent = product.seo.title;
+document.getElementById('meta-description').setAttribute('content', product.seo.description);
+document.getElementById('canonical-link').href = `https://v5md.com/product-detail.html?product=${key}`;
+document.getElementById('og-title').content = product.seo.title;
+document.getElementById('og-description').content = product.seo.description;
+document.getElementById('og-url').content = `https://v5md.com/product-detail.html?product=${key}`;
 </script>
 
 </body>
