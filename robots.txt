@@ -1,15 +1,121 @@
-# Apply to all search engine bots (Google, Bing, Baidu, Yandex, etc.)
+V5 Medical LTD Robots.txt File
+Last Updated: 2024-12-11
+Website: https://v5md.com
+------------------------------
+GLOBAL SETTINGS
+------------------------------
 User-agent: *
-
-# Allow crawling of the entire site
 Allow: /
-
-# Allow crawling of images and PDFs (Important for B2B catalogs)
 Allow: /images/
 Allow: /pdf/
-
-# Block specific Cloudflare system paths (Save crawl budget)
 Disallow: /cdn-cgi/
-
-# Identify the Sitemap location (Crucial for SEO)
+Block admin and system directories
+Disallow: /admin/
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /cgi-bin/
+Disallow: /phpmyadmin/
+Block temporary and backup files
+Disallow: /.tmp\(
+Disallow: /*.bak\)
+Disallow: /.old\(
+Disallow: /*.swp\)
+Block sensitive files
+Disallow: /robots.txt
+Disallow: /sitemap.xml
+Disallow: /security.txt
+Disallow: /humans.txt
+------------------------------
+SPECIFIC SEARCH ENGINE SETTINGS
+------------------------------
+Googlebot (Google Search)
+User-agent: Googlebot
+Allow: /
+Allow: /images/
+Allow: /pdf/
+Disallow: /cdn-cgi/
+Crawl-delay: 10
+Host: https://v5md.com
 Sitemap: https://v5md.com/sitemap.xml
+Googlebot-Image (Google Images)
+User-agent: Googlebot-Image
+Allow: /images/
+Allow: /pdf/
+Disallow: /cdn-cgi/
+Crawl-delay: 15
+Bingbot (Bing Search)
+User-agent: Bingbot
+Allow: /
+Allow: /images/
+Allow: /pdf/
+Disallow: /cdn-cgi/
+Crawl-delay: 10
+Host: https://v5md.com
+Sitemap: https://v5md.com/sitemap.xml
+Baiduspider (Baidu Search)
+User-agent: Baiduspider
+Allow: /
+Allow: /images/
+Allow: /pdf/
+Disallow: /cdn-cgi/
+Crawl-delay: 15
+Host: https://v5md.com
+Sitemap: https://v5md.com/sitemap.xml
+YandexBot (Yandex Search)
+User-agent: YandexBot
+Allow: /
+Allow: /images/
+Allow: /pdf/
+Disallow: /cdn-cgi/
+Crawl-delay: 15
+Host: https://v5md.com
+Sitemap: https://v5md.com/sitemap.xml
+DuckDuckBot (DuckDuckGo)
+User-agent: DuckDuckBot
+Allow: /
+Allow: /images/
+Allow: /pdf/
+Disallow: /cdn-cgi/
+Crawl-delay: 20
+------------------------------
+MOBILE AND AMP SETTINGS
+------------------------------
+User-agent: Googlebot-Mobile
+Allow: /
+Allow: /images/
+Allow: /pdf/
+Disallow: /cdn-cgi/
+Crawl-delay: 15
+User-agent: Baiduspider-mobile
+Allow: /
+Allow: /images/
+Allow: /pdf/
+Disallow: /cdn-cgi/
+Crawl-delay: 15
+------------------------------
+SPECIAL INSTRUCTIONS
+------------------------------
+Allow Google to index JavaScript and CSS
+User-agent: Googlebot
+Allow: /*.js\(
+Allow: /*.css\)
+Allow Google to index AJAX content (for SPAs)
+User-agent: Googlebot
+Allow: /*?escaped_fragment=
+------------------------------
+SITEMAP INFORMATION
+------------------------------
+Sitemap: https://v5md.com/sitemap.xml
+Sitemap: https://v5md.com/sitemap-images.xml
+Sitemap: https://v5md.com/sitemap-videos.xml
+------------------------------
+WEBMASTER INFORMATION
+------------------------------
+Contact: webmaster@v5md.com
+Host: https://v5md.com
+Preferred domain: https://v5md.com
+------------------------------
+SECURITY HEADERS (for reference)
+------------------------------
+X-Robots-Tag: noindex, nofollow (for specific pages)
+X-Robots-Tag: noarchive (to prevent caching)
