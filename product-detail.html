@@ -66,6 +66,11 @@
   <table id="product-specs" class="w-full border text-sm"></table>
 </section>
 
+<section class="max-w-7xl mx-auto p-6">
+  <h2 class="text-xl font-bold mb-4">Frequently Asked Questions</h2>
+  <div id="product-faq" class="space-y-4"></div>
+</section>
+
 <script>
 const params = new URLSearchParams(window.location.search);
 const id = params.get('product');
@@ -109,6 +114,27 @@ Object.entries(product.specs).forEach(([k, v]) => {
   specsTable.insertAdjacentHTML('beforeend', row);
 });
 
+// FAQ
+const faqContainer = document.getElementById('product-faq');
+const faqSchema = [];
+
+if (product.faq && product.faq.length) {
+  product.faq.forEach(item => {
+    const block = document.createElement('div');
+    block.innerHTML = `<p class="font-semibold">Q: ${item.q}</p><p class="text-gray-700 mt-1">A: ${item.a}</p>`;
+    faqContainer.appendChild(block);
+
+    faqSchema.push({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a
+      }
+    });
+  });
+}
+
 // Schema
 const schema = {
   "@context": "https://schema.org",
@@ -119,7 +145,17 @@ const schema = {
   "brand": { "@type": "Brand", "name": "V5 Medical LTD" }
 };
 
-document.getElementById('schema-product').textContent = JSON.stringify(schema);
+const schemas = [schema];
+
+if (faqSchema.length) {
+  schemas.push({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqSchema
+  });
+}
+
+document.getElementById('schema-product').textContent = JSON.stringify(schemas);
 </script>
 
 </body>
