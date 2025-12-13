@@ -2,115 +2,128 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Product Catalog | V5 Medical LTD</title>
-  <meta name="description" content="Complete product catalog of V5 Medical LTD. Surgical sutures, medical consumables, protective equipment and dental products." />
+  <title>Medical Consumables Catalog | V5 Medical LTD</title>
+  <meta name="description" content="Browse medical consumables catalog including surgical sutures, syringes, protective equipment and disposable medical supplies. OEM supported. CE, FDA, ISO 13485." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="index, follow" />
 
-  <!-- Tailwind CSS -->
+  <!-- Canonical -->
+  <link rel="canonical" href="https://v5md.com/catalog.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Medical Consumables Catalog | V5 Medical LTD" />
+  <meta property="og:description" content="Certified medical consumables manufacturer and supplier. Surgical sutures, syringes, PPE and more." />
+  <meta property="og:image" content="https://v5md.com/images/v5medlogo.png" />
+
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
-  <!-- Product Database -->
   <script src="js/products.js"></script>
-
-  <script>
-    function getParam(name) {
-      return new URLSearchParams(window.location.search).get(name);
-    }
-
-    function renderCatalog() {
-      const grid = document.getElementById('product-grid');
-      const countEl = document.getElementById('product-count');
-
-      const category = getParam('category');
-      const keyword = (getParam('search') || '').toLowerCase();
-
-      const products = Object.values(finalProductDatabase)
-        .filter(p => {
-          if (category && p.category !== category) return false;
-          if (keyword && !p.name.toLowerCase().includes(keyword)) return false;
-          return true;
-        })
-        .sort((a, b) => a.name.localeCompare(b.name));
-
-      if (products.length === 0) {
-        grid.innerHTML = `<div class="col-span-full text-center text-gray-500">No products found.</div>`;
-        countEl.textContent = '0';
-        return;
-      }
-
-      grid.innerHTML = products.map(p => `
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition overflow-hidden flex flex-col">
-          <div class="h-48 bg-gray-100">
-            <img src="${p.images?.[0] || 'images/products/default-product.jpg'}"
-                 alt="${p.name}"
-                 class="w-full h-full object-cover" />
-          </div>
-
-          <div class="p-5 flex flex-col flex-1">
-            <span class="text-xs font-semibold text-blue-600">${p.category}</span>
-            <h3 class="text-lg font-bold mt-1">${p.name}</h3>
-            ${p.chineseName ? `<p class="text-sm text-gray-500">${p.chineseName}</p>` : ''}
-
-            <div class="mt-auto pt-4">
-              <a href="product-detail.html?product=${p.id}"
-                 class="block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg">
-                View Details
-              </a>
-            </div>
-          </div>
-        </div>
-      `).join('');
-
-      countEl.textContent = products.length;
-    }
-
-    document.addEventListener('DOMContentLoaded', renderCatalog);
-  </script>
 </head>
-
 <body class="bg-gray-50 text-gray-800">
 
-  <!-- Header -->
-  <header class="bg-blue-900 text-white py-12">
-    <div class="max-w-7xl mx-auto px-4">
-      <h1 class="text-4xl font-bold">Product Catalog</h1>
-      <p class="text-blue-200 mt-2">ISO 13485 • CE • FDA Certified Medical Products</p>
+<!-- Header -->
+<header class="bg-blue-900 text-white">
+  <div class="max-w-7xl mx-auto px-6 py-6">
+    <h1 class="text-3xl font-bold">Medical Consumables Catalog</h1>
+    <p class="text-blue-200 mt-1">ISO 13485 · CE · FDA Certified Manufacturer & Supplier</p>
+    <div class="mt-4 flex gap-3 flex-wrap">
+      <a href="contact.html" class="bg-green-500 px-4 py-2 rounded text-white font-semibold">Request Quotation</a>
+      <a href="https://wa.me/8617801350225" class="bg-white text-blue-900 px-4 py-2 rounded font-semibold">WhatsApp Inquiry</a>
     </div>
-  </header>
+  </div>
+</header>
 
-  <!-- Main -->
-  <main class="max-w-7xl mx-auto px-4 py-10">
+<!-- Category Navigation -->
+<nav class="bg-white shadow">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex gap-4 flex-wrap" id="category-nav"></div>
+</nav>
 
-    <!-- Filters -->
-    <div class="flex flex-wrap gap-3 mb-8">
-      <a href="catalog.html" class="px-4 py-2 rounded-full bg-gray-200 font-semibold">All</a>
-      <a href="catalog.html?category=Surgical Sutures" class="px-4 py-2 rounded-full bg-blue-100 text-blue-800">Surgical Sutures</a>
-      <a href="catalog.html?category=Surgical Instruments" class="px-4 py-2 rounded-full bg-blue-100 text-blue-800">Surgical Instruments</a>
-      <a href="catalog.html?category=Gauze Dressings" class="px-4 py-2 rounded-full bg-blue-100 text-blue-800">Gauze & Dressings</a>
-      <a href="catalog.html?category=Protective Equipment" class="px-4 py-2 rounded-full bg-blue-100 text-blue-800">Protective Equipment</a>
-      <a href="catalog.html?category=Injection & Infusion" class="px-4 py-2 rounded-full bg-blue-100 text-blue-800">Injection & Infusion</a>
-      <a href="catalog.html?category=Dental Products" class="px-4 py-2 rounded-full bg-blue-100 text-blue-800">Dental Products</a>
+<!-- Product List -->
+<main class="max-w-7xl mx-auto px-6 py-10">
+  <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+</main>
+
+<!-- SEO Category Text -->
+<section id="category-seo" class="max-w-7xl mx-auto px-6 py-10">
+  <h2 id="category-seo-title" class="text-2xl font-bold mb-4"></h2>
+  <div id="category-seo-text" class="prose max-w-none text-gray-700"></div>
+</section>
+
+<!-- Footer CTA -->
+<section class="bg-blue-900 text-white">
+  <div class="max-w-7xl mx-auto px-6 py-10 text-center">
+    <h2 class="text-2xl font-bold">Looking for a Reliable Medical Supplier?</h2>
+    <p class="mt-2 text-blue-200">Contact V5 Medical for fast quotation and OEM solutions.</p>
+    <div class="mt-6 flex justify-center gap-4 flex-wrap">
+      <a href="contact.html" class="bg-green-500 px-6 py-3 rounded font-semibold">Get Quotation</a>
+      <a href="https://wa.me/8617801350225" class="bg-white text-blue-900 px-6 py-3 rounded font-semibold">WhatsApp Now</a>
     </div>
+  </div>
+</section>
 
-    <!-- Result Count -->
-    <div class="text-sm text-gray-500 mb-4">
-      Showing <span id="product-count">0</span> products
-    </div>
+<script>
+// ===== Utilities =====
+const params = new URLSearchParams(window.location.search);
+const currentCategory = params.get('category');
 
-    <!-- Product Grid -->
-    <div id="product-grid" class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"></div>
+// ===== Render Categories =====
+const categories = [...new Set(Object.values(finalProductDatabase).map(p => p.category))];
+const nav = document.getElementById('category-nav');
 
-  </main>
+const allBtn = document.createElement('a');
+allBtn.href = 'catalog.html';
+allBtn.textContent = 'All Products';
+allBtn.className = !currentCategory ? 'font-bold text-blue-700' : 'text-gray-600';
+nav.appendChild(allBtn);
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-gray-400 py-8">
-    <div class="max-w-7xl mx-auto px-4 text-center text-sm">
-      © 2025 V5 Medical LTD. All rights reserved.
-    </div>
-  </footer>
+categories.forEach(cat => {
+  const a = document.createElement('a');
+  a.href = `catalog.html?category=${encodeURIComponent(cat)}`;
+  a.textContent = cat;
+  a.className = currentCategory === cat ? 'font-bold text-blue-700' : 'text-gray-600';
+  nav.appendChild(a);
+});
+
+// ===== Render Products =====
+const grid = document.getElementById('product-grid');
+Object.values(finalProductDatabase)
+  .filter(p => !currentCategory || p.category === currentCategory)
+  .forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'bg-white rounded shadow hover:shadow-lg transition';
+    card.innerHTML = `
+      <img src="${p.image}" alt="${p.name}" class="h-48 w-full object-contain p-4" />
+      <div class="p-4">
+        <h3 class="font-semibold text-sm mb-2">${p.name}</h3>
+        <a href="product-detail.html?product=${p.id}" class="inline-block text-blue-600 font-semibold">View Details →</a>
+      </div>`;
+    grid.appendChild(card);
+  });
+
+// ===== Category SEO Text =====
+const categorySeoTemplates = {
+  'Surgical Sutures': () => `
+    <p>Surgical sutures are critical medical consumables used for wound closure in various surgical procedures. V5 Medical supplies a comprehensive range of absorbable and non-absorbable surgical sutures manufactured under ISO 13485 quality systems.</p>
+    <p>Our surgical sutures include materials such as PGA, PGLA, PDO, silk, nylon, and polypropylene, designed to provide reliable tensile strength and predictable performance.</p>
+    <p>All products comply with CE and FDA requirements, and OEM or private labeling services are available for distributors and healthcare institutions worldwide.</p>
+  `,
+  'Syringes': () => `
+    <p>Disposable medical syringes are widely used in hospitals, clinics, and laboratories for injection and aspiration. V5 Medical offers EO sterilized syringes manufactured from medical-grade materials.</p>
+    <p>Our syringes provide clear graduation marks, smooth plunger action, and secure needle connections.</p>
+    <p>OEM branding and customized packaging solutions are available.</p>
+  `,
+  'Protective Equipment': () => `
+    <p>Medical protective equipment is essential for infection control and healthcare safety. V5 Medical supplies masks, gowns, caps, and shoe covers meeting international standards.</p>
+    <p>Our products are suitable for hospitals, laboratories, and cleanroom environments.</p>
+    <p>Bulk supply and private label options are supported.</p>
+  `
+};
+
+if (currentCategory && categorySeoTemplates[currentCategory]) {
+  document.getElementById('category-seo-title').textContent = `${currentCategory} Manufacturer & Supplier`;
+  document.getElementById('category-seo-text').innerHTML = categorySeoTemplates[currentCategory]();
+}
+</script>
 
 </body>
 </html>
