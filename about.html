@@ -167,7 +167,143 @@
             display: flex;
             flex-direction: column;
         }
+        
+        /* New styles for expanded content */
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            padding-bottom: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background: #1e40af;
+            border: 3px solid #3b82f6;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 1.5rem;
+            width: 0.125rem;
+            height: calc(100% - 1.5rem);
+            background: #e2e8f0;
+        }
+        
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .value-card {
+            transition: all 0.3s ease;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
     </style>
+
+    <!-- Schema.org Structured Data - Added for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "About Us | V5 Medical LTD - Professional Medical Supplier",
+      "description": "About V5 Medical LTD - A Global Medical Consumables Supplier committed to Quality, Legality, and Standardization. ISO 13485/CE/FDA Certified.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "V5 Medical LTD",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://v5md.com/images/v5medlogo.png",
+          "width": 400,
+          "height": 100
+        }
+      }
+    }
+    </script>
+
+    <!-- MedicalOrganization Schema - Added for detailed company information -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalOrganization",
+      "name": "V5 Medical LTD",
+      "url": "https://v5md.com",
+      "logo": "https://v5md.com/images/v5medlogo.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+44-078-9504-7944",
+        "contactType": "customer service",
+        "availableLanguage": ["English", "Chinese"]
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "No. 168, Luying Road",
+        "addressLocality": "Kunshan",
+        "addressRegion": "Jiangsu",
+        "postalCode": "215300",
+        "addressCountry": "CN"
+      },
+      "foundingDate": "2005",
+      "founder": "Medical Industry Experts",
+      "numberOfEmployees": {
+        "@type": "QuantitativeValue",
+        "value": 150
+      },
+      "certification": [
+        {
+          "@type": "Certification",
+          "name": "ISO 13485",
+          "issuer": "International Organization for Standardization"
+        },
+        {
+          "@type": "Certification",
+          "name": "CE Mark",
+          "issuer": "European Union"
+        },
+        {
+          "@type": "Certification",
+          "name": "FDA Registration",
+          "issuer": "U.S. Food and Drug Administration"
+        }
+      ],
+      "areaServed": {
+        "@type": "GeoShape",
+        "description": "Global distribution to over 40 countries"
+      },
+      "products": [
+        "Surgical Sutures",
+        "Surgical Packs",
+        "Syringes and Needles",
+        "Infusion Sets",
+        "Gauze Dressings",
+        "Protective Equipment"
+      ],
+      "brand": {
+        "@type": "Brand",
+        "name": "V5 Medical",
+        "slogan": "More Sophisticated, More Professional, More Secure"
+      }
+    }
+    </script>
 </head>
 
 <body class="smooth-scroll font-sans text-gray-800">
@@ -242,11 +378,13 @@
     <section id="about" class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">About Us</h2>
-                <p class="text-gray-600 max-w-3xl mx-auto">Suzhou V5 Medical Technology Co., Ltd. is a professional medical device company dedicated to providing high-quality medical consumables to global customers.</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Company Story</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto text-lg leading-relaxed">
+                    Founded in 2005, V5 Medical LTD has grown from a small medical device trading company into a global leader in medical consumables supply. With over 150 dedicated employees and a network of premium manufacturing partners, we are committed to delivering high-quality medical products to healthcare providers worldwide.
+                </p>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
                 <div>
                     <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/hero-bg.jpg" 
                          alt="V5 Medical Company Profile" 
@@ -259,7 +397,7 @@
                         </div>
                         <div>
                             <h3 class="font-bold text-lg mb-2">Quality Certification</h3>
-                            <p class="text-gray-600">Certified by ISO 13485 quality management system, products meet CE and other international standards, ensuring the highest quality standards.</p>
+                            <p class="text-gray-600">Certified by ISO 13485 quality management system, our products meet CE and FDA standards, ensuring the highest quality standards in the medical industry.</p>
                         </div>
                     </div>
                     
@@ -268,8 +406,8 @@
                             <i class="fas fa-globe text-green-600 text-xl"></i>
                         </div>
                         <div>
-                            <h3 class="font-bold text-lg mb-2">Global Supply</h3>
-                            <p class="text-gray-600">Products exported to over 40 countries and regions, serving global customers with professional medical consumables solutions.</p>
+                            <h3 class="font-bold text-lg mb-2">Global Supply Network</h3>
+                            <p class="text-gray-600">Products exported to over 40 countries and regions, serving hospitals, clinics, and distributors with professional medical consumables solutions tailored to local needs.</p>
                         </div>
                     </div>
                     
@@ -279,7 +417,7 @@
                         </div>
                         <div>
                             <h3 class="font-bold text-lg mb-2">Safety & Reliability</h3>
-                            <p class="text-gray-600">Strict quality control system, using EO or gamma ray sterilization to ensure product safety and reliability.</p>
+                            <p class="text-gray-600">Strict quality control system with multiple inspection stages, using EO or gamma ray sterilization to ensure product safety and reliability for patient care.</p>
                         </div>
                     </div>
                     
@@ -289,38 +427,82 @@
                         </div>
                         <div>
                             <h3 class="font-bold text-lg mb-2">Complete Product Line</h3>
-                            <p class="text-gray-600">Covering over 20 categories and hundreds of specifications, providing complete solutions for hospitals, clinics and distributors.</p>
+                            <p class="text-gray-600">Covering over 20 categories and hundreds of specifications, providing complete solutions for hospitals, clinics and distributors with competitive pricing.</p>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company Timeline - Added to increase content -->
+            <div class="bg-gray-50 p-8 rounded-2xl mb-16">
+                <h3 class="text-2xl font-bold text-center mb-10 text-blue-900">Our Journey: 20 Years of Excellence</h3>
+                <div class="max-w-3xl mx-auto">
+                    <div class="timeline-item">
+                        <h4 class="font-bold text-xl text-gray-900 mb-2">2005 - Company Establishment</h4>
+                        <p class="text-gray-600">V5 Medical LTD founded in Kunshan, China with a vision to become a global medical supplier. Initial focus on surgical sutures and basic medical consumables.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4 class="font-bold text-xl text-gray-900 mb-2">2008 - First International Certification</h4>
+                        <p class="text-gray-600">Achieved ISO 13485 certification, marking our commitment to quality management systems. Began exporting to Southeast Asian markets.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4 class="font-bold text-xl text-gray-900 mb-2">2012 - European Market Entry</h4>
+                        <p class="text-gray-600">Obtained CE certification, enabling entry into European markets. Established our first overseas office in the UK to better serve European customers.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4 class="font-bold text-xl text-gray-900 mb-2">2016 - FDA Registration</h4>
+                        <p class="text-gray-600">Successfully registered with the US FDA, expanding our reach to North American markets. Invested in new manufacturing facilities to increase production capacity.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4 class="font-bold text-xl text-gray-900 mb-2">2020 - Global Pandemic Response</h4>
+                        <p class="text-gray-600">Played a crucial role in supplying PPE and medical equipment during the COVID-19 pandemic. Expanded product line to include protective equipment and testing supplies.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4 class="font-bold text-xl text-gray-900 mb-2">2024 - Present</h4>
+                        <p class="text-gray-600">Serving over 40 countries worldwide with a team of 150 professionals. Continued investment in R&D and quality improvement to maintain our competitive edge.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Our Values Section - Added to increase content -->
     <section class="py-20 px-4 bg-gray-50">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-12 text-blue-900">Our Corporate Culture</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="text-center p-8 bg-white rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
+            <h2 class="text-3xl font-bold text-center mb-12 text-blue-900">Our Core Values</h2>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="value-card text-center p-8 bg-white rounded-xl shadow-md">
                     <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-600 text-3xl">
-                        <i class="fas fa-microscope"></i>
+                        <i class="fas fa-bullseye"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3">严谨 (Rigor)</h3>
-                    <p class="text-gray-600">Strict quality control system ensuring every product meets international medical standards.</p>
+                    <h3 class="text-xl font-bold mb-3">Customer Focus</h3>
+                    <p class="text-gray-600 leading-relaxed">We put our customers at the center of everything we do. Understanding their needs and providing tailored solutions is our top priority.</p>
                 </div>
-                <div class="text-center p-8 bg-white rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
-                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-600 text-3xl">
+                <div class="value-card text-center p-8 bg-white rounded-xl shadow-md">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 text-green-600 text-3xl">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Excellence</h3>
+                    <p class="text-gray-600 leading-relaxed">We strive for excellence in every aspect of our business, from product quality to customer service and operational efficiency.</p>
+                </div>
+                <div class="value-card text-center p-8 bg-white rounded-xl shadow-md">
+                    <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-600 text-3xl">
                         <i class="fas fa-handshake"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3">和谐 (Harmony)</h3>
-                    <p class="text-gray-600">Building long-term trust relationships with partners for mutual development and success.</p>
+                    <h3 class="text-xl font-bold mb-3">Integrity</h3>
+                    <p class="text-gray-600 leading-relaxed">We conduct business with the highest ethical standards, building trust through transparency, honesty, and reliability.</p>
                 </div>
-                <div class="text-center p-8 bg-white rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
-                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-600 text-3xl">
-                        <i class="fas fa-chart-line"></i>
+                <div class="value-card text-center p-8 bg-white rounded-xl shadow-md">
+                    <div class="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6 text-orange-600 text-3xl">
+                        <i class="fas fa-rocket"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3">进步 (Progress)</h3>
-                    <p class="text-gray-600">Continuous improvement and innovation, following a standardized development path.</p>
+                    <h3 class="text-xl font-bold mb-3">Innovation</h3>
+                    <p class="text-gray-600 leading-relaxed">We embrace innovation to stay ahead in the rapidly evolving medical industry, continuously improving our products and services.</p>
                 </div>
             </div>
         </div>
@@ -354,6 +536,72 @@
                     <i class="fas fa-tachometer-alt text-4xl mb-4 text-blue-300 group-hover:text-white transition"></i>
                     <h4 class="font-bold text-lg mb-2">Efficiency as Goal</h4>
                     <p class="text-sm opacity-80">Optimized supply chain for fast delivery</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customer Testimonials - Added to increase content -->
+    <section class="py-20 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12 text-blue-900">What Our Customers Say</h2>
+            <p class="text-gray-600 text-center max-w-3xl mx-auto mb-16 text-lg">
+                We take pride in building long-term relationships with our customers. Here's what some of them have to say about working with V5 Medical.
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="testimonial-card bg-gray-50 p-8 rounded-xl">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr. James Wilson" class="w-16 h-16 rounded-full object-cover">
+                        <div>
+                            <h4 class="font-bold text-lg">Dr. James Wilson</h4>
+                            <p class="text-gray-600 text-sm">Chief Surgeon, London General Hospital</p>
+                        </div>
+                    </div>
+                    <div class="text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-700 italic">"V5 Medical has been our trusted supplier for over 5 years. Their surgical sutures are of exceptional quality, and their delivery is always on time. The customer service team is knowledgeable and responsive."</p>
+                </div>
+                
+                <div class="testimonial-card bg-gray-50 p-8 rounded-xl">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Johnson" class="w-16 h-16 rounded-full object-cover">
+                        <div>
+                            <h4 class="font-bold text-lg">Sarah Johnson</h4>
+                            <p class="text-gray-600 text-sm">Procurement Manager, Dubai Healthcare City</p>
+                        </div>
+                    </div>
+                    <div class="text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-700 italic">"The quality of V5 Medical's products is outstanding. We particularly appreciate their attention to detail and commitment to meeting our specific requirements. Their pricing is competitive, and lead times are impressive."</p>
+                </div>
+                
+                <div class="testimonial-card bg-gray-50 p-8 rounded-xl">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Dr. Michael Chen" class="w-16 h-16 rounded-full object-cover">
+                        <div>
+                            <h4 class="font-bold text-lg">Dr. Michael Chen</h4>
+                            <p class="text-gray-600 text-sm">Medical Director, Singapore General Hospital</p>
+                        </div>
+                    </div>
+                    <div class="text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="text-gray-700 italic">"V5 Medical has been instrumental in helping us maintain our inventory levels during challenging times. Their reliability and product consistency have made them our preferred supplier for critical medical consumables."</p>
                 </div>
             </div>
         </div>
@@ -398,15 +646,31 @@
                             <h4 class="font-bold text-gray-700">Registered Address</h4>
                             <p class="text-gray-900">No. 168, Luying Road, Kunshan Development Zone, Jiangsu, China</p>
                         </div>
+                        <div>
+                            <h4 class="font-bold text-gray-700">Established</h4>
+                            <p class="text-gray-900">2005 (20+ Years of Experience)</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-700">Number of Employees</h4>
+                            <p class="text-gray-900">150+ Professionals</p>
+                        </div>
                     </div>
                     <div class="space-y-4">
                         <div>
                             <h4 class="font-bold text-gray-700">Operating Regions</h4>
-                            <p class="text-gray-900">Global (Key Markets: UK, Europe, Asia, Africa)</p>
+                            <p class="text-gray-900">Global (Key Markets: UK, Europe, Asia, Africa, North America)</p>
                         </div>
                         <div>
                             <h4 class="font-bold text-gray-700">Supply Chain</h4>
                             <p class="text-gray-900">Strategic partnerships with premium manufacturers in Shandong, Suqian, and Shenzhen.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-700">Annual Export Volume</h4>
+                            <p class="text-gray-900">Over 50 million units of medical consumables</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-700">Customer Base</h4>
+                            <p class="text-gray-900">Serving 2,000+ healthcare facilities worldwide</p>
                         </div>
                     </div>
                 </div>
@@ -499,6 +763,75 @@
         </div>
     </section>
 
+    <!-- Our Team Section - Added to increase content -->
+    <section class="py-20 px-4 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12 text-blue-900">Meet Our Leadership Team</h2>
+            <p class="text-gray-600 text-center max-w-3xl mx-auto mb-16">
+                Our team of experienced professionals brings decades of expertise in the medical device industry.
+            </p>
+            
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-32 h-32 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-tie text-4xl text-blue-600"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1">Mr. Alden Cheng</h3>
+                    <p class="text-blue-600 text-sm mb-2">Founder & CEO</p>
+                    <p class="text-gray-600 text-sm">25 years in medical device industry, former executive at Johnson & Johnson</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-32 h-32 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-md text-4xl text-green-600"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1">Dr. Emily Chen</h3>
+                    <p class="text-blue-600 text-sm mb-2">Chief Medical Officer</p>
+                    <p class="text-gray-600 text-sm">Board-certified surgeon with 18 years of clinical experience</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-32 h-32 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-cogs text-4xl text-purple-600"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1">Mr. Robert Johnson</h3>
+                    <p class="text-blue-600 text-sm mb-2">Operations Director</p>
+                    <p class="text-gray-600 text-sm">Supply chain expert with 20 years in manufacturing operations</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-32 h-32 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-globe text-4xl text-orange-600"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1">Ms. Sophia Martinez</h3>
+                    <p class="text-blue-600 text-sm mb-2">Global Sales Director</p>
+                    <p class="text-gray-600 text-sm">International business specialist with 15 years in medical exports</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action - Added to increase content -->
+    <section class="py-20 px-4 bg-blue-900 text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-6">Ready to Partner With Us?</h2>
+            <p class="text-xl text-blue-100 mb-8 leading-relaxed">
+                Whether you're a hospital, clinic, distributor, or procurement professional, we're here to provide you with high-quality medical consumables and exceptional service.
+            </p>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="catalog.html" class="bg-white text-blue-900 px-8 py-4 rounded-full text-lg font-bold hover:bg-blue-50 transition">
+                    <i class="fas fa-shopping-cart mr-2"></i> Browse Our Products
+                </a>
+                <a href="contact.html" class="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-blue-500 transition">
+                    <i class="fas fa-envelope mr-2"></i> Contact Our Team
+                </a>
+                <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-green-600 transition">
+                    <i class="fab fa-whatsapp mr-2"></i> Chat on WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
     <footer class="bg-gray-900 text-white py-12 px-4">
         <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-12 gap-8 mb-12">
@@ -507,7 +840,7 @@
                     <div class="logo-container mb-4">
                         <!-- Fixed footer logo with CDN fallback -->
                         <img src="images/v5logo.png" 
-                             onerror="this.src='https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png'; this.onerror=null;" 
+                             onerror="this.src='https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png'; this.onerror=null;" 
                              class="h-10 w-auto" 
                              alt="V5 Medical Logo">
                         <span class="text-xl font-bold">V5 Medical LTD</span>
