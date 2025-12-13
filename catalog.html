@@ -1,151 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Medical Products Catalog | V5 Medical LTD</title>
-  <meta name="description" content="Browse the complete medical products catalog of V5 Medical LTD. Surgical sutures, syringes, PPE, disposable medical consumables. ISO 13485, CE, FDA certified supplier." />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="robots" content="index, follow" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="canonical" href="https://v5md.com/catalog.html" />
+    <title>Product Catalog | V5 Medical LTD – ISO / CE / FDA Certified Medical Consumables</title>
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Medical Products Catalog | V5 Medical LTD" />
-  <meta property="og:description" content="Certified medical consumables manufacturer & supplier. OEM supported." />
-  <meta property="og:image" content="https://v5md.com/images/v5medlogo.png" />
+    <!-- SEO Meta -->
+    <meta name="description" content="Browse V5 Medical LTD full product catalog including surgical sutures, surgical packs, syringes, infusion sets and medical disposables. Factory direct ISO, CE, FDA certified supplier.">
+    <meta name="keywords" content="medical consumables catalog, surgical sutures supplier, surgical packs manufacturer, syringes factory, ISO 13485 medical supplier">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://v5md.com/catalog.html">
 
-  <link rel="stylesheet" href="css/style.css" />
-  <script src="js/products.js"></script>
+    <!-- Open Graph -->
+    <meta property="og:title" content="V5 Medical Product Catalog">
+    <meta property="og:description" content="Factory direct medical consumables – ISO / CE / FDA certified. View full catalog.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://v5md.com/catalog.html">
+    <meta property="og:image" content="https://v5md.com/images/v5medlogo.png">
+
+    <!-- Icons & CSS -->
+    <link rel="icon" href="images/icons/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
 
-<!-- ================= HEADER ================= -->
-<header class="site-header">
-  <div class="container header-inner">
-    <a href="index.html" class="logo">
-      <img src="images/v5medlogo.png" alt="V5 Medical LTD" />
-    </a>
-    <nav class="main-nav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About Us</a>
-      <a href="catalog.html" class="active">Products</a>
-      <a href="quality.html">Quality</a>
-      <a href="blog.html">Blog</a>
-      <a href="contact.html" class="nav-cta">Contact</a>
-    </nav>
-  </div>
-</header>
+<body class="font-sans text-gray-800 bg-gray-50">
+
+<!-- ================= HEADER (IDENTICAL TO INDEX) ================= -->
+<nav id="navbar" class="fixed w-full z-50 bg-white/95 shadow-md">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="location.href='index.html'">
+                <img src="images/v5logo.png" class="h-12" alt="V5 Medical">
+                <div>
+                    <div class="font-bold text-xl text-blue-900">V5 Medical LTD</div>
+                    <div class="text-xs text-blue-600">Global Medical Supplier</div>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="index.html" class="font-semibold text-gray-600 hover:text-blue-900">Home</a>
+                <a href="about.html" class="font-semibold text-gray-600 hover:text-blue-900">About Us</a>
+                <a href="catalog.html" class="font-semibold text-blue-900">Products</a>
+                <a href="blog.html" class="font-semibold text-gray-600 hover:text-blue-900">Blog</a>
+                <a href="contact.html" class="font-semibold text-gray-600 hover:text-blue-900">Contact</a>
+                <a href="https://wa.me/447895047944" target="_blank"
+                   class="bg-green-500 text-white px-5 py-2 rounded-full font-semibold">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
 
 <!-- ================= HERO ================= -->
-<section class="page-hero" style="background-image:url('images/hero-bg.jpg')">
-  <div class="container">
-    <h1>Medical Products Catalog</h1>
-    <p>ISO 13485 · CE · FDA Certified Manufacturer & Supplier</p>
-  </div>
+<section class="pt-32 pb-20 bg-gradient-to-br from-blue-50 to-white">
+    <div class="max-w-6xl mx-auto text-center px-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-blue-900 mb-6">Medical Product Catalog</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Factory-direct medical consumables with ISO 13485, CE and FDA certification.
+            Designed for distributors, hospitals and government tenders.
+        </p>
+    </div>
 </section>
 
 <!-- ================= CATEGORY NAV ================= -->
-<section class="category-nav">
-  <div class="container" id="category-nav"></div>
+<section class="bg-white sticky top-20 z-40 border-b">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap gap-4 justify-center">
+        <a href="#sutures" class="px-5 py-2 bg-blue-50 text-blue-700 rounded-full font-semibold">Surgical Sutures</a>
+        <a href="#packs" class="px-5 py-2 bg-green-50 text-green-700 rounded-full font-semibold">Surgical Packs</a>
+        <a href="#syringes" class="px-5 py-2 bg-purple-50 text-purple-700 rounded-full font-semibold">Syringes</a>
+        <a href="#infusion" class="px-5 py-2 bg-orange-50 text-orange-700 rounded-full font-semibold">Infusion Sets</a>
+        <a href="#protection" class="px-5 py-2 bg-red-50 text-red-700 rounded-full font-semibold">Protective Equipment</a>
+    </div>
 </section>
 
-<!-- ================= PRODUCT GRID ================= -->
-<main class="container product-catalog">
-  <div id="product-grid" class="product-grid"></div>
+<!-- ================= PRODUCTS ================= -->
+<main class="py-20">
+    <div class="max-w-7xl mx-auto px-4 space-y-24">
+
+        <!-- Sutures -->
+        <section id="sutures">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Surgical Sutures</h2>
+            <p class="text-gray-600 max-w-3xl mb-10">
+                Absorbable and non-absorbable surgical sutures including PGA, PDO, Silk and Nylon.
+                Available in multiple USP sizes with atraumatic needles.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-xl transition">
+                    <img src="images/products/SURGICAL SUTURE KIT.jpg" class="rounded mb-4" alt="PGA Suture">
+                    <h3 class="text-xl font-bold mb-2">PGA Absorbable Suture</h3>
+                    <p class="text-gray-600 text-sm mb-4">Reliable absorption profile with high tensile strength.</p>
+                    <a href="product-detail.html?product=pga-suture" class="text-blue-600 font-semibold">View Details →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Packs -->
+        <section id="packs">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Surgical Packs</h2>
+            <p class="text-gray-600 max-w-3xl mb-10">Customizable sterile surgical packs for different procedures.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow">
+                    <h3 class="text-xl font-bold">Universal Surgical Pack</h3>
+                    <p class="text-gray-600">OEM configuration available</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Syringes -->
+        <section id="syringes">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Syringes & Needles</h2>
+            <p class="text-gray-600 max-w-3xl mb-10">Disposable syringes with luer lock / luer slip options.</p>
+        </section>
+
+    </div>
 </main>
 
-<!-- ================= CATEGORY SEO CONTENT ================= -->
-<section class="category-seo container" id="category-seo">
-  <h2 id="category-seo-title"></h2>
-  <div id="category-seo-text"></div>
-</section>
-
 <!-- ================= CTA ================= -->
-<section class="cta-section">
-  <div class="container">
-    <h2>Need Quotation or OEM Solution?</h2>
-    <p>Contact V5 Medical for fast response and professional support.</p>
-    <a href="contact.html" class="btn-primary">Request Quotation</a>
-    <a href="https://wa.me/8617801350225" class="btn-secondary">WhatsApp Inquiry</a>
-  </div>
+<section class="py-16 bg-blue-900 text-white text-center">
+    <h2 class="text-3xl font-bold mb-4">Request Full Price List & Samples</h2>
+    <p class="text-blue-200 mb-8">Fast response within 24 hours</p>
+    <a href="https://wa.me/447895047944" target="_blank"
+       class="bg-green-500 px-8 py-4 rounded-full font-bold text-lg">
+        <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+    </a>
 </section>
 
-<!-- ================= FOOTER ================= -->
-<footer class="site-footer">
-  <div class="container footer-grid">
-    <div>
-      <img src="images/v5medlogo.png" alt="V5 Medical" class="footer-logo" />
-      <p>Professional medical consumables supplier serving global markets.</p>
+<!-- ================= FOOTER (MATCH INDEX) ================= -->
+<footer class="bg-gray-900 text-white py-12 px-4">
+    <div class="max-w-7xl mx-auto text-center text-gray-400 text-sm">
+        © 2025 V5 Medical LTD. All rights reserved.
     </div>
-    <div>
-      <h4>Company</h4>
-      <a href="about.html">About Us</a>
-      <a href="quality.html">Quality Management</a>
-      <a href="blog.html">News & Blog</a>
-    </div>
-    <div>
-      <h4>Products</h4>
-      <a href="catalog.html">Product Catalog</a>
-      <a href="contact.html">OEM Service</a>
-    </div>
-    <div>
-      <h4>Legal</h4>
-      <a href="privacy.html">Privacy Policy</a>
-    </div>
-  </div>
-  <div class="footer-bottom">© 2025 V5 Medical LTD. All rights reserved.</div>
 </footer>
 
-<script>
-const params = new URLSearchParams(window.location.search);
-const currentCategory = params.get('category');
-
-// ===== Categories =====
-const categories = [...new Set(Object.values(finalProductDatabase).map(p => p.category))];
-const nav = document.getElementById('category-nav');
-
-const allLink = document.createElement('a');
-allLink.href = 'catalog.html';
-allLink.textContent = 'All Products';
-allLink.className = !currentCategory ? 'active' : '';
-nav.appendChild(allLink);
-
-categories.forEach(cat => {
-  const a = document.createElement('a');
-  a.href = `catalog.html?category=${encodeURIComponent(cat)}`;
-  a.textContent = cat;
-  if (currentCategory === cat) a.className = 'active';
-  nav.appendChild(a);
-});
-
-// ===== Products =====
-const grid = document.getElementById('product-grid');
-Object.values(finalProductDatabase)
-  .filter(p => !currentCategory || p.category === currentCategory)
-  .forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-    card.innerHTML = `
-      <img src="${p.image}" alt="${p.name}">
-      <h3>${p.name}</h3>
-      <a href="product-detail.html?product=${p.id}" class="btn-link">View Details</a>
-    `;
-    grid.appendChild(card);
-  });
-
-// ===== SEO Text =====
-const seoMap = {
-  'Surgical Sutures': `<p>Surgical sutures are essential medical consumables used for wound closure in various surgical procedures. V5 Medical supplies a full range of absorbable and non-absorbable sutures manufactured under ISO 13485 systems.</p><p>OEM and private labeling services are available. All products comply with CE and FDA standards.</p>`,
-  'Syringes': `<p>Disposable medical syringes supplied by V5 Medical are EO sterilized and manufactured from medical-grade materials for hospital and clinical use.</p>`,
-  'Protective Equipment': `<p>Medical protective equipment from V5 Medical supports infection control and safety in healthcare environments worldwide.</p>`
-};
-
-if (currentCategory && seoMap[currentCategory]) {
-  document.getElementById('category-seo-title').textContent = `${currentCategory} Manufacturer & Supplier`;
-  document.getElementById('category-seo-text').innerHTML = seoMap[currentCategory];
-}
-</script>
-
+<script src="js/main.js"></script>
 </body>
 </html>
