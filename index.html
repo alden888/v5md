@@ -286,12 +286,37 @@
                 text-align: center;
             }
         }
+        
+        /* Navigation Fixes */
+        .nav-link {
+            position: relative;
+            z-index: 10;
+            pointer-events: auto;
+        }
+        
+        .whatsapp-btn {
+            position: relative;
+            z-index: 5;
+            pointer-events: auto;
+        }
+        
+        /* Ensure no overlapping elements */
+        #navbar {
+            position: fixed;
+            z-index: 50;
+            width: 100%;
+        }
+        
+        #navbar * {
+            position: relative;
+            z-index: 1;
+        }
     </style>
 </head>
 
 <body class="smooth-scroll font-sans text-gray-800 relative">
 
-    <!-- Navigation - Fixed Contact Link -->
+    <!-- Navigation - FINAL FIXED VERSION -->
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/95 text-gray-800 shadow-md">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-20">
@@ -310,11 +335,17 @@
                     <a href="about.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">About Us</a>
                     <a href="catalog.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">Products</a>
                     <a href="blog.html" class="nav-link font-semibold text-white bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700">Blog</a>
-                    <!-- Fixed Contact link to point to contact.html -->
-                    <a href="contact.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">Contact</a>
+                    <!-- FINAL FIXED Contact link with z-index and pointer-events -->
+                    <a href="contact.html" 
+                       class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition relative z-10"
+                       style="position: relative; z-index: 10; pointer-events: auto;">
+                        Contact
+                    </a>
+                    <!-- WhatsApp button with lower z-index -->
                     <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" 
-                       class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-full font-semibold transition flex items-center gap-2" 
-                       onclick="trackWhatsAppClick()">
+                       class="whatsapp-btn bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-full font-semibold transition flex items-center gap-2" 
+                       onclick="trackWhatsAppClick()"
+                       style="position: relative; z-index: 5;">
                         <i class="fab fa-whatsapp"></i> WhatsApp
                     </a>
                 </div>
@@ -332,8 +363,12 @@
                 <a href="about.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900">About Us</a>
                 <a href="catalog.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900">Products</a>
                 <a href="blog.html" class="block px-4 py-2 rounded-lg bg-blue-500 text-white">Blog</a>
-                <!-- Fixed Mobile Contact link -->
-                <a href="contact.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900">Contact</a>
+                <!-- FINAL FIXED Mobile Contact link -->
+                <a href="contact.html" 
+                   class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900"
+                   style="position: relative; z-index: 10;">
+                    Contact
+                </a>
                 <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" 
                    class="block w-full bg-green-500 text-white px-4 py-2 rounded-lg text-center font-semibold" 
                    onclick="trackWhatsAppClick()">
@@ -1142,6 +1177,34 @@
             button.addEventListener('click', function() {
                 const productName = this.getAttribute('onclick').match(/'([^']+)'/)[1];
                 trackProductClick(productName);
+            });
+        });
+
+        // FINAL FIX: Ensure Contact links work correctly
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all Contact links
+            const contactLinks = document.querySelectorAll('a[href="contact.html"]');
+            
+            // Add explicit click handlers to ensure they work
+            contactLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Prevent any potential event propagation issues
+                    e.stopPropagation();
+                    
+                    // Log for debugging
+                    console.log('Contact link clicked:', this.href);
+                    
+                    // Optional: Add a small delay to ensure the click is registered
+                    setTimeout(() => {
+                        window.location.href = this.href;
+                    }, 100);
+                });
+            });
+            
+            // Debug: Log all Contact links found
+            console.log('Found', contactLinks.length, 'Contact links');
+            contactLinks.forEach((link, index) => {
+                console.log('Contact link', index + 1, ':', link.href);
             });
         });
     </script>
