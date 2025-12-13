@@ -49,6 +49,77 @@
         /* Loader Fallback */
         .page-loader { position: fixed; inset: 0; background: #1e40af; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
     </style>
+
+    <!-- Schema.org Structured Data - Added for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Privacy Policy | V5 Medical LTD",
+      "description": "V5 Medical LTD Privacy Policy - We are committed to protecting your privacy and personal information. Learn how we handle your data.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "V5 Medical LTD",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://v5md.com/images/v5medlogo.png",
+          "width": 400,
+          "height": 100
+        }
+      },
+      "mainEntity": {
+        "@type": "PrivacyPolicy",
+        "name": "V5 Medical LTD Privacy Policy",
+        "author": {
+          "@type": "Organization",
+          "name": "V5 Medical LTD"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "V5 Medical LTD"
+        },
+        "datePublished": "2024-01-01",
+        "dateModified": "2024-01-01",
+        "lastReviewed": "2024-01-01",
+        "applicableLaw": "GDPR, CCPA",
+        "dataController": {
+          "@type": "Organization",
+          "name": "V5 Medical LTD",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+44-078-9504-7944",
+            "email": "sales@v5md.com",
+            "contactType": "privacy"
+          }
+        }
+      }
+    }
+    </script>
+
+    <!-- Organization Schema - Added for consistency with other pages -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalOrganization",
+      "name": "V5 Medical LTD",
+      "url": "https://v5md.com",
+      "logo": "https://v5md.com/images/v5medlogo.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+44-078-9504-7944",
+        "contactType": "customer service",
+        "availableLanguage": ["English", "Chinese"]
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "No. 168, Luying Road",
+        "addressLocality": "Kunshan",
+        "addressRegion": "Jiangsu",
+        "postalCode": "215300",
+        "addressCountry": "CN"
+      }
+    }
+    </script>
 </head>
 
 <body class="smooth-scroll font-sans bg-gray-50 text-gray-800">
@@ -57,38 +128,54 @@
         <i class="fas fa-circle-notch fa-spin text-white text-4xl"></i>
     </div>
 
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-blue-900/90 text-white">
+    <!-- Navigation - Updated to match index.html -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/95 text-gray-800 shadow-md">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-20">
-                <a href="index.html" class="flex items-center gap-3">
-                    <img src="images/v5logo.png" onerror="this.src='v5logo.png'" class="h-10 w-auto" alt="Logo">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='index.html'">
+                    <img src="images/v5logo.png" onerror="this.src='v5logo.png'; this.onerror=null;" 
+                         class="h-12 w-auto" 
+                         alt="V5 Medical LTD Logo">
                     <div>
-                        <div class="font-bold text-xl leading-none">V5 Medical LTD</div>
-                        <div class="text-xs text-blue-200">Global Medical Supplier</div>
+                        <div class="font-bold text-xl leading-none text-blue-900">V5 Medical LTD</div>
+                        <div class="text-xs text-blue-600">Global Medical Supplier</div>
                     </div>
-                </a>
-
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="index.html" class="font-semibold hover:text-blue-200 transition">Home</a>
-                    <a href="about.html" class="font-semibold hover:text-blue-200 transition">About Us</a>
-                    <a href="catalog.html" class="font-semibold hover:text-blue-200 transition">Products</a>
-                    <a href="blog.html" class="font-semibold hover:text-blue-200 transition">Blog</a>
-                    <a href="contact.html" class="font-semibold hover:text-blue-200 transition">Contact</a>
-                    <a href="privacy.html" class="font-semibold text-white border-b-2 border-white transition">Privacy</a>
                 </div>
 
-                <button id="mobile-menu-btn" class="md:hidden text-white"><i class="fas fa-bars text-2xl"></i></button>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="index.html" class="nav-link font-semibold text-blue-900 transition">Home</a>
+                    <a href="about.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">About Us</a>
+                    <a href="catalog.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">Products</a>
+                    <a href="blog.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">Blog</a>
+                    <a href="contact.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">Contact</a>
+                    <a href="privacy.html" class="nav-link font-semibold text-white bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700">Privacy</a>
+                    <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" 
+                       class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-full font-semibold transition flex items-center gap-2" 
+                       onclick="trackWhatsAppClick()">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+
+                <button id="mobile-menu-btn" class="md:hidden text-gray-800" aria-label="Toggle Menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-white text-gray-800 border-t absolute w-full shadow-xl">
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t text-gray-800 absolute w-full left-0 top-20 shadow-xl">
             <div class="px-4 py-4 space-y-3">
-                <a href="index.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50">Home</a>
-                <a href="about.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50">About Us</a>
-                <a href="catalog.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50">Products</a>
-                <a href="blog.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50">Blog</a>
-                <a href="contact.html" class="block px-4 py-2 rounded-lg hover:bg-blue-50">Contact</a>
-                <a href="privacy.html" class="block px-4 py-2 rounded-lg bg-blue-50 text-blue-600 font-bold">Privacy Policy</a>
+                <a href="index.html" class="block px-4 py-2 rounded-lg text-blue-900 font-semibold">Home</a>
+                <a href="about.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900">About Us</a>
+                <a href="catalog.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900">Products</a>
+                <a href="blog.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900">Blog</a>
+                <a href="contact.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900">Contact</a>
+                <a href="privacy.html" class="block px-4 py-2 rounded-lg bg-blue-500 text-white">Privacy Policy</a>
+                <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" 
+                   class="block w-full bg-green-500 text-white px-4 py-2 rounded-lg text-center font-semibold" 
+                   onclick="trackWhatsAppClick()">
+                    WhatsApp Contact
+                </a>
             </div>
         </div>
     </nav>
@@ -201,21 +288,28 @@
         </div>
     </section>
 
+    <!-- Footer - Updated to match index.html -->
     <footer class="bg-gray-900 text-white py-12 px-4">
         <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-12 gap-8 mb-12">
+            <!-- 主要内容区域 -->
+            <div class="grid md:grid-cols-10 gap-8 mb-12">
+                <!-- 左侧：Company Info -->
                 <div class="md:col-span-3">
                     <div class="flex items-center gap-2 mb-4">
-                        <img src="images/v5logo.png" onerror="this.src='v5logo.png'" class="h-10 w-auto" alt="Logo">
+                        <img src="images/v5logo.png" 
+                             onerror="this.src='v5logo.png'; this.onerror=null;" 
+                             class="h-10 w-auto" 
+                             alt="V5 Medical Logo">
                         <span class="text-xl font-bold">V5 Medical LTD</span>
                     </div>
                     <p class="text-gray-400 text-sm mb-4">Professional Global Medical Consumables Supplier</p>
+                    <p class="text-gray-400 text-sm mb-4">Factory Direct Medical Consumables Manufacturer</p> 
+                    <p class="text-gray-400 text-sm italic">20+ Years Exporting Experience</p>
                     <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
                 </div>
                 
-                <div class="hidden md:block md:col-span-1"></div>
-
-                <div class="md:col-span-2">
+                <!-- Quick Links - 向右移动一点 -->
+                <div class="md:col-span-2 pl-8">
                     <h4 class="font-bold mb-4 text-lg text-white">Quick Links</h4>
                     <ul class="space-y-2 text-sm text-gray-400">
                         <li><a href="index.html" class="hover:text-white transition">Home</a></li>
@@ -227,59 +321,197 @@
                     </ul>
                 </div>
                 
-                <div class="md:col-span-3 pl-0 md:pl-4">
-                    <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
-                    <div class="space-y-3 text-sm text-gray-400">
-                        <p><i class="fab fa-whatsapp text-green-500 w-5"></i> +44 078 9504 7944 (UK)</p>
-                        <p><i class="fab fa-whatsapp text-green-500 w-5"></i> +86 180 1266 9897 (Backup)</p>
-                        <p><i class="fas fa-envelope text-blue-400 w-5"></i> sales@v5md.com</p>
-                        <p><i class="fab fa-google text-red-400 w-5"></i> v5md.com@gmail.com</p>
-                        <p><i class="fas fa-map-marker-alt mt-1 w-5"></i> Jiangsu, China</p>
-                    </div>
+                <!-- Product Categories -->
+                <div class="md:col-span-2">
+                    <h4 class="font-bold mb-4 text-lg text-white">Product Categories</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="catalog.html#sutures" class="hover:text-white transition">Surgical Sutures</a></li>
+                        <li><a href="catalog.html#packs" class="hover:text-white transition">Surgical Packs</a></li>
+                        <li><a href="catalog.html#syringes" class="hover:text-white transition">Syringes & Needles</a></li>
+                        <li><a href="catalog.html#infusion" class="hover:text-white transition">Infusion Sets</a></li>
+                        <li><a href="catalog.html#dressings" class="hover:text-white transition">Gauze Dressings</a></li>
+                        <li><a href="catalog.html#protection" class="hover:text-white transition">Protective Equipment</a></li>
+                    </ul>
                 </div>
                 
-                <div class="md:col-span-3 pl-0 md:pl-4">
-                    <h4 class="font-bold mb-4 text-lg text-white">Downloads & Social</h4>
-                    <div class="space-y-2 mb-8 text-sm">
-                        <a href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Product Catalog</a>
-                        <a href="https://files.v5md.com/dental-kit.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Dental Kit</a>
-                        <a href="https://files.v5md.com/price-list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Price List</a>
+                <!-- Contact Info -->
+                <div class="md:col-span-3">
+                    <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
+                    <div class="space-y-3 text-sm text-gray-400">
+                        <p class="flex items-center gap-2">
+                            <i class="fab fa-whatsapp text-green-500 w-5"></i> 
+                            <span>+44 078 9504 7944 (UK)</span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fab fa-whatsapp text-green-500 w-5"></i> 
+                            <span>+86 180 1266 9897 (Backup)</span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fas fa-envelope text-blue-400 w-5"></i> 
+                            <a href="mailto:sales@v5md.com" class="hover:text-white transition" onclick="trackEmailClick()">sales@v5md.com</a>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fab fa-google text-red-400 w-5"></i> 
+                            <a href="mailto:v5md.com@gmail.com" class="hover:text-white transition" onclick="trackEmailClick()">v5md.com@gmail.com</a>
+                        </p>
+                        <p class="flex items-start gap-2">
+                            <i class="fas fa-map-marker-alt mt-1 w-5"></i> 
+                            <span>No. 168, Luying Road, Kunshan, Jiangsu, China</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 底部区域：Follow Us 在左边，社交媒体图标在右边 -->
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <!-- 左侧：Follow Us -->
+                    <div class="mb-6 md:mb-0">
+                        <h4 class="font-bold text-lg text-white mb-4">Follow Us</h4>
+                        <p class="text-gray-400 text-sm">Connect with us on social media for the latest updates</p>
                     </div>
                     
-                    <div class="flex gap-3 flex-wrap">
-                        <a href="https://linkedin.com/company/v5med" target="_blank" class="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 transition text-white"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="https://www.youtube.com/@v5med" target="_blank" class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition text-white"><i class="fab fa-youtube"></i></a>
-                        <a href="https://www.facebook.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition text-white"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 rounded-full flex items-center justify-center transition text-white"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.tiktok.com/@v5med" target="_blank" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-black transition text-white"><i class="fab fa-tiktok"></i></a>
-                        <a href="https://x.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition text-white"><i class="fab fa-twitter"></i></a>
+                    <!-- 右侧：社交媒体图标 - 向左移动一点 -->
+                    <div class="flex gap-6 mr-8">
+                        <a href="https://linkedin.com/company/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 transition text-white" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                         
+                        <a href="https://www.youtube.com/@v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition text-white" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        
+                        <a href="https://www.facebook.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition text-white" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        
+                        <a href="https://www.instagram.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 flex items-center justify-center transition text-white" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        
+                        <a href="https://www.tiktok.com/@v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-black transition text-white" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        
+                        <a href="https://x.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition text-white" aria-label="X (Twitter)"><i class="fab fa-twitter"></i></a>
+                    
                     </div>
                 </div>
             </div>
             
-            <div class="border-t border-gray-800 pt-8 mt-8">
-                <div class="text-center">
-                    <p class="text-2xl font-bold text-white mb-4">Ready for Your Next Order?</p>
-                    <div class="flex flex-wrap justify-center gap-6 items-center text-blue-200 text-sm md:text-base">
-                        <span class="flex items-center gap-2"><i class="fas fa-globe-americas text-blue-500"></i> We deliver to 40+ countries</span>
-                        <span class="hidden md:inline text-gray-600">|</span>
-                        <span class="flex items-center gap-2"><i class="fas fa-certificate text-green-500"></i> ISO/CE/FDA Certified</span>
-                        <span class="hidden md:inline text-gray-600">|</span>
-                        <span class="flex items-center gap-2"><i class="fas fa-shipping-fast text-yellow-500"></i> Fast Shipping</span>
-                    </div>
-                </div>
-            </div>
-            
+            <!-- Copyright -->
             <div class="text-center mt-8 text-sm text-gray-500">
                 <p>© 2025 V5 Medical LTD. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <!-- WhatsApp Float Button - Added to match index.html -->
+    <a href="https://wa.me/447895047944" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       onclick="trackWhatsAppClick()"
+       class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center z-50 transition-all duration-300 hover:scale-110 group"
+       aria-label="Contact us on WhatsApp">
+        <i class="fab fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i>
+    </a>
+
+    <!-- Back to Top Button - Added to match index.html -->
+    <button id="back-to-top" 
+            class="fixed bottom-24 right-6 bg-blue-900 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 opacity-0 invisible hover:bg-blue-700 z-40" 
+            aria-label="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Google Translate - Updated to match index.html -->
+    <div id="google_translate_element" class="fixed top-4 right-4 z-50 bg-blue-900 text-white px-3 py-1 rounded-full shadow-lg flex items-center gap-2">
+        🌍 Translate
+    </div>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,ar,es,fr,ru,nl,de,it,pt,ja,ko,tr,pl,vi,hi,id,th,sv,zh-CN,zh-TW',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+
     <script src="js/main.js"></script>
 
+    <!-- Google Analytics Tracking Functions - Added for consistency -->
     <script>
+        // Tracking functions
+        function trackWhatsAppClick() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'whatsapp_click', { 
+                    event_category: 'Lead Generation',
+                    event_label: 'WhatsApp Button Click'
+                });
+            }
+        }
+        
+        function trackEmailClick() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'email_click', { 
+                    event_category: 'Lead Generation',
+                    event_label: 'Email Link Click'
+                });
+            }
+        }
+
+        // Back to Top Logic
+        const backToTopBtn = document.getElementById('back-to-top');
+        if (backToTopBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                const icon = mobileMenuBtn.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-times');
+                }
+            });
+
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    const icon = mobileMenuBtn.querySelector('i');
+                    if (icon) {
+                        icon.classList.add('fa-bars');
+                        icon.classList.remove('fa-times');
+                    }
+                });
+            });
+        }
+
+        // Navigation scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (navbar) {
+                if (window.scrollY > 100) {
+                    navbar.classList.add('shadow-lg');
+                    navbar.classList.remove('shadow-md');
+                } else {
+                    navbar.classList.add('shadow-md');
+                    navbar.classList.remove('shadow-lg');
+                }
+            }
+        });
+
+        // Loader functionality
         window.addEventListener('DOMContentLoaded', () => {
             const loader = document.getElementById('loader');
             if(loader) {
@@ -294,67 +526,5 @@
             if(loader) loader.style.display = 'none';
         }, 2000);
     </script>
-    
-    <div class="fixed top-4 right-4 z-50 bg-white/90 backdrop-blur-sm shadow-lg rounded-full px-4 py-2 flex items-center gap-2 border border-blue-100 hover:shadow-xl transition-all duration-300 group">
-        <i class="fas fa-globe text-blue-600 text-lg group-hover:rotate-180 transition-transform duration-500"></i>
-        <div id="google_translate_element"></div>
-    </div>
-
-    <style>
-        /* 隐藏顶部横幅 */
-        body { top: 0px !important; }
-        .goog-te-banner-frame { display: none !important; }
-
-        /* 隐藏 Google 自带的小图标 */
-        .goog-te-gadget-icon {
-            display: none !important;
-        }
-
-        /* 美化核心容器 */
-        .goog-te-gadget-simple {
-            background-color: transparent !important;
-            border: none !important;
-            padding: 0 !important;
-            font-size: 14px !important;
-            line-height: 20px !important;
-            display: flex !important;
-            align-items: center !important;
-            cursor: pointer !important;
-        }
-
-        /* 美化文字颜色 */
-        .goog-te-gadget-simple span {
-            color: #1e40af !important; /* V5 Medical 蓝色 */
-            font-weight: 600 !important;
-        }
-
-        /* 隐藏分割线，让布局更紧凑 */
-        .goog-te-gadget-simple .goog-te-menu-value {
-            margin: 0 !important;
-            border: none !important;
-        }
-        .goog-te-gadget-simple .goog-te-menu-value span {
-            border-left: none !important;
-        }
-        
-        /* 修复下拉箭头的位置 */
-        .goog-te-gadget-simple .goog-te-menu-value img {
-            display: none !important; /* 隐藏默认箭头图片，如果需要可以自定义 */
-        }
-    </style>
-
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <script type="text/javascript">
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-          pageLanguage: 'en',
-          // 包含您需要的语言
-          includedLanguages: 'en,zh-CN,zh-TW,ar,es,fr,ru,nl,de,it,pt,ja,ko,tr,pl,vi,hi,id,th,sv',
-          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false
-        }, 'google_translate_element');
-      }
-    </script>
-
 </body>
 </html>
