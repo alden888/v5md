@@ -1,0 +1,39 @@
+github.com/alden888/v5md/
+├── images/
+│   ├── products/
+│   │   ├── sutures/                  # 手术缝合线
+│   │   │   ├── pga-suture.jpg        # PGA可吸收缝合线
+│   │   │   ├── pgla-suture.jpg       # PGLA可吸收缝合线
+│   │   │   ├── chromic-catgut.jpg    # 铬制羊肠线
+│   │   │   ├── silk-suture.jpg       # 丝线缝合线
+│   │   │   ├── nylon-suture.jpg      # 尼龙缝合线
+│   │   │   └── polypropylene.jpg     # 聚丙烯缝合线
+│   │   │
+│   │   ├── instruments/              # 手术器械
+│   │   │   ├── surgical-blades.jpg   # 手术刀片
+│   │   │   ├── disposable-scalpels.jpg # 一次性手术刀
+│   │   │   └── blood-lancets.jpg     # 采血针
+│   │   │
+│   │   ├── dressings/                # 纱布敷料
+│   │   │   ├── gauze-swabs.jpg       # 纱布块
+│   │   │   ├── gauze-balls.jpg       # 纱布球
+│   │   │   └── abdominal-pads.jpg    # 腹部垫
+│   │   │
+│   │   ├── protection/               # 防护用品
+│   │   │   ├── surgical-masks.jpg    # 医用口罩
+│   │   │   ├── surgical-gowns.jpg    # 手术衣
+│   │   │   └── protective-coveralls.jpg # 防护服
+│   │   │
+│   │   ├── packs/                    # 手术包
+│   │   │   └── surgical-packs.jpg    # 手术包
+│   │   │
+│   │   ├── syringes/                 # 注射器
+│   │   │   ├── disposable-syringes.jpg # 一次性注射器
+│   │   │   ├── dental-syringes.jpg   # 牙科注射器
+│   │   │   └── beauty-syringes.jpg   # 美容注射器
+│   │   │
+│   │   └── infusion/                 # 输液器
+│   │       └── infusion-sets.jpg     # 输液器
+│   │
+│   └── logo/
+│       └── v5logo.png                # 公司标志
