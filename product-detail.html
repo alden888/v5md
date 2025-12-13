@@ -4,223 +4,123 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Dynamic SEO placeholders -->
-  <title>Product Detail | V5 Medical LTD</title>
-  <meta name="description" content="Medical product supplied by V5 Medical LTD. ISO 13485, CE and FDA certified." />
+  <!-- Dynamic SEO Meta -->
+  <title id="meta-title">Product Details | V5 Medical LTD</title>
+  <meta id="meta-description" name="description" content="Medical consumables product details by V5 Medical LTD. ISO 13485, CE, FDA certified supplier." />
+  <meta name="robots" content="index, follow" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="product" />
-  <meta property="og:title" content="Product Detail | V5 Medical LTD" />
-  <meta property="og:description" content="ISO 13485, CE and FDA certified medical products from V5 Medical LTD." />
-  <meta property="og:image" content="images/products/default-product.jpg" />
+  <meta property="og:title" id="og-title" content="" />
+  <meta property="og:description" id="og-description" content="" />
+  <meta property="og:image" id="og-image" content="" />
 
-  <!-- Tailwind -->
+  <!-- Schema.org Product -->
+  <script type="application/ld+json" id="schema-product"></script>
+
+  <link rel="canonical" id="canonical-url" href="" />
+
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
-  <!-- Product Database -->
   <script src="js/products.js"></script>
-
-  <script>
-    function getParam(name) {
-      return new URLSearchParams(window.location.search).get(name);
-    }
-
-    function setSEO(product) {
-      document.title = `${product.name} | V5 Medical LTD`;
-
-      const desc = product.description || `High quality ${product.name} supplied by V5 Medical LTD.`;
-
-      document.querySelector('meta[name="description"]').setAttribute('content', desc);
-      document.querySelector('meta[property="og:title"]').setAttribute('content', `${product.name} | V5 Medical LTD`);
-      document.querySelector('meta[property="og:description"]').setAttribute('content', desc);
-      document.querySelector('meta[property="og:image"]').setAttribute('content', product.images?.[0] || 'images/products/default-product.jpg');
-    }
-
-    function renderNotFound() {
-      document.body.innerHTML = `
-        <div class="min-h-screen flex items-center justify-center text-center bg-gray-50">
-          <div>
-            <h1 class="text-3xl font-bold mb-3">Product Not Found</h1>
-            <p class="text-gray-500 mb-6">The product you are looking for does not exist or has been removed.</p>
-            <a href="catalog.html" class="text-blue-600 font-bold">← Back to Catalog</a>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderProduct(product) {
-      setSEO(product);
-
-      document.getElementById('breadcrumb-category').textContent = product.category;
-      document.getElementById('breadcrumb-category').href = `catalog.html?category=${encodeURIComponent(product.category)}`;
-      document.getElementById('breadcrumb-product').textContent = product.name;
-
-      document.getElementById('product-image').src = product.images?.[0] || 'images/products/default-product.jpg';
-      document.getElementById('product-name').textContent = product.name;
-      document.getElementById('product-description').textContent = product.description || '';
-
-      const certContainer = document.getElementById('certifications');
-      certContainer.innerHTML = `
-        <img src="images/quality/ce-mark.png" class="h-10" alt="CE" />
-        <img src="images/quality/iso13485-2016.jpg" class="h-10" alt="ISO 13485" />
-        <img src="images/quality/fda.jpg" class="h-10" alt="FDA" />
-      `;
-
-      renderRelatedProducts(product);
-    }
-      setSEO(product);
-
-      document.getElementById('breadcrumb-category').textContent = product.category;
-      document.getElementById('breadcrumb-category').href = `catalog.html?category=${encodeURIComponent(product.category)}`;
-      document.getElementById('breadcrumb-product').textContent = product.name;
-
-      document.getElementById('product-image').src = product.images?.[0] || 'images/products/default-product.jpg';
-      document.getElementById('product-name').textContent = product.name;
-      document.getElementById('product-description').textContent = product.description || '';
-
-      const certContainer = document.getElementById('certifications');
-      certContainer.innerHTML = `
-        <img src="images/quality/ce-mark.png" class="h-10" alt="CE" />
-        <img src="images/quality/iso13485-2016.jpg" class="h-10" alt="ISO 13485" />
-        <img src="images/quality/fda.jpg" class="h-10" alt="FDA" />
-      `;
-    }
-
-    function renderRelatedProducts(product) {
-      const container = document.getElementById('related-products');
-      if (!container) return;
-
-      const related = Object.values(finalProductDatabase)
-        .filter(p => p.id !== product.id)
-        .map(p => {
-          let score = 0;
-          if (p.category === product.category) score += 3;
-          if (p.department && product.department && p.department === product.department) score += 2;
-          if (p.absorbable && product.absorbable && p.absorbable === product.absorbable) score += 2;
-          if (p.material && product.material && p.material === product.material) score += 1;
-          return { ...p, score };
-        })
-        .filter(p => p.score > 0)
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 4);
-
-      if (related.length === 0) {
-        container.innerHTML = '<p class="text-gray-500">No related products available.</p>';
-        return;
-      }
-
-      container.innerHTML = related.map(p => `
-        <div class="bg-white rounded-xl shadow-sm border hover:shadow-lg transition overflow-hidden">
-          <div class="h-40 bg-gray-100">
-            <img src="${p.images?.[0] || 'images/products/default-product.jpg'}" class="w-full h-full object-cover" />
-          </div>
-          <div class="p-4">
-            <h3 class="font-bold text-sm mb-2">${p.name}</h3>
-            <p class="text-xs text-gray-500 mb-2">${p.category}</p>
-            <a href="product-detail.html?product=${p.id}" class="text-blue-600 font-semibold text-sm">View Details →</a>
-          </div>
-        </div>
-      `).join('');
-    }(product) {
-      const container = document.getElementById('related-products');
-      if (!container) return;
-
-      const related = Object.values(finalProductDatabase)
-        .filter(p => p.category === product.category && p.id !== product.id)
-        .slice(0, 4);
-
-      if (related.length === 0) {
-        container.innerHTML = '<p class="text-gray-500">No related products available.</p>';
-        return;
-      }
-
-      container.innerHTML = related.map(p => `
-        <div class="bg-white rounded-xl shadow-sm border hover:shadow-lg transition overflow-hidden">
-          <div class="h-40 bg-gray-100">
-            <img src="${p.images?.[0] || 'images/products/default-product.jpg'}" class="w-full h-full object-cover" />
-          </div>
-          <div class="p-4">
-            <h3 class="font-bold text-sm mb-2">${p.name}</h3>
-            <a href="product-detail.html?product=${p.id}" class="text-blue-600 font-semibold text-sm">View Details →</a>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const id = getParam('product');
-      if (!id || !finalProductDatabase[id]) {
-        renderNotFound();
-        return;
-      }
-      renderProduct(finalProductDatabase[id]);
-    });
-  </script>
 </head>
-
 <body class="bg-gray-50 text-gray-800">
 
-  <!-- Header -->
-  <header class="bg-blue-900 text-white py-6">
-    <div class="max-w-7xl mx-auto px-4">
-      <a href="catalog.html" class="text-blue-200 text-sm">← Back to Catalog</a>
-    </div>
-  </header>
+<header class="bg-blue-900 text-white p-6">
+  <div class="max-w-7xl mx-auto">
+    <a href="catalog.html" class="text-blue-200 hover:underline">← Back to Catalog</a>
+    <h1 id="product-name" class="text-3xl font-bold mt-2"></h1>
+    <p id="product-subtitle" class="text-blue-200"></p>
+  </div>
+</header>
 
-  <!-- Breadcrumb -->
-  <nav class="max-w-7xl mx-auto px-4 py-4 text-sm text-gray-500">
-    <a href="catalog.html" class="hover:underline">Catalog</a> /
-    <a id="breadcrumb-category" href="#" class="hover:underline"></a> /
-    <span id="breadcrumb-product" class="text-gray-800 font-semibold"></span>
-  </nav>
+<main class="max-w-7xl mx-auto p-6 grid md:grid-cols-2 gap-8">
+  <!-- Image -->
+  <div>
+    <img id="product-image" src="" alt="" class="w-full rounded-xl shadow" />
+  </div>
 
-  <!-- Main -->
-  <main class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-10">
+  <!-- Info -->
+  <div>
+    <h2 class="text-xl font-bold mb-2">Product Overview</h2>
+    <p id="product-description" class="mb-4"></p>
 
-    <!-- Image -->
-    <div class="bg-white rounded-xl shadow-sm p-6">
-      <img id="product-image" src="images/products/default-product.jpg" class="w-full object-contain" />
-    </div>
+    <ul id="product-features" class="list-disc pl-5 space-y-1"></ul>
 
-    <!-- Info -->
-    <div>
-      <h1 id="product-name" class="text-3xl font-bold mb-4"></h1>
-      <p id="product-description" class="text-gray-600 mb-6"></p>
-
-      <div class="flex gap-4 mb-8" id="certifications"></div>
-
+    <div class="mt-6">
+      <h3 class="font-semibold mb-2">Certifications</h3>
       <div class="flex gap-4">
-        <a href="https://wa.me/447895047944" target="_blank"
-           class="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold">
-          WhatsApp Inquiry
-        </a>
-        <a href="mailto:info@v5md.com"
-           class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold">
-          Email Us
-        </a>
+        <img src="images/quality/ce-mark.png" alt="CE" class="h-10" />
+        <img src="images/quality/iso13485-2016.jpg" alt="ISO 13485" class="h-10" />
+        <img src="images/quality/fda.jpg" alt="FDA" class="h-10" />
       </div>
     </div>
 
-        
-      <!-- Related Products -->
-      <section class="mt-16 col-span-full">
-        <h2 class="text-2xl font-bold mb-6">Related Products</h2>
-        <div id="related-products" class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"></div>
-      </section>
-
-  </main>
-
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-gray-400 py-8 mt-16">
-    <div class="max-w-7xl mx-auto px-4 text-center text-sm">
-      © 2025 V5 Medical LTD. All rights reserved.
+    <div class="mt-8">
+      <a href="contact.html" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">Request Quotation</a>
     </div>
-  </footer>
+  </div>
+</main>
+
+<section class="max-w-7xl mx-auto p-6">
+  <h2 class="text-xl font-bold mb-4">Specifications</h2>
+  <table id="product-specs" class="w-full border text-sm"></table>
+</section>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const id = params.get('product');
+const product = finalProductDatabase[id];
+
+if (!product) {
+  document.body.innerHTML = '<div class="p-12 text-center"><h1 class="text-2xl font-bold">Product Not Found</h1><a href="catalog.html" class="text-blue-600">Back to catalog</a></div>';
+  throw new Error('Product not found');
+}
+
+// SEO
+const fullTitle = `${product.name} | ${product.categoryName} | V5 Medical LTD`;
+document.title = fullTitle;
+document.getElementById('meta-title').textContent = fullTitle;
+document.getElementById('meta-description').setAttribute('content', product.seoDescription);
+document.getElementById('canonical-url').href = `https://v5md.com/product-detail.html?product=${id}`;
+
+document.getElementById('og-title').content = fullTitle;
+document.getElementById('og-description').content = product.seoDescription;
+document.getElementById('og-image').content = product.image;
+
+// Content
+document.getElementById('product-name').textContent = product.name;
+document.getElementById('product-subtitle').textContent = product.subtitle || '';
+document.getElementById('product-image').src = product.image;
+document.getElementById('product-image').alt = product.name;
+document.getElementById('product-description').textContent = product.description;
+
+// Features
+const featureList = document.getElementById('product-features');
+product.features.forEach(f => {
+  const li = document.createElement('li');
+  li.textContent = f;
+  featureList.appendChild(li);
+});
+
+// Specs
+const specsTable = document.getElementById('product-specs');
+Object.entries(product.specs).forEach(([k, v]) => {
+  const row = `<tr><td class="border px-3 py-2 font-semibold">${k}</td><td class="border px-3 py-2">${v}</td></tr>`;
+  specsTable.insertAdjacentHTML('beforeend', row);
+});
+
+// Schema
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": product.name,
+  "image": product.image,
+  "description": product.seoDescription,
+  "brand": { "@type": "Brand", "name": "V5 Medical LTD" }
+};
+
+document.getElementById('schema-product').textContent = JSON.stringify(schema);
+</script>
 
 </body>
 </html>
-
-
