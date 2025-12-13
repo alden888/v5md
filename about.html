@@ -218,6 +218,14 @@
             transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
+        
+        /* Trust indicators styling */
+        .trust-indicators {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-top: 2rem;
+        }
     </style>
 
     <!-- Schema.org Structured Data - Added for SEO -->
@@ -829,6 +837,17 @@
                     <i class="fab fa-whatsapp mr-2"></i> Chat on WhatsApp
                 </a>
             </div>
+            
+            <!-- 信任指标部分 - 从页脚移动到此处 -->
+            <div class="trust-indicators">
+                <div class="flex flex-wrap justify-center gap-6 items-center text-blue-200 text-sm md:text-base">
+                    <span class="flex items-center gap-2"><i class="fas fa-globe-americas text-blue-500"></i> We deliver to 40+ countries</span>
+                    <span class="hidden md:inline text-gray-600">|</span>
+                    <span class="flex items-center gap-2"><i class="fas fa-certificate text-green-500"></i> ISO/CE/FDA Certified</span>
+                    <span class="hidden md:inline text-gray-600">|</span>
+                    <span class="flex items-center gap-2"><i class="fas fa-shipping-fast text-yellow-500"></i> Fast Shipping</span>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -918,17 +937,7 @@
                 </div>
             </div>
             
-            <div class="border-t border-gray-800 pt-8 mt-8">
-                <div class="text-center">
-                    <div class="flex flex-wrap justify-center gap-6 items-center text-blue-200 text-sm md:text-base">
-                        <span class="flex items-center gap-2"><i class="fas fa-globe-americas text-blue-500"></i> We deliver to 40+ countries</span>
-                        <span class="hidden md:inline text-gray-600">|</span>
-                        <span class="flex items-center gap-2"><i class="fas fa-certificate text-green-500"></i> ISO/CE/FDA Certified</span>
-                        <span class="hidden md:inline text-gray-600">|</span>
-                        <span class="flex items-center gap-2"><i class="fas fa-shipping-fast text-yellow-500"></i> Fast Shipping</span>
-                    </div>
-                </div>
-            </div>
+            <!-- 移除了信任指标部分，已移动到上面的位置 -->
             
             <div class="text-center mt-8 text-sm text-gray-500">
                 <p>© 2025 V5 Medical LTD. All rights reserved.</p>
