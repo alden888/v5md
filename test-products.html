@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Products Database</title>
+</head>
+<body>
+    <h1>Testing Products Database</h1>
+    <div id="output"></div>
+    
+    <script src="js/complete-products.js"></script>
+    <script>
+        function testDatabase() {
+            const output = document.getElementById('output');
+            
+            if (window.completeProductDatabase) {
+                const db = window.completeProductDatabase;
+                output.innerHTML = `
+                    <h2>✅ Database Loaded Successfully</h2>
+                    <p>Version: ${db.metadata.version}</p>
+                    <p>Total Products: ${db.metadata.totalProducts}</p>
+                    <p>Categories: ${Object.keys(db.categories).join(', ')}</p>
+                    
+                    <h3>Sample Products (first 5):</h3>
+                    <ul>
+                        ${db.products.slice(0, 5).map(p => `
+                            <li><strong>${p.name}</strong> (ID: ${p.id}) - ${p.category}</li>
+                        `).join('')}
+                    </ul>
+                    
+                    <h3>Test Product Detail Links:</h3>
+                    <ul>
+                        ${db.products.slice(0, 3).map(p => `
+                            <li>
+                                <a href="product-detail.html?id=${p.id}" target="_blank">
+                                    View ${p.name}
+                                </a>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+            } else {
+                output.innerHTML = '<h2 style="color: red;">❌ Database NOT Loaded</h2>';
+            }
+        }
+        
+        // 检查数据库
+        setTimeout(testDatabase, 1000);
+    </script>
+</body>
+</html>
