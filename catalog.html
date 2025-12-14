@@ -448,7 +448,7 @@
                 
                 const script = document.createElement('script');
                 script.id = 'productsScript';
-                script.src = 'js/products_fixed.js?' + new Date().getTime(); // Cache busting - using fixed version
+                script.src = 'js/products.js?' + new Date().getTime(); // Cache busting - using fixed version
                 script.async = false; // Load synchronously
                 
                 script.onload = () => {
@@ -469,7 +469,7 @@
         async function loadProductsWithDynamicImport() {
             try {
                 log('Attempting dynamic import of products.js...', 'info');
-                const module = await import('./js/products_fixed.js?' + new Date().getTime()); // Using fixed version
+                const module = await import('./js/products.js?' + new Date().getTime()); // Using fixed version
                 
                 // Make the module available globally
                 if (module.productDatabase) {
@@ -497,7 +497,7 @@
             try {
                 log('Attempting fetch and eval of products.js...', 'warning');
                 
-                const response = await fetch('js/products_fixed.js?' + new Date().getTime()); // Using fixed version
+                const response = await fetch('js/products.js?' + new Date().getTime()); // Using fixed version
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
