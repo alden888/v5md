@@ -3,50 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO Meta Tags (will be updated by seo-utils.js) -->
-    <title id="meta-title">Product Catalog | V5 Medical LTD</title>
-    <meta name="description" id="meta-description" content="Browse our complete catalog of ISO 13485, CE & FDA certified medical products.">
-    <meta name="keywords" id="meta-keywords" content="medical products, ISO 13485, CE certified, FDA approved">
-    <meta name="author" content="V5 Medical LTD">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" id="og-title" content="Product Catalog | V5 Medical LTD">
-    <meta property="og:description" id="og-description" content="Browse our complete catalog of ISO 13485, CE & FDA certified medical products.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" id="og-url" content="https://v5md.com/catalog.html">
-    <meta property="og:image" id="og-image" content="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" id="twitter-title" content="Product Catalog | V5 Medical LTD">
-    <meta name="twitter:description" id="twitter-description" content="Browse our complete catalog of ISO 13485, CE & FDA certified medical products.">
-    <meta name="twitter:image" id="twitter-image" content="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png">
-    
-    <link rel="canonical" id="canonical-link" href="https://v5md.com/catalog.html">
+    <title>Product Catalog - Diagnostic Mode | V5 Medical LTD</title>
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
     
-    <!-- External Resources -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Tailwind Configuration -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1e40af',
-                        secondary: '#3b82f6',
-                        accent: '#2563eb'
-                    }
-                }
-            }
-        }
-    </script>
-    
     <style>
+        .diagnostic-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-height: 40vh;
+            overflow-y: auto;
+            background: #1f2937;
+            color: white;
+            padding: 20px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 9999;
+            border-top: 3px solid #3b82f6;
+        }
+        .log-success { color: #10b981; }
+        .log-error { color: #ef4444; }
+        .log-warning { color: #f59e0b; }
+        .log-info { color: #60a5fa; }
         .product-card {
             transition: all 0.3s ease;
         }
@@ -54,470 +36,307 @@
             transform: translateY(-8px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: skeleton-loading 1.5s infinite;
-        }
-        @keyframes skeleton-loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
     </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Navigation Container (will be populated by components.js) -->
-    <div id="navigation-container"></div>
+<body class="bg-gray-50 pb-[40vh]">
+    
+    <!-- Diagnostic Panel -->
+    <div id="diagnostic-panel" class="diagnostic-panel">
+        <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-600">
+            <h3 class="font-bold text-lg">🔍 V5 Medical Diagnostic Console</h3>
+            <button onclick="clearDiagnostics()" class="bg-red-600 px-3 py-1 rounded text-sm hover:bg-red-700">
+                Clear Logs
+            </button>
+        </div>
+        <div id="diagnostic-logs"></div>
+    </div>
+
+    <!-- Simple Navigation -->
+    <nav class="fixed w-full z-50 bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png" 
+                     class="h-12" alt="V5 Medical" />
+                <div>
+                    <div class="font-bold text-xl text-blue-900">V5 Medical LTD</div>
+                    <div class="text-xs text-blue-600">Diagnostic Mode</div>
+                </div>
+            </div>
+            <div class="hidden md:flex gap-8 items-center">
+                <a href="index.html" class="font-medium text-gray-600 hover:text-blue-900">Home</a>
+                <a href="catalog.html" class="font-medium text-blue-900 border-b-2 border-blue-900">Products</a>
+                <a href="about.html" class="font-medium text-gray-600 hover:text-blue-900">About</a>
+                <a href="contact.html" class="font-medium text-gray-600 hover:text-blue-900">Contact</a>
+            </div>
+        </div>
+    </nav>
 
     <main class="pt-32 pb-20">
         <!-- Hero Section -->
         <section class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 mb-12">
             <div class="max-w-7xl mx-auto px-4 text-center">
-                <h1 class="text-4xl md:text-5xl font-bold mb-6">Our Product Catalog</h1>
-                <p class="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto">
-                    Browse our complete range of ISO 13485, CE & FDA certified medical products
-                </p>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <button onclick="scrollToCategory('surgical-sutures')" 
-                            class="bg-white text-blue-900 px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition">
-                        <i class="fas fa-stethoscope mr-2"></i>Surgical Sutures
-                    </button>
-                    <button onclick="scrollToCategory('surgical-instruments')" 
-                            class="bg-white text-blue-900 px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition">
-                        <i class="fas fa-tools mr-2"></i>Surgical Instruments
-                    </button>
-                    <button onclick="scrollToCategory('protective-equipment')" 
-                            class="bg-white text-blue-900 px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition">
-                        <i class="fas fa-shield-virus mr-2"></i>Protective Equipment
-                    </button>
+                <h1 class="text-4xl md:text-5xl font-bold mb-6">🔧 Diagnostic Mode</h1>
+                <p class="text-xl mb-4">检查产品数据库加载状态</p>
+                <div id="status-indicator" class="text-sm opacity-75">
+                    正在初始化...
                 </div>
             </div>
         </section>
 
         <div class="max-w-7xl mx-auto px-4">
-            <!-- Surgical Sutures -->
-            <section id="surgical-sutures" class="mb-20">
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
-                        <i class="fas fa-stethoscope text-xl"></i>
+            <!-- Test Section -->
+            <section class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold mb-6">系统检查</h2>
+                <div class="grid md:grid-cols-2 gap-4" id="system-checks">
+                    <div class="p-4 border rounded-lg">
+                        <div class="font-semibold mb-2">📦 config.js</div>
+                        <div id="check-config" class="text-sm text-gray-600">检查中...</div>
                     </div>
-                    <h2 class="text-3xl font-bold text-gray-900">Surgical Sutures</h2>
+                    <div class="p-4 border rounded-lg">
+                        <div class="font-semibold mb-2">📊 products.js</div>
+                        <div id="check-products" class="text-sm text-gray-600">检查中...</div>
+                    </div>
+                    <div class="p-4 border rounded-lg">
+                        <div class="font-semibold mb-2">🖼️ image-utils.js</div>
+                        <div id="check-imageutils" class="text-sm text-gray-600">检查中...</div>
+                    </div>
+                    <div class="p-4 border rounded-lg">
+                        <div class="font-semibold mb-2">🔍 seo-utils.js</div>
+                        <div id="check-seoutils" class="text-sm text-gray-600">检查中...</div>
+                    </div>
+                    <div class="p-4 border rounded-lg">
+                        <div class="font-semibold mb-2">⚡ product-loader.js</div>
+                        <div id="check-loader" class="text-sm text-gray-600">检查中...</div>
+                    </div>
+                    <div class="p-4 border rounded-lg">
+                        <div class="font-semibold mb-2">🎨 components.js</div>
+                        <div id="check-components" class="text-sm text-gray-600">检查中...</div>
+                    </div>
                 </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="sutures-container">
+            </section>
+
+            <!-- Products Display -->
+            <section class="mb-20">
+                <h2 class="text-3xl font-bold mb-8">产品列表 (前6个)</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="products-container">
                     <div class="col-span-full text-center py-12">
                         <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                        <p class="text-gray-600">Loading surgical sutures...</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Surgical Instruments -->
-            <section id="surgical-instruments" class="mb-20">
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
-                        <i class="fas fa-tools text-xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-gray-900">Surgical Instruments</h2>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="instruments-container">
-                    <div class="col-span-full text-center py-12">
-                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600 mx-auto mb-4"></div>
-                        <p class="text-gray-600">Loading surgical instruments...</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Gauze Dressings -->
-            <section id="gauze-dressings" class="mb-20">
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600">
-                        <i class="fas fa-band-aid text-xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-gray-900">Gauze Dressings</h2>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="dressings-container">
-                    <div class="col-span-full text-center py-12">
-                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600 mx-auto mb-4"></div>
-                        <p class="text-gray-600">Loading gauze dressings...</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Protective Equipment -->
-            <section id="protective-equipment" class="mb-20">
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
-                        <i class="fas fa-shield-virus text-xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-gray-900">Protective Equipment</h2>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="protection-container">
-                    <div class="col-span-full text-center py-12">
-                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600 mx-auto mb-4"></div>
-                        <p class="text-gray-600">Loading protective equipment...</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Injection & Infusion -->
-            <section id="injection-infusion" class="mb-20">
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600">
-                        <i class="fas fa-syringe text-xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-gray-900">Injection & Infusion</h2>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="injection-container">
-                    <div class="col-span-full text-center py-12">
-                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-600 mx-auto mb-4"></div>
-                        <p class="text-gray-600">Loading injection & infusion products...</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Dental Products -->
-            <section id="dental-products" class="mb-20">
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600">
-                        <i class="fas fa-tooth text-xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-gray-900">Dental Products</h2>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="dental-container">
-                    <div class="col-span-full text-center py-12">
-                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600 mx-auto mb-4"></div>
-                        <p class="text-gray-600">Loading dental products...</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Surgical Packs -->
-            <section id="surgical-packs" class="mb-20">
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center text-teal-600">
-                        <i class="fas fa-box text-xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-gray-900">Surgical Packs</h2>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="packs-container">
-                    <div class="col-span-full text-center py-12">
-                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600 mx-auto mb-4"></div>
-                        <p class="text-gray-600">Loading surgical packs...</p>
+                        <p class="text-gray-600">等待产品数据加载...</p>
                     </div>
                 </div>
             </section>
         </div>
     </main>
 
-    <!-- Footer Container (will be populated by components.js) -->
-    <div id="footer-container"></div>
-
-    <!-- WhatsApp Button Container (will be populated by components.js) -->
-    <div id="whatsapp-container"></div>
-
-    <!-- Back to Top Button -->
-    <button class="fixed bottom-20 right-6 bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all z-50 opacity-0 invisible hover:scale-110"
-            onclick="scrollToTop()" id="back-to-top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <!-- Load Modular JavaScript Files in Correct Order -->
-    <script src="js/config.js"></script>
-    <script src="js/products.js"></script>
-    <script src="js/image-utils.js"></script>
-    <script src="js/seo-utils.js"></script>
-    <script src="js/product-loader.js"></script>
-    <script src="js/components.js"></script>
-    <script src="js/performance-monitor.js"></script>
-
-    <!-- Page-specific JavaScript -->
+    <!-- Load Scripts with Error Tracking -->
     <script>
-        // Category mapping - matches products.js category values
-        const categoryMapping = {
-            'surgical-sutures': 'sutures-container',
-            'surgical-instruments': 'instruments-container',
-            'gauze-dressings': 'dressings-container',
-            'protective-equipment': 'protection-container',
-            'injection-infusion': 'injection-container',
-            'dental-products': 'dental-container',
-            'surgical-packs': 'packs-container'
-        };
-
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', async function() {
+        // Diagnostic logging system
+        const diagnosticLogs = [];
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = {
+                timestamp,
+                type,
+                message
+            };
+            diagnosticLogs.push(logEntry);
+            
+            // Update diagnostic panel
+            const logsContainer = document.getElementById('diagnostic-logs');
+            const logElement = document.createElement('div');
+            logElement.className = `log-${type} mb-1`;
+            logElement.textContent = `[${timestamp}] [${type.toUpperCase()}] ${message}`;
+            logsContainer.appendChild(logElement);
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+            
+            // Also log to console
+            console.log(`[Diagnostic] ${logEntry.timestamp} [${type}] ${message}`);
+        }
+        
+        function clearDiagnostics() {
+            diagnosticLogs.length = 0;
+            document.getElementById('diagnostic-logs').innerHTML = '';
+            log('诊断日志已清除', 'info');
+        }
+        
+        // Track script loading
+        function loadScript(src, id) {
+            return new Promise((resolve, reject) => {
+                log(`开始加载: ${src}`, 'info');
+                const script = document.createElement('script');
+                script.src = src;
+                script.id = id;
+                
+                script.onload = () => {
+                    log(`✅ 成功加载: ${src}`, 'success');
+                    resolve(src);
+                };
+                
+                script.onerror = (error) => {
+                    log(`❌ 加载失败: ${src}`, 'error');
+                    reject(new Error(`Failed to load ${src}`));
+                };
+                
+                document.head.appendChild(script);
+            });
+        }
+        
+        // Check if module is loaded
+        function checkModule(moduleName, checkFunction, elementId) {
+            const element = document.getElementById(elementId);
             try {
-                console.log('🚀 Initializing catalog page...');
-                
-                // Insert navigation, footer, and WhatsApp button using components
-                if (window.components) {
-                    document.getElementById('navigation-container').innerHTML = components.createNavigation();
-                    document.getElementById('footer-container').innerHTML = components.createFooter();
-                    document.getElementById('whatsapp-container').innerHTML = components.createWhatsAppButton();
-                    components.initNavigation();
-                    console.log('✅ UI components loaded');
+                const result = checkFunction();
+                if (result) {
+                    element.innerHTML = '<span class="text-green-600">✅ 已加载</span>';
+                    log(`✅ ${moduleName} 模块检查通过`, 'success');
+                    return true;
                 } else {
-                    console.warn('⚠️ Components module not loaded');
+                    element.innerHTML = '<span class="text-red-600">❌ 未加载</span>';
+                    log(`❌ ${moduleName} 模块未找到`, 'error');
+                    return false;
                 }
-                
-                // Load and render products
-                await loadAndRenderCatalog();
-                
-                // Update SEO meta tags
-                if (window.seoUtils) {
-                    seoUtils.updateMetaTags({
-                        title: 'V5 Medical Product Catalog | ISO 13485 Certified Medical Supplies',
-                        description: 'Browse our complete catalog of ISO 13485, CE & FDA certified medical products including surgical sutures, instruments, dressings, and protective equipment.',
-                        keywords: 'medical products catalog, surgical sutures, medical instruments, ISO 13485, CE certified, FDA approved'
-                    });
-                    seoUtils.addOrganizationSchema();
-                    console.log('✅ SEO meta tags updated');
-                }
-                
-                // Initialize back to top button
-                initBackToTop();
-                
-                console.log('✅ Catalog page initialized successfully');
-                
             } catch (error) {
-                console.error('❌ Error initializing catalog page:', error);
-                showGlobalError();
-            }
-        });
-
-        // Load products and render catalog
-        async function loadAndRenderCatalog() {
-            try {
-                const startTime = performance.now();
-                console.log('📦 Loading product database...');
-                
-                // Use productLoader if available, otherwise fallback to direct access
-                let products;
-                if (window.productLoader) {
-                    products = await productLoader.loadProducts();
-                } else if (window.productDatabase) {
-                    products = window.productDatabase;
-                } else {
-                    throw new Error('Product database not available');
-                }
-                
-                const loadTime = performance.now() - startTime;
-                console.log(`✅ Product database loaded in ${loadTime.toFixed(0)}ms`);
-                console.log(`📊 Total products: ${Object.keys(products).length}`);
-                
-                // Group products by category
-                const productsByCategory = {};
-                Object.values(products).forEach(product => {
-                    const category = product.category;
-                    if (!productsByCategory[category]) {
-                        productsByCategory[category] = [];
-                    }
-                    productsByCategory[category].push(product);
-                });
-                
-                console.log('📂 Products grouped by category:', Object.keys(productsByCategory));
-                
-                // Render each category
-                Object.entries(categoryMapping).forEach(([category, containerId]) => {
-                    const categoryProducts = productsByCategory[category] || [];
-                    renderProductCategory(categoryProducts, containerId, category);
-                });
-                
-                // Track successful load
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'catalog_load_success', {
-                        event_category: 'Product Catalog',
-                        product_count: Object.keys(products).length,
-                        load_time: loadTime
-                    });
-                }
-                
-            } catch (error) {
-                console.error('❌ Error loading product catalog:', error);
-                showGlobalError();
-                
-                // Track error
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'catalog_load_failure', {
-                        event_category: 'Product Catalog',
-                        error_message: error.message
-                    });
-                }
+                element.innerHTML = '<span class="text-red-600">❌ 错误</span>';
+                log(`❌ ${moduleName} 检查出错: ${error.message}`, 'error');
+                return false;
             }
         }
-
-        // Render product category
-        function renderProductCategory(products, containerId, categoryName) {
-            const container = document.getElementById(containerId);
-            if (!container) {
-                console.warn(`⚠️ Container not found: ${containerId}`);
-                return;
-            }
+        
+        // Main initialization
+        async function init() {
+            log('🚀 开始初始化诊断系统', 'info');
             
-            if (products.length === 0) {
+            try {
+                // Load all scripts
+                await loadScript('js/config.js', 'config-script');
+                await loadScript('js/products.js', 'products-script');
+                await loadScript('js/image-utils.js', 'imageutils-script');
+                await loadScript('js/seo-utils.js', 'seoutils-script');
+                await loadScript('js/product-loader.js', 'loader-script');
+                await loadScript('js/components.js', 'components-script');
+                
+                // Wait a moment for scripts to execute
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                // Check all modules
+                log('🔍 开始检查所有模块...', 'info');
+                
+                checkModule('V5Config', () => typeof window.V5Config !== 'undefined', 'check-config');
+                checkModule('productDatabase', () => typeof window.productDatabase !== 'undefined', 'check-products');
+                checkModule('imageUtils', () => typeof window.imageUtils !== 'undefined', 'check-imageutils');
+                checkModule('seoUtils', () => typeof window.seoUtils !== 'undefined', 'check-seoutils');
+                checkModule('productLoader', () => typeof window.productLoader !== 'undefined', 'check-loader');
+                checkModule('components', () => typeof window.components !== 'undefined', 'check-components');
+                
+                // Detailed product database check
+                if (window.productDatabase) {
+                    const products = Object.values(window.productDatabase);
+                    log(`📊 产品数据库包含 ${products.length} 个产品`, 'success');
+                    
+                    // Check first product
+                    if (products.length > 0) {
+                        const firstProduct = products[0];
+                        log(`📦 第一个产品: ${firstProduct.name || firstProduct.id}`, 'info');
+                        log(`📂 类别: ${firstProduct.category}`, 'info');
+                        log(`🖼️ 图片: ${firstProduct.images ? firstProduct.images[0] : 'N/A'}`, 'info');
+                        
+                        // List all unique categories
+                        const categories = [...new Set(products.map(p => p.category))];
+                        log(`📁 所有类别: ${categories.join(', ')}`, 'info');
+                    }
+                    
+                    // Try to render first 6 products
+                    renderProducts(products.slice(0, 6));
+                } else {
+                    log('❌ 产品数据库为空或未定义', 'error');
+                    showError();
+                }
+                
+                document.getElementById('status-indicator').innerHTML = 
+                    '<span class="text-green-400">✅ 系统检查完成 - 查看下方诊断面板</span>';
+                
+            } catch (error) {
+                log(`❌ 初始化失败: ${error.message}`, 'error');
+                log(`错误堆栈: ${error.stack}`, 'error');
+                document.getElementById('status-indicator').innerHTML = 
+                    '<span class="text-red-400">❌ 初始化失败 - 查看诊断面板获取详情</span>';
+                showError();
+            }
+        }
+        
+        // Render products
+        function renderProducts(products) {
+            const container = document.getElementById('products-container');
+            
+            if (!products || products.length === 0) {
                 container.innerHTML = `
                     <div class="col-span-full text-center py-12">
-                        <div class="text-4xl mb-4 text-gray-400">
-                            <i class="fas fa-box-open"></i>
-                        </div>
-                        <p class="text-gray-600">No products available in this category</p>
+                        <p class="text-red-600">没有找到产品数据</p>
                     </div>
                 `;
-                console.log(`ℹ️ No products for category: ${categoryName}`);
                 return;
             }
             
-            container.innerHTML = products.map(product => createProductCard(product)).join('');
-            console.log(`✅ Rendered ${products.length} products for ${categoryName}`);
-            
-            // Preload images if imageUtils is available
-            if (window.imageUtils && products.length > 0) {
-                const imageUrls = products
-                    .filter(p => p.images && p.images.length > 0)
-                    .map(p => imageUtils.getImageUrl(p.images[0]));
-                
-                imageUtils.preloadImages(imageUrls).then(() => {
-                    console.log(`🖼️ Preloaded ${imageUrls.length} images for ${categoryName}`);
-                });
-            }
-        }
-
-        // Create product card HTML
-        function createProductCard(product) {
-            // Get image URL using imageUtils if available
-            let firstImage;
-            if (window.imageUtils) {
-                firstImage = product.images && product.images.length > 0 
-                    ? imageUtils.getImageUrl(product.images[0]) 
-                    : imageUtils.getPlaceholderImage();
-            } else {
-                firstImage = product.images && product.images[0] 
+            container.innerHTML = products.map(product => {
+                const imageUrl = product.images && product.images[0] 
                     ? product.images[0] 
                     : 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg';
-            }
-            
-            const certifications = product.certifications || ['ISO 13485', 'CE', 'FDA'];
-            const shortDesc = product.short || product.description || 'High-quality medical product';
-            
-            return `
-                <div class="bg-white rounded-xl overflow-hidden shadow-md product-card group">
-                    <div class="relative cursor-pointer" onclick="window.location.href='product-detail.html?id=${product.id}'">
-                        <img src="${firstImage}" 
-                             onerror="this.src='https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg'"
-                             class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
-                             alt="${product.name || 'Product'}">
-                        <div class="absolute top-3 right-3">
-                            <span class="bg-green-500/90 text-white text-xs px-2 py-1 rounded-full">
-                                ${product.availability || 'In Stock'}
-                            </span>
+                
+                return `
+                    <div class="bg-white rounded-xl overflow-hidden shadow-md product-card">
+                        <div class="relative">
+                            <img src="${imageUrl}" 
+                                 onerror="this.src='https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg'"
+                                 class="w-full h-48 object-cover"
+                                 alt="${product.name || 'Product'}">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">${product.name || 'N/A'}</h3>
+                            <p class="text-sm text-gray-600 mb-2">ID: ${product.id || 'N/A'}</p>
+                            <p class="text-sm text-gray-600 mb-2">Category: ${product.category || 'N/A'}</p>
+                            <p class="text-blue-600 font-semibold">${product.price || 'Contact for Price'}</p>
                         </div>
                     </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg mb-2 text-gray-900 cursor-pointer line-clamp-2" 
-                            onclick="window.location.href='product-detail.html?id=${product.id}'">
-                            ${product.name || 'Product Name'}
-                        </h3>
-                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">
-                            ${shortDesc.substring(0, 100)}${shortDesc.length > 100 ? '...' : ''}
-                        </p>
-                        <div class="flex flex-wrap gap-1 mb-4">
-                            ${certifications.map(cert => `
-                                <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">${cert}</span>
-                            `).join('')}
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-blue-600">${product.price || 'Contact for Price'}</span>
-                            <div class="flex gap-2">
-                                <button onclick="window.location.href='product-detail.html?id=${product.id}'"
-                                        class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-sm font-semibold transition">
-                                    Details
-                                </button>
-                                <a href="https://wa.me/447895047944?text=I%20am%20interested%20in%20${encodeURIComponent(product.name || 'this product')}"
-                                   target="_blank" rel="noopener noreferrer"
-                                   class="bg-green-500 hover:bg-green-600 text-white w-9 h-9 rounded-lg flex items-center justify-center transition"
-                                   onclick="trackWhatsAppClick()">
-                                    <i class="fab fa-whatsapp"></i>
-                                </a>
-                            </div>
-                        </div>
+                `;
+            }).join('');
+            
+            log(`✅ 成功渲染 ${products.length} 个产品`, 'success');
+        }
+        
+        // Show error state
+        function showError() {
+            const container = document.getElementById('products-container');
+            container.innerHTML = `
+                <div class="col-span-full text-center py-12 bg-red-50 rounded-xl">
+                    <div class="text-4xl mb-4 text-red-500">
+                        <i class="fas fa-exclamation-triangle"></i>
                     </div>
+                    <p class="text-gray-900 font-semibold mb-2">加载失败</p>
+                    <p class="text-gray-600 mb-4">请查看下方诊断面板了解详情</p>
+                    <button onclick="location.reload()" 
+                            class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                        重新加载
+                    </button>
                 </div>
             `;
         }
-
-        // Show global error state
-        function showGlobalError() {
-            const containers = Object.values(categoryMapping);
-            containers.forEach(containerId => {
-                const container = document.getElementById(containerId);
-                if (container) {
-                    container.innerHTML = `
-                        <div class="col-span-full text-center py-12">
-                            <div class="text-4xl mb-4 text-red-500">
-                                <i class="fas fa-exclamation-triangle"></i>
-                            </div>
-                            <p class="text-gray-600 mb-4">Failed to load products</p>
-                            <button onclick="window.location.reload()" 
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition">
-                                <i class="fas fa-redo mr-2"></i>Try Again
-                            </button>
-                        </div>
-                    `;
-                }
-            });
+        
+        // Start initialization when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
         }
-
-        // Scroll to category
-        function scrollToCategory(categoryId) {
-            const element = document.getElementById(categoryId);
-            if (element) {
-                const offsetTop = element.offsetTop - 100;
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
-            }
-        }
-
-        // Scroll to top
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-
-        // WhatsApp click tracking
-        function trackWhatsAppClick() {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'whatsapp_click', {
-                    event_category: 'Lead Generation',
-                    event_label: 'WhatsApp from catalog'
-                });
-            }
-        }
-
-        // Initialize back to top button
-        function initBackToTop() {
-            const backToTop = document.getElementById('back-to-top');
-            if (backToTop) {
-                window.addEventListener('scroll', () => {
-                    if (window.scrollY > 500) {
-                        backToTop.classList.remove('opacity-0', 'invisible');
-                        backToTop.classList.add('opacity-100', 'visible');
-                    } else {
-                        backToTop.classList.add('opacity-0', 'invisible');
-                        backToTop.classList.remove('opacity-100', 'visible');
-                    }
-                });
-            }
-        }
-
-        // Handle URL hash for direct category navigation
-        window.addEventListener('load', () => {
-            if (window.location.hash) {
-                const categoryId = window.location.hash.substring(1);
-                setTimeout(() => scrollToCategory(categoryId), 500);
-            }
+        
+        // Global error handler
+        window.addEventListener('error', function(event) {
+            log(`❌ 全局错误: ${event.message}`, 'error');
+            log(`   文件: ${event.filename}:${event.lineno}:${event.colno}`, 'error');
+        });
+        
+        window.addEventListener('unhandledrejection', function(event) {
+            log(`❌ 未处理的Promise拒绝: ${event.reason}`, 'error');
         });
     </script>
 </body>
