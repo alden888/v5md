@@ -3,6 +3,10 @@
 # Last Updated: 2024-12-11
 # ------------------------------
 
+# ===== 修复：将特定路由放在通配符之前 =====
+/catalog /catalog.html 200
+/product-detail /product-detail.html 200
+
 # ------------------------------
 # BASE REDIRECTS (Critical for SEO)
 # ------------------------------
@@ -92,3 +96,6 @@ www.v5md.com/* https://v5md.com/:splat 301!
   Referrer-Policy: strict-origin-when-cross-origin
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://www.google.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; img-src 'self' data: https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self' https://api.whatsapp.com https://formspree.io
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+# ===== 通配符规则（放在最后！） =====
+/* /404.html 404
