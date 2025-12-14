@@ -1599,20 +1599,24 @@ const productDatabase = {
 
 // Helper functions to access products
 function getProductById(productId) {
+    console.log(`getProductById called with: ${productId}`);
     return productDatabase[productId];
 }
 
 function getProductsByCategory(categoryName) {
+    console.log(`getProductsByCategory called with: ${categoryName}`);
     return Object.values(productDatabase).filter(product => 
         product.category === categoryName
     );
 }
 
 function getAllProducts() {
+    console.log('getAllProducts called');
     return Object.values(productDatabase);
 }
 
 function searchProducts(query) {
+    console.log(`searchProducts called with: ${query}`);
     const searchTerm = query.toLowerCase();
     return Object.values(productDatabase).filter(product => 
         product.name.toLowerCase().includes(searchTerm) ||
@@ -1621,13 +1625,28 @@ function searchProducts(query) {
     );
 }
 
-// Export for web usage
+// Export for web usage - Make sure these are properly exposed to window
+console.log('products.js: Exporting functions to window object');
 if (typeof window !== 'undefined') {
     window.productDatabase = productDatabase;
     window.getProductById = getProductById;
     window.getProductsByCategory = getProductsByCategory;
     window.getAllProducts = getAllProducts;
     window.searchProducts = searchProducts;
+    
+    // Test function to verify exports
+    window.testProductsJs = function() {
+        console.log('testProductsJs called - products.js is working!');
+        console.log(`Total products: ${Object.keys(productDatabase).length}`);
+        return {
+            status: 'success',
+            productCount: Object.keys(productDatabase).length,
+            categories: [...new Set(Object.values(productDatabase).map(p => p.category))]
+        };
+    };
+    
+    console.log('products.js loaded successfully!');
+    console.log(`Total products available: ${Object.keys(productDatabase).length}`);
 }
 
 // Export for Node.js usage
@@ -1641,4 +1660,7 @@ if (typeof module !== 'undefined' && module.exports) {
     };
 }
 
-console.log('Product database loaded successfully. Total products:', Object.keys(productDatabase).length);
+// Log successful loading
+console.log('V5 Medical Product Database loaded successfully!');
+console.log(`Total products in database: ${Object.keys(productDatabase).length}`);
+console.log('Available categories:', [...new Set(Object.values(productDatabase).map(p => p.category))]);
