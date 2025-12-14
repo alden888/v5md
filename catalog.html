@@ -10,7 +10,7 @@
 <body class="bg-gray-50">
     <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-white shadow-md">
-        <div class="max-w-View Product7xl mx-auto px-4 h-20 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer" onclick="location.href='index.html'">
                 <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png" class="h-12" alt="V5 Medical" onerror="this.style.display='none'"/>
                 <div>
@@ -110,186 +110,185 @@
         <i class="fab fa-whatsapp text-2xl"></i>
     </a>
 
-// 加载外部产品数据库
-const PRODUCTS = window.productDatabase ? window.productDatabase.byId : {};
-
-// 如果外部数据库未加载，使用内联数据
-if (!window.productDatabase) {
-    console.log('Using inline product database');
-    // 这里保持原有的内联PRODUCTS对象
-} else {
-    console.log('Using external product database:', Object.keys(PRODUCTS).length, 'products');
-}
-
     <script>
-        // INLINE PRODUCT DATABASE - No external file needed!
-        const PRODUCTS = {
-            'pga-suture': {
-                id: 'pga-suture',
-                name: 'PGA Absorbable Suture',
-                category: 'surgical-sutures',
-                short: 'Monofilament PGA suture with excellent tensile strength',
-                description: 'High-quality PGA absorbable sutures with predictable absorption.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pga-absorbable-suture.jpg'
-            },
-            'pgla-suture': {
-                id: 'pgla-suture',
-                name: 'PGLA Braided Suture',
-                category: 'surgical-sutures',
-                short: 'Braided PGLA suture with excellent handling',
-                description: 'Superior handling and knot security.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pgla-braided-suture.jpg'
-            },
-            'chromic-catgut': {
-                id: 'chromic-catgut',
-                name: 'Chromic Catgut Suture',
-                category: 'surgical-sutures',
-                short: 'Natural chromic catgut for ophthalmic surgery',
-                description: 'Natural absorbable suture with delayed absorption.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/chromic-catgut.jpg'
-            },
-            'surgical-blades': {
-                id: 'surgical-blades',
-                name: 'Surgical Blades',
-                category: 'surgical-instruments',
-                short: 'Sterile surgical blades in various sizes',
-                description: 'High-quality stainless steel surgical blades.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-instruments/surgical-blades.jpg'
-            },
-            'scalpels': {
-                id: 'scalpels',
-                name: 'Disposable Scalpels',
-                category: 'surgical-instruments',
-                short: 'Single-use disposable scalpels',
-                description: 'Pre-assembled disposable scalpels.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-instruments/scalpels.jpg'
-            },
-            'surgical-scissors': {
-                id: 'surgical-scissors',
-                name: 'Surgical Scissors',
-                category: 'surgical-instruments',
-                short: 'Stainless steel surgical scissors',
-                description: 'Various types including Mayo and Metzenbaum.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-instruments/surgical-scissors.jpg'
-            },
-            'gauze-swabs': {
-                id: 'gauze-swabs',
-                name: 'Gauze Swabs',
-                category: 'gauze-dressings',
-                short: 'Sterile cotton gauze swabs',
-                description: '100% cotton sterile gauze swabs.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/gauze-dressings/gauze-swabs.jpg'
-            },
-            'gauze-rolls': {
-                id: 'gauze-rolls',
-                name: 'Gauze Rolls',
-                category: 'gauze-dressings',
-                short: 'Cotton gauze bandage rolls',
-                description: 'High-quality gauze rolls for wound dressing.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/gauze-dressings/gauze-rolls.jpg'
-            },
-            'surgical-masks': {
-                id: 'surgical-masks',
-                name: 'Surgical Face Masks',
-                category: 'protective-equipment',
-                short: '3-ply surgical masks with ear loops',
-                description: 'High-filtration 3-ply medical masks.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/protective-equipment/surgical-face-masks.jpg'
-            },
-            'n95-masks': {
-                id: 'n95-masks',
-                name: 'N95/FFP2 Masks',
-                category: 'protective-equipment',
-                short: 'High-filtration respirator masks',
-                description: 'N95/FFP2 respirators with ≥95% filtration.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/protective-equipment/n95-ffp2-masks.jpg'
-            },
-            'disposable-syringes': {
-                id: 'disposable-syringes',
-                name: 'Disposable Syringes',
-                category: 'injection-infusion',
-                short: 'Sterile medical syringes',
-                description: 'Luer lock and slip syringes in all sizes.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/disposable-syringes.jpg'
-            },
-            'iv-cannula': {
-                id: 'iv-cannula',
-                name: 'IV Cannula',
-                category: 'injection-infusion',
-                short: 'Intravenous catheter sets',
-                description: 'IV cannulas with flashback chamber.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/iv-cannula.jpg'
-            },
-            'dental-kits': {
-                id: 'dental-kits',
-                name: 'Dental Examination Kits',
-                category: 'dental-products',
-                short: 'Disposable dental exam kits',
-                description: 'Complete dental examination sets.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/dental-examination-kits.jpg'
-            },
-            'dental-bibs': {
-                id: 'dental-bibs',
-                name: 'Dental Bibs',
-                category: 'dental-products',
-                short: 'Disposable patient bibs',
-                description: 'Waterproof dental patient bibs.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/dental-bibs.jpg'
-            },
-            'surgical-packs': {
-                id: 'surgical-packs',
-                name: 'Surgical Packs',
-                category: 'surgical-packs',
-                short: 'Custom surgical procedure packs',
-                description: 'Customized packs for specific procedures.',
-                price: 'Contact for Price',
-                availability: 'In Stock',
-                certifications: ['ISO 13485', 'CE', 'FDA'],
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-packs/surgical-packs.jpg'
-            }
-        };
+        // 加载外部产品数据库或使用内联数据库
+        let PRODUCTS = {};
+        
+        // 先尝试加载外部产品数据库
+        if (window.productDatabase && window.productDatabase.byId) {
+            console.log('Using external product database:', Object.keys(window.productDatabase.byId).length, 'products');
+            PRODUCTS = window.productDatabase.byId;
+        } else {
+            console.log('Using inline product database');
+            // INLINE PRODUCT DATABASE
+            PRODUCTS = {
+                'pga-suture': {
+                    id: 'pga-suture',
+                    name: 'PGA Absorbable Suture',
+                    category: 'surgical-sutures',
+                    short: 'Monofilament PGA suture with excellent tensile strength',
+                    description: 'High-quality PGA absorbable sutures with predictable absorption.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pga-absorbable-suture.jpg'
+                },
+                'pgla-suture': {
+                    id: 'pgla-suture',
+                    name: 'PGLA Braided Suture',
+                    category: 'surgical-sutures',
+                    short: 'Braided PGLA suture with excellent handling',
+                    description: 'Superior handling and knot security.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pgla-braided-suture.jpg'
+                },
+                'chromic-catgut': {
+                    id: 'chromic-catgut',
+                    name: 'Chromic Catgut Suture',
+                    category: 'surgical-sutures',
+                    short: 'Natural chromic catgut for ophthalmic surgery',
+                    description: 'Natural absorbable suture with delayed absorption.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/chromic-catgut.jpg'
+                },
+                'surgical-blades': {
+                    id: 'surgical-blades',
+                    name: 'Surgical Blades',
+                    category: 'surgical-instruments',
+                    short: 'Sterile surgical blades in various sizes',
+                    description: 'High-quality stainless steel surgical blades.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-instruments/surgical-blades.jpg'
+                },
+                'scalpels': {
+                    id: 'scalpels',
+                    name: 'Disposable Scalpels',
+                    category: 'surgical-instruments',
+                    short: 'Single-use disposable scalpels',
+                    description: 'Pre-assembled disposable scalpels.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-instruments/scalpels.jpg'
+                },
+                'surgical-scissors': {
+                    id: 'surgical-scissors',
+                    name: 'Surgical Scissors',
+                    category: 'surgical-instruments',
+                    short: 'Stainless steel surgical scissors',
+                    description: 'Various types including Mayo and Metzenbaum.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-instruments/surgical-scissors.jpg'
+                },
+                'gauze-swabs': {
+                    id: 'gauze-swabs',
+                    name: 'Gauze Swabs',
+                    category: 'gauze-dressings',
+                    short: 'Sterile cotton gauze swabs',
+                    description: '100% cotton sterile gauze swabs.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/gauze-dressings/gauze-swabs.jpg'
+                },
+                'gauze-rolls': {
+                    id: 'gauze-rolls',
+                    name: 'Gauze Rolls',
+                    category: 'gauze-dressings',
+                    short: 'Cotton gauze bandage rolls',
+                    description: 'High-quality gauze rolls for wound dressing.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/gauze-dressings/gauze-rolls.jpg'
+                },
+                'surgical-masks': {
+                    id: 'surgical-masks',
+                    name: 'Surgical Face Masks',
+                    category: 'protective-equipment',
+                    short: '3-ply surgical masks with ear loops',
+                    description: 'High-filtration 3-ply medical masks.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/protective-equipment/surgical-face-masks.jpg'
+                },
+                'n95-masks': {
+                    id: 'n95-masks',
+                    name: 'N95/FFP2 Masks',
+                    category: 'protective-equipment',
+                    short: 'High-filtration respirator masks',
+                    description: 'N95/FFP2 respirators with ≥95% filtration.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/protective-equipment/n95-ffp2-masks.jpg'
+                },
+                'disposable-syringes': {
+                    id: 'disposable-syringes',
+                    name: 'Disposable Syringes',
+                    category: 'injection-infusion',
+                    short: 'Sterile medical syringes',
+                    description: 'Luer lock and slip syringes in all sizes.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/disposable-syringes.jpg'
+                },
+                'iv-cannula': {
+                    id: 'iv-cannula',
+                    name: 'IV Cannula',
+                    category: 'injection-infusion',
+                    short: 'Intravenous catheter sets',
+                    description: 'IV cannulas with flashback chamber.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/iv-cannula.jpg'
+                },
+                'dental-kits': {
+                    id: 'dental-kits',
+                    name: 'Dental Examination Kits',
+                    category: 'dental-products',
+                    short: 'Disposable dental exam kits',
+                    description: 'Complete dental examination sets.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/dental-examination-kits.jpg'
+                },
+                'dental-bibs': {
+                    id: 'dental-bibs',
+                    name: 'Dental Bibs',
+                    category: 'dental-products',
+                    short: 'Disposable patient bibs',
+                    description: 'Waterproof dental patient bibs.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/dental-bibs.jpg'
+                },
+                'surgical-packs': {
+                    id: 'surgical-packs',
+                    name: 'Surgical Packs',
+                    category: 'surgical-packs',
+                    short: 'Custom surgical procedure packs',
+                    description: 'Customized packs for specific procedures.',
+                    price: 'Contact for Price',
+                    availability: 'In Stock',
+                    certifications: ['ISO 13485', 'CE', 'FDA'],
+                    image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-packs/surgical-packs.jpg'
+                }
+            };
+        }
 
         // State
         let currentCategory = 'all';
@@ -338,26 +337,26 @@ if (!window.productDatabase) {
             container.innerHTML = products.map(p => `
                 <div class="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group">
                     <div class="relative cursor-pointer overflow-hidden" onclick="viewProduct('${p.id}')">
-                        <img src="${p.image}" 
+                        <img src="${p.image || p.images?.[0] || 'https://via.placeholder.com/400x300?text=Product'}" 
                              alt="${p.name}"
                              class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
                              onerror="this.src='https://via.placeholder.com/400x300?text=${encodeURIComponent(p.name)}'">
                         <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-3 py-1 rounded-full font-semibold shadow-lg">
-                            ${p.availability}
+                            ${p.availability || 'In Stock'}
                         </div>
                     </div>
                     <div class="p-6">
                         <h3 class="font-bold text-lg mb-2 cursor-pointer hover:text-blue-600 transition" onclick="viewProduct('${p.id}')">
                             ${p.name}
                         </h3>
-                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">${p.short}</p>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">${p.short || p.description?.substring(0, 100) || 'Medical product'}</p>
                         <div class="flex flex-wrap gap-2 mb-4">
-                            ${p.certifications.map(cert => 
+                            ${(p.certifications || ['ISO 13485', 'CE', 'FDA']).slice(0, 3).map(cert => 
                                 `<span class="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded font-medium">${cert}</span>`
                             ).join('')}
                         </div>
                         <div class="flex justify-between items-center pt-4 border-t border-gray-100">
-                            <span class="font-semibold text-gray-900">${p.price}</span>
+                            <span class="font-semibold text-gray-900">${p.price || 'Contact for Price'}</span>
                             <button onclick="viewProduct('${p.id}')" 
                                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
                                 View Details
@@ -368,14 +367,10 @@ if (!window.productDatabase) {
             `).join('');
         }
 
-        // View Product (redirect to detail page or show modal)
-function viewProduct(productId) {
-    // Redirect to product detail page
-    window.location.href = `product-detail.html?id=${productId}`;
-}
-            
-            // Option 2: Show modal (uncomment if preferred)
-            // showProductModal(PRODUCTS[productId]);
+        // View Product (redirect to detail page)
+        function viewProduct(productId) {
+            // Redirect to product detail page
+            window.location.href = `product-detail.html?id=${productId}`;
         }
 
         // Initialize
