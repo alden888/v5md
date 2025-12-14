@@ -267,15 +267,129 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Footer - EXACTLY THE SAME AS MAIN PAGE -->
     <footer class="bg-gray-900 text-white py-12 px-4">
         <div class="max-w-7xl mx-auto">
-            <div class="text-center">
-                <p>&copy; 2025 V5 Medical LTD. All rights reserved.</p>
-                <p class="text-gray-400 text-sm mt-2">Professional Global Medical Consumables Supplier</p>
+            <!-- 主要内容区域 -->
+            <div class="grid md:grid-cols-10 gap-8 mb-12">
+                <!-- 左侧：Company Info -->
+                <div class="md:col-span-3">
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="images/v5logo.png" 
+                             onerror="this.src='v5logo.png'; this.onerror=null;" 
+                             class="h-10 w-auto" 
+                             alt="V5 Medical Logo">
+                        <span class="text-xl font-bold">V5 Medical LTD</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Professional Global Medical Consumables Supplier</p>
+                    <p class="text-gray-400 text-sm mb-4">Factory Direct Medical Consumables Manufacturer</p> 
+                    <p class="text-gray-400 text-sm italic">20+ Years Exporting Experience</p>
+                    <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
+                </div>
+                
+                <!-- Quick Links - 向右移动一点 -->
+                <div class="md:col-span-2 pl-8">
+                    <h4 class="font-bold mb-4 text-lg text-white">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="index.html" class="hover:text-white transition">Home</a></li>
+                        <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="catalog.html" class="hover:text-white transition">Products</a></li>
+                        <li><a href="blog.html" class="hover:text-white transition">Blog & News</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
+                        <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Product Categories -->
+                <div class="md:col-span-2">
+                    <h4 class="font-bold mb-4 text-lg text-white">Product Categories</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="catalog.html#sutures" class="hover:text-white transition">Surgical Sutures</a></li>
+                        <li><a href="catalog.html#packs" class="hover:text-white transition">Surgical Packs</a></li>
+                        <li><a href="catalog.html#syringes" class="hover:text-white transition">Syringes & Needles</a></li>
+                        <li><a href="catalog.html#infusion" class="hover:text-white transition">Infusion Sets</a></li>
+                        <li><a href="catalog.html#dressings" class="hover:text-white transition">Gauze Dressings</a></li>
+                        <li><a href="catalog.html#protection" class="hover:text-white transition">Protective Equipment</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="md:col-span-3">
+                    <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
+                    <div class="space-y-3 text-sm text-gray-400">
+                        <p class="flex items-center gap-2">
+                            <i class="fab fa-whatsapp text-green-500 w-5"></i> 
+                            <span>+44 078 9504 7944 (UK)</span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fab fa-whatsapp text-green-500 w-5"></i> 
+                            <span>+86 180 1266 9897 (Backup)</span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fas fa-envelope text-blue-400 w-5"></i> 
+                            <a href="mailto:sales@v5md.com" class="hover:text-white transition" onclick="trackEmailClick()">sales@v5md.com</a>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fab fa-google text-red-400 w-5"></i> 
+                            <a href="mailto:v5md.com@gmail.com" class="hover:text-white transition" onclick="trackEmailClick()">v5md.com@gmail.com</a>
+                        </p>
+                        <p class="flex items-start gap-2">
+                            <i class="fas fa-map-marker-alt mt-1 w-5"></i> 
+                            <span>No. 168, Luying Road, Kunshan, Jiangsu, China</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 底部区域：Follow Us 在左边，社交媒体图标在右边 -->
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <!-- 左侧：Follow Us -->
+                    <div class="mb-6 md:mb-0">
+                        <h4 class="font-bold text-lg text-white mb-4">Follow Us</h4>
+                        <p class="text-gray-400 text-sm">Connect with us on social media for the latest updates</p>
+                    </div>
+                    
+                    <!-- 右侧：社交媒体图标 - 向左移动一点 -->
+                    <div class="flex gap-6 mr-8">
+                        <a href="https://linkedin.com/company/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 transition text-white" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        
+                        <a href="https://www.youtube.com/@v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition text-white" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        
+                        <a href="https://www.facebook.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition text-white" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        
+                        <a href="https://www.instagram.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 flex items-center justify-center transition text-white" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        
+                        <a href="https://www.tiktok.com/@v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-black transition text-white" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        
+                        <a href="https://x.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition text-white" aria-label="X (Twitter)"><i class="fab fa-twitter"></i></a>
+                    
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="text-center mt-8 text-sm text-gray-500">
+                <p>© 2025 V5 Medical LTD. All rights reserved.</p>
             </div>
         </div>
     </footer>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/447895047944" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center z-50 transition-all duration-300 hover:scale-110 group"
+       aria-label="Contact us on WhatsApp">
+        <i class="fab fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i>
+    </a>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" 
+            class="fixed bottom-24 right-6 bg-blue-900 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 opacity-0 invisible hover:bg-blue-700 z-40" 
+            aria-label="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <!-- Diagnostic Panel -->
     <div id="diagnosticPanel" class="diagnostic-panel hidden">
@@ -448,7 +562,7 @@
                 
                 const script = document.createElement('script');
                 script.id = 'productsScript';
-                script.src = 'js/products.js?' + new Date().getTime(); // Cache busting - using fixed version
+                script.src = 'js/products.js?' + new Date().getTime(); // Cache busting
                 script.async = false; // Load synchronously
                 
                 script.onload = () => {
@@ -469,7 +583,7 @@
         async function loadProductsWithDynamicImport() {
             try {
                 log('Attempting dynamic import of products.js...', 'info');
-                const module = await import('./js/products.js?' + new Date().getTime()); // Using fixed version
+                const module = await import('./js/products.js?' + new Date().getTime());
                 
                 // Make the module available globally
                 if (module.productDatabase) {
@@ -497,7 +611,7 @@
             try {
                 log('Attempting fetch and eval of products.js...', 'warning');
                 
-                const response = await fetch('js/products.js?' + new Date().getTime()); // Using fixed version
+                const response = await fetch('js/products.js?' + new Date().getTime());
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -872,6 +986,24 @@
             logs: diagnosticLogs,
             retry: retryLoading
         };
+
+        // Back to Top Logic
+        const backToTopBtn = document.getElementById('back-to-top');
+        if (backToTopBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
     </script>
 </body>
 </html>
