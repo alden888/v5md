@@ -16,7 +16,7 @@
     <meta property="og:description" id="og-description" content="Factory direct medical consumables supplier">
     <meta property="og:type" content="product">
     <meta property="og:url" id="og-url" content="https://v5md.com/product-detail.html">
-    <meta property="og:image" id="og-image" content="https://pub-224e4e74865e409e833e894ab5143fb.r2.dev/v5medlogo.png">
+    <meta property="og:image" id="og-image" content="https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg">
     <meta property="og:site_name" content="V5 Medical LTD">
     <meta property="og:locale" content="en_US">
     
@@ -24,13 +24,13 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" id="twitter-title" content="Medical Product | V5 Medical LTD">
     <meta name="twitter:description" id="twitter-description" content="Factory direct medical consumables supplier">
-    <meta name="twitter:image" id="twitter-image" content="https://pub-224e4e74865e409e833e894ab5143fb.r2.dev/v5medlogo.png">
+    <meta name="twitter:image" id="twitter-image" content="https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg">
     <meta name="twitter:site" content="@v5med">
     
     <link rel="canonical" id="canonical-link" href="https://v5md.com/product-detail.html">
     
     <title id="meta-title">Medical Product | V5 Medical LTD</title>
-    <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/alden888/v5md/main/images/icons/favicon.ico">
     
     <!-- External Resources -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -100,6 +100,13 @@
                 from { opacity: 0; transform: translateX(-20px); }
                 to { opacity: 1; transform: translateX(0); }
             }
+            .product-card {
+                transition: all 0.3s ease;
+            }
+            .product-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
         }
         
         /* Navigation fixes */
@@ -163,6 +170,27 @@
             opacity: 1;
             visibility: visible;
         }
+        
+        /* Image loading placeholder */
+        .image-placeholder {
+            background: linear-gradient(45deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 200%;
+            animation: placeholderShimmer 1.5s infinite;
+        }
+        
+        @keyframes placeholderShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Product gallery styling */
+        .thumbnail-btn {
+            transition: all 0.3s ease;
+        }
+        .thumbnail-btn.active {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 256, 0.2);
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans scroll-smooth">
@@ -171,7 +199,8 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='index.html';">
-                    <img src="images/v5logo.png" onerror="this.src='v5logo.png'; this.onerror=null;" 
+                    <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png" 
+                         onerror="this.onerror=null;" 
                          class="h-12 w-auto" 
                          alt="V5 Medical LTD Logo">
                     <div>
@@ -253,11 +282,16 @@
             <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
                 <!-- Image Gallery -->
                 <div class="animate-fade-in">
+                    <!-- Main Product Image with Loading State -->
                     <div class="relative rounded-xl overflow-hidden shadow-lg mb-4">
-                        <img id="main-product-image" 
-                             src="https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg" 
-                             class="w-full h-auto image-zoom rounded-xl" 
-                             alt="Product Image">
+                        <div id="main-image-container" class="relative">
+                            <img id="main-product-image" 
+                                 src="" 
+                                 class="w-full h-auto image-zoom rounded-xl opacity-0 transition-opacity duration-500" 
+                                 alt="Product Image"
+                                 onload="this.classList.remove('opacity-0'); this.classList.add('opacity-100')">
+                            <div id="main-image-placeholder" class="absolute inset-0 image-placeholder rounded-xl"></div>
+                        </div>
                         <div class="absolute top-4 right-4">
                             <span id="product-availability" class="bg-green-500/90 text-white text-xs px-2 py-1 rounded-full">
                                 In Stock
@@ -268,14 +302,20 @@
                     <!-- Thumbnail Gallery -->
                     <div class="grid grid-cols-4 gap-2" id="thumbnail-gallery">
                         <!-- Thumbnails will be added dynamically -->
+                        <div class="col-span-4 text-center py-4">
+                            <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600 mx-auto"></div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Product Information -->
                 <div class="animate-slide-in">
-                    <h1 id="product-name" class="text-4xl font-bold mb-4 text-gray-900"></h1>
+                    <h1 id="product-name" class="text-4xl font-bold mb-4 text-gray-900">Loading Product...</h1>
                     <p id="product-chinese-name" class="text-xl text-gray-600 mb-6"></p>
-                    <p id="product-short-description" class="text-gray-600 mb-6"></p>
+                    <p id="product-short-description" class="text-gray-600 mb-6">
+                        <span class="inline-block animate-pulse bg-gray-200 rounded-full h-6 w-3/4"></span>
+                        <span class="inline-block animate-pulse bg-gray-200 rounded-full h-6 w-1/2 mt-2"></span>
+                    </p>
                     
                     <div class="flex items-center gap-2 mb-6">
                         <span id="product-status" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">In Stock</span>
@@ -285,7 +325,9 @@
                     </div>
                     
                     <div class="mb-8">
-                        <span id="product-price" class="text-3xl font-bold text-blue-600">Contact for Price</span>
+                        <span id="product-price" class="text-3xl font-bold text-blue-600">
+                            <span class="inline-block animate-pulse bg-gray-200 rounded-full h-10 w-32"></span>
+                        </span>
                     </div>
                     
                     <!-- Key Features -->
@@ -293,6 +335,24 @@
                         <h3 class="text-xl font-semibold mb-4 text-gray-900">Key Features</h3>
                         <ul class="space-y-3" id="product-highlights">
                             <!-- Features will be added dynamically -->
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 bg-gray-200 rounded-full animate-pulse"></div>
+                                <span class="ml-3 text-gray-700">
+                                    <span class="inline-block animate-pulse bg-gray-200 rounded-full h-5 w-48"></span>
+                                </span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 bg-gray-200 rounded-full animate-pulse"></div>
+                                <span class="ml-3 text-gray-700">
+                                    <span class="inline-block animate-pulse bg-gray-200 rounded-full h-5 w-40"></span>
+                                </span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 bg-gray-200 rounded-full animate-pulse"></div>
+                                <span class="ml-3 text-gray-700">
+                                    <span class="inline-block animate-pulse bg-gray-200 rounded-full h-5 w-32"></span>
+                                </span>
+                            </li>
                         </ul>
                     </div>
                     
@@ -360,6 +420,10 @@
                     <h2 class="text-3xl font-bold mb-8 text-gray-900">Technical Specifications</h2>
                     <div class="grid md:grid-cols-2 gap-8" id="technical-specs">
                         <!-- Specifications will be added dynamically -->
+                        <div class="col-span-full text-center py-8">
+                            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                            <p class="text-gray-600">Loading specifications...</p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -370,6 +434,10 @@
                     <h2 class="text-3xl font-bold mb-6 text-gray-900">Product Description</h2>
                     <div id="product-description" class="prose max-w-none text-gray-600 leading-relaxed">
                         <!-- Description will be added dynamically -->
+                        <div class="text-center py-8">
+                            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                            <p class="text-gray-600">Loading product description...</p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -380,6 +448,10 @@
                     <h2 class="text-3xl font-bold mb-8 text-gray-900 text-center">Frequently Asked Questions</h2>
                     <div id="product-faq" class="space-y-4">
                         <!-- FAQ items will be added dynamically -->
+                        <div class="col-span-full text-center py-8">
+                            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                            <p class="text-gray-600">Loading FAQs...</p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -406,8 +478,8 @@
                 <!-- Company Info -->
                 <div class="md:col-span-3">
                     <div class="flex items-center gap-2 mb-4">
-                        <img src="images/v5logo.png" 
-                             onerror="this.src='v5logo.png'; this.onerror=null;"
+                        <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png" 
+                             onerror="this.onerror=null;"
                              class="h-10 w-auto" 
                              alt="V5 Medical Logo">
                         <span class="text-xl font-bold">V5 Medical LTD</span>
@@ -523,6 +595,10 @@
     <!-- JavaScript -->
     <script src="js/products.js"></script>
     <script>
+        // GitHub Image Base URL - Updated to match repository structure
+        const GITHUB_IMAGE_BASE = 'https://raw.githubusercontent.com/alden888/v5md/main/images';
+        const PLACEHOLDER_IMAGE = `${GITHUB_IMAGE_BASE}/products/placeholder.jpg`;
+        
         // Google Analytics tracking functions
         function trackWhatsAppClick() {
             if (typeof gtag !== 'undefined') {
@@ -595,153 +671,341 @@
             });
         }
 
-        // Get product ID from URL
+        // Get product ID from URL - Support both 'id' and 'product' parameters
         function getProductIdFromUrl() {
             const params = new URLSearchParams(window.location.search);
-            return params.get('id');
+            return params.get('id') || params.get('product');
         }
 
-        // Load product details
-        document.addEventListener('DOMContentLoaded', function() {
-            const productId = getProductIdFromUrl();
+        // Validate and correct image URLs
+        function getValidImageUrl(imagePath) {
+            if (!imagePath) return PLACEHOLDER_IMAGE;
             
-            if (!productId) {
-                // Redirect to catalog if no product ID
-                window.location.href = 'catalog.html';
-                return;
+            // If image path is already a full URL, use it
+            if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+                return imagePath;
             }
             
-            const product = getProductById(productId);
-            
-            if (!product) {
-                // Show 404 if product not found
-                document.getElementById('product-name').textContent = 'Product Not Found';
-                document.getElementById('product-description').innerHTML = '<p class="text-center text-xl text-gray-600 py-12">The requested product could not be found. Please check the URL or browse our catalog.</p>';
-                document.getElementById('technical-specs').innerHTML = '';
-                document.getElementById('product-faq').innerHTML = '';
-                document.getElementById('related-products').innerHTML = '';
-                return;
+            // If image path is relative to products folder
+            if (imagePath.startsWith('products/')) {
+                return `${GITHUB_IMAGE_BASE}/${imagePath}`;
             }
             
-            // Load product details
-            loadProductDetails(product);
-            loadRelatedProducts(product.category, product.id);
-            updateMetaTags(product);
+            // If image path is just a filename, assume it's in the products root
+            return `${GITHUB_IMAGE_BASE}/products/${imagePath}`;
+        }
+
+        // Preload image with error handling
+        function preloadImage(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(url);
+                img.onerror = () => resolve(PLACEHOLDER_IMAGE);
+                img.src = url;
+            });
+        }
+
+        // Load product details with enhanced error handling
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const productId = getProductIdFromUrl();
+                
+                if (!productId) {
+                    showProductNotFound('No product ID specified in URL');
+                    return;
+                }
+                
+                // Check if products database is available
+                if (typeof window.productDatabase === 'undefined' && typeof window.finalProductDatabase === 'undefined') {
+                    showProductNotFound('Product database not available');
+                    return;
+                }
+                
+                // Get product from database
+                const productDatabase = window.finalProductDatabase || window.productDatabase;
+                const getProductFunction = window.getProductById || function(id) {
+                    return productDatabase[id];
+                };
+                
+                const product = getProductFunction(productId);
+                
+                if (!product) {
+                    showProductNotFound(`Product with ID "${productId}" not found`);
+                    return;
+                }
+                
+                // Load product details with animations
+                await loadProductDetails(product);
+                loadRelatedProducts(product.category, product.id);
+                updateMetaTags(product);
+                
+                // Track product view
+                if (product.name) {
+                    trackProductClick(product.name);
+                }
+                
+            } catch (error) {
+                console.error('Error loading product:', error);
+                showProductNotFound(`Error loading product: ${error.message}`);
+            }
         });
 
-        // Load product details
-        function loadProductDetails(product) {
-            // Update product information
-            document.getElementById('product-name').textContent = product.name;
-            document.getElementById('product-chinese-name').textContent = product.chineseName;
-            document.getElementById('product-short-description').textContent = product.description;
-            document.getElementById('product-price').textContent = product.price;
-            document.getElementById('product-availability').textContent = product.availability;
-            document.getElementById('product-category-breadcrumb').textContent = product.category;
-            document.getElementById('product-name-breadcrumb').textContent = product.name;
+        // Show product not found page
+        function showProductNotFound(message) {
+            console.warn('Product not found:', message);
             
-            // Update status badge
-            const statusBadge = document.getElementById('product-status');
-            if (product.availability === 'In Stock') {
-                statusBadge.className = 'bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium';
-            } else {
-                statusBadge.className = 'bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium';
-            }
-            statusBadge.textContent = product.availability;
+            // Update page content for 404
+            document.getElementById('product-name').textContent = 'Product Not Found';
+            document.getElementById('product-name-breadcrumb').textContent = 'Not Found';
             
-            // Update certifications
-            const certificationsContainer = document.getElementById('product-certifications');
-            certificationsContainer.innerHTML = product.certifications.map(cert => 
-                `<span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">${cert}</span>`
-            ).join('');
+            // Clear loading states
+            document.getElementById('product-short-description').innerHTML = 
+                '<p class="text-center text-xl text-gray-600 py-6">The requested product could not be found.</p>';
+            document.getElementById('product-price').textContent = '';
+            document.getElementById('main-image-placeholder').classList.add('hidden');
             
-            // Update main image
+            // Show error message in description section
+            document.getElementById('product-description').innerHTML = `
+                <div class="text-center py-12">
+                    <div class="text-6xl mb-4 text-gray-400">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-900">Product Not Found</h3>
+                    <p class="text-gray-600 mb-8">We couldn't find the product you're looking for.</p>
+                    <a href="catalog.html" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                        <i class="fas fa-arrow-left mr-2"></i> Browse Our Catalog
+                    </a>
+                </div>
+            `;
+            
+            // Clear other sections
+            document.getElementById('technical-specs').innerHTML = '';
+            document.getElementById('product-faq').innerHTML = '';
+            document.getElementById('related-products').innerHTML = '';
+            
+            // Update main image to 404 placeholder
             const mainImage = document.getElementById('main-product-image');
-            mainImage.src = product.images[0];
-            mainImage.onerror = function() {
-                this.src = 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg';
-                this.onerror = null;
-            };
+            mainImage.src = PLACEHOLDER_IMAGE;
+            mainImage.classList.remove('opacity-0');
+            mainImage.classList.add('opacity-100');
             
             // Update thumbnail gallery
-            const thumbnailGallery = document.getElementById('thumbnail-gallery');
-            thumbnailGallery.innerHTML = product.images.map((image, index) => `
-                <button onclick="changeMainImage('${image}')" 
-                        class="rounded-lg overflow-hidden border-2 ${index === 0 ? 'border-blue-600' : 'border-transparent'} hover:border-blue-600 transition-colors">
-                    <img src="${image}" 
-                         onerror="this.src='https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg'; this.onerror=null;"
-                         class="w-full h-24 object-cover cursor-pointer">
-                </button>
-            `).join('');
-            
-            // Update key features
-            const highlightsContainer = document.getElementById('product-highlights');
-            highlightsContainer.innerHTML = product.features.map(feature => `
-                <div class="flex items-start">
-                    <div class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
-                        <i class="fas fa-check text-blue-600 text-xs"></i>
-                    </div>
-                    <span class="ml-3 text-gray-700">${feature}</span>
-                </div>
-            `).join('');
-            
-            // Update technical specifications
-            const specsContainer = document.getElementById('technical-specs');
-            specsContainer.innerHTML = Object.entries(product.specs).map(([key, value]) => `
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <h4 class="font-medium text-gray-800 mb-1">${key}</h4>
-                    <p class="text-gray-600">${value}</p>
-                </div>
-            `).join('');
-            
-            // Update product description
-            const descriptionContainer = document.getElementById('product-description');
-            descriptionContainer.innerHTML = `<p>${product.description}</p>`;
-            
-            // Update FAQ
-            const faqContainer = document.getElementById('product-faq');
-            if (product.faq && product.faq.length > 0) {
-                faqContainer.innerHTML = product.faq.map((faq, index) => `
-                    <div class="border border-gray-200 rounded-lg overflow-hidden">
-                        <button class="w-full text-left p-4 font-medium flex justify-between items-center focus:outline-none hover:bg-gray-50 transition-colors" 
-                                onclick="toggleFaq(${index})">
-                            ${faq.q}
-                            <i class="fas fa-chevron-down text-gray-500 transition-transform" id="faq-icon-${index}"></i>
-                        </button>
-                        <div class="faq-answer p-4 bg-gray-50" id="faq-answer-${index}">
-                            ${faq.a}
-                        </div>
-                    </div>
-                `).join('');
-                
-                // Add FAQ toggle event listeners
-                product.faq.forEach((_, index) => {
-                    document.querySelector(`button[onclick="toggleFaq(${index})"]`).addEventListener('click', function() {
-                        toggleFaq(index);
-                    });
-                });
-            } else {
-                faqContainer.innerHTML = '<p class="text-center text-gray-600">No frequently asked questions available for this product.</p>';
-            }
-            
-            // Update WhatsApp button link
-            const whatsappButton = document.getElementById('whatsapp-button');
-            whatsappButton.href = `https://wa.me/447895047944?text=I%20am%20interested%20in%20${encodeURIComponent(product.name)}`;
+            document.getElementById('thumbnail-gallery').innerHTML = '';
         }
 
-        // Change main product image
-        function changeMainImage(imageUrl) {
+        // Load product details with animations
+        async function loadProductDetails(product) {
+            try {
+                // Preload main image first
+                const mainImageUrl = await preloadImage(getValidImageUrl(product.images?.[0]));
+                
+                // Update main product image
+                const mainImage = document.getElementById('main-product-image');
+                mainImage.src = mainImageUrl;
+                mainImage.alt = product.name || 'Product Image';
+                
+                // Hide placeholder once image is loaded
+                mainImage.onload = function() {
+                    document.getElementById('main-image-placeholder').classList.add('hidden');
+                };
+                
+                // Update product information with fade-in animation
+                setTimeout(() => {
+                    document.getElementById('product-name').textContent = product.name || 'Medical Product';
+                    document.getElementById('product-chinese-name').textContent = product.chineseName || '';
+                    document.getElementById('product-short-description').textContent = product.description || 'No description available';
+                    document.getElementById('product-price').textContent = product.price || 'Contact for Price';
+                    document.getElementById('product-availability').textContent = product.availability || 'In Stock';
+                    document.getElementById('product-category-breadcrumb').textContent = product.category || 'Medical Products';
+                    document.getElementById('product-name-breadcrumb').textContent = product.name || 'Product';
+                }, 300);
+                
+                // Update status badge
+                const statusBadge = document.getElementById('product-status');
+                if (product.availability === 'In Stock' || !product.availability) {
+                    statusBadge.className = 'bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium';
+                    statusBadge.textContent = 'In Stock';
+                } else {
+                    statusBadge.className = 'bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium';
+                    statusBadge.textContent = product.availability;
+                }
+                
+                // Update certifications
+                const certificationsContainer = document.getElementById('product-certifications');
+                if (product.certifications && product.certifications.length > 0) {
+                    certificationsContainer.innerHTML = product.certifications.map(cert => 
+                        `<span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">${cert}</span>`
+                    ).join('');
+                } else {
+                    certificationsContainer.innerHTML = 
+                        '<span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">ISO 13485</span>' +
+                        '<span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">CE</span>';
+                }
+                
+                // Update thumbnail gallery with preloaded images
+                const thumbnailGallery = document.getElementById('thumbnail-gallery');
+                thumbnailGallery.innerHTML = '';
+                
+                if (product.images && product.images.length > 0) {
+                    // Preload all thumbnails
+                    const thumbnailUrls = await Promise.all(
+                        product.images.map(img => preloadImage(getValidImageUrl(img)))
+                    );
+                    
+                    // Create thumbnail buttons
+                    thumbnailUrls.forEach((imgUrl, index) => {
+                        const button = document.createElement('button');
+                        button.className = `thumbnail-btn rounded-lg overflow-hidden border-2 ${index === 0 ? 'active border-blue-600' : 'border-transparent'} hover:border-blue-600 transition-colors`;
+                        button.onclick = () => changeMainImage(imgUrl, index);
+                        button.innerHTML = `
+                            <img src="${imgUrl}" 
+                                 class="w-full h-24 object-cover cursor-pointer"
+                                 alt="Product thumbnail ${index + 1}">
+                        `;
+                        thumbnailGallery.appendChild(button);
+                    });
+                } else {
+                    // Show default thumbnail
+                    const button = document.createElement('button');
+                    button.className = 'thumbnail-btn rounded-lg overflow-hidden border-2 active border-blue-600';
+                    button.onclick = () => changeMainImage(mainImageUrl, 0);
+                    button.innerHTML = `
+                        <img src="${mainImageUrl}" 
+                             class="w-full h-24 object-cover cursor-pointer"
+                             alt="Product thumbnail">
+                    `;
+                    thumbnailGallery.appendChild(button);
+                }
+                
+                // Update key features
+                const highlightsContainer = document.getElementById('product-highlights');
+                if (product.features && product.features.length > 0) {
+                    highlightsContainer.innerHTML = product.features.map(feature => `
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
+                                <i class="fas fa-check text-blue-600 text-xs"></i>
+                            </div>
+                            <span class="ml-3 text-gray-700">${feature}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    highlightsContainer.innerHTML = `
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
+                                <i class="fas fa-check text-blue-600 text-xs"></i>
+                            </div>
+                            <span class="ml-3 text-gray-700">ISO 13485, CE, and FDA certified</span>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
+                                <i class="fas fa-check text-blue-600 text-xs"></i>
+                            </div>
+                            <span class="ml-3 text-gray-700">Factory direct pricing</span>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
+                                <i class="fas fa-check text-blue-600 text-xs"></i>
+                            </div>
+                            <span class="ml-3 text-gray-700">Fast global shipping</span>
+                        </div>
+                    `;
+                }
+                
+                // Update technical specifications
+                const specsContainer = document.getElementById('technical-specs');
+                if (product.specs && Object.keys(product.specs).length > 0) {
+                    specsContainer.innerHTML = Object.entries(product.specs).map(([key, value]) => `
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-medium text-gray-800 mb-1">${key}</h4>
+                            <p class="text-gray-600">${value}</p>
+                        </div>
+                    `).join('');
+                } else {
+                    specsContainer.innerHTML = `
+                        <div class="col-span-full text-center py-8">
+                            <p class="text-gray-600 mb-4">Technical specifications not available for this product.</p>
+                            <a href="https://wa.me/447895047944?text=I%20need%20technical%20specifications%20for%20${encodeURIComponent(product.name || 'this product')}" 
+                               class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition"
+                               onclick="trackWhatsAppClick()">
+                                <i class="fab fa-whatsapp mr-2"></i> Request Specs
+                            </a>
+                        </div>
+                    `;
+                }
+                
+                // Update product description
+                const descriptionContainer = document.getElementById('product-description');
+                descriptionContainer.innerHTML = `<p>${product.description || 'No detailed description available for this product. Please contact us for more information.'}</p>`;
+                
+                // Update FAQ
+                const faqContainer = document.getElementById('product-faq');
+                if (product.faq && product.faq.length > 0) {
+                    faqContainer.innerHTML = product.faq.map((faq, index) => `
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <button class="w-full text-left p-4 font-medium flex justify-between items-center focus:outline-none hover:bg-gray-50 transition-colors" 
+                                    onclick="toggleFaq(${index})">
+                                ${faq.q}
+                                <i class="fas fa-chevron-down text-gray-500 transition-transform" id="faq-icon-${index}"></i>
+                            </button>
+                            <div class="faq-answer p-4 bg-gray-50" id="faq-answer-${index}">
+                                ${faq.a}
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    faqContainer.innerHTML = `
+                        <div class="col-span-full text-center py-8">
+                            <p class="text-gray-600 mb-4">No frequently asked questions available for this product.</p>
+                            <a href="contact.html" 
+                               class="inline-block border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-lg font-semibold transition">
+                                <i class="fas fa-question-circle mr-2"></i> Ask a Question
+                            </a>
+                        </div>
+                    `;
+                }
+                
+                // Update WhatsApp button link with proper encoding
+                const whatsappButton = document.getElementById('whatsapp-button');
+                const productName = product.name || 'this product';
+                whatsappButton.href = `https://wa.me/447895047944?text=I%20am%20interested%20in%20${encodeURIComponent(productName)}`;
+                
+            } catch (error) {
+                console.error('Error loading product details:', error);
+                showProductNotFound(`Error loading product details: ${error.message}`);
+            }
+        }
+
+        // Change main product image with smooth transition
+        function changeMainImage(imageUrl, thumbnailIndex) {
             const mainImage = document.getElementById('main-product-image');
-            mainImage.src = imageUrl;
+            const mainImageContainer = document.getElementById('main-image-container');
             
-            // Update active thumbnail border
-            document.querySelectorAll('#thumbnail-gallery button').forEach(btn => {
-                btn.classList.remove('border-blue-600');
-                btn.classList.add('border-transparent');
+            // Show loading state
+            const placeholder = document.getElementById('main-image-placeholder');
+            placeholder.classList.remove('hidden');
+            mainImage.classList.add('opacity-0');
+            
+            // Preload the new image
+            preloadImage(imageUrl).then(validUrl => {
+                // Update main image
+                mainImage.src = validUrl;
+                mainImage.onload = () => {
+                    mainImage.classList.remove('opacity-0');
+                    mainImage.classList.add('opacity-100');
+                    placeholder.classList.add('hidden');
+                };
+                
+                // Update active thumbnail border
+                document.querySelectorAll('.thumbnail-btn').forEach((btn, index) => {
+                    if (index === thumbnailIndex) {
+                        btn.classList.add('active', 'border-blue-600');
+                        btn.classList.remove('border-transparent');
+                    } else {
+                        btn.classList.remove('active', 'border-blue-600');
+                        btn.classList.add('border-transparent');
+                    }
+                });
             });
-            
-            event.target.closest('button').classList.remove('border-transparent');
-            event.target.closest('button').classList.add('border-blue-600');
         }
 
         // Toggle FAQ answer
@@ -749,101 +1013,148 @@
             const answer = document.getElementById(`faq-answer-${index}`);
             const icon = document.getElementById(`faq-icon-${index}`);
             
-            answer.classList.toggle('show');
-            icon.classList.toggle('rotate-180');
-        }
-
-        // Load related products
-        function loadRelatedProducts(category, currentProductId) {
-            const relatedProducts = getProductsByCategory(category)
-                .filter(product => product.id !== currentProductId)
-                .slice(0, 4);
-            
-            const relatedProductsContainer = document.getElementById('related-products');
-            
-            if (relatedProducts.length === 0) {
-                relatedProductsContainer.innerHTML = '<p class="col-span-full text-center text-gray-600">No related products found.</p>';
-                return;
+            if (answer && icon) {
+                answer.classList.toggle('show');
+                icon.classList.toggle('rotate-180');
             }
-            
-            relatedProductsContainer.innerHTML = relatedProducts.map(product => `
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 product-card">
-                    <div class="relative cursor-pointer" onclick="window.location.href='product-detail.html?id=${product.id}'">
-                        <img src="${product.images[0]}" 
-                             onerror="this.src='https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg'; this.onerror=null;"
-                             class="w-full h-48 object-cover image-zoom">
-                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                            ${product.availability}
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg mb-2 cursor-pointer" onclick="window.location.href='product-detail.html?id=${product.id}'">${product.name}</h3>
-                        <p class="text-gray-600 text-sm mb-3">${product.description.substring(0, 80)}${product.description.length > 80 ? '...' : ''}</p>
-                        <div class="flex flex-wrap gap-1 mb-3">
-                            ${product.certifications.map(cert => `
-                                <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">${cert}</span>
-                            `).join('')}
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-blue-600">${product.price}</span>
-                            <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm font-semibold transition"
-                                    onclick="window.location.href='product-detail.html?id=${product.id}'">
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
         }
 
-        // Update meta tags for SEO
+        // Load related products with enhanced error handling
+        function loadRelatedProducts(category, currentProductId) {
+            try {
+                const relatedProductsContainer = document.getElementById('related-products');
+                
+                // Check if products database is available
+                if (typeof window.productDatabase === 'undefined' && typeof window.finalProductDatabase === 'undefined') {
+                    relatedProductsContainer.innerHTML = '<p class="col-span-full text-center text-gray-600">Related products not available</p>';
+                    return;
+                }
+                
+                // Get products by category
+                const productDatabase = window.finalProductDatabase || window.productDatabase;
+                const getProductsFunction = window.getProductsByCategory || function(cat) {
+                    return Object.values(productDatabase).filter(p => p.category === cat);
+                };
+                
+                const relatedProducts = getProductsFunction(category)
+                    .filter(product => product.id !== currentProductId)
+                    .slice(0, 4);
+                
+                if (relatedProducts.length === 0) {
+                    relatedProductsContainer.innerHTML = '<p class="col-span-full text-center text-gray-600">No related products found.</p>';
+                    return;
+                }
+                
+                relatedProductsContainer.innerHTML = relatedProducts.map(product => {
+                    const firstImage = getValidImageUrl(product.images?.[0]);
+                    return `
+                        <div class="bg-white rounded-xl overflow-hidden shadow-md product-card">
+                            <div class="relative cursor-pointer" onclick="window.location.href='product-detail.html?id=${product.id}'">
+                                <img src="${firstImage}" 
+                                     onerror="this.src='${PLACEHOLDER_IMAGE}'; this.onerror=null;"
+                                     class="w-full h-48 object-cover image-zoom">
+                                <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                                    ${product.availability || 'In Stock'}
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-bold text-lg mb-2 cursor-pointer" onclick="window.location.href='product-detail.html?id=${product.id}'">${product.name || 'Product Name'}</h3>
+                                <p class="text-gray-600 text-sm mb-3">${(product.description || '').substring(0, 80)}${(product.description || '').length > 80 ? '...' : ''}</p>
+                                <div class="flex flex-wrap gap-1 mb-3">
+                                    ${(product.certifications && product.certifications.length > 0) ? 
+                                        product.certifications.map(cert => `<span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">${cert}</span>`).join('') :
+                                        '<span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">ISO</span>'
+                                    }
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-blue-600">${product.price || 'Contact for Price'}</span>
+                                    <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm font-semibold transition"
+                                            onclick="window.location.href='product-detail.html?id=${product.id}'">
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Error loading related products:', error);
+                document.getElementById('related-products').innerHTML = 
+                    '<p class="col-span-full text-center text-gray-600">Error loading related products</p>';
+            }
+        }
+
+        // Update meta tags for SEO with complete data
         function updateMetaTags(product) {
-            // Basic meta tags
-            document.getElementById('meta-title').textContent = `${product.name} | V5 Medical LTD`;
-            document.getElementById('meta-description').content = `${product.description} | ISO/CE/FDA certified medical product from V5 Medical LTD, a leading global medical consumables supplier.`;
-            document.getElementById('meta-keywords').content = `${product.name}, ${product.category}, medical products, ISO 13485, CE certified, FDA approved, ${product.certifications.join(', ')}, medical consumables, China medical supplier`;
-            
-            // Open Graph meta tags
-            document.getElementById('og-title').content = `${product.name} | V5 Medical LTD`;
-            document.getElementById('og-description').content = product.description;
-            document.getElementById('og-url').content = window.location.href;
-            document.getElementById('og-image').content = product.images[0];
-            
-            // Twitter Card meta tags
-            document.getElementById('twitter-title').content = `${product.name} | V5 Medical LTD`;
-            document.getElementById('twitter-description').content = product.description;
-            document.getElementById('twitter-image').content = product.images[0];
-            
-            // Canonical URL
-            document.getElementById('canonical-link').href = window.location.href;
-            
-            // Add Schema.org product schema
-            const schemaScript = document.createElement('script');
-            schemaScript.type = 'application/ld+json';
-            schemaScript.textContent = JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "Product",
-                "name": product.name,
-                "description": product.description,
-                "image": product.images[0],
-                "brand": {
-                    "@type": "Brand",
-                    "name": "V5 Medical LTD"
-                },
-                "offers": {
-                    "@type": "Offer",
-                    "availability": product.availability === "In Stock" ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-                    "price": product.price === "Contact for Price" ? "" : product.price.replace(/[^0-9.]/g, ""),
-                    "priceCurrency": "USD",
-                    "url": window.location.href
-                },
-                "aggregateRating": {
+            try {
+                const productName = product.name || 'Medical Product';
+                const productDescription = product.description || 'High-quality medical product from V5 Medical LTD';
+                const productImage = getValidImageUrl(product.images?.[0]);
+                const currentUrl = window.location.href;
+                
+                // Basic meta tags
+                document.getElementById('meta-title').textContent = `${productName} | V5 Medical LTD`;
+                document.getElementById('meta-description').content = `${productDescription} | ISO/CE/FDA certified medical product from V5 Medical LTD, a leading global medical consumables supplier.`;
+                document.getElementById('meta-keywords').content = `${productName}, ${product.category || 'medical products'}, ISO 13485, CE certified, FDA approved, ${(product.certifications || []).join(', ')}, medical consumables, China medical supplier`;
+                
+                // Open Graph meta tags
+                document.getElementById('og-title').content = `${productName} | V5 Medical LTD`;
+                document.getElementById('og-description').content = productDescription;
+                document.getElementById('og-url').content = currentUrl;
+                document.getElementById('og-image').content = productImage;
+                
+                // Twitter Card meta tags
+                document.getElementById('twitter-title').content = `${productName} | V5 Medical LTD`;
+                document.getElementById('twitter-description').content = productDescription;
+                document.getElementById('twitter-image').content = productImage;
+                
+                // Canonical URL
+                document.getElementById('canonical-link').href = currentUrl;
+                
+                // Add Schema.org product schema with complete data
+                const schemaScript = document.createElement('script');
+                schemaScript.type = 'application/ld+json';
+                
+                const schemaData = {
+                    "@context": "https://schema.org",
+                    "@type": "Product",
+                    "name": productName,
+                    "description": productDescription,
+                    "image": productImage,
+                    "brand": {
+                        "@type": "Brand",
+                        "name": "V5 Medical LTD"
+                    },
+                    "offers": {
+                        "@type": "Offer",
+                        "availability": (product.availability === "In Stock" || !product.availability) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+                        "url": currentUrl
+                    }
+                };
+                
+                // Add price if available
+                if (product.price && product.price !== "Contact for Price" && product.price !== "Price on Request") {
+                    const priceMatch = product.price.match(/\d+(\.\d+)?/);
+                    if (priceMatch) {
+                        schemaData.offers.price = priceMatch[0];
+                        schemaData.offers.priceCurrency = "USD";
+                    }
+                }
+                
+                // Add aggregate rating
+                schemaData.aggregateRating = {
                     "@type": "AggregateRating",
                     "ratingValue": "4.8",
                     "reviewCount": "120"
-                }
-            });
-            document.head.appendChild(schemaScript);
+                };
+                
+                schemaScript.textContent = JSON.stringify(schemaData);
+                document.head.appendChild(schemaScript);
+                
+            } catch (error) {
+                console.error('Error updating meta tags:', error);
+            }
         }
 
         // Add copy link to clipboard functionality
@@ -858,6 +1169,40 @@
                 setTimeout(() => {
                     toast.remove();
                 }, 3000);
+            }).catch(err => {
+                console.error('Failed to copy link:', err);
+            });
+        }
+
+        // Add keyboard navigation support
+        document.addEventListener('keydown', function(e) {
+            // Press 'Escape' to close mobile menu
+            if (e.key === 'Escape') {
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            }
+        });
+
+        // Add lazy loading for images
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        const src = img.getAttribute('data-src');
+                        if (src) {
+                            img.src = src;
+                            img.removeAttribute('data-src');
+                        }
+                        observer.unobserve(img);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
             });
         }
     </script>
