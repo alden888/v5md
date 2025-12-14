@@ -10,20 +10,20 @@
 <body class="bg-gray-50">
     <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+        <div class="max-w-View Product7xl mx-auto px-4 h-20 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer" onclick="location.href='index.html'">
-                <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png" class="h-12" alt="V5 Medical" />
+                <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png" class="h-12" alt="V5 Medical" onerror="this.style.display='none'"/>
                 <div>
                     <div class="font-bold text-xl text-blue-900">V5 Medical LTD</div>
                     <div class="text-xs text-blue-600">Global Medical Supplier</div>
                 </div>
             </div>
             <div class="hidden md:flex gap-8 items-center">
-                <a href="index.html" class="font-medium text-gray-600 hover:text-blue-900">Home</a>
+                <a href="index.html" class="font-medium text-gray-600 hover:text-blue-900 transition">Home</a>
                 <a href="catalog.html" class="font-medium text-blue-900 border-b-2 border-blue-900">Products</a>
-                <a href="about.html" class="font-medium text-gray-600 hover:text-blue-900">About</a>
-                <a href="contact.html" class="font-medium text-gray-600 hover:text-blue-900">Contact</a>
-                <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-full font-semibold flex items-center">
+                <a href="about.html" class="font-medium text-gray-600 hover:text-blue-900 transition">About</a>
+                <a href="contact.html" class="font-medium text-gray-600 hover:text-blue-900 transition">Contact</a>
+                <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-full font-semibold flex items-center transition">
                     <i class="fab fa-whatsapp mr-2"></i> WhatsApp
                 </a>
             </div>
@@ -31,156 +31,336 @@
                 <i class="fas fa-bars text-2xl"></i>
             </button>
         </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t shadow-lg">
+            <div class="px-4 py-4 space-y-3">
+                <a href="index.html" class="block px-4 py-2 text-gray-600 hover:bg-blue-50 rounded-lg">Home</a>
+                <a href="catalog.html" class="block px-4 py-2 text-blue-900 bg-blue-50 rounded-lg font-semibold">Products</a>
+                <a href="about.html" class="block px-4 py-2 text-gray-600 hover:bg-blue-50 rounded-lg">About</a>
+                <a href="contact.html" class="block px-4 py-2 text-gray-600 hover:bg-blue-50 rounded-lg">Contact</a>
+            </div>
+        </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="pt-32 pb-16 bg-gradient-to-r from-blue-600 to-cyan-500 text-white">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6">Our Product Catalog</h1>
-            <p class="text-xl mb-8">ISO 13485, CE & FDA Certified Medical Products</p>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Our Product Catalog</h1>
+            <p class="text-xl opacity-90">ISO 13485, CE & FDA Certified Medical Products</p>
         </div>
     </section>
 
     <!-- Category Filters -->
     <section class="max-w-7xl mx-auto px-4 -mt-8 mb-12">
-        <div class="bg-white rounded-xl shadow-lg p-6 flex flex-wrap gap-4 justify-center">
-            <button onclick="filterCategory('all')" class="category-btn active px-6 py-3 rounded-lg font-medium transition bg-blue-600 text-white">
-                All Products
-            </button>
-            <button onclick="filterCategory('surgical-sutures')" class="category-btn px-6 py-3 rounded-lg font-medium transition bg-gray-100 hover:bg-blue-100">
-                Surgical Sutures
-            </button>
-            <button onclick="filterCategory('surgical-instruments')" class="category-btn px-6 py-3 rounded-lg font-medium transition bg-gray-100 hover:bg-blue-100">
-                Surgical Instruments
-            </button>
-            <button onclick="filterCategory('gauze-dressings')" class="category-btn px-6 py-3 rounded-lg font-medium transition bg-gray-100 hover:bg-blue-100">
-                Gauze Dressings
-            </button>
-            <button onclick="filterCategory('protective-equipment')" class="category-btn px-6 py-3 rounded-lg font-medium transition bg-gray-100 hover:bg-blue-100">
-                Protective Equipment
-            </button>
-            <button onclick="filterCategory('injection-infusion')" class="category-btn px-6 py-3 rounded-lg font-medium transition bg-gray-100 hover:bg-blue-100">
-                Injection & Infusion
-            </button>
-            <button onclick="filterCategory('dental-products')" class="category-btn px-6 py-3 rounded-lg font-medium transition bg-gray-100 hover:bg-blue-100">
-                Dental Products
-            </button>
-            <button onclick="filterCategory('surgical-packs')" class="category-btn px-6 py-3 rounded-lg font-medium transition bg-gray-100 hover:bg-blue-100">
-                Surgical Packs
-            </button>
+        <div class="bg-white rounded-xl shadow-xl p-6">
+            <div class="flex flex-wrap gap-3 justify-center">
+                <button onclick="filterCategory('all')" class="category-btn bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition hover:bg-blue-700">
+                    All Products
+                </button>
+                <button onclick="filterCategory('surgical-sutures')" class="category-btn bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium transition hover:bg-blue-100">
+                    Surgical Sutures
+                </button>
+                <button onclick="filterCategory('surgical-instruments')" class="category-btn bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium transition hover:bg-blue-100">
+                    Surgical Instruments
+                </button>
+                <button onclick="filterCategory('gauze-dressings')" class="category-btn bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium transition hover:bg-blue-100">
+                    Gauze Dressings
+                </button>
+                <button onclick="filterCategory('protective-equipment')" class="category-btn bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium transition hover:bg-blue-100">
+                    Protective Equipment
+                </button>
+                <button onclick="filterCategory('injection-infusion')" class="category-btn bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium transition hover:bg-blue-100">
+                    Injection & Infusion
+                </button>
+                <button onclick="filterCategory('dental-products')" class="category-btn bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium transition hover:bg-blue-100">
+                    Dental Products
+                </button>
+                <button onclick="filterCategory('surgical-packs')" class="category-btn bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium transition hover:bg-blue-100">
+                    Surgical Packs
+                </button>
+            </div>
         </div>
     </section>
 
     <!-- Products Grid -->
     <section class="max-w-7xl mx-auto px-4 pb-20">
         <div id="products-container" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            <!-- Loading State -->
-            <div class="col-span-full text-center py-20">
-                <div class="inline-block w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
-                <p class="text-xl text-gray-600">Loading products...</p>
-            </div>
+            <!-- Products will be loaded here -->
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12 text-center">
-        <div class="max-w-7xl mx-auto px-4">
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-gray-400 mb-4">© 2025 V5 Medical LTD. All rights reserved.</p>
-            <div class="flex justify-center gap-6">
-                <a href="https://linkedin.com/company/v5med" class="hover:text-blue-400"><i class="fab fa-linkedin text-2xl"></i></a>
-                <a href="https://youtube.com/@v5med" class="hover:text-red-400"><i class="fab fa-youtube text-2xl"></i></a>
+            <div class="flex justify-center gap-6 mb-4">
+                <a href="https://linkedin.com/company/v5med" target="_blank" class="hover:text-blue-400 transition">
+                    <i class="fab fa-linkedin text-2xl"></i>
+                </a>
+                <a href="https://youtube.com/@v5med" target="_blank" class="hover:text-red-400 transition">
+                    <i class="fab fa-youtube text-2xl"></i>
+                </a>
             </div>
         </div>
     </footer>
 
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/447895047944" target="_blank" class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center z-50">
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/447895047944" target="_blank" class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center z-50 transition hover:scale-110">
         <i class="fab fa-whatsapp text-2xl"></i>
     </a>
 
-    <script src="https://raw.githubusercontent.com/alden888/v5md/main/js/products.js"></script>
-    <script>
-        console.log('[Catalog] Page loaded');
+// 加载外部产品数据库
+const PRODUCTS = window.productDatabase ? window.productDatabase.byId : {};
 
-        // Category filtering
+// 如果外部数据库未加载，使用内联数据
+if (!window.productDatabase) {
+    console.log('Using inline product database');
+    // 这里保持原有的内联PRODUCTS对象
+} else {
+    console.log('Using external product database:', Object.keys(PRODUCTS).length, 'products');
+}
+
+    <script>
+        // INLINE PRODUCT DATABASE - No external file needed!
+        const PRODUCTS = {
+            'pga-suture': {
+                id: 'pga-suture',
+                name: 'PGA Absorbable Suture',
+                category: 'surgical-sutures',
+                short: 'Monofilament PGA suture with excellent tensile strength',
+                description: 'High-quality PGA absorbable sutures with predictable absorption.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pga-absorbable-suture.jpg'
+            },
+            'pgla-suture': {
+                id: 'pgla-suture',
+                name: 'PGLA Braided Suture',
+                category: 'surgical-sutures',
+                short: 'Braided PGLA suture with excellent handling',
+                description: 'Superior handling and knot security.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pgla-braided-suture.jpg'
+            },
+            'chromic-catgut': {
+                id: 'chromic-catgut',
+                name: 'Chromic Catgut Suture',
+                category: 'surgical-sutures',
+                short: 'Natural chromic catgut for ophthalmic surgery',
+                description: 'Natural absorbable suture with delayed absorption.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/chromic-catgut.jpg'
+            },
+            'surgical-blades': {
+                id: 'surgical-blades',
+                name: 'Surgical Blades',
+                category: 'surgical-instruments',
+                short: 'Sterile surgical blades in various sizes',
+                description: 'High-quality stainless steel surgical blades.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-instruments/surgical-blades.jpg'
+            },
+            'scalpels': {
+                id: 'scalpels',
+                name: 'Disposable Scalpels',
+                category: 'surgical-instruments',
+                short: 'Single-use disposable scalpels',
+                description: 'Pre-assembled disposable scalpels.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-instruments/scalpels.jpg'
+            },
+            'surgical-scissors': {
+                id: 'surgical-scissors',
+                name: 'Surgical Scissors',
+                category: 'surgical-instruments',
+                short: 'Stainless steel surgical scissors',
+                description: 'Various types including Mayo and Metzenbaum.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-instruments/surgical-scissors.jpg'
+            },
+            'gauze-swabs': {
+                id: 'gauze-swabs',
+                name: 'Gauze Swabs',
+                category: 'gauze-dressings',
+                short: 'Sterile cotton gauze swabs',
+                description: '100% cotton sterile gauze swabs.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/gauze-dressings/gauze-swabs.jpg'
+            },
+            'gauze-rolls': {
+                id: 'gauze-rolls',
+                name: 'Gauze Rolls',
+                category: 'gauze-dressings',
+                short: 'Cotton gauze bandage rolls',
+                description: 'High-quality gauze rolls for wound dressing.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/gauze-dressings/gauze-rolls.jpg'
+            },
+            'surgical-masks': {
+                id: 'surgical-masks',
+                name: 'Surgical Face Masks',
+                category: 'protective-equipment',
+                short: '3-ply surgical masks with ear loops',
+                description: 'High-filtration 3-ply medical masks.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/protective-equipment/surgical-face-masks.jpg'
+            },
+            'n95-masks': {
+                id: 'n95-masks',
+                name: 'N95/FFP2 Masks',
+                category: 'protective-equipment',
+                short: 'High-filtration respirator masks',
+                description: 'N95/FFP2 respirators with ≥95% filtration.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/protective-equipment/n95-ffp2-masks.jpg'
+            },
+            'disposable-syringes': {
+                id: 'disposable-syringes',
+                name: 'Disposable Syringes',
+                category: 'injection-infusion',
+                short: 'Sterile medical syringes',
+                description: 'Luer lock and slip syringes in all sizes.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/disposable-syringes.jpg'
+            },
+            'iv-cannula': {
+                id: 'iv-cannula',
+                name: 'IV Cannula',
+                category: 'injection-infusion',
+                short: 'Intravenous catheter sets',
+                description: 'IV cannulas with flashback chamber.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/iv-cannula.jpg'
+            },
+            'dental-kits': {
+                id: 'dental-kits',
+                name: 'Dental Examination Kits',
+                category: 'dental-products',
+                short: 'Disposable dental exam kits',
+                description: 'Complete dental examination sets.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/dental-examination-kits.jpg'
+            },
+            'dental-bibs': {
+                id: 'dental-bibs',
+                name: 'Dental Bibs',
+                category: 'dental-products',
+                short: 'Disposable patient bibs',
+                description: 'Waterproof dental patient bibs.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/dental-bibs.jpg'
+            },
+            'surgical-packs': {
+                id: 'surgical-packs',
+                name: 'Surgical Packs',
+                category: 'surgical-packs',
+                short: 'Custom surgical procedure packs',
+                description: 'Customized packs for specific procedures.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                certifications: ['ISO 13485', 'CE', 'FDA'],
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-packs/surgical-packs.jpg'
+            }
+        };
+
+        // State
         let currentCategory = 'all';
 
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Category Filter
         function filterCategory(category) {
             currentCategory = category;
-            console.log('[Catalog] Filtering by category:', category);
             
             // Update button states
             document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-blue-600', 'text-white');
-                btn.classList.add('bg-gray-100');
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-100', 'text-gray-700');
             });
-            event.target.classList.add('active', 'bg-blue-600', 'text-white');
-            event.target.classList.remove('bg-gray-100');
+            event.target.classList.remove('bg-gray-100', 'text-gray-700');
+            event.target.classList.add('bg-blue-600', 'text-white');
             
-            // Reload products
             loadProducts();
         }
 
-        // Load products
+        // Load Products
         function loadProducts() {
-            console.log('[Catalog] Loading products...');
-            
-            // Check if database is loaded
-            const db = window.productDatabase || window.finalProductDatabase;
-            if (!db) {
-                console.error('[Catalog] Product database not loaded!');
-                showError('Product database failed to load. Please refresh the page.');
-                return;
-            }
-            
-            console.log('[Catalog] Database found with', Object.keys(db).length, 'products');
+            const container = document.getElementById('products-container');
             
             // Filter products
-            let products = Object.values(db);
+            let products = Object.values(PRODUCTS);
             if (currentCategory !== 'all') {
                 products = products.filter(p => p.category === currentCategory);
             }
             
-            console.log('[Catalog] Filtered to', products.length, 'products');
-            
-            // Display products
-            const container = document.getElementById('products-container');
             if (products.length === 0) {
                 container.innerHTML = `
                     <div class="col-span-full text-center py-20">
                         <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
-                        <p class="text-xl text-gray-600">No products found in this category.</p>
+                        <p class="text-xl text-gray-600">No products in this category yet.</p>
                     </div>
                 `;
                 return;
             }
             
-            container.innerHTML = products.map(product => `
-                <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden">
-                    <div class="relative cursor-pointer" onclick="location.href='product-detail.html?id=${product.id}'">
-                        <img src="${product.images[0]}" 
-                             alt="${product.name}"
-                             class="w-full h-48 object-cover"
-                             onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
-                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                            ${product.availability || 'In Stock'}
+            // Render products
+            container.innerHTML = products.map(p => `
+                <div class="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group">
+                    <div class="relative cursor-pointer overflow-hidden" onclick="viewProduct('${p.id}')">
+                        <img src="${p.image}" 
+                             alt="${p.name}"
+                             class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                             onerror="this.src='https://via.placeholder.com/400x300?text=${encodeURIComponent(p.name)}'">
+                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-3 py-1 rounded-full font-semibold shadow-lg">
+                            ${p.availability}
                         </div>
                     </div>
                     <div class="p-6">
-                        <h3 class="font-bold text-lg mb-2 cursor-pointer hover:text-blue-600" onclick="location.href='product-detail.html?id=${product.id}'">
-                            ${product.name}
+                        <h3 class="font-bold text-lg mb-2 cursor-pointer hover:text-blue-600 transition" onclick="viewProduct('${p.id}')">
+                            ${p.name}
                         </h3>
-                        <p class="text-gray-600 text-sm mb-4">${product.short}</p>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">${p.short}</p>
                         <div class="flex flex-wrap gap-2 mb-4">
-                            ${product.certifications.map(cert => 
-                                `<span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">${cert}</span>`
+                            ${p.certifications.map(cert => 
+                                `<span class="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded font-medium">${cert}</span>`
                             ).join('')}
                         </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium text-gray-900">${product.price}</span>
-                            <button onclick="location.href='product-detail.html?id=${product.id}'" 
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm transition">
-                                Details
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                            <span class="font-semibold text-gray-900">${p.price}</span>
+                            <button onclick="viewProduct('${p.id}')" 
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                                View Details
                             </button>
                         </div>
                     </div>
@@ -188,39 +368,19 @@
             `).join('');
         }
 
-        function showError(message) {
-            const container = document.getElementById('products-container');
-            container.innerHTML = `
-                <div class="col-span-full text-center py-20">
-                    <i class="fas fa-exclamation-triangle text-6xl text-red-500 mb-4"></i>
-                    <p class="text-xl text-gray-800 mb-2">Error Loading Products</p>
-                    <p class="text-gray-600">${message}</p>
-                    <button onclick="location.reload()" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
-                        Retry
-                    </button>
-                </div>
-            `;
+        // View Product (redirect to detail page or show modal)
+function viewProduct(productId) {
+    // Redirect to product detail page
+    window.location.href = `product-detail.html?id=${productId}`;
+}
+            
+            // Option 2: Show modal (uncomment if preferred)
+            // showProductModal(PRODUCTS[productId]);
         }
 
-        // Mobile menu
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            alert('Mobile menu - to be implemented');
-        });
-
-        // Wait for database to load
-        let checkCount = 0;
-        const checkDatabase = setInterval(() => {
-            checkCount++;
-            console.log('[Catalog] Check', checkCount, '- Database available:', !!(window.productDatabase || window.finalProductDatabase));
-            
-            if (window.productDatabase || window.finalProductDatabase) {
-                clearInterval(checkDatabase);
-                loadProducts();
-            } else if (checkCount > 20) {
-                clearInterval(checkDatabase);
-                showError('Product database failed to load after 20 attempts.');
-            }
-        }, 250);
+        // Initialize
+        console.log('✅ Catalog loaded with', Object.keys(PRODUCTS).length, 'products');
+        loadProducts();
     </script>
 </body>
 </html>

@@ -3,243 +3,405 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details | V5 Medical LTD</title>
+    <title>V5 Medical Product Detail | Premium Medical Consumables</title>
+    
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/alden888/v5md/main/images/icons/favicon.ico">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        primary: '#1e40af', 
+                        secondary: '#3b82f6', 
+                        accent: '#2563eb'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .product-gallery-thumb { 
+            transition: all 0.3s ease; 
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .product-gallery-thumb.active { 
+            border-color: #1e40af; 
+            opacity: 1;
+        }
+        .product-gallery-thumb:hover { 
+            opacity: 0.8; 
+        }
+        .product-tab {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .product-tab.active {
+            border-bottom-color: #1e40af;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .product-not-found {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+    </style>
 </head>
-<body class="bg-gray-50">
+
+<body class="font-sans text-gray-800 bg-gray-50">
+
     <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer" onclick="location.href='index.html'">
-                <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png" class="h-12" alt="V5 Medical" />
+                <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png" 
+                     class="h-12" 
+                     alt="V5 Medical"
+                     onerror="this.style.display='none'">
                 <div>
                     <div class="font-bold text-xl text-blue-900">V5 Medical LTD</div>
                     <div class="text-xs text-blue-600">Global Medical Supplier</div>
                 </div>
             </div>
             <div class="hidden md:flex gap-8 items-center">
-                <a href="index.html" class="font-medium text-gray-600 hover:text-blue-900">Home</a>
-                <a href="catalog.html" class="font-medium text-blue-900">Products</a>
-                <a href="about.html" class="font-medium text-gray-600 hover:text-blue-900">About</a>
-                <a href="contact.html" class="font-medium text-gray-600 hover:text-blue-900">Contact</a>
-                <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-full font-semibold flex items-center">
-                    <i class="fab fa-whatsapp mr-2"></i> WhatsApp
-                </a>
+                <a href="index.html" class="font-medium text-gray-600 hover:text-blue-900 transition">Home</a>
+                <a href="catalog.html" class="font-medium text-blue-900 border-b-2 border-blue-900">Products</a>
+                <a href="about.html" class="font-medium text-gray-600 hover:text-blue-900 transition">About</a>
+                <a href="contact.html" class="font-medium text-gray-600 hover:text-blue-900 transition">Contact</a>
             </div>
+            <button id="mobile-menu-btn" class="md:hidden text-gray-800">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
         </div>
     </nav>
 
     <!-- Breadcrumb -->
-    <section class="pt-32 pb-8 bg-white">
+    <div class="bg-gray-100 pt-32 pb-4 border-b">
         <div class="max-w-7xl mx-auto px-4">
-            <nav class="flex items-center text-sm text-gray-600">
+            <div class="flex items-center text-sm text-gray-600">
                 <a href="index.html" class="hover:text-blue-600">Home</a>
                 <i class="fas fa-chevron-right mx-2 text-xs"></i>
                 <a href="catalog.html" class="hover:text-blue-600">Products</a>
                 <i class="fas fa-chevron-right mx-2 text-xs"></i>
-                <span id="breadcrumb-category" class="text-blue-600">Loading...</span>
+                <span id="breadcrumb-category">Category</span>
                 <i class="fas fa-chevron-right mx-2 text-xs"></i>
-                <span id="breadcrumb-product" class="text-gray-900">Product Details</span>
-            </nav>
-        </div>
-    </section>
-
-    <!-- Product Details -->
-    <section class="max-w-7xl mx-auto px-4 pb-20">
-        <div id="product-container" class="grid md:grid-cols-2 gap-12">
-            <!-- Loading State -->
-            <div class="col-span-full text-center py-20">
-                <div class="inline-block w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
-                <p class="text-xl text-gray-600">Loading product details...</p>
+                <span id="breadcrumb-product" class="text-blue-600 font-medium">Product</span>
             </div>
         </div>
-    </section>
+    </div>
+
+    <!-- Product Content -->
+    <div id="product-content" class="max-w-7xl mx-auto px-4 py-12">
+        <div class="text-center py-12">
+            <i class="fas fa-spinner fa-spin text-4xl text-blue-600"></i>
+            <p class="mt-4 text-gray-600">Loading product details...</p>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <div id="related-products" class="bg-gray-50 py-16 hidden">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-2xl font-bold text-center mb-12">Related Products</h2>
+            <div id="related-products-grid" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+        </div>
+    </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12 text-center">
-        <div class="max-w-7xl mx-auto px-4">
-            <p class="text-gray-400 mb-4">© 2025 V5 Medical LTD. All rights reserved.</p>
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-2xl font-bold mb-4">Ready for Your Next Order?</p>
+            <p class="text-gray-400 mb-6">© 2025 V5 Medical LTD. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/447895047944" target="_blank" class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center z-50">
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/447895047944" target="_blank" class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center z-50 transition hover:scale-110">
         <i class="fab fa-whatsapp text-2xl"></i>
     </a>
 
-    <script src="https://raw.githubusercontent.com/alden888/v5md/main/js/products.js"></script>
     <script>
-        console.log('[Product Detail] Page loaded');
+        // 加载产品数据库
+        function loadProductDatabase() {
+            return new Promise((resolve, reject) => {
+                // 检查是否已加载
+                if (window.productDatabase) {
+                    resolve(window.productDatabase);
+                    return;
+                }
 
-        // Get product ID from URL
-        function getProductId() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('id');
-        }
-
-        // Category names
-        const categoryNames = {
-            'surgical-sutures': 'Surgical Sutures',
-            'surgical-instruments': 'Surgical Instruments',
-            'gauze-dressings': 'Gauze Dressings',
-            'protective-equipment': 'Protective Equipment',
-            'injection-infusion': 'Injection & Infusion',
-            'dental-products': 'Dental Products',
-            'surgical-packs': 'Surgical Packs'
-        };
-
-        // Load product details
-        function loadProductDetails() {
-            console.log('[Product Detail] Loading details...');
-            
-            const productId = getProductId();
-            if (!productId) {
-                showError('No product ID provided in URL.');
-                return;
-            }
-            
-            console.log('[Product Detail] Product ID:', productId);
-            
-            // Check database
-            const db = window.productDatabase || window.finalProductDatabase;
-            if (!db) {
-                console.error('[Product Detail] Product database not loaded!');
-                showError('Product database failed to load.');
-                return;
-            }
-            
-            const product = db[productId];
-            if (!product) {
-                console.error('[Product Detail] Product not found:', productId);
-                showError('Product not found.');
-                return;
-            }
-            
-            console.log('[Product Detail] Product found:', product.name);
-            displayProduct(product);
-        }
-
-        function displayProduct(product) {
-            // Update breadcrumb
-            document.getElementById('breadcrumb-category').textContent = categoryNames[product.category] || product.category;
-            document.getElementById('breadcrumb-product').textContent = product.name;
-            
-            // Update page title
-            document.title = `${product.name} | V5 Medical LTD`;
-            
-            // Display product
-            const container = document.getElementById('product-container');
-            container.innerHTML = `
-                <!-- Product Images -->
-                <div>
-                    <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
-                        <img id="main-image" 
-                             src="${product.images[0]}" 
-                             alt="${product.name}"
-                             class="w-full h-96 object-contain"
-                             onerror="this.src='https://via.placeholder.com/800x600?text=No+Image'">
-                    </div>
-                    ${product.images.length > 1 ? `
-                    <div class="grid grid-cols-4 gap-4">
-                        ${product.images.map((img, idx) => `
-                            <img src="${img}" 
-                                 alt="${product.name} ${idx + 1}"
-                                 class="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-75 transition ${idx === 0 ? 'ring-2 ring-blue-600' : ''}"
-                                 onclick="changeMainImage('${img}', this)"
-                                 onerror="this.src='https://via.placeholder.com/200x200?text=No+Image'">
-                        `).join('')}
-                    </div>
-                    ` : ''}
-                </div>
-
-                <!-- Product Info -->
-                <div>
-                    <h1 class="text-3xl font-bold mb-4">${product.name}</h1>
-                    <p class="text-gray-600 text-lg mb-6">${product.short}</p>
-                    
-                    <!-- Price & Availability -->
-                    <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg p-6 mb-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="text-gray-600 font-medium">Price:</span>
-                            <span class="text-2xl font-bold text-blue-600">${product.price}</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-600 font-medium">Availability:</span>
-                            <span class="text-green-600 font-medium">${product.availability}</span>
-                        </div>
-                    </div>
-
-                    <!-- Certifications -->
-                    <div class="flex gap-4 mb-6">
-                        ${product.certifications.map(cert => `
-                            <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg font-medium">${cert}</span>
-                        `).join('')}
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex gap-4 mb-8">
-                        <a href="https://wa.me/447895047944?text=I'm interested in ${encodeURIComponent(product.name)}" 
-                           target="_blank"
-                           class="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 px-6 rounded-lg font-medium text-center flex items-center justify-center gap-2">
-                            <i class="fab fa-whatsapp"></i>
-                            Get Price Now
-                        </a>
-                        <a href="mailto:sales@v5md.com?subject=Inquiry about ${encodeURIComponent(product.name)}" 
-                           class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-medium text-center flex items-center justify-center gap-2">
-                            <i class="fas fa-envelope"></i>
-                            Email Inquiry
-                        </a>
-                    </div>
-
-                    <!-- Description -->
-                    <div class="bg-white rounded-xl shadow-lg p-6">
-                        <h2 class="text-xl font-bold mb-4">Product Description</h2>
-                        <p class="text-gray-600 leading-relaxed">${product.description}</p>
-                    </div>
-                </div>
-            `;
-        }
-
-        function changeMainImage(imageUrl, thumbElement) {
-            const mainImage = document.getElementById('main-image');
-            mainImage.src = imageUrl;
-            
-            // Update thumbnail borders
-            document.querySelectorAll('#product-container img[onclick]').forEach(img => {
-                img.classList.remove('ring-2', 'ring-blue-600');
+                // 动态加载 products.js
+                const script = document.createElement('script');
+                script.src = 'js/products.js';
+                script.onload = () => {
+                    if (window.productDatabase) {
+                        resolve(window.productDatabase);
+                    } else {
+                        reject(new Error('Product database not found'));
+                    }
+                };
+                script.onerror = () => reject(new Error('Failed to load product database'));
+                document.head.appendChild(script);
             });
-            thumbElement.classList.add('ring-2', 'ring-blue-600');
         }
 
-        function showError(message) {
-            const container = document.getElementById('product-container');
-            container.innerHTML = `
-                <div class="col-span-full text-center py-20">
-                    <i class="fas fa-exclamation-triangle text-6xl text-red-500 mb-4"></i>
-                    <p class="text-xl text-gray-800 mb-2">Error Loading Product</p>
-                    <p class="text-gray-600 mb-4">${message}</p>
-                    <a href="catalog.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
-                        Back to Catalog
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function showNoProductSelected() {
+            document.getElementById('product-content').innerHTML = `
+                <div class="product-not-found">
+                    <i class="fas fa-box-open text-blue-600 text-6xl mb-4"></i>
+                    <h2 class="text-2xl font-bold mb-2">No Product Selected</h2>
+                    <p class="text-gray-600 mb-6">Please select a product from our catalog.</p>
+                    <a href="catalog.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg">
+                        Browse Catalog
                     </a>
                 </div>
             `;
         }
 
-        // Wait for database
-        let checkCount = 0;
-        const checkDatabase = setInterval(() => {
-            checkCount++;
-            console.log('[Product Detail] Check', checkCount, '- Database available:', !!(window.productDatabase || window.finalProductDatabase));
+        function showProductNotFound(productId) {
+            document.getElementById('product-content').innerHTML = `
+                <div class="product-not-found">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-6xl mb-4"></i>
+                    <h2 class="text-2xl font-bold mb-2">Product Not Found</h2>
+                    <p class="text-gray-600 mb-6">Product ID "${productId}" does not exist.</p>
+                    <a href="catalog.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg">
+                        Browse Catalog
+                    </a>
+                </div>
+            `;
+        }
+
+        function updateBreadcrumb(product) {
+            const categories = {
+                'surgical-sutures': 'Surgical Sutures',
+                'surgical-instruments': 'Surgical Instruments',
+                'gauze-dressings': 'Gauze Dressings',
+                'protective-equipment': 'Protective Equipment',
+                'injection-infusion': 'Injection & Infusion',
+                'dental-products': 'Dental Products',
+                'surgical-packs': 'Surgical Packs'
+            };
             
-            if (window.productDatabase || window.finalProductDatabase) {
-                clearInterval(checkDatabase);
-                loadProductDetails();
-            } else if (checkCount > 20) {
-                clearInterval(checkDatabase);
-                showError('Product database failed to load after 20 attempts.');
+            document.getElementById('breadcrumb-category').textContent = categories[product.category] || product.category;
+            document.getElementById('breadcrumb-product').textContent = product.name;
+        }
+
+        function switchTab(tabName) {
+            // 更新标签页状态
+            document.querySelectorAll('.product-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function renderProductContent(product) {
+            // 构建产品详情HTML
+            const html = `
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <div>
+                        <div class="bg-white rounded-xl shadow-sm p-4 mb-4">
+                            <img id="mainImage" src="${product.images[0] || 'https://via.placeholder.com/600x400?text=Product+Image'}" 
+                                 class="w-full h-96 object-contain rounded-lg">
+                        </div>
+                        
+                        ${product.images.length > 1 ? `
+                        <div class="grid grid-cols-4 gap-3">
+                            ${product.images.map((img, i) => `
+                                <img src="${img}" 
+                                     onerror="this.src='https://via.placeholder.com/150?text=Image'" 
+                                     class="product-gallery-thumb ${i===0?'active':''} w-full h-24 object-cover rounded-lg cursor-pointer"
+                                     onclick="document.getElementById('mainImage').src=this.src; 
+                                              document.querySelectorAll('.product-gallery-thumb').forEach(t=>t.classList.remove('active')); 
+                                              this.classList.add('active');">
+                            `).join('')}
+                        </div>
+                        ` : ''}
+                        
+                        <div class="bg-white rounded-xl shadow-sm p-6 mt-6">
+                            <h3 class="font-bold text-lg mb-4">Certifications</h3>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="bg-blue-50 p-4 rounded-lg text-center">
+                                    <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/quality/ce-mark.png" 
+                                         onerror="this.src='https://via.placeholder.com/80?text=CE'" 
+                                         class="w-16 h-16 mx-auto mb-2 object-contain">
+                                    <span class="text-xs font-semibold">CE Mark</span>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-lg text-center">
+                                    <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/quality/iso13485-2016.jpg" 
+                                         onerror="this.src='https://via.placeholder.com/80?text=ISO'" 
+                                         class="w-16 h-16 mx-auto mb-2 object-contain">
+                                    <span class="text-xs font-semibold">ISO 13485</span>
+                                </div>
+                                <div class="bg-red-50 p-4 rounded-lg text-center">
+                                    <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/quality/fda.jpg" 
+                                         onerror="this.src='https://via.placeholder.com/80?text=FDA'" 
+                                         class="w-16 h-16 mx-auto mb-2 object-contain">
+                                    <span class="text-xs font-semibold">FDA</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h1 class="text-3xl font-bold mb-2">${product.name}</h1>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-semibold">
+                                ${product.availability}
+                            </div>
+                            <div class="text-sm text-gray-600">Stock: ${product.stockLevel || 'Available'}</div>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="font-semibold">Key Features</h3>
+                                <span class="text-blue-600 font-bold text-xl">${product.price}</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                ${product.certifications.map(cert => 
+                                    `<span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs">${cert}</span>`
+                                ).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="border-b mb-6">
+                            <div class="flex gap-8">
+                                <div class="product-tab active py-4" onclick="switchTab('description')">Description</div>
+                                <div class="product-tab py-4" onclick="switchTab('specifications')">Specifications</div>
+                            </div>
+                        </div>
+                        
+                        <div id="description" class="tab-content active">
+                            <p class="text-gray-700 leading-relaxed mb-4">${product.short}</p>
+                            <p class="text-gray-700 leading-relaxed">${product.description}</p>
+                        </div>
+                        
+                        <div id="specifications" class="tab-content">
+                            ${product.specifications ? Object.entries(product.specifications).map(([key, value]) => 
+                                `<div class="flex justify-between py-3 border-b">
+                                    <span class="text-gray-600">${key}</span>
+                                    <span class="font-semibold">${value}</span>
+                                </div>`
+                            ).join('') : '<p class="text-gray-600">No specifications available.</p>'}
+                        </div>
+                        
+                        <div class="mt-8 flex gap-4">
+                            <a href="catalog.html" 
+                               class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg text-center transition">
+                                <i class="fas fa-arrow-left mr-2"></i> Back to Catalog
+                            </a>
+                            <a href="https://wa.me/447895047944?text=I'm interested in ${encodeURIComponent(product.name)}" 
+                               target="_blank"
+                               class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg text-center transition">
+                                <i class="fab fa-whatsapp mr-2"></i> Inquire on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('product-content').innerHTML = html;
+        }
+
+        function renderRelatedProducts(product) {
+            const container = document.getElementById('related-products');
+            const grid = document.getElementById('related-products-grid');
+            
+            // 获取同类别产品
+            const relatedProducts = window.productDatabase.products
+                .filter(p => p.category === product.category && p.id !== product.id)
+                .slice(0, 4);
+            
+            if (relatedProducts.length > 0) {
+                grid.innerHTML = relatedProducts.map(p => `
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                        <img src="${p.images[0] || 'https://via.placeholder.com/300x200?text=Product'}" 
+                             class="w-full h-48 object-cover"
+                             onerror="this.src='https://via.placeholder.com/300x200?text=Product'">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">${p.name}</h3>
+                            <p class="text-gray-600 text-sm mb-3 line-clamp-2">${p.short}</p>
+                            <a href="product-detail.html?id=${p.id}" 
+                               class="block text-center bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+                
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
             }
-        }, 250);
+        }
+
+        async function loadProduct() {
+            const productId = getUrlParameter('id');
+            
+            if (!productId) {
+                showNoProductSelected();
+                return;
+            }
+            
+            try {
+                // 加载产品数据库
+                const db = await loadProductDatabase();
+                
+                // 查找产品
+                const product = db.byId[productId] || db.products.find(p => p.id === productId);
+                
+                if (!product) {
+                    showProductNotFound(productId);
+                    return;
+                }
+                
+                updateBreadcrumb(product);
+                renderProductContent(product);
+                renderRelatedProducts(product);
+                
+            } catch (error) {
+                console.error('Error loading product:', error);
+                showProductNotFound(productId);
+            }
+        }
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProduct();
+            
+            // 移动菜单切换
+            document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+                const menu = document.getElementById('mobile-menu');
+                if (menu) {
+                    menu.classList.toggle('hidden');
+                }
+            });
+        });
     </script>
 </body>
 </html>
