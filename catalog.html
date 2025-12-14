@@ -253,8 +253,9 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- Modular JavaScript Files -->
+    <!-- Modular JavaScript Files (修复：新增products.js加载，调整顺序) -->
     <script src="js/config.js"></script>
+    <script src="js/products.js"></script> <!-- 新增：加载产品数据库 -->
     <script src="js/image-utils.js"></script>
     <script src="js/seo-utils.js"></script>
     <script src="js/product-loader.js"></script>
@@ -297,11 +298,12 @@
             try {
                 const startTime = performance.now();
                 
-                // Load product database
+                // Load product database (从productLoader获取，已关联products.js)
                 const products = await productLoader.loadProducts();
                 const loadTime = performance.now() - startTime;
                 
                 console.log(`Product database loaded in ${loadTime.toFixed(0)}ms`);
+                console.log(`Total products loaded: ${Object.values(products).length}`);
                 
                 // Group products by category
                 const categories = {
