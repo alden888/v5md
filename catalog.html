@@ -6,163 +6,130 @@
     <title>Product Catalog | V5 Medical LTD</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- 加载产品加载器 -->
-    <script src="js/product-loader.js"></script>
-    <!-- 加载完整产品数据库 -->
-    <script src="js/complete-products.js"></script>
 </head>
 <body class="bg-gray-50">
-    <!-- Navigation (保持不变) -->
-    <nav class="fixed w-full z-50 bg-white shadow-md">
-        <!-- 导航代码保持不变 -->
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md py-4">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-3">
+                <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png" class="h-12" alt="V5 Medical">
+                <div>
+                    <div class="font-bold text-xl text-blue-900">V5 Medical LTD</div>
+                    <div class="text-xs text-blue-600">Global Medical Supplier</div>
+                </div>
+            </a>
+            <div class="flex gap-8 items-center">
+                <a href="index.html" class="text-gray-600 hover:text-blue-900">Home</a>
+                <a href="catalog.html" class="text-blue-900 border-b-2 border-blue-900">Products</a>
+                <a href="about.html" class="text-gray-600 hover:text-blue-900">About</a>
+                <a href="contact.html" class="text-gray-600 hover:text-blue-900">Contact</a>
+            </div>
+        </div>
     </nav>
 
-    <!-- Hero Section (保持不变) -->
-    <section class="pt-32 pb-16 bg-gradient-to-r from-blue-600 to-cyan-500 text-white">
-        <!-- 保持不变 -->
-    </section>
-
-    <!-- Category Filters (保持不变) -->
-    <section class="max-w-7xl mx-auto px-4 -mt-8 mb-12">
-        <!-- 保持不变 -->
-    </section>
-
-    <!-- Products Grid -->
-    <section class="max-w-7xl mx-auto px-4 pb-20">
-        <div id="products-container" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            <!-- Products will be loaded here -->
+    <!-- Hero Section -->
+    <section class="py-16 bg-gradient-to-r from-blue-600 to-cyan-500 text-white">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Our Product Catalog</h1>
+            <p class="text-xl opacity-90">ISO 13485, CE & FDA Certified Medical Products</p>
         </div>
     </section>
 
-    <!-- Footer (保持不变) -->
+    <!-- Products -->
+    <section class="max-w-7xl mx-auto px-4 py-12">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="products">
+            <!-- Products loaded by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
-        <!-- 保持不变 -->
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-400">© 2025 V5 Medical LTD. All rights reserved.</p>
+        </div>
     </footer>
 
-    <!-- WhatsApp Float (保持不变) -->
-    <a href="https://wa.me/447895047944" target="_blank" class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center z-50 transition hover:scale-110">
-        <i class="fab fa-whatsapp text-2xl"></i>
-    </a>
-
     <script>
-        // State
-        let currentCategory = 'all';
-        let allProducts = [];
-
-        // Mobile Menu Toggle
-        document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        });
-
-        // Category Filter
-        function filterCategory(category) {
-            currentCategory = category;
-            
-            // Update button states
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('bg-blue-600', 'text-white');
-                btn.classList.add('bg-gray-100', 'text-gray-700');
-            });
-            event.target.classList.remove('bg-gray-100', 'text-gray-700');
-            event.target.classList.add('bg-blue-600', 'text-white');
-            
-            loadProducts();
-        }
-
-        // Load Products
-        async function loadProducts() {
-            const container = document.getElementById('products-container');
-            
-            // Show loading
-            container.innerHTML = `
-                <div class="col-span-full text-center py-20">
-                    <i class="fas fa-spinner fa-spin text-4xl text-blue-600 mb-4"></i>
-                    <p class="text-gray-600">Loading products...</p>
-                </div>
-            `;
-            
-            try {
-                // Load products
-                const db = await window.productLoader.loadProducts();
-                allProducts = db.products;
-                
-                // Filter products
-                let products = [...allProducts];
-                if (currentCategory !== 'all') {
-                    products = products.filter(p => p.category === currentCategory);
-                }
-                
-                if (products.length === 0) {
-                    container.innerHTML = `
-                        <div class="col-span-full text-center py-20">
-                            <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
-                            <p class="text-xl text-gray-600">No products in this category yet.</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                // Render products
-                renderProducts(container, products);
-                
-            } catch (error) {
-                console.error('Error loading products:', error);
-                container.innerHTML = `
-                    <div class="col-span-full text-center py-20">
-                        <i class="fas fa-exclamation-triangle text-red-500 text-6xl mb-4"></i>
-                        <p class="text-xl text-gray-600">Failed to load products. Please try again.</p>
-                    </div>
-                `;
+        // 产品数据
+        const products = [
+            {
+                id: 'pga-absorbable-suture',
+                name: 'PGA Absorbable Suture',
+                category: 'Surgical Sutures',
+                short: 'Monofilament PGA suture with excellent tensile strength',
+                price: 'Contact for Price',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pga-absorbable-suture.jpg'
+            },
+            {
+                id: 'pgla-absorbable-suture',
+                name: 'PGLA Absorbable Suture',
+                category: 'Surgical Sutures',
+                short: 'Braided PGLA suture with excellent handling',
+                price: 'Contact for Price',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pgla-braided-suture.jpg'
+            },
+            {
+                id: 'chromic-catgut',
+                name: 'Chromic Catgut',
+                category: 'Surgical Sutures',
+                short: 'Natural chromic catgut for ophthalmic surgery',
+                price: 'Contact for Price',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/chromic-catgut.jpg'
+            },
+            {
+                id: 'surgical-blades',
+                name: 'Surgical Blades',
+                category: 'Surgical Instruments',
+                short: 'Sterile surgical blades in various sizes',
+                price: 'Contact for Price',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-instruments/surgical-blades.jpg'
+            },
+            {
+                id: 'gauze-swabs',
+                name: 'Gauze Swabs',
+                category: 'Gauze Dressings',
+                short: 'Sterile cotton gauze swabs',
+                price: 'Contact for Price',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/gauze-dressings/gauze-swabs.jpg'
+            },
+            {
+                id: 'surgical-face-masks',
+                name: 'Surgical Face Masks',
+                category: 'Protective Equipment',
+                short: '3-ply surgical masks with ear loops',
+                price: 'Contact for Price',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/protective-equipment/surgical-face-masks.jpg'
             }
-        }
+        ];
 
-        // Render Products
-        function renderProducts(container, products) {
+        // 渲染产品
+        function renderProducts() {
+            const container = document.getElementById('products');
             container.innerHTML = products.map(product => `
-                <div class="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group">
-                    <div class="relative cursor-pointer overflow-hidden" onclick="viewProduct('${product.id}')">
-                        <img src="${product.images?.[0] || product.image || 'https://via.placeholder.com/400x300?text=Product'}" 
-                             alt="${product.name}"
-                             class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
-                             onerror="this.src='https://via.placeholder.com/400x300?text=${encodeURIComponent(product.name)}'">
-                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-3 py-1 rounded-full font-semibold shadow-lg">
-                            ${product.availability || 'In Stock'}
-                        </div>
-                    </div>
+                <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden">
+                    <img src="${product.image}" 
+                         alt="${product.name}"
+                         class="w-full h-48 object-cover">
                     <div class="p-6">
-                        <h3 class="font-bold text-lg mb-2 cursor-pointer hover:text-blue-600 transition" onclick="viewProduct('${product.id}')">
-                            ${product.name}
-                        </h3>
-                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">${product.short || product.description?.substring(0, 100) || ''}</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            ${(product.certifications || ['ISO 13485', 'CE', 'FDA']).slice(0, 3).map(cert => 
-                                `<span class="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded font-medium">${cert}</span>`
-                            ).join('')}
+                        <h3 class="font-bold text-lg mb-2">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-3">${product.short}</p>
+                        <div class="mb-4">
+                            <span class="text-gray-500 text-xs uppercase">${product.category}</span>
                         </div>
-                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
-                            <span class="font-semibold text-gray-900">${product.price || 'Contact for Price'}</span>
-                            <button onclick="viewProduct('${product.id}')" 
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold text-gray-900">${product.price}</span>
+                            <a href="product-detail.html?id=${product.id}" 
+                               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
                                 View Details
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        // View Product
-        function viewProduct(productId) {
-            // Redirect to product detail page
-            window.location.href = `product-detail.html?id=${productId}`;
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('Catalog page loaded');
-            loadProducts();
-        });
+        // 页面加载时渲染
+        document.addEventListener('DOMContentLoaded', renderProducts);
     </script>
 </body>
 </html>

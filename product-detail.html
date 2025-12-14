@@ -1,34 +1,139 @@
-<!-- 在product-detail.html的<head>部分添加 -->
-<script src="js/product-loader.js"></script>
-<script src="js/complete-products.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | V5 Medical LTD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-sm py-4">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-3">
+                <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png" class="h-10" alt="V5 Medical">
+                <span class="font-bold text-blue-900">V5 Medical LTD</span>
+            </a>
+            <a href="catalog.html" class="text-blue-600 font-medium">← Back to Catalog</a>
+        </div>
+    </nav>
 
-<!-- 修改product-detail.html的JavaScript部分 -->
-<script>
-    async function loadProduct() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('id');
-        
-        if (!productId) {
-            showNoProductSelected();
-            return;
+    <div id="content" class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Content will be loaded here -->
+    </div>
+
+    <script>
+        // 获取URL参数
+        function getProductId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
         }
-        
-        try {
-            // 使用统一的产品加载器
-            const db = await window.productLoader.loadProducts();
-            const product = db.byId[productId];
+
+        // 产品数据（与catalog.html一致）
+        const products = {
+            'pga-absorbable-suture': {
+                name: 'PGA Absorbable Suture',
+                category: 'Surgical Sutures',
+                description: 'High-quality PGA absorbable sutures with predictable absorption within 60-90 days.',
+                price: 'Contact for Price',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pga-absorbable-suture.jpg',
+                specs: {
+                    'Material': 'Polyglycolic Acid (PGA)',
+                    'Absorption': '60-90 days',
+                    'Type': 'Monofilament'
+                }
+            },
+            'pgla-absorbable-suture': {
+                name: 'PGLA Absorbable Suture',
+                category: 'Surgical Sutures',
+                description: 'Superior handling and knot security with predictable absorption.',
+                price: 'Contact for Price',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pgla-braided-suture.jpg',
+                specs: {
+                    'Material': 'Polyglactin 910 (PGLA)',
+                    'Absorption': '56-70 days',
+                    'Type': 'Braided'
+                }
+            }
+        };
+
+        // 渲染产品详情
+        function renderProduct(product) {
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <div>
+                        <img src="${product.image}" alt="${product.name}" class="w-full rounded-lg shadow-md">
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold mb-4">${product.name}</h1>
+                        <div class="bg-blue-50 p-6 rounded-xl mb-6">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="text-sm text-gray-600">Price</p>
+                                    <p class="text-2xl font-bold text-blue-700">${product.price}</p>
+                                </div>
+                                <a href="https://wa.me/447895047944?text=I'm interested in ${encodeURIComponent(product.name)}" 
+                                   target="_blank"
+                                   class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg">
+                                    <i class="fab fa-whatsapp mr-2"></i> WhatsApp Inquiry
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <h3 class="text-xl font-bold mb-4">Description</h3>
+                            <p class="text-gray-700">${product.description}</p>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <h3 class="text-xl font-bold mb-4">Specifications</h3>
+                            <div class="bg-white rounded-xl shadow-sm p-6">
+                                ${Object.entries(product.specs).map(([key, value]) => `
+                                    <div class="flex justify-between py-3 border-b">
+                                        <span class="text-gray-600">${key}</span>
+                                        <span class="font-semibold">${value}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 页面加载时执行
+        document.addEventListener('DOMContentLoaded', () => {
+            const productId = getProductId();
             
-            if (!product) {
-                showProductNotFound(productId);
+            if (!productId) {
+                document.getElementById('content').innerHTML = `
+                    <div class="text-center py-20">
+                        <h2 class="text-2xl font-bold mb-4">No Product Selected</h2>
+                        <a href="catalog.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+                            Browse Catalog
+                        </a>
+                    </div>
+                `;
                 return;
             }
             
-            // 渲染产品详情
-            renderProductDetail(product);
+            const product = products[productId];
             
-        } catch (error) {
-            console.error('Error loading product:', error);
-            showProductNotFound(productId);
-        }
-    }
-</script>
+            if (product) {
+                renderProduct(product);
+            } else {
+                document.getElementById('content').innerHTML = `
+                    <div class="text-center py-20">
+                        <h2 class="text-2xl font-bold mb-4">Product Not Found</h2>
+                        <p class="text-gray-600 mb-6">Product ID: ${productId}</p>
+                        <a href="catalog.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+                            Browse Catalog
+                        </a>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
