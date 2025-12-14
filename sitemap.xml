@@ -1,47 +1,257 @@
 // generate-sitemap.js
-// Auto-generate sitemap.xml from finalProductDatabase
-// Run with: node generate-sitemap.js
+// Auto-generate sitemap.xml from finalProductDatabase with enhanced features
+// Run with: node generate-sitemap.js [--env=production] [--verbose]
 
 const fs = require('fs');
+const path = require('path');
+const { program } = require('commander');
 
-// Load products (CommonJS or adapted export)
-const { finalProductDatabase } = require('./js/products.js');
+// Configure command line arguments
+program
+  .option('--env <environment>', 'Environment (development, staging, production)', 'production')
+  .option('--verbose', 'Enable verbose logging', false)
+  .option('--output <path>', 'Output file path', 'sitemap.xml')
+  .option('--domain <url>', 'Base domain URL')
+  .parse(process.argv);
 
-const DOMAIN = 'https://v5md.com';
-const NOW = new Date().toISOString();
+const options = program.opts();
 
-function url(loc, priority = '0.7', changefreq = 'monthly') {
-  return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${NOW}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+// Configuration based on environment
+const config = {
+  development: {
+    domain: 'http://localhost:3000',
+    defaultPriority: '0.5',
+    defaultChangeFreq: 'daily'
+  },
+  staging: {
+    domain: 'https://staging.v5md.com',
+    defaultPriority: '0.6',
+    defaultChangeFreq: 'weekly'
+  },
+  production: {
+    domain: 'https://v5md.com',
+    defaultPriority: '0.7',
+    defaultChangeFreq: 'monthly'
+  }
+}[options.env] || config.production;
+
+// Override domain if provided
+if (options.domain) {
+  config.domain = options.domain;
 }
 
-let urls = [];
+const NOW = new Date().toISOString();
+const VERBOSE = options.verbose;
 
-// Core pages
-urls.push(url(`${DOMAIN}/`, '1.0', 'weekly'));
-urls.push(url(`${DOMAIN}/catalog.html`, '0.9', 'weekly'));
-urls.push(url(`${DOMAIN}/about.html`, '0.8'));
-urls.push(url(`${DOMAIN}/contact.html`, '0.8'));
-urls.push(url(`${DOMAIN}/blog.html`, '0.8', 'weekly'));
-urls.push(url(`${DOMAIN}/faq.html`, '0.6', 'quarterly'));
-urls.push(url(`${DOMAIN}/privacy.html`, '0.5', 'yearly'));
-urls.push(url(`${DOMAIN}/terms.html`, '0.5', 'yearly'));
+// Logging utility
+function log(message, level = 'info') {
+  if (VERBOSE || level === 'error') {
+    console.log(`[${new Date().toISOString()}] [${level.toUpperCase()}] ${message}`);
+  }
+}
 
-// Category pages (deduplicated)
-const categories = [...new Set(Object.values(finalProductDatabase).map(p => p.category))];
-categories.forEach(cat => {
-  urls.push(
-    url(`${DOMAIN}/catalog.html?category=${encodeURIComponent(cat)}`, '0.8', 'monthly')
-  );
-});
+// XML escaping utility
+function escapeXml(unsafe) {
+  if (!unsafe) return '';
+  return unsafe.replace(/[<>&'"]/g, function(c) {
+    switch(c) {
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '&': return '&amp;';
+      case "'": return '&apos;';
+      case '"': return '&quot;';
+      default: return c;
+    }
+  });
+}
 
-// Product detail pages
-Object.values(finalProductDatabase).forEach(p => {
-  urls.push(
-    url(`${DOMAIN}/product-detail.html?product=${p.id}`, '0.7', 'monthly')
-  );
-});
+// URL generator with validation
+function createUrl(loc, options = {}) {
+  const {
+    priority = config.defaultPriority,
+    changefreq = config.defaultChangeFreq,
+    lastmod = NOW,
+    images = []
+  } = options;
 
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>`;
+  // Validate URL
+  if (!loc || typeof loc !== 'string') {
+    log(`Invalid URL: ${loc}`, 'warning');
+    return null;
+  }
 
-fs.writeFileSync('sitemap.xml', sitemap);
-console.log('sitemap.xml generated successfully');
+  // Ensure URL starts with domain
+  let url = loc.startsWith('http') ? loc : `${config.domain}${loc.startsWith('/') ? '' : '/'}${loc}`;
+  
+  let xml = `  <url>\n    <loc>${escapeXml(url)}</loc>\n    <lastmod>${escapeXml(lastmod)}</lastmod>\n    <changefreq>${escapeXml(changefreq)}</changefreq>\n    <priority>${escapeXml(priority)}</priority>`;
+
+  // Add image entries if provided
+  if (images && images.length > 0) {
+    images.forEach(img => {
+      if (img.loc) {
+        xml += `\n    <image:image>\n      <image:loc>${escapeXml(img.loc)}</image:loc>`;
+        if (img.caption) xml += `\n      <image:caption>${escapeXml(img.caption)}</image:caption>`;
+        if (img.title) xml += `\n      <image:title>${escapeXml(img.title)}</image:title>`;
+        xml += '\n    </image:image>';
+      }
+    });
+  }
+
+  xml += '\n  </url>';
+  return xml;
+}
+
+// Main sitemap generation function
+async function generateSitemap() {
+  try {
+    log('Starting sitemap generation...');
+    
+    // Load products database with error handling
+    let finalProductDatabase = {};
+    try {
+      const productsPath = path.resolve(__dirname, 'js', 'products.js');
+      log(`Loading products from: ${productsPath}`);
+      
+      // Handle different export formats
+      const productsModule = require(productsPath);
+      finalProductDatabase = productsModule.finalProductDatabase || 
+                           productsModule.productDatabase || 
+                           productsModule.default || 
+                           {};
+      
+      if (typeof finalProductDatabase !== 'object' || finalProductDatabase === null) {
+        throw new Error('Product database is not an object');
+      }
+      
+      log(`Loaded ${Object.keys(finalProductDatabase).length} products`, 'info');
+      
+    } catch (error) {
+      log(`Error loading products: ${error.message}`, 'error');
+      log('Continuing with empty product database', 'warning');
+      finalProductDatabase = {};
+    }
+
+    const urls = [];
+
+    // Core pages with priority based on importance
+    const corePages = [
+      { loc: '/', priority: '1.0', changefreq: 'weekly', description: 'Homepage' },
+      { loc: '/catalog.html', priority: '0.9', changefreq: 'weekly', description: 'Product Catalog' },
+      { loc: '/about.html', priority: '0.8', changefreq: 'monthly', description: 'About Us' },
+      { loc: '/contact.html', priority: '0.8', changefreq: 'monthly', description: 'Contact' },
+      { loc: '/blog.html', priority: '0.8', changefreq: 'weekly', description: 'Blog' },
+      { loc: '/faq.html', priority: '0.7', changefreq: 'quarterly', description: 'FAQ' },
+      { loc: '/privacy.html', priority: '0.5', changefreq: 'yearly', description: 'Privacy Policy' },
+      { loc: '/terms.html', priority: '0.5', changefreq: 'yearly', description: 'Terms of Service' }
+    ];
+
+    corePages.forEach(page => {
+      const urlXml = createUrl(page.loc, {
+        priority: page.priority,
+        changefreq: page.changefreq
+      });
+      if (urlXml) {
+        urls.push(urlXml);
+        log(`Added core page: ${page.loc} (${page.description})`, 'info');
+      }
+    });
+
+    // Category pages with deduplication and SEO optimization
+    const productsArray = Object.values(finalProductDatabase);
+    const categories = [...new Set(productsArray.map(p => p.category).filter(c => c))];
+    
+    categories.forEach(cat => {
+      const safeCat = encodeURIComponent(cat);
+      const urlXml = createUrl(`/catalog.html?category=${safeCat}`, {
+        priority: '0.8',
+        changefreq: 'monthly'
+      });
+      if (urlXml) {
+        urls.push(urlXml);
+        log(`Added category: ${cat}`, 'info');
+      }
+    });
+
+    // Product detail pages with image sitemap support
+    productsArray.forEach(product => {
+      if (!product.id || !product.name) {
+        log(`Skipping invalid product: ${JSON.stringify(product)}`, 'warning');
+        return;
+      }
+
+      // Create product detail URL
+      const productUrl = `/product-detail.html?product=${product.id}`;
+      
+      // Prepare product images for image sitemap
+      const productImages = [];
+      if (product.images && Array.isArray(product.images)) {
+        product.images.forEach((imgUrl, index) => {
+          if (imgUrl) {
+            productImages.push({
+              loc: imgUrl.startsWith('http') ? imgUrl : `${config.domain}/images/products/${imgUrl}`,
+              caption: `${product.name} product image ${index + 1}`,
+              title: product.name
+            });
+          }
+        });
+      }
+
+      const urlXml = createUrl(productUrl, {
+        priority: '0.7',
+        changefreq: 'monthly',
+        images: productImages.length > 0 ? productImages : undefined
+      });
+      
+      if (urlXml) {
+        urls.push(urlXml);
+        log(`Added product: ${product.name} (${product.id})`, 'info');
+      }
+    });
+
+    // Generate sitemap XML with proper namespaces
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset 
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls.join('\n')}\n</urlset>`;
+
+    // Write sitemap to file
+    const outputPath = path.resolve(__dirname, options.output);
+    fs.writeFileSync(outputPath, sitemap, 'utf8');
+    
+    // Generate summary report
+    const summary = `
+Sitemap Generation Complete!
+============================
+Environment: ${options.env}
+Domain: ${config.domain}
+Output File: ${outputPath}
+Total URLs: ${urls.length}
+- Core Pages: ${corePages.length}
+- Categories: ${categories.length}
+- Products: ${productsArray.length}
+- Product Images: ${productImages.length}
+Generated at: ${NOW}
+`;
+
+    console.log(summary);
+    log('Sitemap generated successfully!', 'success');
+    
+    return {
+      success: true,
+      count: urls.length,
+      path: outputPath
+    };
+
+  } catch (error) {
+    log(`Sitemap generation failed: ${error.message}`, 'error');
+    log(error.stack, 'error');
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+}
+
+// Run the sitemap generator
+generateSitemap();
+
+module.exports = { generateSitemap };
