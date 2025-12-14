@@ -1,0 +1,314 @@
+<!-- 文件保存为 product-detail （无扩展名） -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | V5 Medical LTD</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div id="app">
+        <div class="text-center py-20">
+            <i class="fas fa-spinner fa-spin text-4xl text-blue-600 mb-4"></i>
+            <p class="text-gray-600">Loading product details...</p>
+        </div>
+    </div>
+
+    <!-- 产品数据库 -->
+    <script>
+        // 简单版本的产品数据库 - 直接内嵌在页面中
+        const PRODUCTS = {
+            'pga-absorbable-suture': {
+                id: 'pga-absorbable-suture',
+                name: 'PGA Absorbable Suture',
+                category: 'surgical-sutures',
+                short: 'Monofilament PGA suture with excellent tensile strength',
+                description: 'High-quality PGA absorbable sutures with predictable absorption within 60-90 days.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pga-absorbable-suture.jpg',
+                specifications: {
+                    'Material': 'Polyglycolic Acid (PGA)',
+                    'Absorption': '60-90 days',
+                    'Type': 'Monofilament',
+                    'Sizes': '4-0 to 2'
+                }
+            },
+            'pgla-absorbable-suture': {
+                id: 'pgla-absorbable-suture',
+                name: 'PGLA Absorbable Suture',
+                category: 'surgical-sutures',
+                short: 'Braided PGLA suture with excellent handling',
+                description: 'Superior handling and knot security with predictable absorption.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pgla-braided-suture.jpg',
+                specifications: {
+                    'Material': 'Polyglactin 910 (PGLA)',
+                    'Absorption': '56-70 days',
+                    'Type': 'Braided',
+                    'Sizes': '6-0 to 2'
+                }
+            },
+            'chromic-catgut': {
+                id: 'chromic-catgut',
+                name: 'Chromic Catgut',
+                category: 'surgical-sutures',
+                short: 'Natural chromic catgut for ophthalmic surgery',
+                description: 'Natural absorbable suture with delayed absorption for delicate procedures.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/chromic-catgut.jpg',
+                specifications: {
+                    'Material': 'Chromicized Collagen',
+                    'Absorption': '90-120 days',
+                    'Type': 'Monofilament',
+                    'Sizes': '6-0 to 3'
+                }
+            },
+            'surgical-blades': {
+                id: 'surgical-blades',
+                name: 'Surgical Blades',
+                category: 'surgical-instruments',
+                short: 'Sterile surgical blades in various sizes',
+                description: 'High-quality stainless steel surgical blades for precise cutting.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-instruments/surgical-blades.jpg',
+                specifications: {
+                    'Material': 'Stainless Steel',
+                    'Sizes': '#10, #11, #12, #15, #20, #21, #22, #23, #24',
+                    'Sterility': 'Sterile'
+                }
+            },
+            'gauze-swabs': {
+                id: 'gauze-swabs',
+                name: 'Gauze Swabs',
+                category: 'gauze-dressings',
+                short: 'Sterile cotton gauze swabs',
+                description: '100% cotton sterile gauze swabs in various sizes.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/gauze-dressings/gauze-swabs.jpg',
+                specifications: {
+                    'Material': '100% Medical Grade Cotton',
+                    'Sizes': '2"x2", 3"x3", 4"x4"',
+                    'Sterility': 'Sterile'
+                }
+            },
+            'surgical-face-masks': {
+                id: 'surgical-face-masks',
+                name: 'Surgical Face Masks',
+                category: 'protective-equipment',
+                short: '3-ply surgical masks with ear loops',
+                description: 'High-filtration 3-ply medical face masks.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/protective-equipment/surgical-face-masks.jpg',
+                specifications: {
+                    'Layers': '3-ply',
+                    'Filtration': 'BFE ≥95%, PFE ≥95%',
+                    'Type': 'Ear Loop'
+                }
+            },
+            'disposable-syringes': {
+                id: 'disposable-syringes',
+                name: 'Disposable Syringes',
+                category: 'injection-infusion',
+                short: 'Sterile medical syringes',
+                description: 'Luer lock and slip syringes in all sizes.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/disposable-syringes.jpg',
+                specifications: {
+                    'Type': 'Luer Lock or Luer Slip',
+                    'Sizes': '1ml, 3ml, 5ml, 10ml, 20ml, 50ml',
+                    'Sterility': 'Sterile'
+                }
+            },
+            'dental-examination-kits': {
+                id: 'dental-examination-kits',
+                name: 'Dental Examination Kits',
+                category: 'dental-products',
+                short: 'Disposable dental exam kits',
+                description: 'Complete dental examination instrument sets.',
+                price: 'Contact for Price',
+                availability: 'In Stock',
+                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/dental-examination-kits.jpg',
+                specifications: {
+                    'Contents': 'Mirror, Explorer, Tweezers, Cotton Pliers',
+                    'Material': 'Stainless Steel or Plastic',
+                    'Sterility': 'Sterile'
+                }
+            }
+        };
+    </script>
+
+    <script>
+        // 获取URL中的产品ID
+        function getProductId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id') || urlParams.get('product');
+        }
+
+        // 渲染产品详情
+        function renderProduct(product) {
+            if (!product) {
+                document.getElementById('app').innerHTML = `
+                    <div class="text-center py-20">
+                        <i class="fas fa-exclamation-triangle text-red-500 text-6xl mb-4"></i>
+                        <h2 class="text-2xl font-bold mb-2">Product Not Found</h2>
+                        <p class="text-gray-600 mb-6">The requested product was not found in our database.</p>
+                        <a href="/" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg">
+                            Return Home
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            // 构建产品页面
+            document.getElementById('app').innerHTML = `
+                <!-- Navigation -->
+                <nav class="bg-white shadow-sm py-4">
+                    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+                        <a href="/" class="flex items-center gap-3">
+                            <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png" 
+                                 class="h-10" alt="V5 Medical">
+                            <span class="font-bold text-blue-900">V5 Medical LTD</span>
+                        </a>
+                        <div class="flex gap-6">
+                            <a href="/" class="text-gray-600 hover:text-blue-600">Home</a>
+                            <a href="catalog" class="text-blue-600 font-medium">← Back to Catalog</a>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Product Content -->
+                <div class="max-w-7xl mx-auto px-4 py-12">
+                    <div class="grid lg:grid-cols-2 gap-12">
+                        <!-- Product Image -->
+                        <div>
+                            <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                                <img src="${product.image || 'https://via.placeholder.com/600x400?text=Product+Image'}" 
+                                     alt="${product.name}"
+                                     class="w-full h-auto rounded-lg">
+                            </div>
+                            
+                            <!-- Certifications -->
+                            <div class="bg-white rounded-xl shadow-md p-6">
+                                <h3 class="font-bold text-lg mb-4">Certifications</h3>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div class="bg-blue-50 p-4 rounded-lg text-center">
+                                        <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/quality/ce-mark.png" 
+                                             class="w-16 h-16 mx-auto mb-2 object-contain">
+                                        <span class="text-xs font-semibold">CE Mark</span>
+                                    </div>
+                                    <div class="bg-green-50 p-4 rounded-lg text-center">
+                                        <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/quality/iso13485-2016.jpg" 
+                                             class="w-16 h-16 mx-auto mb-2 object-contain">
+                                        <span class="text-xs font-semibold">ISO 13485</span>
+                                    </div>
+                                    <div class="bg-red-50 p-4 rounded-lg text-center">
+                                        <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/quality/fda.jpg" 
+                                             class="w-16 h-16 mx-auto mb-2 object-contain">
+                                        <span class="text-xs font-semibold">FDA</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Product Details -->
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-900 mb-4">${product.name}</h1>
+                            
+                            <div class="flex items-center gap-3 mb-6">
+                                <span class="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full font-medium">
+                                    ${product.availability}
+                                </span>
+                                <span class="text-2xl font-bold text-blue-700">${product.price}</span>
+                            </div>
+
+                            <div class="mb-8">
+                                <h3 class="text-xl font-bold mb-4">Description</h3>
+                                <div class="bg-white rounded-xl shadow-sm p-6">
+                                    <p class="text-gray-700 mb-4">${product.short}</p>
+                                    <p class="text-gray-700 leading-relaxed">${product.description}</p>
+                                </div>
+                            </div>
+
+                            ${product.specifications ? `
+                            <div class="mb-8">
+                                <h3 class="text-xl font-bold mb-4">Specifications</h3>
+                                <div class="bg-white rounded-xl shadow-sm p-6">
+                                    ${Object.entries(product.specifications).map(([key, value]) => `
+                                        <div class="flex justify-between py-3 border-b border-gray-100">
+                                            <span class="text-gray-600">${key}</span>
+                                            <span class="font-semibold">${value}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            ` : ''}
+
+                            <div class="flex gap-4">
+                                <a href="catalog" 
+                                   class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg text-center transition">
+                                    <i class="fas fa-arrow-left mr-2"></i> Back to Catalog
+                                </a>
+                                <a href="https://wa.me/447895047944?text=I'm interested in ${encodeURIComponent(product.name)}" 
+                                   target="_blank"
+                                   class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg text-center transition">
+                                    <i class="fab fa-whatsapp mr-2"></i> WhatsApp Inquiry
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="bg-gray-800 text-white py-8 mt-12">
+                    <div class="max-w-7xl mx-auto px-4 text-center">
+                        <p>© 2025 V5 Medical LTD. All rights reserved.</p>
+                    </div>
+                </footer>
+            `;
+        }
+
+        // 页面加载时执行
+        document.addEventListener('DOMContentLoaded', () => {
+            const productId = getProductId();
+            console.log('Product ID from URL:', productId);
+            
+            if (!productId) {
+                renderProduct(null);
+                return;
+            }
+            
+            const product = PRODUCTS[productId];
+            console.log('Found product:', product);
+            
+            if (product) {
+                renderProduct(product);
+            } else {
+                // 尝试查找相近的产品
+                const foundProduct = Object.values(PRODUCTS).find(p => 
+                    p.id.includes(productId) || productId.includes(p.id)
+                );
+                
+                if (foundProduct) {
+                    console.log('Found similar product:', foundProduct);
+                    renderProduct(foundProduct);
+                } else {
+                    console.log('No product found for ID:', productId);
+                    console.log('Available IDs:', Object.keys(PRODUCTS));
+                    renderProduct(null);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
