@@ -465,6 +465,16 @@
                     Reset Filters
                 </button>
             </div>
+            
+            <!-- Error Message -->
+            <div class="hidden" id="errorMessage">
+                <img src="https://via.placeholder.com/100x100?text=⚠️" alt="Error" class="mx-auto mb-4 opacity-50">
+                <h3 class="text-xl font-medium mb-2">Error loading products</h3>
+                <p class="text-gray-600 mb-4">There was a problem loading the product catalog. Please try again later.</p>
+                <button class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors" onclick="loadProducts()">
+                    Try Again
+                </button>
+            </div>
         </div>
     </section>
 
@@ -770,14 +780,33 @@
             }
         });
 
-        // Initialize page
+        // Initialize page with error handling
         document.addEventListener('DOMContentLoaded', function() {
-            loadProducts();
-            setupEventListeners();
+            console.log('DOM content loaded. Initializing page...');
+            
+            // Check if products.js is loaded
+            if (typeof getAllProducts === 'function') {
+                console.log('products.js loaded successfully');
+                loadProducts();
+                setupEventListeners();
+            } else {
+                console.error('products.js not loaded. Functions not available');
+                showError('Failed to load product database. Please refresh the page.');
+                
+                // Try again after short delay
+                setTimeout(function() {
+                    if (typeof getAllProducts === 'function') {
+                        loadProducts();
+                        setupEventListeners();
+                    }
+                }, 1000);
+            }
         });
 
         // Setup event listeners
         function setupEventListeners() {
+            console.log('Setting up event listeners...');
+            
             // Search input event
             document.getElementById('searchInput').addEventListener('input', function() {
                 const query = this.value.trim();
@@ -811,50 +840,82 @@
             });
         }
 
-        // Load all products initially
+        // Load all products with error handling
         function loadProducts() {
-            const products = getAllProducts();
-            displayProducts(products);
+            console.log('Loading products...');
+            
+            try {
+                showLoading();
+                
+                // Use window.getAllProducts to ensure we're using the global function
+                if (typeof window.getAllProducts === 'function') {
+                    const products = window.getAllProducts();
+                    console.log(`Loaded ${products.length} products`);
+                    displayProducts(products);
+                } else {
+                    console.error('getAllProducts function not found on window object');
+                    throw new Error('Product database functions not available');
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+                showError('Failed to load products. Please try again.');
+            }
         }
 
         // Filter products by category
         function filterProducts(category) {
-            // Update active filter button
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-blue-600', 'text-white');
-                btn.classList.add('bg-gray-200', 'text-gray-700');
-            });
+            console.log(`Filtering products by category: ${category}`);
             
-            document.querySelector(`.filter-btn[data-category="${category}"]`).classList.add('active', 'bg-blue-600', 'text-white');
-            document.querySelector(`.filter-btn[data-category="${category}"]`).classList.remove('bg-gray-200', 'text-gray-700');
+            try {
+                // Update active filter button
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active', 'bg-blue-600', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                
+                document.querySelector(`.filter-btn[data-category="${category}"]`).classList.add('active', 'bg-blue-600', 'text-white');
+                document.querySelector(`.filter-btn[data-category="${category}"]`).classList.remove('bg-gray-200', 'text-gray-700');
 
-            // Filter products
-            let filteredProducts;
-            if (category === 'all') {
-                filteredProducts = getAllProducts();
-            } else {
-                filteredProducts = getProductsByCategory(category);
+                // Filter products
+                let filteredProducts;
+                if (category === 'all') {
+                    filteredProducts = window.getAllProducts();
+                } else {
+                    filteredProducts = window.getProductsByCategory(category);
+                }
+
+                displayProducts(filteredProducts);
+            } catch (error) {
+                console.error('Error filtering products:', error);
+                showError('Failed to filter products. Please try again.');
             }
-
-            displayProducts(filteredProducts);
         }
 
         // Search products
         function searchProducts() {
-            const query = document.getElementById('searchInput').value.trim().toLowerCase();
-            let products;
+            console.log('Searching products...');
+            
+            try {
+                const query = document.getElementById('searchInput').value.trim().toLowerCase();
+                let products;
 
-            if (query === '') {
-                products = getAllProducts();
-            } else {
-                products = window.searchProducts(query);
+                if (query === '') {
+                    products = window.getAllProducts();
+                } else {
+                    products = window.searchProducts(query);
+                }
+
+                displayProducts(products);
+            } catch (error) {
+                console.error('Error searching products:', error);
+                showError('Failed to search products. Please try again.');
             }
-
-            displayProducts(products);
         }
 
         // Switch between grid and list view
         function switchView(viewType) {
+            console.log(`Switching to ${viewType} view`);
+            
             const gridView = document.getElementById('productGrid');
             const listView = document.getElementById('productList');
             const gridBtn = document.getElementById('gridViewBtn');
@@ -883,41 +944,59 @@
 
         // Display products
         function displayProducts(products) {
-            const gridContainer = document.getElementById('productGrid');
-            const listContainer = document.getElementById('productList');
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            const noResults = document.getElementById('noResults');
-            const productCount = document.getElementById('productCount');
-
-            // Update product count
-            productCount.textContent = products.length;
-
-            // Show/hide loading and no results
-            loadingIndicator.classList.add('hidden');
+            console.log(`Displaying ${products.length} products`);
             
-            if (products.length === 0) {
-                noResults.classList.remove('hidden');
-                gridContainer.classList.add('hidden');
-                listContainer.classList.add('hidden');
-                return;
-            } else {
+            try {
+                const gridContainer = document.getElementById('productGrid');
+                const listContainer = document.getElementById('productList');
+                const loadingIndicator = document.getElementById('loadingIndicator');
+                const noResults = document.getElementById('noResults');
+                const errorMessage = document.getElementById('errorMessage');
+                const productCount = document.getElementById('productCount');
+
+                // Hide all messages
+                loadingIndicator.classList.add('hidden');
                 noResults.classList.add('hidden');
+                errorMessage.classList.add('hidden');
+
+                // Update product count
+                productCount.textContent = products.length;
+
+                // Show/hide loading and no results
+                if (products.length === 0) {
+                    noResults.classList.remove('hidden');
+                    gridContainer.classList.add('hidden');
+                    listContainer.classList.add('hidden');
+                    return;
+                }
+
+                // Clear containers
+                gridContainer.innerHTML = '';
+                listContainer.innerHTML = '';
+
+                // Create product cards
+                products.forEach(product => {
+                    // Grid view card
+                    const gridCard = createProductCard(product, 'grid');
+                    gridContainer.appendChild(gridCard);
+
+                    // List view card
+                    const listCard = createProductCard(product, 'list');
+                    listContainer.appendChild(listCard);
+                });
+
+                // Show appropriate view
+                if (document.getElementById('gridViewBtn').classList.contains('active')) {
+                    gridContainer.classList.remove('hidden');
+                    listContainer.classList.add('hidden');
+                } else {
+                    gridContainer.classList.add('hidden');
+                    listContainer.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error displaying products:', error);
+                showError('Failed to display products. Please try again.');
             }
-
-            // Clear containers
-            gridContainer.innerHTML = '';
-            listContainer.innerHTML = '';
-
-            // Create product cards
-            products.forEach(product => {
-                // Grid view card
-                const gridCard = createProductCard(product, 'grid');
-                gridContainer.appendChild(gridCard);
-
-                // List view card
-                const listCard = createProductCard(product, 'list');
-                listContainer.appendChild(listCard);
-            });
         }
 
         // Create product card
@@ -998,98 +1077,109 @@
 
         // Open product detail modal
         function openProductDetail(productId) {
-            const product = getProductById(productId);
-            if (!product) return;
+            console.log(`Opening product detail for: ${productId}`);
+            
+            try {
+                const product = window.getProductById(productId);
+                if (!product) {
+                    console.error(`Product not found: ${productId}`);
+                    showError('Product not found');
+                    return;
+                }
 
-            trackProductClick(product.name);
+                trackProductClick(product.name);
 
-            const modalContent = document.getElementById('modalContent');
-            modalContent.innerHTML = `
-                <div class="grid md:grid-cols-2 gap-6 md:gap-8">
-                    <div>
-                        <img src="${product.images[0]}" 
-                             onerror="this.src='https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg'; this.onerror=null;"
-                             class="w-full h-80 object-cover rounded-lg">
-                    </div>
-                    <div>
-                        <h2 class="text-2xl md:text-3xl font-bold mb-2">${product.name}</h2>
-                        <p class="text-gray-600 mb-4">${product.description}</p>
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">${product.availability}</span>
-                            <div class="flex gap-1">
-                                ${product.certifications.map(cert => `
-                                    <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">${cert}</span>
-                                `).join('')}
-                            </div>
+                const modalContent = document.getElementById('modalContent');
+                modalContent.innerHTML = `
+                    <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+                        <div>
+                            <img src="${product.images[0]}" 
+                                 onerror="this.src='https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg'; this.onerror=null;"
+                                 class="w-full h-80 object-cover rounded-lg">
                         </div>
-                        <div class="mb-6">
-                            <span class="text-2xl font-bold text-blue-600">${product.price}</span>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <h3 class="font-semibold text-lg">Key Features:</h3>
-                            <ul class="list-disc pl-5 space-y-1 text-gray-700">
-                                ${product.features.map(feature => `<li>${feature}</li>`).join('')}
-                            </ul>
-                        </div>
-                        
-                        <div class="mt-6 flex gap-3">
-                            <a href="https://wa.me/447895047944?text=I%20am%20interested%20in%20${encodeURIComponent(product.name)}" 
-                               target="_blank" rel="noopener noreferrer"
-                               class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition flex-1 flex items-center justify-center"
-                               onclick="trackWhatsAppClick()">
-                                <i class="fab fa-whatsapp mr-2"></i> Get Price Now
-                            </a>
-                            <a href="contact.html"
-                               class="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-lg font-semibold transition flex-1 flex items-center justify-center">
-                                <i class="fas fa-envelope mr-2"></i> Email Inquiry
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mt-8">
-                    <h3 class="text-xl font-bold mb-4">Technical Specifications</h3>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        ${Object.entries(product.specs).map(([key, value]) => `
-                            <div class="bg-gray-50 p-4 rounded-lg">
-                                <span class="font-medium text-gray-800">${key}:</span>
-                                <span class="text-gray-600">${value}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                
-                ${product.faq && product.faq.length > 0 ? `
-                <div class="mt-8">
-                    <h3 class="text-xl font-bold mb-4">Frequently Asked Questions</h3>
-                    <div class="space-y-4">
-                        ${product.faq.map((faq, index) => `
-                            <div class="border border-gray-200 rounded-lg overflow-hidden">
-                                <button class="w-full text-left p-4 font-medium flex justify-between items-center focus:outline-none" 
-                                        onclick="toggleFaq(${index})">
-                                    ${faq.q}
-                                    <i class="fas fa-chevron-down text-gray-500 transition-transform" id="faqIcon${index}"></i>
-                                </button>
-                                <div class="faq-answer p-4 bg-gray-50" id="faqAnswer${index}">
-                                    ${faq.a}
+                        <div>
+                            <h2 class="text-2xl md:text-3xl font-bold mb-2">${product.name}</h2>
+                            <p class="text-gray-600 mb-4">${product.description}</p>
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">${product.availability}</span>
+                                <div class="flex gap-1">
+                                    ${product.certifications.map(cert => `
+                                        <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">${cert}</span>
+                                    `).join('')}
                                 </div>
                             </div>
-                        `).join('')}
+                            <div class="mb-6">
+                                <span class="text-2xl font-bold text-blue-600">${product.price}</span>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <h3 class="font-semibold text-lg">Key Features:</h3>
+                                <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                    ${product.features.map(feature => `<li>${feature}</li>`).join('')}
+                                </ul>
+                            </div>
+                            
+                            <div class="mt-6 flex gap-3">
+                                <a href="https://wa.me/447895047944?text=I%20am%20interested%20in%20${encodeURIComponent(product.name)}" 
+                                   target="_blank" rel="noopener noreferrer"
+                                   class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition flex-1 flex items-center justify-center"
+                                   onclick="trackWhatsAppClick()">
+                                    <i class="fab fa-whatsapp mr-2"></i> Get Price Now
+                                </a>
+                                <a href="contact.html"
+                                   class="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-lg font-semibold transition flex-1 flex items-center justify-center">
+                                    <i class="fas fa-envelope mr-2"></i> Email Inquiry
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                ` : ''}
-            `;
+                    
+                    <div class="mt-8">
+                        <h3 class="text-xl font-bold mb-4">Technical Specifications</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            ${Object.entries(product.specs).map(([key, value]) => `
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <span class="font-medium text-gray-800">${key}:</span>
+                                    <span class="text-gray-600">${value}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    ${product.faq && product.faq.length > 0 ? `
+                    <div class="mt-8">
+                        <h3 class="text-xl font-bold mb-4">Frequently Asked Questions</h3>
+                        <div class="space-y-4">
+                            ${product.faq.map((faq, index) => `
+                                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                    <button class="w-full text-left p-4 font-medium flex justify-between items-center focus:outline-none" 
+                                            onclick="toggleFaq(${index})">
+                                        ${faq.q}
+                                        <i class="fas fa-chevron-down text-gray-500 transition-transform" id="faqIcon${index}"></i>
+                                    </button>
+                                    <div class="faq-answer p-4 bg-gray-50" id="faqAnswer${index}">
+                                        ${faq.a}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                `;
 
-            openModal();
+                openModal();
 
-            // Add FAQ toggle functionality
-            if (product.faq && product.faq.length > 0) {
-                product.faq.forEach((_, index) => {
-                    document.querySelector(`button[onclick="toggleFaq(${index})"]`).addEventListener('click', function() {
-                        toggleFaq(index);
+                // Add FAQ toggle functionality
+                if (product.faq && product.faq.length > 0) {
+                    product.faq.forEach((_, index) => {
+                        document.querySelector(`button[onclick="toggleFaq(${index})"]`).addEventListener('click', function() {
+                            toggleFaq(index);
+                        });
                     });
-                });
+                }
+            } catch (error) {
+                console.error('Error opening product detail:', error);
+                showError('Failed to load product details');
             }
         }
 
@@ -1146,6 +1236,67 @@
                 }
             });
         });
+
+        // Show loading indicator
+        function showLoading() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const noResults = document.getElementById('noResults');
+            const errorMessage = document.getElementById('errorMessage');
+            const productGrid = document.getElementById('productGrid');
+            const productList = document.getElementById('productList');
+
+            loadingIndicator.classList.remove('hidden');
+            noResults.classList.add('hidden');
+            errorMessage.classList.add('hidden');
+            productGrid.innerHTML = '';
+            productList.innerHTML = '';
+        }
+
+        // Show error message
+        function showError(message) {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const noResults = document.getElementById('noResults');
+            const errorMessage = document.getElementById('errorMessage');
+            const productGrid = document.getElementById('productGrid');
+            const productList = document.getElementById('productList');
+
+            loadingIndicator.classList.add('hidden');
+            noResults.classList.add('hidden');
+            errorMessage.classList.remove('hidden');
+            productGrid.innerHTML = '';
+            productList.innerHTML = '';
+            
+            // Update error message if provided
+            if (message) {
+                const errorText = errorMessage.querySelector('p');
+                if (errorText) {
+                    errorText.textContent = message;
+                }
+            }
+        }
+
+        // Logging function for debugging
+        function log(message) {
+            console.log(`[V5 Medical] ${message}`);
+        }
+
+        // Global error handler
+        window.addEventListener('error', function(error) {
+            console.error('Global error:', error);
+            showError('An unexpected error occurred. Please refresh the page.');
+        });
+
+        // Check if products.js is loaded periodically
+        let checkProductsInterval = setInterval(function() {
+            if (typeof window.getAllProducts === 'function') {
+                clearInterval(checkProductsInterval);
+                log('products.js loaded successfully');
+                // If page is already loaded but products weren't displayed
+                if (document.readyState === 'complete' && document.getElementById('productGrid').innerHTML === '') {
+                    loadProducts();
+                }
+            }
+        }, 500);
     </script>
 </body>
 </html>
