@@ -1,36 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO Meta Tags - Will be updated dynamically -->
-    <meta name="description" id="meta-description" content="ISO/CE/FDA certified medical consumables. Factory direct supplier of high-quality medical products.">
+    <!-- SEO Meta Tags -->
+    <title id="meta-title">Medical Product | V5 Medical LTD</title>
+    <meta name="description" id="meta-description" content="ISO 13485, CE & FDA certified medical consumables. Factory direct supplier from China.">
     <meta name="keywords" id="meta-keywords" content="medical products, ISO 13485, CE certified, FDA approved, medical consumables, China medical supplier">
     <meta name="author" content="V5 Medical LTD">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <meta name="googlebot" content="index, follow">
     
-    <!-- Open Graph Meta Tags - Will be updated dynamically -->
-    <meta property="og:title" id="og-title" content="Medical Product | V5 Medical LTD">
-    <meta property="og:description" id="og-description" content="Factory direct medical consumables supplier">
+    <!-- Open Graph Meta Tags -->
     <meta property="og:type" content="product">
-    <meta property="og:url" id="og-url" content="https://v5md.com/product-detail.html">
-    <meta property="og:image" id="og-image" content="https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg">
+    <meta property="og:title" id="og-title" content="Medical Product">
+    <meta property="og:description" id="og-description" content="Factory direct medical consumables supplier">
+    <meta property="og:image" id="og-image" content="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png">
+    <meta property="og:url" id="og-url" content="https://alden888.github.io/v5md/product-detail.html">
     <meta property="og:site_name" content="V5 Medical LTD">
-    <meta property="og:locale" content="en_US">
     
-    <!-- Twitter Card Meta Tags - Will be updated dynamically -->
+    <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" id="twitter-title" content="Medical Product | V5 Medical LTD">
+    <meta name="twitter:title" id="twitter-title" content="Medical Product">
     <meta name="twitter:description" id="twitter-description" content="Factory direct medical consumables supplier">
-    <meta name="twitter:image" id="twitter-image" content="https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg">
-    <meta name="twitter:site" content="@v5med">
+    <meta name="twitter:image" id="twitter-image" content="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png">
     
-    <link rel="canonical" id="canonical-link" href="https://v5md.com/product-detail.html">
-    
-    <title id="meta-title">Medical Product | V5 Medical LTD</title>
-    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/alden888/v5md/main/images/icons/favicon.ico">
+    <link rel="canonical" id="canonical-link" href="https://alden888.github.io/v5md/product-detail.html">
     
     <!-- External Resources -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -65,26 +60,11 @@
             .content-auto {
                 content-visibility: auto;
             }
-            .text-shadow {
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-            .card-hover:hover {
-                transform: translateY(-5px);
-                transition: all 0.3s ease;
-            }
             .image-zoom {
-                transition: transform 0.5s ease;
+                transition: transform 0.3s ease;
             }
             .image-zoom:hover {
                 transform: scale(1.05);
-            }
-            .faq-answer {
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s ease;
-            }
-            .faq-answer.show {
-                max-height: 500px;
             }
             .animate-fade-in {
                 animation: fadeIn 0.5s ease-in-out;
@@ -100,570 +80,547 @@
                 from { opacity: 0; transform: translateX(-20px); }
                 to { opacity: 1; transform: translateX(0); }
             }
-            .product-card {
-                transition: all 0.3s ease;
+            .skeleton {
+                background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+                background-size: 200% 100%;
+                animation: skeleton-loading 1.5s infinite;
             }
-            .product-card:hover {
-                transform: translateY(-8px);
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            @keyframes skeleton-loading {
+                0% { background-position: 200% 0; }
+                100% { background-position: -200% 0; }
             }
-        }
-        
-        /* Navigation fixes */
-        .nav-link {
-            position: relative;
-            z-index: 5;
-            pointer-events: auto;
-        }
-        
-        /* Ensure no overlapping elements */
-        #navbar {
-            position: fixed;
-            z-index: 50;
-            width: 100%;
-        }
-        #navbar * {
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* WhatsApp button */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 100;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #c5c5c5;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a3a3a3;
-        }
-        
-        /* Back to top button */
-        .back-to-top {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            z-index: 100;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        /* Image loading placeholder */
-        .image-placeholder {
-            background: linear-gradient(45deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 200%;
-            animation: placeholderShimmer 1.5s infinite;
-        }
-        
-        @keyframes placeholderShimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-        
-        /* Product gallery styling */
-        .thumbnail-btn {
-            transition: all 0.3s ease;
-        }
-        .thumbnail-btn.active {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 2px rgba(59, 130, 256, 0.2);
+            .thumb-active {
+                border: 2px solid #2563eb;
+                opacity: 1;
+            }
+            .thumb-inactive {
+                border: 2px solid transparent;
+                opacity: 0.7;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans scroll-smooth">
-    <!-- Navigation - Same as other pages -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/95 text-gray-800 shadow-md">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='index.html';">
-                    <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png" 
-                         onerror="this.onerror=null;" 
-                         class="h-12 w-auto" 
-                         alt="V5 Medical LTD Logo">
-                    <div>
-                        <div class="font-bold text-xl leading-none text-blue-900">V5 Medical LTD</div>
-                        <div class="text-xs text-blue-600">Global Medical Supplier</div>
-                    </div>
-                </div>
-                
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="index.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">Home</a>
-                    <a href="catalog.html" class="nav-link font-semibold text-blue-900 transition border-b-2 border-blue-900">Products</a>
-                    <a href="about.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">About</a>
-                    <a href="blog.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">Blog</a>
-                    <a href="contact.html" class="nav-link font-semibold text-gray-600 hover:text-blue-900 transition">Contact</a>
-                    <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer"
-                       class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-full font-semibold transition flex items-center"
-                       onclick="trackWhatsAppClick()">
-                        <i class="fab fa-whatsapp mr-2"></i> WhatsApp
-                    </a>
-                </div>
-                
-                <button id="mobile-menu-btn" class="md:hidden text-gray-800" aria-label="Toggle Menu">
-                    <i class="fas fa-bars text-2xl"></i>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t text-gray-800 absolute w-full left-0 top-20 shadow-lg animate-fade-in">
-            <div class="px-4 py-4 space-y-3">
-                <a href="index.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition">Home</a>
-                <a href="catalog.html" class="block px-4 py-2 rounded-lg text-blue-900 font-semibold bg-blue-50">Products</a>
-                <a href="about.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition">About</a>
-                <a href="blog.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition">Blog</a>
-                <a href="contact.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition">Contact</a>
-                <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer"
-                   class="block bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-center font-semibold transition"
-                   onclick="trackWhatsAppClick()">
-                    <i class="fab fa-whatsapp mr-2"></i> WhatsApp Contact
-                </a>
-            </div>
-        </div>
-    </nav>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- Navigation will be inserted here by components.js -->
+    <div id="navigation-container"></div>
 
     <main class="pt-32 pb-20">
-        <!-- Breadcrumb Navigation -->
-        <div class="max-w-7xl mx-auto px-4 mb-8">
-            <nav class="flex text-sm" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                    <li class="inline-flex items-center">
-                        <a href="index.html" class="text-gray-600 hover:text-blue-600 transition">
-                            <i class="fas fa-home mr-2"></i>Home
-                        </a>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
-                            <a href="catalog.html" class="text-gray-600 hover:text-blue-600 transition">Products</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
-                            <span class="text-gray-400" id="product-category-breadcrumb">Category</span>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
-                            <span class="text-blue-600 font-medium truncate max-w-[200px] md:max-w-none" id="product-name-breadcrumb">Product Name</span>
-                        </div>
-                    </li>
-                </ol>
-            </nav>
-        </div>
-
-        <!-- Product Details -->
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
-                <!-- Image Gallery -->
+        <!-- Product Detail -->
+        <div class="max-w-7xl mx-auto px-4" id="product-container">
+            <!-- Loading State -->
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Image Loading -->
                 <div class="animate-fade-in">
-                    <!-- Main Product Image with Loading State -->
-                    <div class="relative rounded-xl overflow-hidden shadow-lg mb-4">
-                        <div id="main-image-container" class="relative">
-                            <img id="main-product-image" 
-                                 src="" 
-                                 class="w-full h-auto image-zoom rounded-xl opacity-0 transition-opacity duration-500" 
-                                 alt="Product Image"
-                                 onload="this.classList.remove('opacity-0'); this.classList.add('opacity-100')">
-                            <div id="main-image-placeholder" class="absolute inset-0 image-placeholder rounded-xl"></div>
-                        </div>
-                        <div class="absolute top-4 right-4">
-                            <span id="product-availability" class="bg-green-500/90 text-white text-xs px-2 py-1 rounded-full">
-                                In Stock
-                            </span>
-                        </div>
+                    <div class="relative rounded-xl overflow-hidden shadow-lg">
+                        <div class="skeleton w-full h-80 rounded-xl"></div>
                     </div>
-                    
-                    <!-- Thumbnail Gallery -->
-                    <div class="grid grid-cols-4 gap-2" id="thumbnail-gallery">
-                        <!-- Thumbnails will be added dynamically -->
-                        <div class="col-span-4 text-center py-4">
-                            <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600 mx-auto"></div>
-                        </div>
+                    <div class="flex gap-2 mt-4">
+                        <div class="skeleton w-16 h-16 rounded-lg"></div>
+                        <div class="skeleton w-16 h-16 rounded-lg"></div>
+                        <div class="skeleton w-16 h-16 rounded-lg"></div>
+                        <div class="skeleton w-16 h-16 rounded-lg"></div>
                     </div>
                 </div>
 
-                <!-- Product Information -->
+                <!-- Info Loading -->
                 <div class="animate-slide-in">
-                    <h1 id="product-name" class="text-4xl font-bold mb-4 text-gray-900">Loading Product...</h1>
-                    <p id="product-chinese-name" class="text-xl text-gray-600 mb-6"></p>
-                    <p id="product-short-description" class="text-gray-600 mb-6">
-                        <span class="inline-block animate-pulse bg-gray-200 rounded-full h-6 w-3/4"></span>
-                        <span class="inline-block animate-pulse bg-gray-200 rounded-full h-6 w-1/2 mt-2"></span>
+                    <h1 class="text-4xl font-bold mb-4 text-gray-900">
+                        <span class="skeleton inline-block h-12 w-3/4"></span>
+                    </h1>
+                    <p class="text-gray-600 mb-6">
+                        <span class="skeleton inline-block h-6 w-full mb-2"></span>
+                        <span class="skeleton inline-block h-6 w-3/4"></span>
                     </p>
-                    
-                    <div class="flex items-center gap-2 mb-6">
-                        <span id="product-status" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">In Stock</span>
-                        <div class="flex gap-1" id="product-certifications">
-                            <!-- Certifications will be added dynamically -->
-                        </div>
+
+                    <ul class="space-y-2 mb-8">
+                        <li class="flex items-center">
+                            <span class="skeleton w-6 h-6 rounded-full mr-3"></span>
+                            <span class="skeleton w-48 h-5"></span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="skeleton w-6 h-6 rounded-full mr-3"></span>
+                            <span class="skeleton w-40 h-5"></span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="skeleton w-6 h-6 rounded-full mr-3"></span>
+                            <span class="skeleton w-32 h-5"></span>
+                        </li>
+                    </ul>
+
+                    <div class="flex flex-col sm:flex-row gap-4 mb-10">
+                        <div class="skeleton w-full sm:w-1/2 h-16 rounded-full"></div>
+                        <div class="skeleton w-full sm:w-1/2 h-16 rounded-full"></div>
                     </div>
-                    
-                    <div class="mb-8">
-                        <span id="product-price" class="text-3xl font-bold text-blue-600">
-                            <span class="inline-block animate-pulse bg-gray-200 rounded-full h-10 w-32"></span>
-                        </span>
-                    </div>
-                    
-                    <!-- Key Features -->
-                    <div class="mb-8">
-                        <h3 class="text-xl font-semibold mb-4 text-gray-900">Key Features</h3>
-                        <ul class="space-y-3" id="product-highlights">
-                            <!-- Features will be added dynamically -->
-                            <li class="flex items-start">
-                                <div class="w-6 h-6 bg-gray-200 rounded-full animate-pulse"></div>
-                                <span class="ml-3 text-gray-700">
-                                    <span class="inline-block animate-pulse bg-gray-200 rounded-full h-5 w-48"></span>
-                                </span>
-                            </li>
-                            <li class="flex items-start">
-                                <div class="w-6 h-6 bg-gray-200 rounded-full animate-pulse"></div>
-                                <span class="ml-3 text-gray-700">
-                                    <span class="inline-block animate-pulse bg-gray-200 rounded-full h-5 w-40"></span>
-                                </span>
-                            </li>
-                            <li class="flex items-start">
-                                <div class="w-6 h-6 bg-gray-200 rounded-full animate-pulse"></div>
-                                <span class="ml-3 text-gray-700">
-                                    <span class="inline-block animate-pulse bg-gray-200 rounded-full h-5 w-32"></span>
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Action Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-4 mb-8">
-                        <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer"
-                           class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg font-bold transition transform hover:scale-105 flex items-center justify-center"
-                           onclick="trackWhatsAppClick()" id="whatsapp-button">
-                            <i class="fab fa-whatsapp mr-3 text-xl"></i> Get Price Now
-                        </a>
-                        <a href="contact.html"
-                           class="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 rounded-lg font-bold transition transform hover:scale-105 flex items-center justify-center">
-                            <i class="fas fa-envelope mr-3 text-xl"></i> Email Inquiry
-                        </a>
-                    </div>
-                    
-                    <!-- Contact Information -->
-                    <div class="bg-blue-50 p-6 rounded-xl">
-                        <h3 class="font-semibold mb-4 text-gray-900">Need Immediate Assistance?</h3>
-                        <div class="space-y-3 text-sm text-gray-600">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">
-                                    <i class="fab fa-whatsapp"></i>
-                                </div>
-                                <div>
-                                    <div>WhatsApp</div>
-                                    <div class="font-medium">+44 078 9504 7944</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">
-                                    <i class="fab fa-whatsapp"></i>
-                                </div>
-                                <div>
-                                    <div>WhatsApp (Backup)</div>
-                                    <div class="font-medium">+86 180 1266 9897</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
-                                    <i class="fas fa-envelope"></i>
-                                </div>
-                                <div>
-                                    <div>Email</div>
-                                    <div class="font-medium">sales@v5md.com</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center text-red-600">
-                                    <i class="fab fa-google"></i>
-                                </div>
-                                <div>
-                                    <div>Email (Alternative)</div>
-                                    <div class="font-medium">v5md.com@gmail.com</div>
-                                </div>
-                            </div>
-                        </div>
+
+                    <!-- CERT Loading -->
+                    <div class="flex gap-6 items-center">
+                        <div class="skeleton w-12 h-12 rounded"></div>
+                        <div class="skeleton w-12 h-12 rounded"></div>
+                        <div class="skeleton w-12 h-12 rounded"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Technical Specifications -->
-            <section class="mt-16 bg-white py-12 rounded-2xl shadow-md">
-                <div class="max-w-7xl mx-auto px-4">
-                    <h2 class="text-3xl font-bold mb-8 text-gray-900">Technical Specifications</h2>
-                    <div class="grid md:grid-cols-2 gap-8" id="technical-specs">
-                        <!-- Specifications will be added dynamically -->
-                        <div class="col-span-full text-center py-8">
-                            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                            <p class="text-gray-600">Loading specifications...</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Product Description -->
-            <section class="mt-16">
+            <!-- Details Loading -->
+            <section class="mt-24 bg-white py-16 rounded-2xl shadow-md">
                 <div class="max-w-5xl mx-auto px-4">
                     <h2 class="text-3xl font-bold mb-6 text-gray-900">Product Description</h2>
-                    <div id="product-description" class="prose max-w-none text-gray-600 leading-relaxed">
-                        <!-- Description will be added dynamically -->
-                        <div class="text-center py-8">
-                            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                            <p class="text-gray-600">Loading product description...</p>
+                    <div class="prose max-w-none text-gray-600 leading-relaxed">
+                        <div class="space-y-4">
+                            <div class="skeleton h-6 w-full"></div>
+                            <div class="skeleton h-6 w-full"></div>
+                            <div class="skeleton h-6 w-5/6"></div>
+                            <div class="skeleton h-6 w-full"></div>
+                            <div class="skeleton h-6 w-4/5"></div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- FAQ Section -->
-            <section class="mt-16 bg-gray-50 py-12 rounded-2xl">
+            <!-- Specifications Loading -->
+            <section class="mt-16 bg-white py-16 rounded-2xl shadow-md">
                 <div class="max-w-5xl mx-auto px-4">
-                    <h2 class="text-3xl font-bold mb-8 text-gray-900 text-center">Frequently Asked Questions</h2>
-                    <div id="product-faq" class="space-y-4">
-                        <!-- FAQ items will be added dynamically -->
-                        <div class="col-span-full text-center py-8">
-                            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                            <p class="text-gray-600">Loading FAQs...</p>
+                    <h2 class="text-3xl font-bold mb-6 text-gray-900">Product Specifications</h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <div class="skeleton h-8 w-full"></div>
+                            <div class="skeleton h-8 w-full"></div>
+                            <div class="skeleton h-8 w-full"></div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="skeleton h-8 w-full"></div>
+                            <div class="skeleton h-8 w-full"></div>
+                            <div class="skeleton h-8 w-full"></div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Related Products -->
+            <!-- FAQ Loading -->
             <section class="mt-16">
-                <div class="max-w-7xl mx-auto px-4">
+                <div class="max-w-5xl mx-auto px-4">
+                    <h2 class="text-3xl font-bold mb-8 text-gray-900">Frequently Asked Questions</h2>
+                    <div class="space-y-4">
+                        <div class="skeleton h-24 w-full rounded-lg"></div>
+                        <div class="skeleton h-20 w-full rounded-lg"></div>
+                        <div class="skeleton h-16 w-full rounded-lg"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Related Products Loading -->
+            <section class="mt-16">
+                <div class="max-w-5xl mx-auto px-4">
                     <h2 class="text-3xl font-bold mb-8 text-gray-900">Related Products</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="related-products">
-                        <div class="col-span-full text-center py-12">
-                            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                            <p class="text-gray-600">Loading related products...</p>
-                        </div>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="skeleton h-64 w-full rounded-lg"></div>
+                        <div class="skeleton h-64 w-full rounded-lg"></div>
+                        <div class="skeleton h-64 w-full rounded-lg"></div>
                     </div>
                 </div>
             </section>
         </div>
     </main>
 
-    <!-- Footer - Same as other pages -->
-    <footer class="bg-gray-900 text-white py-12 px-4">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-10 gap-8 mb-12">
-                <!-- Company Info -->
-                <div class="md:col-span-3">
-                    <div class="flex items-center gap-2 mb-4">
-                        <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png" 
-                             onerror="this.onerror=null;"
-                             class="h-10 w-auto" 
-                             alt="V5 Medical Logo">
-                        <span class="text-xl font-bold">V5 Medical LTD</span>
-                    </div>
-                    <p class="text-gray-400 text-sm mb-4">Professional Global Medical Consumables Supplier</p>
-                    <p class="text-gray-400 text-sm mb-4">Factory Direct Medical Consumables Manufacturer</p>
-                    <p class="text-gray-400 text-sm italic">20+ Years Exporting Experience</p>
-                    <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
-                </div>
-                
-                <!-- Quick Links -->
-                <div class="md:col-span-2 pl-8">
-                    <h4 class="font-bold mb-4 text-lg text-white">Quick Links</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="index.html" class="hover:text-white transition">Home</a></li>
-                        <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
-                        <li><a href="catalog.html" class="hover:text-white transition">Products</a></li>
-                        <li><a href="blog.html" class="hover:text-white transition">Blog & News</a></li>
-                        <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
-                        <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                
-                <!-- Product Categories -->
-                <div class="md:col-span-2 pl-8">
-                    <h4 class="font-bold mb-4 text-lg text-white">Product Categories</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="catalog.html#surgical-sutures" class="hover:text-white transition">Surgical Sutures</a></li>
-                        <li><a href="catalog.html#surgical-instruments" class="hover:text-white transition">Surgical Instruments</a></li>
-                        <li><a href="catalog.html#gauze-dressings" class="hover:text-white transition">Gauze Dressings</a></li>
-                        <li><a href="catalog.html#protective-equipment" class="hover:text-white transition">Protective Equipment</a></li>
-                        <li><a href="catalog.html#injection-infusion" class="hover:text-white transition">Injection & Infusion</a></li>
-                        <li><a href="catalog.html#dental-products" class="hover:text-white transition">Dental Products</a></li>
-                    </ul>
-                </div>
-                
-                <!-- Contact Info -->
-                <div class="md:col-span-3 pl-8">
-                    <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
-                    <div class="space-y-3 text-sm text-gray-400">
-                        <p class="flex items-center gap-2">
-                            <i class="fab fa-whatsapp text-green-500 w-5"></i>
-                            <span>+44 078 9504 7944 (UK)</span>
-                        </p>
-                        <p class="flex items-center gap-2">
-                            <i class="fab fa-whatsapp text-green-500 w-5"></i>
-                            <span>+86 180 1266 9897 (Backup)</span>
-                        </p>
-                        <p class="flex items-center gap-2">
-                            <i class="fas fa-envelope text-blue-400 w-5"></i>
-                            <a href="mailto:sales@v5md.com" class="hover:text-white transition" onclick="trackEmailClick()">sales@v5md.com</a>
-                        </p>
-                        <p class="flex items-center gap-2">
-                            <i class="fab fa-google text-red-400 w-5"></i>
-                            <a href="mailto:v5md.com@gmail.com" class="hover:text-white transition" onclick="trackEmailClick()">v5md.com@gmail.com</a>
-                        </p>
-                        <p class="flex items-start gap-2">
-                            <i class="fas fa-map-marker-alt mt-1 text-red-500 w-5"></i>
-                            <span>No. 168, Luying Road, Kunshan, Jiangsu, China</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0">
-                    <h4 class="font-bold mb-4 text-lg text-white">Follow Us</h4>
-                    <p class="text-gray-400 text-sm">Connect with us on social media for the latest updates</p>
-                </div>
-                
-                <div class="flex gap-6 mr-8">
-                    <a href="https://linkedin.com/company/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-600 transition flex items-center justify-center">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a href="https://www.youtube.com/@v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-red-600 transition flex items-center justify-center">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                    <a href="https://www.facebook.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-600 transition flex items-center justify-center">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="https://www.instagram.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-pink-600 transition flex items-center justify-center">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://www.tiktok.com/@v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-black transition flex items-center justify-center">
-                        <i class="fab fa-tiktok"></i>
-                    </a>
-                    <a href="https://x.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-black transition flex items-center justify-center">
-                        <i class="fab fa-x-twitter"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Copyright -->
-            <div class="text-center mt-8 text-sm text-gray-500">
-                <p>&copy; 2025 V5 Medical LTD. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <!-- Footer will be inserted here by components.js -->
+    <div id="footer-container"></div>
 
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer" 
-       class="whatsapp-float bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all"
-       onclick="trackWhatsAppClick()">
-        <i class="fab fa-whatsapp text-2xl"></i>
-    </a>
+    <!-- WhatsApp Button will be inserted here by components.js -->
+    <div id="whatsapp-container"></div>
 
     <!-- Back to Top Button -->
-    <button class="back-to-top bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all"
-            onclick="scrollToTop()">
+    <button class="fixed bottom-20 right-6 bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all z-50 hover:scale-110 opacity-0 invisible"
+            onclick="scrollToTop()" id="back-to-top">
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- JavaScript -->
-    <script src="js/products.js"></script>
+    <!-- Modular JavaScript Files -->
+    <script src="js/config.js"></script>
+    <script src="js/image-utils.js"></script>
+    <script src="js/seo-utils.js"></script>
+    <script src="js/product-loader.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/performance-monitor.js"></script>
+
+    <!-- Page-specific JavaScript -->
     <script>
-        // GitHub Image Base URL - Updated to match repository structure
-        const GITHUB_IMAGE_BASE = 'https://raw.githubusercontent.com/alden888/v5md/main/images';
-        const PLACEHOLDER_IMAGE = `${GITHUB_IMAGE_BASE}/products/placeholder.jpg`;
-        
-        // Google Analytics tracking functions
-        function trackWhatsAppClick() {
+        // Current product data
+        let currentProduct = null;
+        let currentImageIndex = 0;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Insert navigation, footer, and WhatsApp button
+                document.getElementById('navigation-container').innerHTML = components.createNavigation();
+                document.getElementById('footer-container').innerHTML = components.createFooter();
+                document.getElementById('whatsapp-container').innerHTML = components.createWhatsAppButton();
+                
+                // Initialize navigation functionality
+                components.initNavigation();
+                
+                // Get product ID from URL
+                const productId = getProductIdFromUrl();
+                if (!productId) {
+                    showProductNotFound('No product ID specified');
+                    return;
+                }
+                
+                // Load product data
+                currentProduct = await productLoader.getProductById(productId);
+                
+                if (!currentProduct) {
+                    showProductNotFound(`Product with ID "${productId}" not found`);
+                    return;
+                }
+                
+                // Render product details
+                renderProductDetails(currentProduct);
+                
+                // Update SEO
+                updateProductSEO(currentProduct);
+                
+                // Track product view
+                trackProductView(currentProduct);
+                
+            } catch (error) {
+                console.error('Error loading product details:', error);
+                showProductNotFound(`Error loading product: ${error.message}`);
+            }
+        });
+
+        // Get product ID from URL
+        function getProductIdFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id') || params.get('product');
+        }
+
+        // Render product details
+        function renderProductDetails(product) {
+            const container = document.getElementById('product-container');
+            if (!container) return;
+
+            // Update main image and thumbnails
+            updateProductImages(product);
+            
+            // Update product information
+            document.querySelector('#product-container h1').textContent = product.name || 'Product Name';
+            document.querySelector('#product-container p').textContent = product.short || product.description || '';
+            
+            // Update highlights
+            updateProductHighlights(product);
+            
+            // Update description
+            updateProductDescription(product);
+            
+            // Update specifications
+            updateProductSpecifications(product);
+            
+            // Update FAQ
+            updateProductFAQ(product);
+            
+            // Update related products
+            updateRelatedProducts(product);
+            
+            // Update certifications
+            document.querySelector('#product-container .flex.gap-6.items-center').innerHTML = components.createCertifications();
+            
+            // Update WhatsApp button link
+            const whatsappButton = document.querySelector('#product-container a[href*="wa.me"]');
+            if (whatsappButton) {
+                whatsappButton.href = `https://wa.me/447895047944?text=I%20am%20interested%20in%20${encodeURIComponent(product.name || 'your product')}`;
+            }
+        }
+
+        // Update product images
+        function updateProductImages(product) {
+            const imageUrls = product.images && product.images.length > 0 
+                ? product.images.map(img => imageUtils.getImageUrl(img))
+                : [imageUtils.getPlaceholderImage()];
+            
+            const mainImageContainer = document.querySelector('#product-container .relative.rounded-xl');
+            const thumbnailsContainer = document.querySelector('#product-container .flex.gap-2.mt-4');
+            
+            if (mainImageContainer && thumbnailsContainer) {
+                // Update main image
+                mainImageContainer.innerHTML = `
+                    <img src="${imageUrls[0]}" 
+                         onerror="this.src='${imageUtils.getPlaceholderImage()}'; this.onerror=null;"
+                         class="w-full h-80 object-cover image-zoom rounded-xl transition-opacity duration-500"
+                         alt="${product.name || 'Product Image'}"
+                         id="main-product-image">
+                `;
+                
+                // Update thumbnails
+                thumbnailsContainer.innerHTML = imageUrls.map((url, index) => `
+                    <img src="${url}" 
+                         onerror="this.src='${imageUtils.getPlaceholderImage()}'; this.onerror=null;"
+                         class="w-16 h-16 object-cover rounded-lg cursor-pointer transition-all ${index === 0 ? 'thumb-active' : 'thumb-inactive'}"
+                         alt="Thumbnail ${index + 1}"
+                         onclick="changeProductImage(${index})">
+                `).join('');
+                
+                // Preload all images
+                imageUtils.preloadImages(imageUrls).then(() => {
+                    console.log(`Preloaded ${imageUrls.length} product images`);
+                });
+            }
+        }
+
+        // Change product image
+        function changeProductImage(index) {
+            const product = currentProduct;
+            if (!product || !product.images || product.images.length === 0) return;
+            
+            const imageUrls = product.images.map(img => imageUtils.getImageUrl(img));
+            const mainImage = document.getElementById('main-product-image');
+            
+            if (mainImage && index >= 0 && index < imageUrls.length) {
+                currentImageIndex = index;
+                mainImage.style.opacity = '0';
+                
+                setTimeout(() => {
+                    mainImage.src = imageUrls[index];
+                    mainImage.style.opacity = '1';
+                    
+                    // Update thumbnails active state
+                    const thumbnails = document.querySelectorAll('#product-container .flex.gap-2.mt-4 img');
+                    thumbnails.forEach((thumb, i) => {
+                        thumb.className = `w-16 h-16 object-cover rounded-lg cursor-pointer transition-all ${i === index ? 'thumb-active' : 'thumb-inactive'}`;
+                    });
+                    
+                    // Track image change
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'product_image_change', {
+                            event_category: 'Product Interaction',
+                            event_label: `Changed to image ${index + 1}`,
+                            product_id: product.id,
+                            product_name: product.name
+                        });
+                    }
+                }, 300);
+            }
+        }
+
+        // Update product highlights
+        function updateProductHighlights(product) {
+            const highlightsContainer = document.querySelector('#product-container ul.space-y-2');
+            if (!highlightsContainer) return;
+            
+            if (product.highlights && product.highlights.length > 0) {
+                highlightsContainer.innerHTML = product.highlights.map(h => `
+                    <li class="flex items-center">
+                        <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-check text-green-600 text-xs"></i>
+                        </div>
+                        <span>${h}</span>
+                    </li>
+                `).join('');
+            } else {
+                highlightsContainer.innerHTML = `
+                    <li class="flex items-center">
+                        <span class="text-gray-600">No highlights available</span>
+                    </li>
+                `;
+            }
+        }
+
+        // Update product description
+        function updateProductDescription(product) {
+            const descriptionContainer = document.querySelector('#product-container .prose.max-w-none');
+            if (!descriptionContainer) return;
+            
+            if (product.description) {
+                descriptionContainer.innerHTML = product.description;
+            } else {
+                descriptionContainer.innerHTML = '<p>No detailed description available.</p>';
+            }
+        }
+
+        // Update product specifications
+        function updateProductSpecifications(product) {
+            const specsContainer = document.querySelector('#product-container .grid.md\\\\:grid-cols-2.gap-8');
+            if (!specsContainer || !product.specs) {
+                // Hide specifications section if no specs
+                const specsSection = document.querySelector('#product-container section:nth-child(3)');
+                if (specsSection) specsSection.style.display = 'none';
+                return;
+            }
+            
+            const specs = Object.entries(product.specs);
+            const halfIndex = Math.ceil(specs.length / 2);
+            const firstColumn = specs.slice(0, halfIndex);
+            const secondColumn = specs.slice(halfIndex);
+            
+            specsContainer.innerHTML = `
+                <div class="space-y-4">
+                    ${firstColumn.map(([key, value]) => `
+                        <div class="flex justify-between items-center pb-2 border-b border-gray-100">
+                            <span class="font-medium text-gray-700">${key}:</span>
+                            <span class="text-gray-600">${value}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="space-y-4">
+                    ${secondColumn.map(([key, value]) => `
+                        <div class="flex justify-between items-center pb-2 border-b border-gray-100">
+                            <span class="font-medium text-gray-700">${key}:</span>
+                            <span class="text-gray-600">${value}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Update product FAQ
+        function updateProductFAQ(product) {
+            const faqContainer = document.querySelector('#product-container .space-y-4:nth-child(5)');
+            if (!faqContainer) return;
+            
+            if (product.faq && product.faq.length > 0) {
+                faqContainer.innerHTML = product.faq.map(([q, a]) => `
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+                        <h3 class="font-semibold text-lg mb-2 text-gray-900">${q}</h3>
+                        <p class="text-gray-600">${a}</p>
+                    </div>
+                `).join('');
+            } else {
+                faqContainer.innerHTML = '<p class="text-center text-gray-600">No frequently asked questions available.</p>';
+            }
+        }
+
+        // Update related products
+        function updateRelatedProducts(product) {
+            const relatedContainer = document.querySelector('#product-container .grid.md\\\\:grid-cols-2.lg\\\\:grid-cols-3.gap-6');
+            if (!relatedContainer || !product.category) {
+                // Hide related products section if no category
+                const relatedSection = document.querySelector('#product-container section:nth-child(6)');
+                if (relatedSection) relatedSection.style.display = 'none';
+                return;
+            }
+            
+            // Get related products from the same category
+            productLoader.getProductsByCategory(product.category).then(relatedProducts => {
+                // Exclude current product
+                const filteredProducts = relatedProducts.filter(p => p.id !== product.id);
+                
+                if (filteredProducts.length > 0) {
+                    relatedContainer.innerHTML = filteredProducts.slice(0, 3).map(relatedProduct => {
+                        const firstImage = relatedProduct.images && relatedProduct.images.length > 0 
+                            ? imageUtils.getImageUrl(relatedProduct.images[0]) 
+                            : imageUtils.getPlaceholderImage();
+                        
+                        return `
+                            <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition cursor-pointer"
+                                 onclick="window.location.href='product-detail.html?id=${relatedProduct.id}'">
+                                <img src="${firstImage}" 
+                                     onerror="this.src='${imageUtils.getPlaceholderImage()}'; this.onerror=null;"
+                                     class="w-full h-40 object-cover image-zoom rounded-t-xl">
+                                <div class="p-4">
+                                    <h4 class="font-bold text-gray-900 mb-2">${relatedProduct.name || 'Product Name'}</h4>
+                                    <p class="text-gray-600 text-sm line-clamp-2">
+                                        ${relatedProduct.short || 'No description available'}
+                                    </p>
+                                    <div class="mt-3 flex justify-between items-center">
+                                        <span class="font-bold text-blue-600">${relatedProduct.price || 'Contact for Price'}</span>
+                                        <span class="text-xs text-gray-500">View Details</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    relatedContainer.innerHTML = `
+                        <div class="col-span-full text-center py-8">
+                            <p class="text-gray-600">No related products available</p>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        // Show product not found
+        function showProductNotFound(message) {
+            console.warn('Product not found:', message);
+            
+            const container = document.getElementById('product-container');
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div class="text-center py-16">
+                    <div class="text-6xl mb-6 text-gray-400">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-4 text-gray-900">Product Not Found</h2>
+                    <p class="text-gray-600 mb-8 max-w-2xl mx-auto">
+                        ${message || 'The product you are looking for could not be found. It may have been removed or the URL may be incorrect.'}
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="catalog.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold transition">
+                            <i class="fas fa-arrow-left mr-2"></i> Browse Catalog
+                        </a>
+                        <a href="index.html" class="border border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-3 rounded-full font-semibold transition">
+                            <i class="fas fa-home mr-2"></i> Home Page
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            // Update SEO for 404
+            seoUtils.updateMetaTags({
+                title: 'Product Not Found | V5 Medical LTD',
+                description: 'The requested product could not be found. Browse our complete catalog of medical products.'
+            });
+        }
+
+        // Update product SEO
+        function updateProductSEO(product) {
+            const seoData = product.seo || {};
+            const imageUrl = product.images && product.images.length > 0 
+                ? imageUtils.getImageUrl(product.images[0]) 
+                : imageUtils.getPlaceholderImage();
+            
+            seoUtils.updateMetaTags({
+                title: seoData.title || `${product.name} | V5 Medical LTD`,
+                description: seoData.description || product.short || product.description || V5Config.SEO.DEFAULT_DESCRIPTION,
+                keywords: seoData.keywords || `${product.name}, medical product, ${product.category || 'medical supplies'}, ISO 13485, CE, FDA`,
+                image: imageUrl,
+                url: window.location.href
+            });
+            
+            // Add product schema
+            seoUtils.addProductSchema(product);
+        }
+
+        // Track product view
+        function trackProductView(product) {
             if (typeof gtag !== 'undefined') {
+                gtag('event', 'view_item', {
+                    event_category: 'Product Interaction',
+                    event_label: 'Product View',
+                    items: [{
+                        item_id: product.id,
+                        item_name: product.name,
+                        item_category: product.category,
+                        price: product.price === 'Contact for Price' ? null : product.price
+                    }]
+                });
+            }
+        }
+
+        // WhatsApp click tracking
+        function trackWhatsAppClick() {
+            if (currentProduct && typeof gtag !== 'undefined') {
                 gtag('event', 'whatsapp_click', {
                     event_category: 'Lead Generation',
-                    event_label: 'WhatsApp Button Click'
-                });
-            }
-        }
-        
-        function trackEmailClick() {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'email_click', {
-                    event_category: 'Lead Generation',
-                    event_label: 'Email Link Click'
-                });
-            }
-        }
-        
-        function trackProductClick(productName) {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'product_click', {
-                    event_category: 'Product Interest',
-                    event_label: 'Product Click: ' + productName
+                    event_label: 'WhatsApp Button Click',
+                    product_id: currentProduct.id,
+                    product_name: currentProduct.name
                 });
             }
         }
 
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const mobileMenu = document.getElementById('mobile-menu');
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            
-            if (!mobileMenuBtn.contains(event.target) && !mobileMenu.contains(event.target) && !mobileMenu.classList.contains('hidden')) {
-                mobileMenu.classList.add('hidden');
-            }
-        });
-
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('bg-white/95', 'shadow-md');
-                navbar.classList.remove('bg-transparent');
-            } else {
-                navbar.classList.add('bg-transparent');
-                navbar.classList.remove('bg-white/95', 'shadow-md');
-            }
-            
-            // Back to top button visibility
-            const backToTop = document.querySelector('.back-to-top');
-            if (window.scrollY > 300) {
-                backToTop.classList.add('show');
-            } else {
-                backToTop.classList.remove('show');
-            }
-        });
-
-        // Scroll to top function
+        // Scroll to top
         function scrollToTop() {
             window.scrollTo({
                 top: 0,
@@ -671,540 +628,32 @@
             });
         }
 
-        // Get product ID from URL - Support both 'id' and 'product' parameters
-        function getProductIdFromUrl() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('id') || params.get('product');
-        }
-
-        // Validate and correct image URLs
-        function getValidImageUrl(imagePath) {
-            if (!imagePath) return PLACEHOLDER_IMAGE;
-            
-            // If image path is already a full URL, use it
-            if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-                return imagePath;
-            }
-            
-            // If image path is relative to products folder
-            if (imagePath.startsWith('products/')) {
-                return `${GITHUB_IMAGE_BASE}/${imagePath}`;
-            }
-            
-            // If image path is just a filename, assume it's in the products root
-            return `${GITHUB_IMAGE_BASE}/products/${imagePath}`;
-        }
-
-        // Preload image with error handling
-        function preloadImage(url) {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.onload = () => resolve(url);
-                img.onerror = () => resolve(PLACEHOLDER_IMAGE);
-                img.src = url;
-            });
-        }
-
-        // Load product details with enhanced error handling
-        document.addEventListener('DOMContentLoaded', async function() {
-            try {
-                const productId = getProductIdFromUrl();
-                
-                if (!productId) {
-                    showProductNotFound('No product ID specified in URL');
-                    return;
-                }
-                
-                // Check if products database is available
-                if (typeof window.productDatabase === 'undefined' && typeof window.finalProductDatabase === 'undefined') {
-                    showProductNotFound('Product database not available');
-                    return;
-                }
-                
-                // Get product from database
-                const productDatabase = window.finalProductDatabase || window.productDatabase;
-                const getProductFunction = window.getProductById || function(id) {
-                    return productDatabase[id];
-                };
-                
-                const product = getProductFunction(productId);
-                
-                if (!product) {
-                    showProductNotFound(`Product with ID "${productId}" not found`);
-                    return;
-                }
-                
-                // Load product details with animations
-                await loadProductDetails(product);
-                loadRelatedProducts(product.category, product.id);
-                updateMetaTags(product);
-                
-                // Track product view
-                if (product.name) {
-                    trackProductClick(product.name);
-                }
-                
-            } catch (error) {
-                console.error('Error loading product:', error);
-                showProductNotFound(`Error loading product: ${error.message}`);
+        // Back to top button visibility
+        window.addEventListener('scroll', function() {
+            const backToTop = document.getElementById('back-to-top');
+            if (window.scrollY > 500) {
+                backToTop.classList.remove('opacity-0', 'invisible');
+                backToTop.classList.add('opacity-100', 'visible');
+            } else {
+                backToTop.classList.add('opacity-0', 'invisible');
+                backToTop.classList.remove('opacity-100', 'visible');
             }
         });
 
-        // Show product not found page
-        function showProductNotFound(message) {
-            console.warn('Product not found:', message);
-            
-            // Update page content for 404
-            document.getElementById('product-name').textContent = 'Product Not Found';
-            document.getElementById('product-name-breadcrumb').textContent = 'Not Found';
-            
-            // Clear loading states
-            document.getElementById('product-short-description').innerHTML = 
-                '<p class="text-center text-xl text-gray-600 py-6">The requested product could not be found.</p>';
-            document.getElementById('product-price').textContent = '';
-            document.getElementById('main-image-placeholder').classList.add('hidden');
-            
-            // Show error message in description section
-            document.getElementById('product-description').innerHTML = `
-                <div class="text-center py-12">
-                    <div class="text-6xl mb-4 text-gray-400">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4 text-gray-900">Product Not Found</h3>
-                    <p class="text-gray-600 mb-8">We couldn't find the product you're looking for.</p>
-                    <a href="catalog.html" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
-                        <i class="fas fa-arrow-left mr-2"></i> Browse Our Catalog
-                    </a>
-                </div>
-            `;
-            
-            // Clear other sections
-            document.getElementById('technical-specs').innerHTML = '';
-            document.getElementById('product-faq').innerHTML = '';
-            document.getElementById('related-products').innerHTML = '';
-            
-            // Update main image to 404 placeholder
-            const mainImage = document.getElementById('main-product-image');
-            mainImage.src = PLACEHOLDER_IMAGE;
-            mainImage.classList.remove('opacity-0');
-            mainImage.classList.add('opacity-100');
-            
-            // Update thumbnail gallery
-            document.getElementById('thumbnail-gallery').innerHTML = '';
-        }
-
-        // Load product details with animations
-        async function loadProductDetails(product) {
-            try {
-                // Preload main image first
-                const mainImageUrl = await preloadImage(getValidImageUrl(product.images?.[0]));
-                
-                // Update main product image
-                const mainImage = document.getElementById('main-product-image');
-                mainImage.src = mainImageUrl;
-                mainImage.alt = product.name || 'Product Image';
-                
-                // Hide placeholder once image is loaded
-                mainImage.onload = function() {
-                    document.getElementById('main-image-placeholder').classList.add('hidden');
-                };
-                
-                // Update product information with fade-in animation
-                setTimeout(() => {
-                    document.getElementById('product-name').textContent = product.name || 'Medical Product';
-                    document.getElementById('product-chinese-name').textContent = product.chineseName || '';
-                    document.getElementById('product-short-description').textContent = product.description || 'No description available';
-                    document.getElementById('product-price').textContent = product.price || 'Contact for Price';
-                    document.getElementById('product-availability').textContent = product.availability || 'In Stock';
-                    document.getElementById('product-category-breadcrumb').textContent = product.category || 'Medical Products';
-                    document.getElementById('product-name-breadcrumb').textContent = product.name || 'Product';
-                }, 300);
-                
-                // Update status badge
-                const statusBadge = document.getElementById('product-status');
-                if (product.availability === 'In Stock' || !product.availability) {
-                    statusBadge.className = 'bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium';
-                    statusBadge.textContent = 'In Stock';
-                } else {
-                    statusBadge.className = 'bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium';
-                    statusBadge.textContent = product.availability;
-                }
-                
-                // Update certifications
-                const certificationsContainer = document.getElementById('product-certifications');
-                if (product.certifications && product.certifications.length > 0) {
-                    certificationsContainer.innerHTML = product.certifications.map(cert => 
-                        `<span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">${cert}</span>`
-                    ).join('');
-                } else {
-                    certificationsContainer.innerHTML = 
-                        '<span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">ISO 13485</span>' +
-                        '<span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">CE</span>';
-                }
-                
-                // Update thumbnail gallery with preloaded images
-                const thumbnailGallery = document.getElementById('thumbnail-gallery');
-                thumbnailGallery.innerHTML = '';
-                
-                if (product.images && product.images.length > 0) {
-                    // Preload all thumbnails
-                    const thumbnailUrls = await Promise.all(
-                        product.images.map(img => preloadImage(getValidImageUrl(img)))
-                    );
-                    
-                    // Create thumbnail buttons
-                    thumbnailUrls.forEach((imgUrl, index) => {
-                        const button = document.createElement('button');
-                        button.className = `thumbnail-btn rounded-lg overflow-hidden border-2 ${index === 0 ? 'active border-blue-600' : 'border-transparent'} hover:border-blue-600 transition-colors`;
-                        button.onclick = () => changeMainImage(imgUrl, index);
-                        button.innerHTML = `
-                            <img src="${imgUrl}" 
-                                 class="w-full h-24 object-cover cursor-pointer"
-                                 alt="Product thumbnail ${index + 1}">
-                        `;
-                        thumbnailGallery.appendChild(button);
-                    });
-                } else {
-                    // Show default thumbnail
-                    const button = document.createElement('button');
-                    button.className = 'thumbnail-btn rounded-lg overflow-hidden border-2 active border-blue-600';
-                    button.onclick = () => changeMainImage(mainImageUrl, 0);
-                    button.innerHTML = `
-                        <img src="${mainImageUrl}" 
-                             class="w-full h-24 object-cover cursor-pointer"
-                             alt="Product thumbnail">
-                    `;
-                    thumbnailGallery.appendChild(button);
-                }
-                
-                // Update key features
-                const highlightsContainer = document.getElementById('product-highlights');
-                if (product.features && product.features.length > 0) {
-                    highlightsContainer.innerHTML = product.features.map(feature => `
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
-                                <i class="fas fa-check text-blue-600 text-xs"></i>
-                            </div>
-                            <span class="ml-3 text-gray-700">${feature}</span>
-                        </div>
-                    `).join('');
-                } else {
-                    highlightsContainer.innerHTML = `
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
-                                <i class="fas fa-check text-blue-600 text-xs"></i>
-                            </div>
-                            <span class="ml-3 text-gray-700">ISO 13485, CE, and FDA certified</span>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
-                                <i class="fas fa-check text-blue-600 text-xs"></i>
-                            </div>
-                            <span class="ml-3 text-gray-700">Factory direct pricing</span>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
-                                <i class="fas fa-check text-blue-600 text-xs"></i>
-                            </div>
-                            <span class="ml-3 text-gray-700">Fast global shipping</span>
-                        </div>
-                    `;
-                }
-                
-                // Update technical specifications
-                const specsContainer = document.getElementById('technical-specs');
-                if (product.specs && Object.keys(product.specs).length > 0) {
-                    specsContainer.innerHTML = Object.entries(product.specs).map(([key, value]) => `
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h4 class="font-medium text-gray-800 mb-1">${key}</h4>
-                            <p class="text-gray-600">${value}</p>
-                        </div>
-                    `).join('');
-                } else {
-                    specsContainer.innerHTML = `
-                        <div class="col-span-full text-center py-8">
-                            <p class="text-gray-600 mb-4">Technical specifications not available for this product.</p>
-                            <a href="https://wa.me/447895047944?text=I%20need%20technical%20specifications%20for%20${encodeURIComponent(product.name || 'this product')}" 
-                               class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition"
-                               onclick="trackWhatsAppClick()">
-                                <i class="fab fa-whatsapp mr-2"></i> Request Specs
-                            </a>
-                        </div>
-                    `;
-                }
-                
-                // Update product description
-                const descriptionContainer = document.getElementById('product-description');
-                descriptionContainer.innerHTML = `<p>${product.description || 'No detailed description available for this product. Please contact us for more information.'}</p>`;
-                
-                // Update FAQ
-                const faqContainer = document.getElementById('product-faq');
-                if (product.faq && product.faq.length > 0) {
-                    faqContainer.innerHTML = product.faq.map((faq, index) => `
-                        <div class="border border-gray-200 rounded-lg overflow-hidden">
-                            <button class="w-full text-left p-4 font-medium flex justify-between items-center focus:outline-none hover:bg-gray-50 transition-colors" 
-                                    onclick="toggleFaq(${index})">
-                                ${faq.q}
-                                <i class="fas fa-chevron-down text-gray-500 transition-transform" id="faq-icon-${index}"></i>
-                            </button>
-                            <div class="faq-answer p-4 bg-gray-50" id="faq-answer-${index}">
-                                ${faq.a}
-                            </div>
-                        </div>
-                    `).join('');
-                } else {
-                    faqContainer.innerHTML = `
-                        <div class="col-span-full text-center py-8">
-                            <p class="text-gray-600 mb-4">No frequently asked questions available for this product.</p>
-                            <a href="contact.html" 
-                               class="inline-block border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-lg font-semibold transition">
-                                <i class="fas fa-question-circle mr-2"></i> Ask a Question
-                            </a>
-                        </div>
-                    `;
-                }
-                
-                // Update WhatsApp button link with proper encoding
-                const whatsappButton = document.getElementById('whatsapp-button');
-                const productName = product.name || 'this product';
-                whatsappButton.href = `https://wa.me/447895047944?text=I%20am%20interested%20in%20${encodeURIComponent(productName)}`;
-                
-            } catch (error) {
-                console.error('Error loading product details:', error);
-                showProductNotFound(`Error loading product details: ${error.message}`);
-            }
-        }
-
-        // Change main product image with smooth transition
-        function changeMainImage(imageUrl, thumbnailIndex) {
-            const mainImage = document.getElementById('main-product-image');
-            const mainImageContainer = document.getElementById('main-image-container');
-            
-            // Show loading state
-            const placeholder = document.getElementById('main-image-placeholder');
-            placeholder.classList.remove('hidden');
-            mainImage.classList.add('opacity-0');
-            
-            // Preload the new image
-            preloadImage(imageUrl).then(validUrl => {
-                // Update main image
-                mainImage.src = validUrl;
-                mainImage.onload = () => {
-                    mainImage.classList.remove('opacity-0');
-                    mainImage.classList.add('opacity-100');
-                    placeholder.classList.add('hidden');
-                };
-                
-                // Update active thumbnail border
-                document.querySelectorAll('.thumbnail-btn').forEach((btn, index) => {
-                    if (index === thumbnailIndex) {
-                        btn.classList.add('active', 'border-blue-600');
-                        btn.classList.remove('border-transparent');
-                    } else {
-                        btn.classList.remove('active', 'border-blue-600');
-                        btn.classList.add('border-transparent');
-                    }
-                });
-            });
-        }
-
-        // Toggle FAQ answer
-        function toggleFaq(index) {
-            const answer = document.getElementById(`faq-answer-${index}`);
-            const icon = document.getElementById(`faq-icon-${index}`);
-            
-            if (answer && icon) {
-                answer.classList.toggle('show');
-                icon.classList.toggle('rotate-180');
-            }
-        }
-
-        // Load related products with enhanced error handling
-        function loadRelatedProducts(category, currentProductId) {
-            try {
-                const relatedProductsContainer = document.getElementById('related-products');
-                
-                // Check if products database is available
-                if (typeof window.productDatabase === 'undefined' && typeof window.finalProductDatabase === 'undefined') {
-                    relatedProductsContainer.innerHTML = '<p class="col-span-full text-center text-gray-600">Related products not available</p>';
-                    return;
-                }
-                
-                // Get products by category
-                const productDatabase = window.finalProductDatabase || window.productDatabase;
-                const getProductsFunction = window.getProductsByCategory || function(cat) {
-                    return Object.values(productDatabase).filter(p => p.category === cat);
-                };
-                
-                const relatedProducts = getProductsFunction(category)
-                    .filter(product => product.id !== currentProductId)
-                    .slice(0, 4);
-                
-                if (relatedProducts.length === 0) {
-                    relatedProductsContainer.innerHTML = '<p class="col-span-full text-center text-gray-600">No related products found.</p>';
-                    return;
-                }
-                
-                relatedProductsContainer.innerHTML = relatedProducts.map(product => {
-                    const firstImage = getValidImageUrl(product.images?.[0]);
-                    return `
-                        <div class="bg-white rounded-xl overflow-hidden shadow-md product-card">
-                            <div class="relative cursor-pointer" onclick="window.location.href='product-detail.html?id=${product.id}'">
-                                <img src="${firstImage}" 
-                                     onerror="this.src='${PLACEHOLDER_IMAGE}'; this.onerror=null;"
-                                     class="w-full h-48 object-cover image-zoom">
-                                <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                                    ${product.availability || 'In Stock'}
-                                </div>
-                            </div>
-                            <div class="p-4">
-                                <h3 class="font-bold text-lg mb-2 cursor-pointer" onclick="window.location.href='product-detail.html?id=${product.id}'">${product.name || 'Product Name'}</h3>
-                                <p class="text-gray-600 text-sm mb-3">${(product.description || '').substring(0, 80)}${(product.description || '').length > 80 ? '...' : ''}</p>
-                                <div class="flex flex-wrap gap-1 mb-3">
-                                    ${(product.certifications && product.certifications.length > 0) ? 
-                                        product.certifications.map(cert => `<span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">${cert}</span>`).join('') :
-                                        '<span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">ISO</span>'
-                                    }
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="font-bold text-blue-600">${product.price || 'Contact for Price'}</span>
-                                    <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm font-semibold transition"
-                                            onclick="window.location.href='product-detail.html?id=${product.id}'">
-                                        View Details
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-                
-            } catch (error) {
-                console.error('Error loading related products:', error);
-                document.getElementById('related-products').innerHTML = 
-                    '<p class="col-span-full text-center text-gray-600">Error loading related products</p>';
-            }
-        }
-
-        // Update meta tags for SEO with complete data
-        function updateMetaTags(product) {
-            try {
-                const productName = product.name || 'Medical Product';
-                const productDescription = product.description || 'High-quality medical product from V5 Medical LTD';
-                const productImage = getValidImageUrl(product.images?.[0]);
-                const currentUrl = window.location.href;
-                
-                // Basic meta tags
-                document.getElementById('meta-title').textContent = `${productName} | V5 Medical LTD`;
-                document.getElementById('meta-description').content = `${productDescription} | ISO/CE/FDA certified medical product from V5 Medical LTD, a leading global medical consumables supplier.`;
-                document.getElementById('meta-keywords').content = `${productName}, ${product.category || 'medical products'}, ISO 13485, CE certified, FDA approved, ${(product.certifications || []).join(', ')}, medical consumables, China medical supplier`;
-                
-                // Open Graph meta tags
-                document.getElementById('og-title').content = `${productName} | V5 Medical LTD`;
-                document.getElementById('og-description').content = productDescription;
-                document.getElementById('og-url').content = currentUrl;
-                document.getElementById('og-image').content = productImage;
-                
-                // Twitter Card meta tags
-                document.getElementById('twitter-title').content = `${productName} | V5 Medical LTD`;
-                document.getElementById('twitter-description').content = productDescription;
-                document.getElementById('twitter-image').content = productImage;
-                
-                // Canonical URL
-                document.getElementById('canonical-link').href = currentUrl;
-                
-                // Add Schema.org product schema with complete data
-                const schemaScript = document.createElement('script');
-                schemaScript.type = 'application/ld+json';
-                
-                const schemaData = {
-                    "@context": "https://schema.org",
-                    "@type": "Product",
-                    "name": productName,
-                    "description": productDescription,
-                    "image": productImage,
-                    "brand": {
-                        "@type": "Brand",
-                        "name": "V5 Medical LTD"
-                    },
-                    "offers": {
-                        "@type": "Offer",
-                        "availability": (product.availability === "In Stock" || !product.availability) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-                        "url": currentUrl
-                    }
-                };
-                
-                // Add price if available
-                if (product.price && product.price !== "Contact for Price" && product.price !== "Price on Request") {
-                    const priceMatch = product.price.match(/\d+(\.\d+)?/);
-                    if (priceMatch) {
-                        schemaData.offers.price = priceMatch[0];
-                        schemaData.offers.priceCurrency = "USD";
-                    }
-                }
-                
-                // Add aggregate rating
-                schemaData.aggregateRating = {
-                    "@type": "AggregateRating",
-                    "ratingValue": "4.8",
-                    "reviewCount": "120"
-                };
-                
-                schemaScript.textContent = JSON.stringify(schemaData);
-                document.head.appendChild(schemaScript);
-                
-            } catch (error) {
-                console.error('Error updating meta tags:', error);
-            }
-        }
-
-        // Add copy link to clipboard functionality
-        function copyToClipboard() {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                // Show success message
-                const toast = document.createElement('div');
-                toast.className = 'fixed bottom-20 right-20 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in';
-                toast.textContent = 'Link copied to clipboard!';
-                document.body.appendChild(toast);
-                
-                setTimeout(() => {
-                    toast.remove();
-                }, 3000);
-            }).catch(err => {
-                console.error('Failed to copy link:', err);
-            });
-        }
-
-        // Add keyboard navigation support
+        // Keyboard navigation for product images
         document.addEventListener('keydown', function(e) {
-            // Press 'Escape' to close mobile menu
-            if (e.key === 'Escape') {
-                const mobileMenu = document.getElementById('mobile-menu');
-                if (!mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.add('hidden');
-                }
+            if (!currentProduct || !currentProduct.images || currentProduct.images.length <= 1) return;
+            
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const newIndex = (currentImageIndex - 1 + currentProduct.images.length) % currentProduct.images.length;
+                changeProductImage(newIndex);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                const newIndex = (currentImageIndex + 1) % currentProduct.images.length;
+                changeProductImage(newIndex);
             }
         });
-
-        // Add lazy loading for images
-        if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        const src = img.getAttribute('data-src');
-                        if (src) {
-                            img.src = src;
-                            img.removeAttribute('data-src');
-                        }
-                        observer.unobserve(img);
-                    }
-                });
-            });
-            
-            document.querySelectorAll('img[data-src]').forEach(img => {
-                imageObserver.observe(img);
-            });
-        }
     </script>
 </body>
 </html>

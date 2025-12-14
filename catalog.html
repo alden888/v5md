@@ -1,17 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="V5 Medical Product Catalog - ISO/CE/FDA certified medical consumables including surgical sutures, instruments, gauze dressings, protective equipment, and more.">
-    <meta name="keywords" content="medical products, surgical sutures, medical instruments, protective equipment, gauze dressings, injection supplies, dental products, surgical packs, ISO 13485, CE certified, FDA approved, medical consumables, China medical supplier">
+    <title id="meta-title">V5 Medical Product Catalog | ISO 13485 Certified Medical Supplies</title>
+    <meta name="description" id="meta-description" content="Browse our complete catalog of ISO 13485, CE & FDA certified medical products including surgical sutures, instruments, dressings, and protective equipment. Factory direct pricing from China.">
+    <meta name="keywords" id="meta-keywords" content="medical products, ISO 13485, CE certified, FDA approved, surgical sutures, medical instruments, gauze dressings, protective equipment, China medical supplier">
     <meta name="author" content="V5 Medical LTD">
     <meta name="robots" content="index, follow, max-image-preview:large">
     
-    <title>V5 Medical Product Catalog | ISO/CE/FDA Certified Medical Supplies</title>
-    <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" id="og-title" content="V5 Medical Product Catalog | ISO 13485 Certified Medical Supplies">
+    <meta property="og:description" id="og-description" content="Browse our complete catalog of ISO 13485, CE & FDA certified medical products including surgical sutures, instruments, dressings, and protective equipment.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" id="og-url" content="https://alden888.github.io/v5md/catalog.html">
+    <meta property="og:image" id="og-image" content="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png">
+    <meta property="og:site_name" content="V5 Medical LTD">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="twitter-title" content="V5 Medical Product Catalog | ISO 13485 Certified Medical Supplies">
+    <meta name="twitter:description" id="twitter-description" content="Browse our complete catalog of ISO 13485, CE & FDA certified medical products including surgical sutures, instruments, dressings, and protective equipment.">
+    <meta name="twitter:image" id="twitter-image" content="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png">
+    
+    <link rel="canonical" id="canonical-link" href="https://alden888.github.io/v5md/catalog.html">
     
     <!-- External Resources -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -46,964 +60,458 @@
             .content-auto {
                 content-visibility: auto;
             }
-            .text-shadow {
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-            .card-hover:hover {
-                transform: translateY(-5px);
+            .product-card {
                 transition: all 0.3s ease;
             }
-        }
-        
-        /* Diagnostic styles */
-        .diagnostic-panel {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: #1f2937;
-            color: white;
-            padding: 15px;
-            border-top: 2px solid #3b82f6;
-            max-height: 40vh;
-            overflow-y: auto;
-            z-index: 1000;
-            font-family: monospace;
-            font-size: 0.9em;
-        }
-        .diagnostic-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #374151;
-        }
-        .log-entry {
-            margin-bottom: 5px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #374151;
-        }
-        .log-info {
-            color: #60a5fa;
-        }
-        .log-success {
-            color: #34d399;
-        }
-        .log-error {
-            color: #f87171;
-        }
-        .log-warning {
-            color: #fbbf24;
-        }
-        .loading-indicator {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(59, 130, 246, 0.3);
-            border-radius: 50%;
-            border-top-color: #3b82f6;
-            animation: spin 1s ease-in-out infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+            .product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+            .image-zoom {
+                transition: transform 0.5s ease;
+            }
+            .image-zoom:hover {
+                transform: scale(1.05);
+            }
+            .animate-fade-in {
+                animation: fadeIn 0.5s ease-in-out;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .skeleton {
+                background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+                background-size: 200% 100%;
+                animation: skeleton-loading 1.5s infinite;
+            }
+            @keyframes skeleton-loading {
+                0% { background-position: 200% 0; }
+                100% { background-position: -200% 0; }
+            }
         }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
-    <!-- Navigation -->
-    <nav class="fixed w-full bg-white/95 text-gray-800 shadow-md z-50">
+    <!-- Navigation will be inserted here by components.js -->
+    <div id="navigation-container"></div>
+
+    <main class="pt-32 pb-20">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 mb-12 rounded-3xl">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">Our Product Catalog</h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto animate-fade-in">
+                    Browse our complete range of ISO 13485, CE & FDA certified medical products
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 animate-fade-in">
+                    <button onclick="scrollToCategory('surgical-sutures')" class="bg-white text-blue-900 px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition">
+                        <i class="fas fa-stethoscope mr-2"></i>Surgical Sutures
+                    </button>
+                    <button onclick="scrollToCategory('surgical-instruments')" class="bg-white text-blue-900 px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition">
+                        <i class="fas fa-scalpel mr-2"></i>Surgical Instruments
+                    </button>
+                    <button onclick="scrollToCategory('protective-equipment')" class="bg-white text-blue-900 px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition">
+                        <i class="fas fa-shield-virus mr-2"></i>Protective Equipment
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Categories -->
         <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='index.html';">
-                    <img src="images/v5logo.png" onerror="this.src='v5logo.png'; this.onerror=null;" 
-                         class="h-12 w-auto" 
-                         alt="V5 Medical LTD Logo">
-                    <div>
-                        <div class="font-bold text-xl leading-none text-blue-900">V5 Medical LTD</div>
-                        <div class="text-xs text-blue-600">Global Medical Supplier</div>
+            <!-- Surgical Sutures -->
+            <section id="surgical-sutures" class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                        <i class="fas fa-stethoscope text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Surgical Sutures</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="sutures-container">
+                    <!-- Loading State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading surgical sutures...</p>
                     </div>
                 </div>
-                
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="index.html" class="font-semibold text-gray-600 hover:text-blue-900 transition">Home</a>
-                    <a href="catalog.html" class="font-semibold text-blue-900 transition border-b-2 border-blue-900">Products</a>
-                    <a href="about.html" class="font-semibold text-gray-600 hover:text-blue-900 transition">About</a>
-                    <a href="contact.html" class="font-semibold text-gray-600 hover:text-blue-900 transition">Contact</a>
-                    <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer"
-                       class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-full font-semibold transition flex items-center">
-                        <i class="fab fa-whatsapp mr-2"></i> WhatsApp
-                    </a>
-                </div>
-                
-                <button class="md:hidden text-gray-800" aria-label="Toggle Menu" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars text-2xl"></i>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t text-gray-800 absolute w-full left-0 top-20 shadow-lg">
-            <div class="px-4 py-4 space-y-3">
-                <a href="index.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition">Home</a>
-                <a href="catalog.html" class="block px-4 py-2 rounded-lg text-blue-900 font-semibold bg-blue-50">Products</a>
-                <a href="about.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition">About</a>
-                <a href="contact.html" class="block px-4 py-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition">Contact</a>
-                <a href="https://wa.me/447895047944" target="_blank" rel="noopener noreferrer"
-                   class="block bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-center font-semibold transition">
-                    <i class="fab fa-whatsapp mr-2"></i> WhatsApp Contact
-                </a>
-            </div>
-        </div>
-    </nav>
+            </section>
 
-    <!-- Hero Section -->
-    <div class="relative h-[40vh] flex items-center justify-center text-center px-4 overflow-hidden mt-20">
-        <div class="absolute inset-0 -z-10">
-            <img src="images/catalog-hero.jpg" 
-                 onerror="this.src='https://images.unsplash.com/photo-1581291518633-834ebda88de3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'; this.onerror=null;"
-                 class="w-full h-full object-cover opacity-90"
-                 alt="Medical Products Catalog">
-            <div class="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-blue-700/70"></div>
-        </div>
-        
-        <div class="relative z-10 max-w-4xl mx-auto">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6 text-white text-shadow">
-                Product Catalog
-            </h1>
-            <p class="text-xl md:text-2xl mb-8 text-blue-100 font-light">
-                Browse our complete range of ISO/CE/FDA certified medical consumables
-            </p>
-            
-            <!-- Search Bar -->
-            <div class="max-w-2xl mx-auto relative">
-                <input type="text" id="searchInput"
-                       class="w-full px-6 py-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-gray-800"
-                       placeholder="Search products..." oninput="searchProducts(this.value)">
-                <button onclick="searchProducts(document.getElementById('searchInput').value)"
-                        class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Product Filters -->
-    <section class="py-8 bg-white border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-                <h2 class="text-2xl font-bold mb-4 md:mb-0">Product Categories</h2>
-                
-                <div class="flex items-center gap-4">
-                    <span class="text-sm text-gray-600">View:</span>
-                    <button id="gridViewBtn" class="bg-gray-200 text-gray-700 p-2 rounded-md transition-colors active" onclick="switchView('grid')">
-                        <i class="fas fa-th-large"></i>
-                    </button>
-                    <button id="listViewBtn" class="bg-gray-200 text-gray-700 p-2 rounded-md transition-colors" onclick="switchView('list')">
-                        <i class="fas fa-list"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Category Filters -->
-            <div class="flex flex-wrap gap-2 mb-6 overflow-x-auto scrollbar-hide pb-2">
-                <button class="bg-blue-600 text-white px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors active" 
-                        data-category="all" onclick="filterProducts('all')">
-                    All Products
-                </button>
-                <!-- Categories will be added dynamically -->
-            </div>
-            
-            <div class="text-sm text-gray-600">
-                <span id="productCount">0</span> products found
-            </div>
-        </div>
-    </section>
-
-    <!-- Product Grid -->
-    <section class="py-12 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <!-- Loading State -->
-            <div id="loadingState" class="col-span-full text-center py-12">
-                <div class="loading-indicator mx-auto mb-4"></div>
-                <p class="text-gray-600">Loading products... Please wait</p>
-                <p class="text-sm text-gray-500 mt-2">This may take a few moments</p>
-            </div>
-            
-            <!-- Error State -->
-            <div id="errorState" class="hidden col-span-full text-center py-12 bg-red-50 border border-red-200 rounded-lg p-8">
-                <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
-                <h3 class="text-xl font-medium mb-2 text-red-800">Error Loading Products</h3>
-                <p class="text-gray-600 mb-6" id="errorMessage">There was a problem loading the product catalog.</p>
-                <div class="space-y-3">
-                    <button class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors" onclick="retryLoading()">
-                        <i class="fas fa-redo mr-2"></i> Try Again
-                    </button>
-                    <button class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors" onclick="showDiagnostics()">
-                        <i class="fas fa-bug mr-2"></i> Show Diagnostics
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Grid View -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 hidden" id="productGrid">
-                <!-- Products will be loaded here -->
-            </div>
-            
-            <!-- List View (Hidden by default) -->
-            <div class="hidden space-y-4" id="productList">
-                <!-- Products will be loaded here -->
-            </div>
-            
-            <!-- No Results -->
-            <div class="hidden" id="noResults">
-                <img src="https://via.placeholder.com/100x100?text=🔍" alt="No Results" class="mx-auto mb-4 opacity-50">
-                <h3 class="text-xl font-medium mb-2">No products found</h3>
-                <p class="text-gray-600 mb-4">Try a different search term or category</p>
-                <button class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors" onclick="resetFilters()">
-                    Reset Filters
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer - EXACTLY THE SAME AS MAIN PAGE -->
-    <footer class="bg-gray-900 text-white py-12 px-4">
-        <div class="max-w-7xl mx-auto">
-            <!-- 主要内容区域 -->
-            <div class="grid md:grid-cols-10 gap-8 mb-12">
-                <!-- 左侧：Company Info -->
-                <div class="md:col-span-3">
-                    <div class="flex items-center gap-2 mb-4">
-                        <img src="images/v5logo.png" 
-                             onerror="this.src='v5logo.png'; this.onerror=null;" 
-                             class="h-10 w-auto" 
-                             alt="V5 Medical Logo">
-                        <span class="text-xl font-bold">V5 Medical LTD</span>
+            <!-- Surgical Instruments -->
+            <section id="surgical-instruments" class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                        <i class="fas fa-scalpel text-xl"></i>
                     </div>
-                    <p class="text-gray-400 text-sm mb-4">Professional Global Medical Consumables Supplier</p>
-                    <p class="text-gray-400 text-sm mb-4">Factory Direct Medical Consumables Manufacturer</p> 
-                    <p class="text-gray-400 text-sm italic">20+ Years Exporting Experience</p>
-                    <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
+                    <h2 class="text-3xl font-bold text-gray-900">Surgical Instruments</h2>
                 </div>
-                
-                <!-- Quick Links - 向右移动一点 -->
-                <div class="md:col-span-2 pl-8">
-                    <h4 class="font-bold mb-4 text-lg text-white">Quick Links</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="index.html" class="hover:text-white transition">Home</a></li>
-                        <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
-                        <li><a href="catalog.html" class="hover:text-white transition">Products</a></li>
-                        <li><a href="blog.html" class="hover:text-white transition">Blog & News</a></li>
-                        <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
-                        <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                
-                <!-- Product Categories -->
-                <div class="md:col-span-2">
-                    <h4 class="font-bold mb-4 text-lg text-white">Product Categories</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="catalog.html#sutures" class="hover:text-white transition">Surgical Sutures</a></li>
-                        <li><a href="catalog.html#packs" class="hover:text-white transition">Surgical Packs</a></li>
-                        <li><a href="catalog.html#syringes" class="hover:text-white transition">Syringes & Needles</a></li>
-                        <li><a href="catalog.html#infusion" class="hover:text-white transition">Infusion Sets</a></li>
-                        <li><a href="catalog.html#dressings" class="hover:text-white transition">Gauze Dressings</a></li>
-                        <li><a href="catalog.html#protection" class="hover:text-white transition">Protective Equipment</a></li>
-                    </ul>
-                </div>
-                
-                <!-- Contact Info -->
-                <div class="md:col-span-3">
-                    <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
-                    <div class="space-y-3 text-sm text-gray-400">
-                        <p class="flex items-center gap-2">
-                            <i class="fab fa-whatsapp text-green-500 w-5"></i> 
-                            <span>+44 078 9504 7944 (UK)</span>
-                        </p>
-                        <p class="flex items-center gap-2">
-                            <i class="fab fa-whatsapp text-green-500 w-5"></i> 
-                            <span>+86 180 1266 9897 (Backup)</span>
-                        </p>
-                        <p class="flex items-center gap-2">
-                            <i class="fas fa-envelope text-blue-400 w-5"></i> 
-                            <a href="mailto:sales@v5md.com" class="hover:text-white transition" onclick="trackEmailClick()">sales@v5md.com</a>
-                        </p>
-                        <p class="flex items-center gap-2">
-                            <i class="fab fa-google text-red-400 w-5"></i> 
-                            <a href="mailto:v5md.com@gmail.com" class="hover:text-white transition" onclick="trackEmailClick()">v5md.com@gmail.com</a>
-                        </p>
-                        <p class="flex items-start gap-2">
-                            <i class="fas fa-map-marker-alt mt-1 w-5"></i> 
-                            <span>No. 168, Luying Road, Kunshan, Jiangsu, China</span>
-                        </p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="instruments-container">
+                    <!-- Loading State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading surgical instruments...</p>
                     </div>
                 </div>
-            </div>
-            
-            <!-- 底部区域：Follow Us 在左边，社交媒体图标在右边 -->
-            <div class="border-t border-gray-800 pt-8">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <!-- 左侧：Follow Us -->
-                    <div class="mb-6 md:mb-0">
-                        <h4 class="font-bold text-lg text-white mb-4">Follow Us</h4>
-                        <p class="text-gray-400 text-sm">Connect with us on social media for the latest updates</p>
+            </section>
+
+            <!-- Gauze Dressings -->
+            <section id="gauze-dressings" class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600">
+                        <i class="fas fa-band-aid text-xl"></i>
                     </div>
-                    
-                    <!-- 右侧：社交媒体图标 - 向左移动一点 -->
-                    <div class="flex gap-6 mr-8">
-                        <a href="https://linkedin.com/company/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 transition text-white" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        
-                        <a href="https://www.youtube.com/@v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition text-white" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                        
-                        <a href="https://www.facebook.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition text-white" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        
-                        <a href="https://www.instagram.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 flex items-center justify-center transition text-white" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        
-                        <a href="https://www.tiktok.com/@v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-black transition text-white" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-                        
-                        <a href="https://x.com/v5med" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition text-white" aria-label="X (Twitter)"><i class="fab fa-twitter"></i></a>
-                    
+                    <h2 class="text-3xl font-bold text-gray-900">Gauze Dressings</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="dressings-container">
+                    <!-- Loading State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading gauze dressings...</p>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Copyright -->
-            <div class="text-center mt-8 text-sm text-gray-500">
-                <p>© 2025 V5 Medical LTD. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+            </section>
 
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/447895047944" 
-       target="_blank" 
-       rel="noopener noreferrer"
-       class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center z-50 transition-all duration-300 hover:scale-110 group"
-       aria-label="Contact us on WhatsApp">
-        <i class="fab fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i>
-    </a>
+            <!-- Protective Equipment -->
+            <section id="protective-equipment" class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
+                        <i class="fas fa-shield-virus text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Protective Equipment</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="protection-container">
+                    <!-- Loading State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading protective equipment...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Injection & Infusion -->
+            <section id="injection-infusion" class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600">
+                        <i class="fas fa-syringe text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Injection & Infusion</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="injection-container">
+                    <!-- Loading State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading injection & infusion products...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dental Products -->
+            <section id="dental-products" class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600">
+                        <i class="fas fa-tooth text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Dental Products</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="dental-container">
+                    <!-- Loading State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading dental products...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Surgical Packs -->
+            <section id="surgical-packs" class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center text-teal-600">
+                        <i class="fas fa-box text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Surgical Packs</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="packs-container">
+                    <!-- Loading State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading surgical packs...</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer will be inserted here by components.js -->
+    <div id="footer-container"></div>
+
+    <!-- WhatsApp Button will be inserted here by components.js -->
+    <div id="whatsapp-container"></div>
 
     <!-- Back to Top Button -->
-    <button id="back-to-top" 
-            class="fixed bottom-24 right-6 bg-blue-900 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 opacity-0 invisible hover:bg-blue-700 z-40" 
-            aria-label="Back to Top">
+    <button class="fixed bottom-20 right-6 bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all z-50 hover:scale-110 opacity-0 invisible"
+            onclick="scrollToTop()" id="back-to-top">
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- Diagnostic Panel -->
-    <div id="diagnosticPanel" class="diagnostic-panel hidden">
-        <div class="diagnostic-header">
-            <h3 class="font-bold">V5 Medical Diagnostic Panel</h3>
-            <div>
-                <button onclick="hideDiagnostics()" class="bg-red-500 text-white px-3 py-1 rounded mr-2">Hide</button>
-                <button onclick="clearLogs()" class="bg-gray-500 text-white px-3 py-1 rounded">Clear Logs</button>
-            </div>
-        </div>
-        <div id="diagnosticLogs" class="space-y-2">
-            <!-- Logs will be added here -->
-        </div>
-    </div>
+    <!-- Modular JavaScript Files -->
+    <script src="js/config.js"></script>
+    <script src="js/image-utils.js"></script>
+    <script src="js/seo-utils.js"></script>
+    <script src="js/product-loader.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/performance-monitor.js"></script>
 
-    <!-- JavaScript -->
+    <!-- Page-specific JavaScript -->
     <script>
-        // ======================
-        // DIAGNOSTIC FUNCTIONS
-        // ======================
-        let diagnosticMode = false;
-        let loadAttempts = 0;
-        const MAX_LOAD_ATTEMPTS = 3;
-        const diagnosticLogs = [];
-
-        // Logging function with diagnostics
-        function log(message, type = 'info') {
-            const timestamp = new Date().toLocaleTimeString();
-            const logEntry = `[${timestamp}] [${type.toUpperCase()}] ${message}`;
-            
-            // Add to diagnostic logs
-            diagnosticLogs.push({
-                timestamp,
-                type,
-                message
-            });
-            
-            // Also log to browser console
-            console.log(`[V5 Catalog] ${logEntry}`);
-            
-            // Update diagnostic panel if visible
-            if (diagnosticMode) {
-                updateDiagnosticPanel();
-            }
-        }
-
-        // Update diagnostic panel
-        function updateDiagnosticPanel() {
-            const logsContainer = document.getElementById('diagnosticLogs');
-            logsContainer.innerHTML = '';
-            
-            diagnosticLogs.forEach(log => {
-                const logElement = document.createElement('div');
-                logElement.className = `log-entry log-${log.type}`;
-                logElement.innerHTML = `[${log.timestamp}] [${log.type.toUpperCase()}] ${log.message}`;
-                logsContainer.appendChild(logElement);
-            });
-            
-            // Scroll to bottom
-            logsContainer.scrollTop = logsContainer.scrollHeight;
-        }
-
-        // Show diagnostics panel
-        function showDiagnostics() {
-            diagnosticMode = true;
-            document.getElementById('diagnosticPanel').classList.remove('hidden');
-            updateDiagnosticPanel();
-            log('Diagnostics panel opened', 'info');
-        }
-
-        // Hide diagnostics panel
-        function hideDiagnostics() {
-            diagnosticMode = false;
-            document.getElementById('diagnosticPanel').classList.add('hidden');
-            log('Diagnostics panel closed', 'info');
-        }
-
-        // Clear logs
-        function clearLogs() {
-            diagnosticLogs.length = 0;
-            updateDiagnosticPanel();
-            log('Logs cleared', 'info');
-        }
-
-        // ======================
-        // CORE FUNCTIONALITY
-        // ======================
-
-        // Mobile menu toggle
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
-        }
-
-        // Initialize page with advanced error handling
-        async function initPage() {
-            log('Initializing catalog page...', 'info');
-            
+        // Initialize components
+        document.addEventListener('DOMContentLoaded', async function() {
             try {
-                // Show loading state
-                document.getElementById('loadingState').classList.remove('hidden');
-                document.getElementById('errorState').classList.add('hidden');
-                document.getElementById('productGrid').classList.add('hidden');
-                document.getElementById('productList').classList.add('hidden');
-                document.getElementById('noResults').classList.add('hidden');
-
-                // Increment load attempt counter
-                loadAttempts++;
-                log(`Load attempt ${loadAttempts} of ${MAX_LOAD_ATTEMPTS}`, 'info');
-
-                // First, check if products.js is already loaded
-                if (typeof window.productDatabase !== 'undefined') {
-                    log('products.js is already available in window object', 'success');
-                    await loadProducts();
-                    return;
-                }
-
-                // Strategy 1: Try to load products.js using traditional script tag
-                log('Trying Strategy 1: Traditional script tag loading', 'info');
-                const loadSuccess = await loadProductsWithScriptTag();
+                // Insert navigation, footer, and WhatsApp button
+                document.getElementById('navigation-container').innerHTML = components.createNavigation();
+                document.getElementById('footer-container').innerHTML = components.createFooter();
+                document.getElementById('whatsapp-container').innerHTML = components.createWhatsAppButton();
                 
-                if (loadSuccess) {
-                    await loadProducts();
-                    return;
-                }
-
-                // Strategy 2: Try dynamic import
-                log('Trying Strategy 2: Dynamic import', 'info');
-                const importSuccess = await loadProductsWithDynamicImport();
+                // Initialize navigation functionality
+                components.initNavigation();
                 
-                if (importSuccess) {
-                    await loadProducts();
-                    return;
-                }
-
-                // Strategy 3: Fetch and eval (last resort)
-                log('Trying Strategy 3: Fetch and evaluate (last resort)', 'warning');
-                const fetchSuccess = await loadProductsWithFetchAndEval();
+                // Load products and render catalog
+                await loadAndRenderCatalog();
                 
-                if (fetchSuccess) {
-                    await loadProducts();
-                    return;
-                }
-
-                // If all strategies fail
-                throw new Error('All loading strategies failed');
-
+                // Update SEO
+                seoUtils.updateMetaTags({
+                    title: 'V5 Medical Product Catalog | ISO 13485 Certified Medical Supplies',
+                    description: 'Browse our complete catalog of ISO 13485, CE & FDA certified medical products including surgical sutures, instruments, dressings, and protective equipment. Factory direct pricing from China.'
+                });
+                
+                // Add organization schema
+                seoUtils.addOrganizationSchema();
+                
             } catch (error) {
-                log(`Initialization error: ${error.message}`, 'error');
-                showErrorState(error.message);
-                
-                // If we haven't reached max attempts, try again after delay
-                if (loadAttempts < MAX_LOAD_ATTEMPTS) {
-                    log(`Will retry after 3 seconds (attempt ${loadAttempts + 1})`, 'warning');
-                    setTimeout(initPage, 3000);
-                }
+                console.error('Error initializing catalog page:', error);
+                showErrorState();
             }
-        }
+        });
 
-        // Load products.js using traditional script tag
-        function loadProductsWithScriptTag() {
-            return new Promise((resolve, reject) => {
-                log('Loading products.js with traditional script tag...', 'info');
+        // Load products and render catalog
+        async function loadAndRenderCatalog() {
+            try {
+                const startTime = performance.now();
                 
-                // Remove any existing script
-                const existingScript = document.getElementById('productsScript');
-                if (existingScript) {
-                    existingScript.remove();
-                }
+                // Load product database
+                const products = await productLoader.loadProducts();
+                const loadTime = performance.now() - startTime;
                 
-                const script = document.createElement('script');
-                script.id = 'productsScript';
-                script.src = 'js/products.js?' + new Date().getTime(); // Cache busting
-                script.async = false; // Load synchronously
+                console.log(`Product database loaded in ${loadTime.toFixed(0)}ms`);
                 
-                script.onload = () => {
-                    log('products.js loaded successfully with script tag', 'success');
-                    resolve(true);
+                // Group products by category
+                const categories = {
+                    'surgical-sutures': 'sutures-container',
+                    'surgical-instruments': 'instruments-container',
+                    'gauze-dressings': 'dressings-container',
+                    'protective-equipment': 'protection-container',
+                    'injection-infusion': 'injection-container',
+                    'dental-products': 'dental-container',
+                    'surgical-packs': 'packs-container'
                 };
                 
-                script.onerror = (error) => {
-                    log(`Script tag loading failed: ${error.message}`, 'error');
-                    resolve(false);
-                };
+                // Render each category
+                for (const [category, containerId] of Object.entries(categories)) {
+                    const categoryProducts = Object.values(products).filter(product => product.category === category);
+                    renderProductCategory(categoryProducts, containerId);
+                }
                 
-                document.body.appendChild(script);
+                // Track successful catalog load
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'catalog_load_success', {
+                        event_category: 'Product Catalog',
+                        event_label: 'Catalog loaded successfully',
+                        product_count: Object.values(products).length,
+                        load_time: loadTime
+                    });
+                }
+                
+            } catch (error) {
+                console.error('Error loading product catalog:', error);
+                showErrorState();
+                
+                // Track error
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'catalog_load_failure', {
+                        event_category: 'Product Catalog',
+                        event_label: 'Catalog load failed',
+                        error_message: error.message
+                    });
+                }
+            }
+        }
+
+        // Render product category
+        function renderProductCategory(products, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <div class="text-4xl mb-4 text-gray-400">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                        <p class="text-gray-600">No products available in this category</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = products.map(product => createProductCard(product)).join('');
+            
+            // Preload images for this category
+            const imageUrls = products
+                .filter(product => product.images && product.images.length > 0)
+                .map(product => imageUtils.getImageUrl(product.images[0]));
+            
+            imageUtils.preloadImages(imageUrls).then(() => {
+                console.log(`Preloaded ${imageUrls.length} images for ${containerId}`);
             });
         }
 
-        // Load products.js using dynamic import
-        async function loadProductsWithDynamicImport() {
-            try {
-                log('Attempting dynamic import of products.js...', 'info');
-                const module = await import('./js/products.js?' + new Date().getTime());
-                
-                // Make the module available globally
-                if (module.productDatabase) {
-                    window.productDatabase = module.productDatabase;
-                    window.getProductById = module.getProductById;
-                    window.getProductsByCategory = module.getProductsByCategory;
-                    window.getAllProducts = module.getAllProducts;
-                    window.searchProducts = module.searchProducts;
-                    
-                    log('Dynamic import successful, module exposed to window', 'success');
-                    return true;
-                }
-                
-                log('Dynamic import succeeded but module is empty', 'error');
-                return false;
-                
-            } catch (error) {
-                log(`Dynamic import failed: ${error.message}`, 'error');
-                return false;
-            }
-        }
-
-        // Load products.js using fetch and eval (last resort)
-        async function loadProductsWithFetchAndEval() {
-            try {
-                log('Attempting fetch and eval of products.js...', 'warning');
-                
-                const response = await fetch('js/products.js?' + new Date().getTime());
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const scriptText = await response.text();
-                
-                // Create a function to evaluate the script in a controlled context
-                const evalScript = new Function(scriptText);
-                evalScript();
-                
-                log('Fetch and eval completed successfully', 'success');
-                return true;
-                
-            } catch (error) {
-                log(`Fetch and eval failed: ${error.message}`, 'error');
-                return false;
-            }
-        }
-
-        // Load and display products
-        async function loadProducts() {
-            try {
-                log('Verifying product database availability...', 'info');
-                
-                // Give it a moment to ensure everything is loaded
-                await new Promise(resolve => setTimeout(resolve, 100));
-
-                // Final check
-                if (typeof window.productDatabase === 'undefined') {
-                    throw new Error('productDatabase is still undefined after loading');
-                }
-
-                log(`Product database found with ${Object.keys(window.productDatabase).length} products`, 'success');
-                
-                // Hide loading state
-                document.getElementById('loadingState').classList.add('hidden');
-                
-                // Get all products
-                let products = Object.values(window.productDatabase);
-                
-                // Update product count
-                document.getElementById('productCount').textContent = products.length;
-                
-                // Create filter buttons
-                createFilterButtons(products);
-                
-                // Display products
-                displayProducts(products);
-                
-                // Setup event listeners
-                setupEventListeners();
-                
-                log('Catalog initialization completed successfully', 'success');
-                
-            } catch (error) {
-                log(`Error loading products: ${error.message}`, 'error');
-                showErrorState(error.message);
-            }
-        }
-
-        // Create filter buttons
-        function createFilterButtons(products) {
-            const categories = [...new Set(products.map(p => p.category))];
-            const filterContainer = document.querySelector('.flex.flex-wrap.gap-2');
+        // Create product card HTML
+        function createProductCard(product) {
+            const firstImage = product.images && product.images.length > 0 
+                ? imageUtils.getImageUrl(product.images[0]) 
+                : imageUtils.getPlaceholderImage();
             
-            // Clear existing category buttons (keep "All Products")
-            const buttons = filterContainer.querySelectorAll('button:not([data-category="all"])');
-            buttons.forEach(btn => btn.remove());
-
-            // Add category buttons
-            categories.forEach(category => {
-                const button = document.createElement('button');
-                button.className = 'bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors';
-                button.textContent = category;
-                button.setAttribute('data-category', category);
-                button.onclick = () => filterProducts(category);
-                filterContainer.appendChild(button);
-            });
-
-            log(`Created ${categories.length} category filter buttons`, 'info');
-        }
-
-        // Filter products by category
-        function filterProducts(category) {
-            try {
-                log(`Filtering products by category: ${category}`, 'info');
-                
-                // Update active filter button
-                document.querySelectorAll('[data-category]').forEach(btn => {
-                    btn.classList.remove('active', 'bg-blue-600', 'text-white');
-                    btn.classList.add('bg-gray-200', 'text-gray-700');
-                });
-                
-                document.querySelector(`[data-category="${category}"]`).classList.add('active', 'bg-blue-600', 'text-white');
-                document.querySelector(`[data-category="${category}"]`).classList.remove('bg-gray-200', 'text-gray-700');
-
-                // Get products
-                let products = Object.values(window.productDatabase);
-                
-                // Filter if needed
-                if (category !== 'all') {
-                    products = products.filter(product => product.category === category);
-                }
-
-                // Update product count
-                document.getElementById('productCount').textContent = products.length;
-
-                // Display filtered products
-                displayProducts(products);
-
-            } catch (error) {
-                log(`Filter error: ${error.message}`, 'error');
-                showErrorState(error.message);
-            }
-        }
-
-        // Search products
-        function searchProducts(query) {
-            try {
-                log(`Searching products with query: "${query}"`, 'info');
-                
-                // Reset category filter
-                document.querySelectorAll('[data-category]').forEach(btn => {
-                    btn.classList.remove('active', 'bg-blue-600', 'text-white');
-                    btn.classList.add('bg-gray-200', 'text-gray-700');
-                });
-                document.querySelector('[data-category="all"]').classList.add('active', 'bg-blue-600', 'text-white');
-                document.querySelector('[data-category="all"]').classList.remove('bg-gray-200', 'text-gray-700');
-
-                // Get products
-                let products = Object.values(window.productDatabase);
-                
-                // Search if query is provided
-                if (query && query.trim() !== '') {
-                    const searchTerm = query.toLowerCase().trim();
-                    products = products.filter(product => 
-                        product.name.toLowerCase().includes(searchTerm) ||
-                        product.category.toLowerCase().includes(searchTerm) ||
-                        product.description.toLowerCase().includes(searchTerm)
-                    );
-                }
-
-                // Update product count
-                document.getElementById('productCount').textContent = products.length;
-
-                // Display products
-                displayProducts(products);
-
-            } catch (error) {
-                log(`Search error: ${error.message}`, 'error');
-                showErrorState(error.message);
-            }
-        }
-
-        // Switch between grid and list view
-        function switchView(viewType) {
-            log(`Switching to ${viewType} view`, 'info');
+            const certifications = product.certifications || ['ISO 13485', 'CE', 'FDA'];
             
-            const gridView = document.getElementById('productGrid');
-            const listView = document.getElementById('productList');
-            const gridBtn = document.getElementById('gridViewBtn');
-            const listBtn = document.getElementById('listViewBtn');
-
-            if (viewType === 'grid') {
-                gridView.classList.remove('hidden');
-                listView.classList.add('hidden');
-                gridBtn.classList.add('active', 'bg-blue-600', 'text-white');
-                gridBtn.classList.remove('bg-gray-200', 'text-gray-700');
-                listBtn.classList.remove('active', 'bg-blue-600', 'text-white');
-                listBtn.classList.add('bg-gray-200', 'text-gray-700');
-            } else {
-                gridView.classList.add('hidden');
-                listView.classList.remove('hidden');
-                listBtn.classList.add('active', 'bg-blue-600', 'text-white');
-                listBtn.classList.remove('bg-gray-200', 'text-gray-700');
-                gridBtn.classList.remove('active', 'bg-blue-600', 'text-white');
-                gridBtn.classList.add('bg-gray-200', 'text-gray-700');
-            }
-
-            // Refresh products in current view
-            const activeFilter = document.querySelector('[data-category].active').getAttribute('data-category');
-            filterProducts(activeFilter);
-        }
-
-        // Display products
-        function displayProducts(products) {
-            try {
-                log(`Displaying ${products.length} products`, 'info');
-                
-                const gridContainer = document.getElementById('productGrid');
-                const listContainer = document.getElementById('productList');
-                const noResults = document.getElementById('noResults');
-
-                // Hide all
-                gridContainer.classList.add('hidden');
-                listContainer.classList.add('hidden');
-                noResults.classList.add('hidden');
-
-                // Show appropriate view
-                if (products.length === 0) {
-                    noResults.classList.remove('hidden');
-                    return;
-                }
-
-                // Clear containers
-                gridContainer.innerHTML = '';
-                listContainer.innerHTML = '';
-
-                // Create product cards
-                products.forEach(product => {
-                    // Grid view card
-                    const gridCard = createProductCard(product, 'grid');
-                    gridContainer.appendChild(gridCard);
-
-                    // List view card
-                    const listCard = createProductCard(product, 'list');
-                    listContainer.appendChild(listCard);
-                });
-
-                // Show current view
-                if (document.getElementById('gridViewBtn').classList.contains('active')) {
-                    gridContainer.classList.remove('hidden');
-                } else {
-                    listContainer.classList.remove('hidden');
-                }
-
-            } catch (error) {
-                log(`Display error: ${error.message}`, 'error');
-                showErrorState(error.message);
-            }
-        }
-
-        // Create product card
-        function createProductCard(product, viewType) {
-            const card = document.createElement('div');
-            
-            if (viewType === 'grid') {
-                card.className = 'bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300';
-                card.innerHTML = `
-                    <div class="relative cursor-pointer" onclick="openProductDetail('${product.id}')">
-                        <img src="${product.images[0]}" 
-                             onerror="this.src='https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg'; this.onerror=null;"
-                             class="w-full h-48 object-cover">
-                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                            ${product.availability}
+            return `
+                <div class="bg-white rounded-xl overflow-hidden shadow-md product-card group">
+                    <div class="relative cursor-pointer" onclick="window.location.href='product-detail.html?id=${product.id}'">
+                        <img src="${firstImage}" 
+                             onerror="this.src='${imageUtils.getPlaceholderImage()}'; this.onerror=null;"
+                             class="w-full h-48 object-cover image-zoom rounded-t-xl transition-transform duration-500 group-hover:scale-105"
+                             alt="${product.name || 'Product Image'}">
+                        <div class="absolute top-3 right-3">
+                            <span class="bg-green-500/90 text-white text-xs px-2 py-1 rounded-full">
+                                ${product.availability || 'In Stock'}
+                            </span>
                         </div>
                     </div>
                     <div class="p-4">
-                        <h3 class="font-bold text-lg mb-2 cursor-pointer" onclick="openProductDetail('${product.id}')">${product.name}</h3>
-                        <p class="text-gray-600 text-sm mb-3">${product.description.substring(0, 80)}${product.description.length > 80 ? '...' : ''}</p>
-                        <div class="flex flex-wrap gap-1 mb-3">
-                            ${product.certifications.map(cert => `
+                        <h3 class="font-bold text-lg mb-2 text-gray-900 cursor-pointer" onclick="window.location.href='product-detail.html?id=${product.id}'">
+                            ${product.name || 'Product Name'}
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">
+                            ${product.short || product.description || 'No description available'}
+                        </p>
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            ${certifications.map(cert => `
                                 <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">${cert}</span>
                             `).join('')}
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="font-bold text-blue-600">${product.price}</span>
-                            <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm font-semibold transition"
-                                    onclick="openProductDetail('${product.id}')">
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                `;
-            } else {
-                card.className = 'bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col md:flex-row';
-                card.innerHTML = `
-                    <div class="md:w-1/4 relative cursor-pointer" onclick="openProductDetail('${product.id}')">
-                        <img src="${product.images[0]}" 
-                             onerror="this.src='https://raw.githubusercontent.com/alden888/v5md/main/images/products/placeholder.jpg'; this.onerror=null;"
-                             class="w-full h-48 md:h-full object-cover">
-                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                            ${product.availability}
-                        </div>
-                    </div>
-                    <div class="p-4 md:w-3/4">
-                        <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-3">
-                            <div>
-                                <h3 class="font-bold text-lg mb-1 cursor-pointer" onclick="openProductDetail('${product.id}')">${product.name}</h3>
-                                <p class="text-gray-600 text-sm">${product.category}</p>
+                            <span class="font-bold text-blue-600">${product.price || 'Contact for Price'}</span>
+                            <div class="flex gap-2">
+                                <button onclick="window.location.href='product-detail.html?id=${product.id}'"
+                                        class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-sm font-semibold transition">
+                                    Details
+                                </button>
+                                <a href="https://wa.me/447895047944?text=I%20am%20interested%20in%20${encodeURIComponent(product.name || 'this product')}"
+                                   target="_blank" rel="noopener noreferrer"
+                                   class="bg-green-500 hover:bg-green-600 text-white w-9 h-9 rounded-lg flex items-center justify-center transition"
+                                   onclick="trackWhatsAppClick()">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
                             </div>
-                            <span class="font-bold text-blue-600 mt-2 md:mt-0">${product.price}</span>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-3">${product.description.substring(0, 120)}${product.description.length > 120 ? '...' : ''}</p>
-                        <div class="flex flex-wrap gap-1 mb-3">
-                            ${product.certifications.map(cert => `
-                                <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">${cert}</span>
-                            `).join('')}
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
-                                    onclick="openProductDetail('${product.id}')">
-                                View Details
-                            </button>
-                            <a href="https://wa.me/447895047944?text=I%20am%20interested%20in%20${encodeURIComponent(product.name)}" 
-                               target="_blank" rel="noopener noreferrer"
-                               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center">
-                                <i class="fab fa-whatsapp mr-1"></i> Inquire
-                            </a>
                         </div>
                     </div>
-                `;
-            }
-
-            return card;
-        }
-
-        // Open product detail (simplified for this version)
-        function openProductDetail(productId) {
-            window.location.href = `product-detail.html?id=${productId}`;
-        }
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // Search input event
-            document.getElementById('searchInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    searchProducts(this.value);
-                }
-            });
-
-            log('Event listeners setup completed', 'info');
+                </div>
+            `;
         }
 
         // Show error state
-        function showErrorState(message) {
-            document.getElementById('loadingState').classList.add('hidden');
-            document.getElementById('errorState').classList.remove('hidden');
-            document.getElementById('errorMessage').textContent = message;
+        function showErrorState() {
+            const containers = [
+                'sutures-container', 'instruments-container', 'dressings-container',
+                'protection-container', 'injection-container', 'dental-container', 'packs-container'
+            ];
             
-            // Add technical details to diagnostic log
-            log('Error details: ' + message, 'error');
-            log('Window object contains productDatabase: ' + (typeof window.productDatabase !== 'undefined'), 'info');
-            log('Window object contains getAllProducts: ' + (typeof window.getAllProducts === 'function'), 'info');
-        }
-
-        // Retry loading
-        function retryLoading() {
-            log('User requested retry', 'info');
-            initPage();
-        }
-
-        // Reset filters
-        function resetFilters() {
-            document.getElementById('searchInput').value = '';
-            filterProducts('all');
-        }
-
-        // Global error handler
-        window.addEventListener('error', function(error) {
-            log(`Global error: ${error.message}`, 'error');
-            log(`Error source: ${error.filename}:${error.lineno}:${error.colno}`, 'error');
-            showErrorState(`Unexpected error: ${error.message}`);
-        });
-
-        // Unhandled promise rejection handler
-        window.addEventListener('unhandledrejection', function(event) {
-            log(`Unhandled promise rejection: ${event.reason}`, 'error');
-            showErrorState(`Promise error: ${event.reason}`);
-        });
-
-        // Start initialization when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            log('DOM content loaded. Starting catalog initialization...', 'info');
-            initPage();
-        });
-
-        // For debugging purposes
-        window.V5_DIAGNOSTICS = {
-            show: showDiagnostics,
-            hide: hideDiagnostics,
-            logs: diagnosticLogs,
-            retry: retryLoading
-        };
-
-        // Back to Top Logic
-        const backToTopBtn = document.getElementById('back-to-top');
-        if (backToTopBtn) {
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) {
-                    backToTopBtn.classList.remove('opacity-0', 'invisible');
-                    backToTopBtn.classList.add('opacity-100', 'visible');
-                } else {
-                    backToTopBtn.classList.add('opacity-0', 'invisible');
-                    backToTopBtn.classList.remove('opacity-100', 'visible');
+            containers.forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    container.innerHTML = `
+                        <div class="col-span-full text-center py-12">
+                            <div class="text-4xl mb-4 text-red-500">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <p class="text-gray-600 mb-4">Failed to load products</p>
+                            <button onclick="window.location.reload()" 
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition">
+                                <i class="fas fa-redo mr-2"></i>Try Again
+                            </button>
+                        </div>
+                    `;
                 }
             });
-            
-            backToTopBtn.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Scroll to category
+        function scrollToCategory(categoryId) {
+            const element = document.getElementById(categoryId);
+            if (element) {
+                const offsetTop = element.offsetTop - 100;
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+                
+                // Track category navigation
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'category_navigation', {
+                        event_category: 'Product Catalog',
+                        event_label: `Navigated to ${categoryId}`
+                    });
+                }
+            }
+        }
+
+        // Scroll to top
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
         }
+
+        // WhatsApp click tracking
+        function trackWhatsAppClick() {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'whatsapp_click', {
+                    event_category: 'Lead Generation',
+                    event_label: 'WhatsApp button clicked from catalog'
+                });
+            }
+        }
+
+        // Back to top button visibility
+        window.addEventListener('scroll', function() {
+            const backToTop = document.getElementById('back-to-top');
+            if (window.scrollY > 500) {
+                backToTop.classList.remove('opacity-0', 'invisible');
+                backToTop.classList.add('opacity-100', 'visible');
+            } else {
+                backToTop.classList.add('opacity-0', 'invisible');
+                backToTop.classList.remove('opacity-100', 'visible');
+            }
+        });
+
+        // Handle URL fragment for category navigation
+        window.addEventListener('load', function() {
+            if (window.location.hash) {
+                const categoryId = window.location.hash.substring(1);
+                setTimeout(() => {
+                    scrollToCategory(categoryId);
+                }, 500);
+            }
+        });
     </script>
 </body>
 </html>
