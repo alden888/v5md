@@ -5,27 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- SEO Meta Tags -->
-    <title id="meta-title">Medical Product | V5 Medical LTD</title>
-    <meta name="description" id="meta-description" content="ISO 13485, CE & FDA certified medical consumables. Factory direct supplier from China.">
-    <meta name="keywords" id="meta-keywords" content="medical products, ISO 13485, CE certified, FDA approved, medical consumables, China medical supplier">
+    <title id="meta-title">V5 Medical Product Catalog | ISO 13485 Certified Medical Supplies</title>
+    <meta name="description" id="meta-description" content="Browse our complete catalog of ISO 13485, CE & FDA certified medical products including surgical sutures, instruments, dressings, and protective equipment. Factory direct pricing from China.">
+    <meta name="keywords" id="meta-keywords" content="medical products, ISO 13485, CE certified, FDA approved, surgical sutures, medical instruments, gauze dressings, protective equipment, China medical supplier">
     <meta name="author" content="V5 Medical LTD">
     <meta name="robots" content="index, follow, max-image-preview:large">
     
     <!-- Open Graph Meta Tags -->
-    <meta property="og:type" content="product">
-    <meta property="og:title" id="og-title" content="Medical Product">
-    <meta property="og:description" id="og-description" content="Factory direct medical consumables supplier">
+    <meta property="og:title" id="og-title" content="V5 Medical Product Catalog | ISO 13485 Certified Medical Supplies">
+    <meta property="og:description" id="og-description" content="Browse our complete catalog of ISO 13485, CE & FDA certified medical products including surgical sutures, instruments, dressings, and protective equipment.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" id="og-url" content="https://alden888.github.io/v5md/catalog.html">
     <meta property="og:image" id="og-image" content="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png">
-    <meta property="og:url" id="og-url" content="https://alden888.github.io/v5md/product-detail.html">
     <meta property="og:site_name" content="V5 Medical LTD">
     
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" id="twitter-title" content="Medical Product">
-    <meta name="twitter:description" id="twitter-description" content="Factory direct medical consumables supplier">
+    <meta name="twitter:title" id="twitter-title" content="V5 Medical Product Catalog | ISO 13485 Certified Medical Supplies">
+    <meta name="twitter:description" id="twitter-description" content="Browse our complete catalog of ISO 13485, CE & FDA certified medical products including surgical sutures, instruments, dressings, and protective equipment.">
     <meta name="twitter:image" id="twitter-image" content="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png">
     
-    <link rel="canonical" id="canonical-link" href="https://alden888.github.io/v5md/product-detail.html">
+    <link rel="canonical" id="canonical-link" href="https://alden888.github.io/v5md/catalog.html">
     
     <!-- External Resources -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -60,8 +60,15 @@
             .content-auto {
                 content-visibility: auto;
             }
+            .product-card {
+                transition: all 0.3s ease;
+            }
+            .product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
             .image-zoom {
-                transition: transform 0.3s ease;
+                transition: transform 0.5s ease;
             }
             .image-zoom:hover {
                 transform: scale(1.05);
@@ -73,13 +80,6 @@
                 from { opacity: 0; transform: translateY(20px); }
                 to { opacity: 1; transform: translateY(0); }
             }
-            .animate-slide-in {
-                animation: slideIn 0.5s ease-out;
-            }
-            @keyframes slideIn {
-                from { opacity: 0; transform: translateX(-20px); }
-                to { opacity: 1; transform: translateX(0); }
-            }
             .skeleton {
                 background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
                 background-size: 200% 100%;
@@ -89,14 +89,6 @@
                 0% { background-position: 200% 0; }
                 100% { background-position: -200% 0; }
             }
-            .thumb-active {
-                border: 2px solid #2563eb;
-                opacity: 1;
-            }
-            .thumb-inactive {
-                border: 2px solid transparent;
-                opacity: 0.7;
-            }
         }
     </style>
 </head>
@@ -105,117 +97,144 @@
     <div id="navigation-container"></div>
 
     <main class="pt-32 pb-20">
-        <!-- Product Detail -->
-        <div class="max-w-7xl mx-auto px-4" id="product-container">
-            <!-- Loading State -->
-            <div class="grid md:grid-cols-2 gap-12">
-                <!-- Image Loading -->
-                <div class="animate-fade-in">
-                    <div class="relative rounded-xl overflow-hidden shadow-lg">
-                        <div class="skeleton w-full h-80 rounded-xl"></div>
-                    </div>
-                    <div class="flex gap-2 mt-4">
-                        <div class="skeleton w-16 h-16 rounded-lg"></div>
-                        <div class="skeleton w-16 h-16 rounded-lg"></div>
-                        <div class="skeleton w-16 h-16 rounded-lg"></div>
-                        <div class="skeleton w-16 h-16 rounded-lg"></div>
-                    </div>
-                </div>
-
-                <!-- Info Loading -->
-                <div class="animate-slide-in">
-                    <h1 class="text-4xl font-bold mb-4 text-gray-900">
-                        <span class="skeleton inline-block h-12 w-3/4"></span>
-                    </h1>
-                    <p class="text-gray-600 mb-6">
-                        <span class="skeleton inline-block h-6 w-full mb-2"></span>
-                        <span class="skeleton inline-block h-6 w-3/4"></span>
-                    </p>
-
-                    <ul class="space-y-2 mb-8">
-                        <li class="flex items-center">
-                            <span class="skeleton w-6 h-6 rounded-full mr-3"></span>
-                            <span class="skeleton w-48 h-5"></span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="skeleton w-6 h-6 rounded-full mr-3"></span>
-                            <span class="skeleton w-40 h-5"></span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="skeleton w-6 h-6 rounded-full mr-3"></span>
-                            <span class="skeleton w-32 h-5"></span>
-                        </li>
-                    </ul>
-
-                    <div class="flex flex-col sm:flex-row gap-4 mb-10">
-                        <div class="skeleton w-full sm:w-1/2 h-16 rounded-full"></div>
-                        <div class="skeleton w-full sm:w-1/2 h-16 rounded-full"></div>
-                    </div>
-
-                    <!-- CERT Loading -->
-                    <div class="flex gap-6 items-center">
-                        <div class="skeleton w-12 h-12 rounded"></div>
-                        <div class="skeleton w-12 h-12 rounded"></div>
-                        <div class="skeleton w-12 h-12 rounded"></div>
-                    </div>
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 mb-12 rounded-3xl">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">Our Product Catalog</h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto animate-fade-in">
+                    Browse our complete range of ISO 13485, CE & FDA certified medical products
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 animate-fade-in">
+                    <button onclick="scrollToCategory('surgical-sutures')" class="bg-white text-blue-900 px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition">
+                        <i class="fas fa-stethoscope mr-2"></i>Surgical Sutures
+                    </button>
+                    <button onclick="scrollToCategory('surgical-instruments')" class="bg-white text-blue-900 px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition">
+                        <i class="fas fa-scalpel mr-2"></i>Surgical Instruments
+                    </button>
+                    <button onclick="scrollToCategory('protective-equipment')" class="bg-white text-blue-900 px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition">
+                        <i class="fas fa-shield-virus mr-2"></i>Protective Equipment
+                    </button>
                 </div>
             </div>
+        </section>
 
-            <!-- Details Loading -->
-            <section class="mt-24 bg-white py-16 rounded-2xl shadow-md">
-                <div class="max-w-5xl mx-auto px-4">
-                    <h2 class="text-3xl font-bold mb-6 text-gray-900">Product Description</h2>
-                    <div class="prose max-w-none text-gray-600 leading-relaxed">
-                        <div class="space-y-4">
-                            <div class="skeleton h-6 w-full"></div>
-                            <div class="skeleton h-6 w-full"></div>
-                            <div class="skeleton h-6 w-5/6"></div>
-                            <div class="skeleton h-6 w-full"></div>
-                            <div class="skeleton h-6 w-4/5"></div>
-                        </div>
+        <!-- Product Categories -->
+        <div class="max-w-7xl mx-auto px-4">
+            <!-- Surgical Sutures -->
+            <section id="surgical-sutures" class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                        <i class="fas fa-stethoscope text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Surgical Sutures</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="sutures-container">
+                    <!-- Loading State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading surgical sutures...</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Specifications Loading -->
-            <section class="mt-16 bg-white py-16 rounded-2xl shadow-md">
-                <div class="max-w-5xl mx-auto px-4">
-                    <h2 class="text-3xl font-bold mb-6 text-gray-900">Product Specifications</h2>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="space-y-4">
-                            <div class="skeleton h-8 w-full"></div>
-                            <div class="skeleton h-8 w-full"></div>
-                            <div class="skeleton h-8 w-full"></div>
-                        </div>
-                        <div class="space-y-4">
-                            <div class="skeleton h-8 w-full"></div>
-                            <div class="skeleton h-8 w-full"></div>
-                            <div class="skeleton h-8 w-full"></div>
-                        </div>
+            <!-- Surgical Instruments -->
+            <section id="surgical-instruments" class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                        <i class="fas fa-scalpel text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Surgical Instruments</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="instruments-container">
+                    <!-- Loading State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading surgical instruments...</p>
                     </div>
                 </div>
             </section>
 
-            <!-- FAQ Loading -->
-            <section class="mt-16">
-                <div class="max-w-5xl mx-auto px-4">
-                    <h2 class="text-3xl font-bold mb-8 text-gray-900">Frequently Asked Questions</h2>
-                    <div class="space-y-4">
-                        <div class="skeleton h-24 w-full rounded-lg"></div>
-                        <div class="skeleton h-20 w-full rounded-lg"></div>
-                        <div class="skeleton h-16 w-full rounded-lg"></div>
+            <!-- Gauze Dressings -->
+            <section id="gauze-dressings" class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600">
+                        <i class="fas fa-band-aid text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Gauze Dressings</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="dressings-container">
+                    <!-- Loading State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading gauze dressings...</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Related Products Loading -->
-            <section class="mt-16">
-                <div class="max-w-5xl mx-auto px-4">
-                    <h2 class="text-3xl font-bold mb-8 text-gray-900">Related Products</h2>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="skeleton h-64 w-full rounded-lg"></div>
-                        <div class="skeleton h-64 w-full rounded-lg"></div>
-                        <div class="skeleton h-64 w-full rounded-lg"></div>
+            <!-- Protective Equipment -->
+            <section id="protective-equipment" class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
+                        <i class="fas fa-shield-virus text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Protective Equipment</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="protection-container">
+                    <!-- Loading State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading protective equipment...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Injection & Infusion -->
+            <section id="injection-infusion" class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600">
+                        <i class="fas fa-syringe text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Injection & Infusion</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="injection-container">
+                    <!-- Loading State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading injection & infusion products...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dental Products -->
+            <section id="dental-products" class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600">
+                        <i class="fas fa-tooth text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Dental Products</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="dental-container">
+                    <!-- Loading State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading dental products...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Surgical Packs -->
+            <section id="surgical-packs" class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center text-teal-600">
+                        <i class="fas fa-box text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Surgical Packs</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="packs-container">
+                    <!-- Loading State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading surgical packs...</p>
                     </div>
                 </div>
             </section>
@@ -234,8 +253,9 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- Modular JavaScript Files -->
+    <!-- Modular JavaScript Files (修复：新增products.js加载，调整顺序) -->
     <script src="js/config.js"></script>
+    <script src="js/products.js"></script> <!-- 新增：加载产品数据库 -->
     <script src="js/image-utils.js"></script>
     <script src="js/seo-utils.js"></script>
     <script src="js/product-loader.js"></script>
@@ -244,11 +264,7 @@
 
     <!-- Page-specific JavaScript -->
     <script>
-        // Current product data
-        let currentProduct = null;
-        let currentImageIndex = 0;
-
-        // Initialize page
+        // Initialize components
         document.addEventListener('DOMContentLoaded', async function() {
             try {
                 // Insert navigation, footer, and WhatsApp button
@@ -259,364 +275,203 @@
                 // Initialize navigation functionality
                 components.initNavigation();
                 
-                // Get product ID from URL
-                const productId = getProductIdFromUrl();
-                if (!productId) {
-                    showProductNotFound('No product ID specified');
-                    return;
-                }
-                
-                // Load product data
-                currentProduct = await productLoader.getProductById(productId);
-                
-                if (!currentProduct) {
-                    showProductNotFound(`Product with ID "${productId}" not found`);
-                    return;
-                }
-                
-                // Render product details
-                renderProductDetails(currentProduct);
+                // Load products and render catalog
+                await loadAndRenderCatalog();
                 
                 // Update SEO
-                updateProductSEO(currentProduct);
+                seoUtils.updateMetaTags({
+                    title: 'V5 Medical Product Catalog | ISO 13485 Certified Medical Supplies',
+                    description: 'Browse our complete catalog of ISO 13485, CE & FDA certified medical products including surgical sutures, instruments, dressings, and protective equipment. Factory direct pricing from China.'
+                });
                 
-                // Track product view
-                trackProductView(currentProduct);
+                // Add organization schema
+                seoUtils.addOrganizationSchema();
                 
             } catch (error) {
-                console.error('Error loading product details:', error);
-                showProductNotFound(`Error loading product: ${error.message}`);
+                console.error('Error initializing catalog page:', error);
+                showErrorState();
             }
         });
 
-        // Get product ID from URL
-        function getProductIdFromUrl() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('id') || params.get('product');
-        }
-
-        // Render product details
-        function renderProductDetails(product) {
-            const container = document.getElementById('product-container');
-            if (!container) return;
-
-            // Update main image and thumbnails
-            updateProductImages(product);
-            
-            // Update product information
-            document.querySelector('#product-container h1').textContent = product.name || 'Product Name';
-            document.querySelector('#product-container p').textContent = product.short || product.description || '';
-            
-            // Update highlights
-            updateProductHighlights(product);
-            
-            // Update description
-            updateProductDescription(product);
-            
-            // Update specifications
-            updateProductSpecifications(product);
-            
-            // Update FAQ
-            updateProductFAQ(product);
-            
-            // Update related products
-            updateRelatedProducts(product);
-            
-            // Update certifications
-            document.querySelector('#product-container .flex.gap-6.items-center').innerHTML = components.createCertifications();
-            
-            // Update WhatsApp button link
-            const whatsappButton = document.querySelector('#product-container a[href*="wa.me"]');
-            if (whatsappButton) {
-                whatsappButton.href = `https://wa.me/447895047944?text=I%20am%20interested%20in%20${encodeURIComponent(product.name || 'your product')}`;
-            }
-        }
-
-        // Update product images
-        function updateProductImages(product) {
-            const imageUrls = product.images && product.images.length > 0 
-                ? product.images.map(img => imageUtils.getImageUrl(img))
-                : [imageUtils.getPlaceholderImage()];
-            
-            const mainImageContainer = document.querySelector('#product-container .relative.rounded-xl');
-            const thumbnailsContainer = document.querySelector('#product-container .flex.gap-2.mt-4');
-            
-            if (mainImageContainer && thumbnailsContainer) {
-                // Update main image
-                mainImageContainer.innerHTML = `
-                    <img src="${imageUrls[0]}" 
-                         onerror="this.src='${imageUtils.getPlaceholderImage()}'; this.onerror=null;"
-                         class="w-full h-80 object-cover image-zoom rounded-xl transition-opacity duration-500"
-                         alt="${product.name || 'Product Image'}"
-                         id="main-product-image">
-                `;
+        // Load products and render catalog
+        async function loadAndRenderCatalog() {
+            try {
+                const startTime = performance.now();
                 
-                // Update thumbnails
-                thumbnailsContainer.innerHTML = imageUrls.map((url, index) => `
-                    <img src="${url}" 
-                         onerror="this.src='${imageUtils.getPlaceholderImage()}'; this.onerror=null;"
-                         class="w-16 h-16 object-cover rounded-lg cursor-pointer transition-all ${index === 0 ? 'thumb-active' : 'thumb-inactive'}"
-                         alt="Thumbnail ${index + 1}"
-                         onclick="changeProductImage(${index})">
-                `).join('');
+                // Load product database (从productLoader获取，已关联products.js)
+                const products = await productLoader.loadProducts();
+                const loadTime = performance.now() - startTime;
                 
-                // Preload all images
-                imageUtils.preloadImages(imageUrls).then(() => {
-                    console.log(`Preloaded ${imageUrls.length} product images`);
-                });
-            }
-        }
-
-        // Change product image
-        function changeProductImage(index) {
-            const product = currentProduct;
-            if (!product || !product.images || product.images.length === 0) return;
-            
-            const imageUrls = product.images.map(img => imageUtils.getImageUrl(img));
-            const mainImage = document.getElementById('main-product-image');
-            
-            if (mainImage && index >= 0 && index < imageUrls.length) {
-                currentImageIndex = index;
-                mainImage.style.opacity = '0';
+                console.log(`Product database loaded in ${loadTime.toFixed(0)}ms`);
+                console.log(`Total products loaded: ${Object.values(products).length}`);
                 
-                setTimeout(() => {
-                    mainImage.src = imageUrls[index];
-                    mainImage.style.opacity = '1';
-                    
-                    // Update thumbnails active state
-                    const thumbnails = document.querySelectorAll('#product-container .flex.gap-2.mt-4 img');
-                    thumbnails.forEach((thumb, i) => {
-                        thumb.className = `w-16 h-16 object-cover rounded-lg cursor-pointer transition-all ${i === index ? 'thumb-active' : 'thumb-inactive'}`;
+                // Group products by category
+                const categories = {
+                    'surgical-sutures': 'sutures-container',
+                    'surgical-instruments': 'instruments-container',
+                    'gauze-dressings': 'dressings-container',
+                    'protective-equipment': 'protection-container',
+                    'injection-infusion': 'injection-container',
+                    'dental-products': 'dental-container',
+                    'surgical-packs': 'packs-container'
+                };
+                
+                // Render each category
+                for (const [category, containerId] of Object.entries(categories)) {
+                    const categoryProducts = Object.values(products).filter(product => product.category === category);
+                    renderProductCategory(categoryProducts, containerId);
+                }
+                
+                // Track successful catalog load
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'catalog_load_success', {
+                        event_category: 'Product Catalog',
+                        event_label: 'Catalog loaded successfully',
+                        product_count: Object.values(products).length,
+                        load_time: loadTime
                     });
-                    
-                    // Track image change
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'product_image_change', {
-                            event_category: 'Product Interaction',
-                            event_label: `Changed to image ${index + 1}`,
-                            product_id: product.id,
-                            product_name: product.name
-                        });
-                    }
-                }, 300);
+                }
+                
+            } catch (error) {
+                console.error('Error loading product catalog:', error);
+                showErrorState();
+                
+                // Track error
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'catalog_load_failure', {
+                        event_category: 'Product Catalog',
+                        event_label: 'Catalog load failed',
+                        error_message: error.message
+                    });
+                }
             }
         }
 
-        // Update product highlights
-        function updateProductHighlights(product) {
-            const highlightsContainer = document.querySelector('#product-container ul.space-y-2');
-            if (!highlightsContainer) return;
+        // Render product category
+        function renderProductCategory(products, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
             
-            if (product.highlights && product.highlights.length > 0) {
-                highlightsContainer.innerHTML = product.highlights.map(h => `
-                    <li class="flex items-center">
-                        <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                            <i class="fas fa-check text-green-600 text-xs"></i>
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <div class="text-4xl mb-4 text-gray-400">
+                            <i class="fas fa-box-open"></i>
                         </div>
-                        <span>${h}</span>
-                    </li>
-                `).join('');
-            } else {
-                highlightsContainer.innerHTML = `
-                    <li class="flex items-center">
-                        <span class="text-gray-600">No highlights available</span>
-                    </li>
+                        <p class="text-gray-600">No products available in this category</p>
+                    </div>
                 `;
-            }
-        }
-
-        // Update product description
-        function updateProductDescription(product) {
-            const descriptionContainer = document.querySelector('#product-container .prose.max-w-none');
-            if (!descriptionContainer) return;
-            
-            if (product.description) {
-                descriptionContainer.innerHTML = product.description;
-            } else {
-                descriptionContainer.innerHTML = '<p>No detailed description available.</p>';
-            }
-        }
-
-        // Update product specifications
-        function updateProductSpecifications(product) {
-            const specsContainer = document.querySelector('#product-container .grid.md\\\\:grid-cols-2.gap-8');
-            if (!specsContainer || !product.specs) {
-                // Hide specifications section if no specs
-                const specsSection = document.querySelector('#product-container section:nth-child(3)');
-                if (specsSection) specsSection.style.display = 'none';
                 return;
             }
             
-            const specs = Object.entries(product.specs);
-            const halfIndex = Math.ceil(specs.length / 2);
-            const firstColumn = specs.slice(0, halfIndex);
-            const secondColumn = specs.slice(halfIndex);
+            container.innerHTML = products.map(product => createProductCard(product)).join('');
             
-            specsContainer.innerHTML = `
-                <div class="space-y-4">
-                    ${firstColumn.map(([key, value]) => `
-                        <div class="flex justify-between items-center pb-2 border-b border-gray-100">
-                            <span class="font-medium text-gray-700">${key}:</span>
-                            <span class="text-gray-600">${value}</span>
+            // Preload images for this category
+            const imageUrls = products
+                .filter(product => product.images && product.images.length > 0)
+                .map(product => imageUtils.getImageUrl(product.images[0]));
+            
+            imageUtils.preloadImages(imageUrls).then(() => {
+                console.log(`Preloaded ${imageUrls.length} images for ${containerId}`);
+            });
+        }
+
+        // Create product card HTML
+        function createProductCard(product) {
+            const firstImage = product.images && product.images.length > 0 
+                ? imageUtils.getImageUrl(product.images[0]) 
+                : imageUtils.getPlaceholderImage();
+            
+            const certifications = product.certifications || ['ISO 13485', 'CE', 'FDA'];
+            
+            return `
+                <div class="bg-white rounded-xl overflow-hidden shadow-md product-card group">
+                    <div class="relative cursor-pointer" onclick="window.location.href='product-detail.html?id=${product.id}'">
+                        <img src="${firstImage}" 
+                             onerror="this.src='${imageUtils.getPlaceholderImage()}'; this.onerror=null;"
+                             class="w-full h-48 object-cover image-zoom rounded-t-xl transition-transform duration-500 group-hover:scale-105"
+                             alt="${product.name || 'Product Image'}">
+                        <div class="absolute top-3 right-3">
+                            <span class="bg-green-500/90 text-white text-xs px-2 py-1 rounded-full">
+                                ${product.availability || 'In Stock'}
+                            </span>
                         </div>
-                    `).join('')}
-                </div>
-                <div class="space-y-4">
-                    ${secondColumn.map(([key, value]) => `
-                        <div class="flex justify-between items-center pb-2 border-b border-gray-100">
-                            <span class="font-medium text-gray-700">${key}:</span>
-                            <span class="text-gray-600">${value}</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-2 text-gray-900 cursor-pointer" onclick="window.location.href='product-detail.html?id=${product.id}'">
+                            ${product.name || 'Product Name'}
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">
+                            ${product.short || product.description || 'No description available'}
+                        </p>
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            ${certifications.map(cert => `
+                                <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">${cert}</span>
+                            `).join('')}
                         </div>
-                    `).join('')}
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-blue-600">${product.price || 'Contact for Price'}</span>
+                            <div class="flex gap-2">
+                                <button onclick="window.location.href='product-detail.html?id=${product.id}'"
+                                        class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-sm font-semibold transition">
+                                    Details
+                                </button>
+                                <a href="https://wa.me/447895047944?text=I%20am%20interested%20in%20${encodeURIComponent(product.name || 'this product')}"
+                                   target="_blank" rel="noopener noreferrer"
+                                   class="bg-green-500 hover:bg-green-600 text-white w-9 h-9 rounded-lg flex items-center justify-center transition"
+                                   onclick="trackWhatsAppClick()">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `;
         }
 
-        // Update product FAQ
-        function updateProductFAQ(product) {
-            const faqContainer = document.querySelector('#product-container .space-y-4:nth-child(5)');
-            if (!faqContainer) return;
+        // Show error state
+        function showErrorState() {
+            const containers = [
+                'sutures-container', 'instruments-container', 'dressings-container',
+                'protection-container', 'injection-container', 'dental-container', 'packs-container'
+            ];
             
-            if (product.faq && product.faq.length > 0) {
-                faqContainer.innerHTML = product.faq.map(([q, a]) => `
-                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
-                        <h3 class="font-semibold text-lg mb-2 text-gray-900">${q}</h3>
-                        <p class="text-gray-600">${a}</p>
-                    </div>
-                `).join('');
-            } else {
-                faqContainer.innerHTML = '<p class="text-center text-gray-600">No frequently asked questions available.</p>';
-            }
-        }
-
-        // Update related products
-        function updateRelatedProducts(product) {
-            const relatedContainer = document.querySelector('#product-container .grid.md\\\\:grid-cols-2.lg\\\\:grid-cols-3.gap-6');
-            if (!relatedContainer || !product.category) {
-                // Hide related products section if no category
-                const relatedSection = document.querySelector('#product-container section:nth-child(6)');
-                if (relatedSection) relatedSection.style.display = 'none';
-                return;
-            }
-            
-            // Get related products from the same category
-            productLoader.getProductsByCategory(product.category).then(relatedProducts => {
-                // Exclude current product
-                const filteredProducts = relatedProducts.filter(p => p.id !== product.id);
-                
-                if (filteredProducts.length > 0) {
-                    relatedContainer.innerHTML = filteredProducts.slice(0, 3).map(relatedProduct => {
-                        const firstImage = relatedProduct.images && relatedProduct.images.length > 0 
-                            ? imageUtils.getImageUrl(relatedProduct.images[0]) 
-                            : imageUtils.getPlaceholderImage();
-                        
-                        return `
-                            <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition cursor-pointer"
-                                 onclick="window.location.href='product-detail.html?id=${relatedProduct.id}'">
-                                <img src="${firstImage}" 
-                                     onerror="this.src='${imageUtils.getPlaceholderImage()}'; this.onerror=null;"
-                                     class="w-full h-40 object-cover image-zoom rounded-t-xl">
-                                <div class="p-4">
-                                    <h4 class="font-bold text-gray-900 mb-2">${relatedProduct.name || 'Product Name'}</h4>
-                                    <p class="text-gray-600 text-sm line-clamp-2">
-                                        ${relatedProduct.short || 'No description available'}
-                                    </p>
-                                    <div class="mt-3 flex justify-between items-center">
-                                        <span class="font-bold text-blue-600">${relatedProduct.price || 'Contact for Price'}</span>
-                                        <span class="text-xs text-gray-500">View Details</span>
-                                    </div>
-                                </div>
+            containers.forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    container.innerHTML = `
+                        <div class="col-span-full text-center py-12">
+                            <div class="text-4xl mb-4 text-red-500">
+                                <i class="fas fa-exclamation-triangle"></i>
                             </div>
-                        `;
-                    }).join('');
-                } else {
-                    relatedContainer.innerHTML = `
-                        <div class="col-span-full text-center py-8">
-                            <p class="text-gray-600">No related products available</p>
+                            <p class="text-gray-600 mb-4">Failed to load products</p>
+                            <button onclick="window.location.reload()" 
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition">
+                                <i class="fas fa-redo mr-2"></i>Try Again
+                            </button>
                         </div>
                     `;
                 }
             });
         }
 
-        // Show product not found
-        function showProductNotFound(message) {
-            console.warn('Product not found:', message);
-            
-            const container = document.getElementById('product-container');
-            if (!container) return;
-            
-            container.innerHTML = `
-                <div class="text-center py-16">
-                    <div class="text-6xl mb-6 text-gray-400">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold mb-4 text-gray-900">Product Not Found</h2>
-                    <p class="text-gray-600 mb-8 max-w-2xl mx-auto">
-                        ${message || 'The product you are looking for could not be found. It may have been removed or the URL may be incorrect.'}
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="catalog.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold transition">
-                            <i class="fas fa-arrow-left mr-2"></i> Browse Catalog
-                        </a>
-                        <a href="index.html" class="border border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-3 rounded-full font-semibold transition">
-                            <i class="fas fa-home mr-2"></i> Home Page
-                        </a>
-                    </div>
-                </div>
-            `;
-            
-            // Update SEO for 404
-            seoUtils.updateMetaTags({
-                title: 'Product Not Found | V5 Medical LTD',
-                description: 'The requested product could not be found. Browse our complete catalog of medical products.'
-            });
-        }
-
-        // Update product SEO
-        function updateProductSEO(product) {
-            const seoData = product.seo || {};
-            const imageUrl = product.images && product.images.length > 0 
-                ? imageUtils.getImageUrl(product.images[0]) 
-                : imageUtils.getPlaceholderImage();
-            
-            seoUtils.updateMetaTags({
-                title: seoData.title || `${product.name} | V5 Medical LTD`,
-                description: seoData.description || product.short || product.description || V5Config.SEO.DEFAULT_DESCRIPTION,
-                keywords: seoData.keywords || `${product.name}, medical product, ${product.category || 'medical supplies'}, ISO 13485, CE, FDA`,
-                image: imageUrl,
-                url: window.location.href
-            });
-            
-            // Add product schema
-            seoUtils.addProductSchema(product);
-        }
-
-        // Track product view
-        function trackProductView(product) {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'view_item', {
-                    event_category: 'Product Interaction',
-                    event_label: 'Product View',
-                    items: [{
-                        item_id: product.id,
-                        item_name: product.name,
-                        item_category: product.category,
-                        price: product.price === 'Contact for Price' ? null : product.price
-                    }]
+        // Scroll to category
+        function scrollToCategory(categoryId) {
+            const element = document.getElementById(categoryId);
+            if (element) {
+                const offsetTop = element.offsetTop - 100;
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
                 });
-            }
-        }
-
-        // WhatsApp click tracking
-        function trackWhatsAppClick() {
-            if (currentProduct && typeof gtag !== 'undefined') {
-                gtag('event', 'whatsapp_click', {
-                    event_category: 'Lead Generation',
-                    event_label: 'WhatsApp Button Click',
-                    product_id: currentProduct.id,
-                    product_name: currentProduct.name
-                });
+                
+                // Track category navigation
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'category_navigation', {
+                        event_category: 'Product Catalog',
+                        event_label: `Navigated to ${categoryId}`
+                    });
+                }
             }
         }
 
@@ -626,6 +481,16 @@
                 top: 0,
                 behavior: 'smooth'
             });
+        }
+
+        // WhatsApp click tracking
+        function trackWhatsAppClick() {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'whatsapp_click', {
+                    event_category: 'Lead Generation',
+                    event_label: 'WhatsApp button clicked from catalog'
+                });
+            }
         }
 
         // Back to top button visibility
@@ -640,18 +505,13 @@
             }
         });
 
-        // Keyboard navigation for product images
-        document.addEventListener('keydown', function(e) {
-            if (!currentProduct || !currentProduct.images || currentProduct.images.length <= 1) return;
-            
-            if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                const newIndex = (currentImageIndex - 1 + currentProduct.images.length) % currentProduct.images.length;
-                changeProductImage(newIndex);
-            } else if (e.key === 'ArrowRight') {
-                e.preventDefault();
-                const newIndex = (currentImageIndex + 1) % currentProduct.images.length;
-                changeProductImage(newIndex);
+        // Handle URL fragment for category navigation
+        window.addEventListener('load', function() {
+            if (window.location.hash) {
+                const categoryId = window.location.hash.substring(1);
+                setTimeout(() => {
+                    scrollToCategory(categoryId);
+                }, 500);
             }
         });
     </script>
