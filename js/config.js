@@ -21,7 +21,7 @@ const CONFIG = {
     // Product Database Configuration
     PRODUCT_DB: {
         MAIN_FILE: 'products.js',
-        FALLBACK_FILE: 'products_fixed.js',
+        FALLBACK_FILE: 'products.js',
         TIMEOUT: 5000,
         RETRY_ATTEMPTS: 2,
         RETRY_DELAY: 1000
