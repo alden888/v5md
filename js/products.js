@@ -1217,16 +1217,16 @@ const productDatabase = {
         chineseName: '胰岛素注射器',
         category: 'injection-infusion',
         short: 'Sterile insulin syringes with ultra-fine needles',
-        description: 'High-quality sterile insulin syringes with ultra-fine needles for diabetes management. Clear barrel with easy-to-read markings. Comfortable grip and smooth plunger movement for precise insulin delivery.',
+        description: 'High-quality sterile insulin syringes with ultra-fine needles for diabetes management. Available in 0.3ml, 0.5ml, and 1ml sizes with 29G, 30G, and 31G needles. EO sterilized and individually packaged for single use.',
         price: 'Contact for Price',
         availability: 'In Stock',
         certifications: ['ISO 13485', 'CE', 'FDA'],
         features: [
-            'Ultra-fine 30G or 31G needles',
-            'Clear barrel with easy markings',
-            'Comfortable grip design',
+            'Ultra-fine needles for minimal pain',
+            'Clear barrel with easy-to-read markings',
             'Smooth plunger movement',
-            'EO sterilized'
+            'EO sterilized',
+            'Available in various sizes'
         ],
         images: [
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/insulin-syringes.jpg',
@@ -1234,40 +1234,41 @@ const productDatabase = {
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/insulin-packaging.jpg'
         ],
         specs: {
-            'Needle Size': '30G, 31G',
+            'Material': 'Medical grade polypropylene',
             'Sizes': '0.3ml, 0.5ml, 1ml',
-            'Needle Length': '8mm, 12.7mm',
+            'Needle Gauge': '29G, 30G, 31G',
+            'Needle Length': '8mm, 10mm, 12.7mm',
             'Sterilization': 'EO sterilized',
             'Packaging': '100 syringes/box, 50 boxes/carton'
         },
         faq: [
-            { q: 'What needle sizes are available?', a: '30G and 31G ultra-fine needles.' },
-            { q: 'What are the syringe sizes?', a: '0.3ml, 0.5ml, and 1ml for different insulin doses.' },
+            { q: 'What sizes are available?', a: '0.3ml, 0.5ml, and 1ml sizes with various needle gauges.' },
+            { q: 'What needle gauges are available?', a: '29G, 30G, and 31G ultra-fine needles.' },
             { q: 'Are these syringes sterile?', a: 'Yes, all insulin syringes are EO sterilized.' }
         ],
         seo: {
             title: 'Insulin Syringes | V5 Medical - Ultra-Fine Needle Syringes',
-            description: 'High-quality sterile insulin syringes with ultra-fine needles for diabetes management. Clear markings for precise insulin delivery.',
-            keywords: 'insulin syringes, ultra-fine needles, diabetes syringes, medical syringes, injection syringes'
+            description: 'High-quality sterile insulin syringes with ultra-fine needles for diabetes management. Various sizes and needle gauges available.',
+            keywords: 'insulin syringes, ultra-fine needles, diabetes syringes, sterile syringes, medical syringes'
         }
     },
     
     'hypodermic-needles': {
         id: 'hypodermic-needles',
         name: 'Hypodermic Needles',
-        chineseName: '皮下注射针头',
+        chineseName: '皮下注射针',
         category: 'injection-infusion',
-        short: 'Sterile hypodermic needles for medical injections',
-        description: 'High-quality sterile hypodermic needles made from stainless steel. Available in various gauges and lengths for different injection applications. Sharp bevel for minimal pain and smooth penetration.',
+        short: 'Sterile hypodermic needles for injection and aspiration',
+        description: 'High-quality sterile hypodermic needles made from stainless steel. Available in various gauges and lengths for injection, aspiration, and other medical procedures. EO sterilized and individually packaged for single use.',
         price: 'Contact for Price',
         availability: 'In Stock',
         certifications: ['ISO 13485', 'CE', 'FDA'],
         features: [
             'Stainless steel construction',
-            'Sharp bevel for minimal pain',
-            'Various gauges and lengths',
-            'Luer lock or slip fit',
-            'EO sterilized'
+            'Sharp bevel for easy penetration',
+            'Smooth surface for minimal tissue trauma',
+            'EO sterilized',
+            'Various gauges and lengths available'
         ],
         images: [
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/hypodermic-needles.jpg',
@@ -1277,20 +1278,19 @@ const productDatabase = {
         specs: {
             'Material': 'Stainless steel',
             'Gauges': '18G to 30G',
-            'Lengths': '13mm to 89mm',
-            'Fit': 'Luer lock, Luer slip',
+            'Lengths': '13mm to 152mm',
             'Sterilization': 'EO sterilized',
             'Packaging': '100 needles/box, 100 boxes/carton'
         },
         faq: [
-            { q: 'What gauges are available?', a: '18G to 30G for different viscosity medications.' },
-            { q: 'What lengths are available?', a: '13mm to 89mm for different injection depths.' },
+            { q: 'What gauges are available?', a: '18G to 30G in various lengths.' },
+            { q: 'What lengths are available?', a: '13mm to 152mm depending on gauge.' },
             { q: 'Are these needles sterile?', a: 'Yes, all hypodermic needles are EO sterilized.' }
         ],
         seo: {
             title: 'Hypodermic Needles | V5 Medical - Sterile Injection Needles',
-            description: 'High-quality sterile hypodermic needles made from stainless steel. Various gauges and lengths available for medical injections.',
-            keywords: 'hypodermic needles, sterile needles, medical needles, injection needles, stainless steel needles'
+            description: 'High-quality sterile hypodermic needles made from stainless steel. Various gauges and lengths available for medical procedures.',
+            keywords: 'hypodermic needles, sterile needles, injection needles, medical needles, stainless steel needles'
         }
     },
     
@@ -1299,17 +1299,17 @@ const productDatabase = {
         name: 'IV Cannula',
         chineseName: '静脉留置针',
         category: 'injection-infusion',
-        short: 'Intravenous cannula for IV therapy',
-        description: 'High-quality intravenous cannula for IV therapy and fluid administration. Available in various gauges with winged or straight design. Features include flashback chamber, secure hub, and smooth insertion bevel.',
+        short: 'IV cannula with wings for intravenous access',
+        description: 'High-quality IV cannula with wings for secure intravenous access. Available in 14G to 24G sizes with various lengths. Features include flashback chamber, wings for secure fixation, and transparent hub for easy visualization. EO sterilized and individually packaged.',
         price: 'Contact for Price',
         availability: 'In Stock',
         certifications: ['ISO 13485', 'CE', 'FDA'],
         features: [
-            'Stainless steel needle with PTFE catheter',
-            'Flashback chamber for vein visualization',
-            'Winged or straight design',
-            'Secure hub with injection port',
-            'Smooth insertion bevel'
+            'Flashback chamber for easy vein location',
+            'Wings for secure fixation',
+            'Transparent hub for visualization',
+            'Smooth insertion for patient comfort',
+            'EO sterilized'
         ],
         images: [
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/iv-cannula.jpg',
@@ -1317,22 +1317,21 @@ const productDatabase = {
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/cannula-packaging.jpg'
         ],
         specs: {
-            'Gauges': '14G to 24G',
-            'Catheter Length': '25mm to 50mm',
-            'Design': 'Winged, Straight',
-            'Features': 'Flashback chamber, Injection port',
+            'Material': 'Stainless steel needle, polyurethane catheter',
+            'Sizes': '14G, 16G, 18G, 20G, 22G, 24G',
+            'Lengths': '25mm to 45mm',
             'Sterilization': 'EO sterilized',
-            'Packaging': '50 cannulas/box, 20 boxes/carton'
+            'Packaging': '100 cannulas/box, 10 boxes/carton'
         },
         faq: [
-            { q: 'What gauges are available?', a: '14G to 24G for different flow rates and patient types.' },
-            { q: 'What is the advantage of winged design?', a: 'Provides better stability and easier handling during insertion.' },
-            { q: 'Does it have a flashback chamber?', a: 'Yes, all IV cannulas have a flashback chamber for vein visualization.' }
+            { q: 'What sizes are available?', a: '14G to 24G in various lengths.' },
+            { q: 'Does it have a flashback chamber?', a: 'Yes, all IV cannulas have a flashback chamber.' },
+            { q: 'Are these cannulas sterile?', a: 'Yes, all IV cannulas are EO sterilized.' }
         ],
         seo: {
-            title: 'IV Cannula | V5 Medical - Intravenous Cannulas',
-            description: 'High-quality intravenous cannula for IV therapy. Various gauges with winged or straight design and flashback chamber.',
-            keywords: 'IV cannula, intravenous cannula, IV therapy, medical cannula, infusion cannula'
+            title: 'IV Cannula | V5 Medical - Intravenous Access Devices',
+            description: 'High-quality IV cannula with wings for secure intravenous access. Various sizes available with flashback chamber for easy vein location.',
+            keywords: 'IV cannula, intravenous cannula, IV access, medical cannula, sterile cannula'
         }
     },
     
@@ -1341,17 +1340,17 @@ const productDatabase = {
         name: 'Infusion Sets',
         chineseName: '输液器',
         category: 'injection-infusion',
-        short: 'IV infusion sets for fluid administration',
-        description: 'High-quality IV infusion sets for gravity and pump infusion. Includes spike, drip chamber, flow regulator, and injection port. Made from medical grade materials with DEHP-free options available.',
+        short: 'IV infusion sets with drip chamber and roller clamp',
+        description: 'High-quality IV infusion sets with drip chamber, roller clamp, and needle or luer lock connector. Available with various needle gauges and tubing lengths. Features include air vent, latex-free components, and sterile packaging. EO sterilized for single use.',
         price: 'Contact for Price',
         availability: 'In Stock',
         certifications: ['ISO 13485', 'CE', 'FDA'],
         features: [
-            'Medical grade PVC or DEHP-free material',
-            'Clear drip chamber with filter',
-            'Precise flow regulator',
-            'Injection port for medication',
-            'Sterile and pyrogen-free'
+            'Drip chamber with filter',
+            'Roller clamp for flow control',
+            'Latex-free components',
+            'Air vent for gravity infusion',
+            'EO sterilized'
         ],
         images: [
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/infusion-sets.jpg',
@@ -1359,22 +1358,21 @@ const productDatabase = {
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/infusion-packaging.jpg'
         ],
         specs: {
-            'Material': 'PVC or DEHP-free',
-            'Length': '150cm standard',
-            'Filter': '15μm or 20μm',
-            'Needle': '18G to 21G',
+            'Tubing Length': '150cm, 180cm',
+            'Needle Gauge': '18G, 20G, 21G, 22G',
+            'Filter': '0.22μm or 15μm',
             'Sterilization': 'EO sterilized',
-            'Packaging': '50 sets/box, 20 boxes/carton'
+            'Packaging': '50 sets/box, 10 boxes/carton'
         },
         faq: [
-            { q: 'Are DEHP-free options available?', a: 'Yes, we offer both PVC and DEHP-free infusion sets.' },
-            { q: 'What filter sizes are available?', a: '15μm and 20μm filters for particle removal.' },
-            { q: 'What needle sizes are available?', a: '18G to 21G needles for different applications.' }
+            { q: 'What tubing lengths are available?', a: '150cm and 180cm lengths.' },
+            { q: 'Does it include a filter?', a: 'Yes, available with 0.22μm or 15μm filters.' },
+            { q: 'Are these sets latex-free?', a: 'Yes, all components are latex-free.' }
         ],
         seo: {
-            title: 'Infusion Sets | V5 Medical - IV Infusion Equipment',
-            description: 'High-quality IV infusion sets for gravity and pump infusion. Medical grade materials with DEHP-free options available.',
-            keywords: 'infusion sets, IV infusion sets, medical infusion, fluid administration, infusion equipment'
+            title: 'Infusion Sets | V5 Medical - IV Infusion Devices',
+            description: 'High-quality IV infusion sets with drip chamber and roller clamp. Various configurations available with latex-free components.',
+            keywords: 'infusion sets, IV infusion sets, drip sets, medical infusion, sterile infusion sets'
         }
     },
     
@@ -1383,40 +1381,39 @@ const productDatabase = {
         name: 'Blood Transfusion Sets',
         chineseName: '输血器',
         category: 'injection-infusion',
-        short: 'Sterile blood transfusion sets for blood administration',
-        description: 'High-quality sterile blood transfusion sets for safe blood and blood component administration. Includes 170μm blood filter, Y-connector, and roller clamp. Made from medical grade materials with DEHP-free options.',
+        short: 'Blood transfusion sets with blood filter',
+        description: 'High-quality blood transfusion sets with 170μm blood filter for safe blood and blood component administration. Features include Y-site connector, roller clamp, and latex-free components. Available with needle or luer lock connector. EO sterilized for single use.',
         price: 'Contact for Price',
         availability: 'In Stock',
         certifications: ['ISO 13485', 'CE', 'FDA'],
         features: [
-            '170μm blood filter for microaggregate removal',
-            'Y-connector for medication addition',
-            'Precise roller clamp',
-            'Medical grade or DEHP-free material',
-            'Sterile and pyrogen-free'
+            '170μm blood filter',
+            'Y-site connector for medication administration',
+            'Roller clamp for flow control',
+            'Latex-free components',
+            'EO sterilized'
         ],
         images: [
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/blood-transfusion-sets.jpg',
-            'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/blood-detail.jpg',
-            'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/blood-packaging.jpg'
+            'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/transfusion-detail.jpg',
+            'https://raw.githubusercontent.com/alden888/v5md/main/images/products/injection-infusion/transfusion-packaging.jpg'
         ],
         specs: {
+            'Tubing Length': '150cm',
             'Filter': '170μm blood filter',
-            'Material': 'PVC or DEHP-free',
-            'Length': '180cm standard',
-            'Connector': 'Y-connector with injection site',
+            'Connector': 'Needle or luer lock',
             'Sterilization': 'EO sterilized',
-            'Packaging': '20 sets/box, 10 boxes/carton'
+            'Packaging': '25 sets/box, 10 boxes/carton'
         },
         faq: [
-            { q: 'What is the filter size?', a: '170μm filter for removal of microaggregates from blood.' },
-            { q: 'Does it have a Y-connector?', a: 'Yes, includes Y-connector for medication addition during transfusion.' },
-            { q: 'Are DEHP-free options available?', a: 'Yes, we offer both PVC and DEHP-free blood transfusion sets.' }
+            { q: 'What filter size is included?', a: '170μm blood filter for safe transfusion.' },
+            { q: 'Does it have a Y-site connector?', a: 'Yes, for simultaneous medication administration.' },
+            { q: 'Are these sets latex-free?', a: 'Yes, all components are latex-free.' }
         ],
         seo: {
-            title: 'Blood Transfusion Sets | V5 Medical - Blood Administration Equipment',
-            description: 'High-quality sterile blood transfusion sets with 170μm filter. Safe blood administration with DEHP-free options available.',
-            keywords: 'blood transfusion sets, blood administration, transfusion equipment, medical transfusion, blood filter'
+            title: 'Blood Transfusion Sets | V5 Medical - Blood Administration Devices',
+            description: 'High-quality blood transfusion sets with 170μm blood filter. Y-site connector for safe blood component administration.',
+            keywords: 'blood transfusion sets, transfusion sets, blood filter sets, medical transfusion, sterile transfusion sets'
         }
     },
     
@@ -1424,19 +1421,19 @@ const productDatabase = {
     'dental-examination-kits': {
         id: 'dental-examination-kits',
         name: 'Dental Examination Kits',
-        chineseName: '牙科检查套件',
+        chineseName: '牙科检查套装',
         category: 'dental-products',
-        short: 'Disposable dental examination kits for patient use',
-        description: 'High-quality disposable dental examination kits containing all necessary instruments for dental check-ups. Includes mouth mirror, explorer, cotton pliers, and disposable tray. Sterile and individually packaged for single patient use.',
+        short: 'Disposable dental examination kits with basic instruments',
+        description: 'Disposable dental examination kits containing basic instruments for dental check-ups. Each kit includes mouth mirror, explorer, periodontal probe, and cotton rolls. Individually packaged and EO sterilized for single patient use.',
         price: 'Contact for Price',
         availability: 'In Stock',
         certifications: ['ISO 13485', 'CE', 'FDA'],
         features: [
-            'Complete examination kit',
-            'Mouth mirror, explorer, cotton pliers',
-            'Disposable tray included',
+            'Complete examination instruments',
+            'Individually packaged',
             'EO sterilized',
-            'Individually packaged'
+            'Single patient use',
+            'Cost-effective'
         ],
         images: [
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/dental-examination-kits.jpg',
@@ -1444,20 +1441,20 @@ const productDatabase = {
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/exam-kit-packaging.jpg'
         ],
         specs: {
-            'Components': 'Mouth mirror, explorer, cotton pliers, tray',
+            'Contents': 'Mouth mirror, explorer, periodontal probe, cotton rolls',
             'Sterilization': 'EO sterilized',
-            'Packaging': '20 kits/box, 10 boxes/carton',
+            'Packaging': '50 kits/box, 10 boxes/carton',
             'Shelf Life': '3 years'
         },
         faq: [
-            { q: 'What is included in the kit?', a: 'Mouth mirror, explorer, cotton pliers, and disposable tray.' },
-            { q: 'Are these kits sterile?', a: 'Yes, all dental examination kits are EO sterilized.' },
-            { q: 'How many kits are in a box?', a: '20 kits per box, 10 boxes per carton.' }
+            { q: 'What instruments are included?', a: 'Mouth mirror, explorer, periodontal probe, and cotton rolls.' },
+            { q: 'Are these kits sterile?', a: 'Yes, all examination kits are EO sterilized.' },
+            { q: 'What is the shelf life?', a: '3 years from manufacturing date when stored properly.' }
         ],
         seo: {
             title: 'Dental Examination Kits | V5 Medical - Disposable Dental Kits',
-            description: 'High-quality disposable dental examination kits with mouth mirror, explorer, cotton pliers, and tray. Sterile and individually packaged.',
-            keywords: 'dental examination kits, disposable dental kits, dental instruments, dental check-up, medical dental'
+            description: 'Disposable dental examination kits with basic instruments for dental check-ups. Individually packaged and EO sterilized.',
+            keywords: 'dental examination kits, disposable dental kits, dental instruments, dental check-up kits, sterile dental kits'
         }
     },
     
@@ -1467,16 +1464,16 @@ const productDatabase = {
         chineseName: '吸唾器',
         category: 'dental-products',
         short: 'Disposable saliva ejectors for dental procedures',
-        description: 'High-quality disposable saliva ejectors for dental procedures. Flexible plastic tube with suction tip for effective saliva removal. Comfortable design with various tip colors available. Individually packaged for single use.',
+        description: 'Disposable saliva ejectors for removal of saliva and debris during dental procedures. Flexible tubing with ergonomic handle and suction tip. Available in various colors with or without anti-retraction valve. Individually packaged for single use.',
         price: 'Contact for Price',
         availability: 'In Stock',
         certifications: ['ISO 13485', 'CE', 'FDA'],
         features: [
-            'Flexible plastic tube',
-            'Effective suction tip',
-            'Comfortable design',
-            'Various tip colors',
-            'Individually packaged'
+            'Flexible tubing for easy positioning',
+            'Ergonomic handle',
+            'Available with anti-retraction valve',
+            'Various colors available',
+            'Single use'
         ],
         images: [
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/saliva-ejectors.jpg',
@@ -1484,40 +1481,40 @@ const productDatabase = {
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/saliva-packaging.jpg'
         ],
         specs: {
-            'Material': 'Flexible plastic',
-            'Length': '15cm standard',
-            'Tip Colors': 'Clear, Blue, Green, Red',
-            'Packaging': '100 ejectors/box, 50 boxes/carton',
-            'Shelf Life': '3 years'
+            'Length': '30cm',
+            'Tip Size': 'Standard',
+            'Colors': 'Clear, Blue, Green',
+            'Valve': 'With or without anti-retraction',
+            'Packaging': '100 ejectors/box, 50 boxes/carton'
         },
         faq: [
-            { q: 'What colors are available?', a: 'Clear, blue, green, and red tip colors.' },
-            { q: 'How long is each ejector?', a: '15cm standard length for comfortable use.' },
-            { q: 'Are these ejectors latex-free?', a: 'Yes, all saliva ejectors are latex-free.' }
+            { q: 'What lengths are available?', a: 'Standard 30cm length.' },
+            { q: 'Are anti-retraction valves available?', a: 'Yes, available with or without anti-retraction valve.' },
+            { q: 'What colors are available?', a: 'Clear, blue, and green colors.' }
         ],
         seo: {
-            title: 'Saliva Ejectors | V5 Medical - Disposable Dental Suction',
-            description: 'High-quality disposable saliva ejectors with flexible tube and effective suction tip. Various colors available for dental procedures.',
-            keywords: 'saliva ejectors, dental suction, disposable ejectors, dental saliva, medical dental'
+            title: 'Saliva Ejectors | V5 Medical - Disposable Dental Suction Devices',
+            description: 'Disposable saliva ejectors for removal of saliva during dental procedures. Flexible tubing with ergonomic handle.',
+            keywords: 'saliva ejectors, dental suction, disposable saliva ejectors, dental saliva ejectors, dental suction devices'
         }
     },
     
     'dental-bibs': {
         id: 'dental-bibs',
         name: 'Dental Bibs',
-        chineseName: '牙科围兜',
+        chineseName: '牙科围巾',
         category: 'dental-products',
-        short: 'Disposable dental bibs for patient protection',
-        description: 'High-quality disposable dental bibs for patient protection during dental procedures. Waterproof polyethylene backing with absorbent tissue front. Adhesive strip for secure attachment. Available in various colors and sizes.',
+        short: 'Disposable dental bibs with plastic backing',
+        description: 'Disposable dental bibs with plastic backing for patient protection during dental procedures. Tissue-polyethylene construction with adhesive strip for secure fixation. Available in various colors and sizes. Highly absorbent and waterproof.',
         price: 'Contact for Price',
         availability: 'In Stock',
         certifications: ['ISO 13485', 'CE', 'FDA'],
         features: [
-            'Waterproof polyethylene backing',
-            'Absorbent tissue front',
-            'Adhesive strip for secure attachment',
-            'Various colors and sizes',
-            'Latex-free'
+            'Tissue-polyethylene construction',
+            'Waterproof plastic backing',
+            'Adhesive strip for fixation',
+            'Highly absorbent',
+            'Various colors available'
         ],
         images: [
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/dental-bibs.jpg',
@@ -1525,21 +1522,21 @@ const productDatabase = {
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/bib-packaging.jpg'
         ],
         specs: {
-            'Material': 'Tissue/polyethylene laminate',
             'Sizes': '13x18", 13x19", 13x24"',
             'Colors': 'Blue, Green, Pink, White',
+            'Material': 'Tissue + PE',
             'Packaging': '200 bibs/box, 10 boxes/carton',
             'Shelf Life': '3 years'
         },
         faq: [
             { q: 'What sizes are available?', a: '13x18", 13x19", and 13x24" sizes.' },
-            { q: 'What colors are available?', a: 'Blue, green, pink, and white colors.' },
-            { q: 'Are these bibs waterproof?', a: 'Yes, they have a waterproof polyethylene backing.' }
+            { q: 'Are these bibs waterproof?', a: 'Yes, with plastic backing for water protection.' },
+            { q: 'Do they have adhesive strips?', a: 'Yes, for secure fixation around the neck.' }
         ],
         seo: {
             title: 'Dental Bibs | V5 Medical - Disposable Patient Protection',
-            description: 'High-quality disposable dental bibs with waterproof backing and absorbent front. Various colors and sizes for patient protection.',
-            keywords: 'dental bibs, disposable bibs, patient protection, dental drapes, medical dental'
+            description: 'Disposable dental bibs with plastic backing for patient protection. Tissue-polyethylene construction with adhesive strip.',
+            keywords: 'dental bibs, disposable dental bibs, patient bibs, dental patient protection, waterproof bibs'
         }
     },
     
@@ -1549,16 +1546,16 @@ const productDatabase = {
         chineseName: '印模托盘',
         category: 'dental-products',
         short: 'Dental impression trays for dental impressions',
-        description: 'High-quality dental impression trays for taking dental impressions. Available in various sizes and arch types (upper, lower, full arch). Perforated design for better material retention. Reusable and autoclavable.',
+        description: 'Dental impression trays for taking dental impressions. Available in metal or plastic construction in various sizes and configurations. Perforated design for better impression material retention. Autoclavable or disposable options available.',
         price: 'Contact for Price',
         availability: 'In Stock',
         certifications: ['ISO 13485', 'CE', 'FDA'],
         features: [
-            'Stainless steel construction',
             'Perforated design for material retention',
-            'Various sizes and arch types',
-            'Reusable and autoclavable',
-            'Comfortable fit'
+            'Available in metal or plastic',
+            'Various sizes and configurations',
+            'Autoclavable or disposable',
+            'Anatomical design'
         ],
         images: [
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/impression-trays.jpg',
@@ -1566,21 +1563,21 @@ const productDatabase = {
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/tray-packaging.jpg'
         ],
         specs: {
-            'Material': 'Stainless steel',
-            'Types': 'Upper, Lower, Full arch',
-            'Sizes': 'Small, Medium, Large, X-Large',
-            'Sterilization': 'Autoclavable (134°C)',
-            'Warranty': '1 year'
+            'Material': 'Stainless steel or plastic',
+            'Types': 'Full arch, quadrant, section trays',
+            'Sizes': 'Small, Medium, Large, Extra Large',
+            'Sterilization': 'Autoclavable (metal), EO (plastic)',
+            'Packaging': '25 trays/box, 10 boxes/carton'
         },
         faq: [
-            { q: 'What types of trays are available?', a: 'Upper, lower, and full arch impression trays.' },
-            { q: 'What sizes are available?', a: 'Small, medium, large, and X-large sizes.' },
-            { q: 'Are these trays reusable?', a: 'Yes, they are made from stainless steel and can be autoclaved.' }
+            { q: 'What materials are available?', a: 'Stainless steel (reusable) or plastic (disposable).' },
+            { q: 'What types are available?', a: 'Full arch, quadrant, and section trays in various sizes.' },
+            { q: 'Are metal trays autoclavable?', a: 'Yes, stainless steel trays are autoclavable.' }
         ],
         seo: {
-            title: 'Impression Trays | V5 Medical - Dental Impression Equipment',
-            description: 'High-quality dental impression trays with perforated design. Various sizes and arch types for taking dental impressions.',
-            keywords: 'impression trays, dental trays, dental impression, stainless steel trays, medical dental'
+            title: 'Impression Trays | V5 Medical - Dental Impression Devices',
+            description: 'Dental impression trays for taking dental impressions. Available in metal or plastic with anatomical design.',
+            keywords: 'impression trays, dental impression trays, dental trays, dental impression devices, dental instruments'
         }
     },
     
@@ -1589,17 +1586,17 @@ const productDatabase = {
         name: 'Polishing Cups',
         chineseName: '抛光杯',
         category: 'dental-products',
-        short: 'Disposable dental polishing cups for prophylaxis',
-        description: 'High-quality disposable dental polishing cups for prophylaxis and teeth polishing. Made from soft rubber for gentle polishing. Available in various sizes and colors. Fits standard prophy angles for easy use.',
+        short: 'Dental polishing cups for prophylaxis',
+        description: 'Dental polishing cups for prophylaxis and tooth polishing. Made from rubber or silicone with various sizes and configurations. Fits standard prophy angles for easy use. Available in soft, medium, and firm textures for different polishing needs.',
         price: 'Contact for Price',
         availability: 'In Stock',
         certifications: ['ISO 13485', 'CE', 'FDA'],
         features: [
-            'Soft rubber material',
-            'Gentle polishing action',
-            'Various sizes and colors',
+            'Rubber or silicone construction',
+            'Various sizes and shapes',
             'Fits standard prophy angles',
-            'Disposable for single use'
+            'Soft, medium, and firm textures',
+            'Autoclavable'
         ],
         images: [
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/polishing-cups.jpg',
@@ -1607,21 +1604,21 @@ const productDatabase = {
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/cup-packaging.jpg'
         ],
         specs: {
-            'Material': 'Soft rubber',
+            'Material': 'Rubber or silicone',
             'Sizes': 'Small, Medium, Large',
-            'Colors': 'Red, Yellow, Green',
-            'Packaging': '50 cups/box, 20 boxes/carton',
-            'Shelf Life': '3 years'
+            'Shapes': 'Round, Conical, Discoid',
+            'Texture': 'Soft, Medium, Firm',
+            'Packaging': '50 cups/box, 10 boxes/carton'
         },
         faq: [
-            { q: 'What sizes are available?', a: 'Small, medium, and large polishing cups.' },
-            { q: 'What colors are available?', a: 'Red, yellow, and green colors for different grits.' },
-            { q: 'Do these fit standard prophy angles?', a: 'Yes, they fit all standard prophy angles.' }
+            { q: 'What materials are available?', a: 'Rubber or silicone construction.' },
+            { q: 'What sizes are available?', a: 'Small, medium, and large sizes in various shapes.' },
+            { q: 'Are these cups autoclavable?', a: 'Yes, all polishing cups are autoclavable.' }
         ],
         seo: {
-            title: 'Polishing Cups | V5 Medical - Disposable Dental Prophylaxis',
-            description: 'High-quality disposable dental polishing cups made from soft rubber. Various sizes and colors for prophylaxis and teeth polishing.',
-            keywords: 'polishing cups, dental prophylaxis, disposable cups, teeth polishing, medical dental'
+            title: 'Polishing Cups | V5 Medical - Dental Prophylaxis Devices',
+            description: 'Dental polishing cups for prophylaxis and tooth polishing. Rubber or silicone construction in various sizes and textures.',
+            keywords: 'polishing cups, dental polishing cups, prophy cups, dental prophylaxis, tooth polishing'
         }
     },
     
@@ -1630,17 +1627,17 @@ const productDatabase = {
         name: 'Polishing Brushes',
         chineseName: '抛光刷',
         category: 'dental-products',
-        short: 'Disposable dental polishing brushes for interproximal cleaning',
-        description: 'High-quality disposable dental polishing brushes for interproximal cleaning and stain removal. Nylon bristles with plastic handle. Available in various sizes and shapes. Fits standard prophy angles for easy use.',
+        short: 'Dental polishing brushes for interproximal cleaning',
+        description: 'Dental polishing brushes for interproximal cleaning and stain removal. Nylon bristle construction with various sizes and shapes. Fits standard prophy angles for easy use. Available in soft, medium, and firm bristle textures.',
         price: 'Contact for Price',
         availability: 'In Stock',
         certifications: ['ISO 13485', 'CE', 'FDA'],
         features: [
-            'Nylon bristles',
-            'Plastic handle',
+            'Nylon bristle construction',
             'Various sizes and shapes',
             'Fits standard prophy angles',
-            'Disposable for single use'
+            'Soft, medium, and firm bristles',
+            'Autoclavable'
         ],
         images: [
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/polishing-brushes.jpg',
@@ -1648,21 +1645,21 @@ const productDatabase = {
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/dental-products/brush-packaging.jpg'
         ],
         specs: {
-            'Bristle Material': 'Nylon',
-            'Handle Material': 'Plastic',
-            'Shapes': 'Conical, Cylindrical, Flame',
-            'Sizes': 'Small, Medium',
-            'Packaging': '50 brushes/box, 20 boxes/carton'
+            'Material': 'Nylon bristles, plastic handle',
+            'Sizes': 'Small, Medium, Large',
+            'Shapes': 'Conical, Cylindrical, Fluted',
+            'Texture': 'Soft, Medium, Firm',
+            'Packaging': '50 brushes/box, 10 boxes/carton'
         },
         faq: [
-            { q: 'What shapes are available?', a: 'Conical, cylindrical, and flame shapes for different applications.' },
-            { q: 'What sizes are available?', a: 'Small and medium sizes for interproximal cleaning.' },
-            { q: 'Do these fit standard prophy angles?', a: 'Yes, they fit all standard prophy angles.' }
+            { q: 'What materials are available?', a: 'Nylon bristles with plastic handle.' },
+            { q: 'What sizes are available?', a: 'Small, medium, and large sizes in various shapes.' },
+            { q: 'Are these brushes autoclavable?', a: 'Yes, all polishing brushes are autoclavable.' }
         ],
         seo: {
-            title: 'Polishing Brushes | V5 Medical - Disposable Dental Brushes',
-            description: 'High-quality disposable dental polishing brushes with nylon bristles. Various shapes and sizes for interproximal cleaning and stain removal.',
-            keywords: 'polishing brushes, dental brushes, interproximal cleaning, teeth polishing, medical dental'
+            title: 'Polishing Brushes | V5 Medical - Dental Interproximal Cleaners',
+            description: 'Dental polishing brushes for interproximal cleaning and stain removal. Nylon bristle construction in various sizes.',
+            keywords: 'polishing brushes, dental polishing brushes, prophy brushes, interproximal cleaning, dental prophylaxis'
         }
     },
     
@@ -1673,16 +1670,16 @@ const productDatabase = {
         chineseName: '手术包',
         category: 'surgical-packs',
         short: 'Custom surgical packs with procedure-specific instruments',
-        description: 'Customized surgical packs containing all necessary instruments and supplies for specific surgical procedures. Designed to reduce preparation time and ensure all required items are available. EO sterilized and ready for use.',
+        description: 'Customized surgical packs with procedure-specific instruments and supplies. Each pack includes drapes, gowns, gloves, and instruments tailored to specific surgical procedures. EO sterilized and ready for use to reduce preparation time and improve efficiency.',
         price: 'Contact for Price',
         availability: 'In Stock',
         certifications: ['ISO 13485', 'CE', 'FDA'],
         features: [
-            'Procedure-specific configuration',
-            'Contains all necessary instruments and supplies',
+            'Customized for specific procedures',
+            'Complete set of instruments and supplies',
+            'EO sterilized and ready for use',
             'Reduces preparation time',
-            'EO sterilized',
-            'Customizable to specific needs'
+            'Improves efficiency and safety'
         ],
         images: [
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-packs/surgical-packs.jpg',
@@ -1690,11 +1687,11 @@ const productDatabase = {
             'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-packs/pack-contents.jpg'
         ],
         specs: {
-            'Configurations': 'General surgery, Obstetrics, Orthopedics, Ophthalmology, etc.',
+            'Contents': 'Customized based on procedure',
             'Sterilization': 'EO sterilized',
-            'Packaging': '1 pack/sterile pouch',
+            'Packaging': 'Sterile peel pouch',
             'Shelf Life': '5 years',
-            'Customization': 'Available to specific requirements'
+            'Customization': 'Available for any procedure'
         },
         faq: [
             { q: 'What procedure-specific packs are available?', a: 'General surgery, obstetrics, orthopedics, ophthalmology, and many others.' },
