@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products.js Diagnostic Tool</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        h1 {
+            color: #1e40af;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+        .status {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+        }
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 2px solid #10b981;
+        }
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 2px solid #ef4444;
+        }
+        .status.warning {
+            background: #fef3c7;
+            color: #92400e;
+            border: 2px solid #f59e0b;
+        }
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border-left: 4px solid #3b82f6;
+        }
+        .section h2 {
+            color: #1e40af;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .info-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .info-card strong {
+            color: #1e40af;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .info-card span {
+            color: #64748b;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 0.9em;
+            line-height: 1.6;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .product-sample {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .product-sample h3 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+        .product-sample p {
+            color: #64748b;
+            margin: 5px 0;
+        }
+        .btn {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        }
+        .btn.success {
+            background: #10b981;
+        }
+        .btn.success:hover {
+            background: #059669;
+        }
+        .icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Products.js Diagnostic Tool</h1>
+        
+        <div id="status" class="status">
+            <div class="icon">⏳</div>
+            Checking products.js...
+        </div>
+
+        <div id="results"></div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="catalog.html" class="btn">Go to Catalog</a>
+            <a href="index.html" class="btn success">Go to Home</a>
+        </div>
+    </div>
+
+    <!-- Load products.js -->
+    <script src="js/products.js"></script>
+
+    <script>
+        function diagnose() {
+            const results = [];
+            let overallStatus = 'success';
+            
+            // Check 1: Script loaded
+            results.push({
+                title: '1. Script Loading',
+                checks: [
+                    { name: 'products.js loaded', status: true }
+                ]
+            });
+
+            // Check 2: Global variables
+            const sources = {
+                'window.productDatabase': window.productDatabase,
+                'window.finalProductDatabase': window.finalProductDatabase,
+                'window.completeProductDatabase': window.completeProductDatabase,
+                'window.productData': window.productData
+            };
+
+            const globalChecks = Object.entries(sources).map(([name, value]) => ({
+                name,
+                status: !!value,
+                value: value ? `✓ Found (${typeof value})` : '✗ Not found'
+            }));
+
+            const foundSource = Object.values(sources).find(s => s);
+            
+            if (!foundSource) {
+                overallStatus = 'error';
+            }
+
+            results.push({
+                title: '2. Global Variables',
+                checks: globalChecks
+            });
+
+            // Check 3: Database structure
+            if (foundSource) {
+                const db = foundSource;
+                const structureChecks = [
+                    { 
+                        name: 'Has products array', 
+                        status: !!(db.products || Array.isArray(db)),
+                        value: db.products ? `✓ ${db.products.length} products` : Array.isArray(db) ? `✓ ${db.length} products` : '✗ No products array'
+                    },
+                    { 
+                        name: 'Has byId lookup', 
+                        status: !!db.byId,
+                        value: db.byId ? `✓ ${Object.keys(db.byId).length} entries` : '✗ No byId'
+                    },
+                    { 
+                        name: 'Has categories', 
+                        status: !!db.categories,
+                        value: db.categories ? `✓ ${Object.keys(db.categories).length} categories` : '✗ No categories'
+                    },
+                    { 
+                        name: 'Has metadata', 
+                        status: !!db.metadata,
+                        value: db.metadata ? `✓ Version ${db.metadata.version}` : '✗ No metadata'
+                    }
+                ];
+
+                results.push({
+                    title: '3. Database Structure',
+                    checks: structureChecks
+                });
+
+                // Check 4: Products data
+                let products = [];
+                if (Array.isArray(db)) {
+                    products = db;
+                } else if (db.products) {
+                    products = db.products;
+                } else if (db.byId) {
+                    products = Object.values(db.byId);
+                }
+
+                const productChecks = [
+                    { 
+                        name: 'Total products', 
+                        status: products.length > 0,
+                        value: products.length > 0 ? `✓ ${products.length} products` : '✗ No products'
+                    }
+                ];
+
+                if (products.length > 0) {
+                    const sample = products[0];
+                    productChecks.push(
+                        { name: 'Product has ID', status: !!sample.id, value: sample.id || '✗ Missing' },
+                        { name: 'Product has name', status: !!sample.name, value: sample.name || '✗ Missing' },
+                        { name: 'Product has category', status: !!sample.category, value: sample.category || '✗ Missing' },
+                        { name: 'Product has description', status: !!(sample.description || sample.short), value: sample.description ? '✓ Has description' : '⚠ No description' },
+                        { name: 'Product has image', status: !!(sample.image || sample.images), value: sample.image || sample.images?.[0] || '✗ No image' }
+                    );
+                }
+
+                results.push({
+                    title: '4. Products Data',
+                    checks: productChecks
+                });
+
+                // Sample products
+                if (products.length > 0) {
+                    results.push({
+                        title: '5. Sample Products',
+                        samples: products.slice(0, 3)
+                    });
+                }
+            } else {
+                overallStatus = 'error';
+                results.push({
+                    title: '3. Database Structure',
+                    checks: [{ name: 'ERROR', status: false, value: '✗ No database found' }]
+                });
+            }
+
+            // Render results
+            renderResults(results, overallStatus);
+        }
+
+        function renderResults(results, status) {
+            const statusDiv = document.getElementById('status');
+            const resultsDiv = document.getElementById('results');
+
+            // Update status
+            if (status === 'success') {
+                statusDiv.className = 'status success';
+                statusDiv.innerHTML = '<div class="icon">✓</div>Products.js loaded successfully!';
+            } else {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = '<div class="icon">✗</div>Products.js failed to load properly';
+            }
+
+            // Render detailed results
+            resultsDiv.innerHTML = results.map(section => {
+                if (section.checks) {
+                    return `
+                        <div class="section">
+                            <h2>${section.title}</h2>
+                            <div class="info-grid">
+                                ${section.checks.map(check => `
+                                    <div class="info-card">
+                                        <strong>${check.status ? '✓' : '✗'} ${check.name}</strong>
+                                        <span>${check.value || (check.status ? 'OK' : 'Failed')}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else if (section.samples) {
+                    return `
+                        <div class="section">
+                            <h2>${section.title}</h2>
+                            ${section.samples.map(product => `
+                                <div class="product-sample">
+                                    <h3>${product.name}</h3>
+                                    <p><strong>ID:</strong> ${product.id}</p>
+                                    <p><strong>Category:</strong> ${product.category}</p>
+                                    <p><strong>Price:</strong> ${product.price || 'N/A'}</p>
+                                    <p><strong>Description:</strong> ${product.short || product.description || 'N/A'}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                return '';
+            }).join('');
+
+            // Add raw data dump
+            const db = window.productDatabase || window.finalProductDatabase || window.completeProductDatabase || window.productData;
+            if (db) {
+                resultsDiv.innerHTML += `
+                    <div class="section">
+                        <h2>6. Raw Database Structure</h2>
+                        <pre>${JSON.stringify(db, null, 2).substring(0, 2000)}${JSON.stringify(db).length > 2000 ? '\n... (truncated)' : ''}</pre>
+                    </div>
+                `;
+            }
+        }
+
+        // Run diagnostic
+        setTimeout(diagnose, 500);
+    </script>
+</body>
+</html>
