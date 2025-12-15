@@ -3,31 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="V5 Medical - [Product Name] - High-quality medical supplies with ISO 13485, CE & FDA certification">
-    <meta name="keywords" content="[product keywords], medical supplies, ISO certified medical products">
-    <meta name="author" content="V5 Medical LTD">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="[Product Name] | V5 Medical LTD">
-    <meta property="og:description" content="High-quality [product type] for medical professionals">
-    <meta property="og:type" content="product">
-    <meta property="og:url" content="https://v5md.com/product-detail.html">
-    <meta property="og:image" content="[product image url]">
-    
-    <link rel="canonical" href="https://v5md.com/product-detail.html">
-    
-    <title>[Product Name] | V5 Medical LTD</title>
-    
-    <!-- Favicon -->
+    <meta name="description" content="View detailed specifications and pricing for our premium medical products. V5 Medical LTD - Global Medical Supplier.">
+    <title>Product Detail | V5 Medical LTD</title>
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -35,675 +14,393 @@
                 extend: {
                     colors: {
                         primary: '#1e40af',
-                        secondary: '#3b82f6',
-                        accent: '#2563eb'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif']
+                        secondary: '#3b82f6'
                     }
                 }
             }
         }
     </script>
-    
     <style>
-        .product-image-thumb {
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .spec-table tr:nth-child(even) { background-color: #f8fafc; }
+        .spec-table td { padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; }
+        .spec-table td:first-child { font-weight: 600; color: #475569; width: 30%; }
+        /* 导航栏滚动样式 */
+        .nav-scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        .product-image-thumb:hover, .product-image-thumb.active {
-            border-color: #3b82f6;
-            transform: scale(1.05);
+        /* 加载动画 */
+        .loading-spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
         }
-        .certification-badge {
-            transition: transform 0.2s ease;
-        }
-        .certification-badge:hover {
-            transform: scale(1.05);
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .quantity-btn {
-            user-select: none;
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
+    <script type="application/ld+json" id="product-schema"></script>
+    <script type="application/ld+json" id="breadcrumb-schema"></script>
 </head>
+<body class="bg-gray-50 flex flex-col min-h-screen">
 
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <a href="index.html" class="flex items-center gap-3">
+    <nav id="navbar" class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center gap-3 group">
                     <img src="images/v5logo.png" 
                          onerror="this.src='https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png'" 
-                         class="h-10" alt="V5 Medical">
+                         class="h-10 w-auto transition-transform group-hover:scale-105" alt="V5 Medical">
                     <div>
-                        <div class="font-bold text-xl text-blue-900">V5 Medical LTD</div>
-                        <div class="text-xs text-blue-600">Global Medical Supplier</div>
+                        <div class="font-bold text-xl text-blue-900 leading-none">V5 Medical LTD</div>
+                        <div class="text-xs text-blue-600 font-medium tracking-wide">Global Medical Supplier</div>
                     </div>
                 </a>
-                <div class="hidden md:flex gap-6 items-center">
-                    <a href="index.html" class="text-gray-600 hover:text-blue-900 transition">Home</a>
-                    <a href="about.html" class="text-gray-600 hover:text-blue-900 transition">About</a>
-                    <a href="catalog.html" class="text-blue-900 border-b-2 border-blue-900 font-semibold">Products</a>
-                    <a href="contact.html" class="text-gray-600 hover:text-blue-900 transition">Contact</a>
-                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold transition">
-                        <i class="fab fa-whatsapp mr-2"></i>WhatsApp
+                <div class="hidden md:flex gap-8 items-center">
+                    <a href="index.html" class="text-gray-600 hover:text-blue-900 font-medium transition-colors">Home</a>
+                    <a href="catalog.html" class="text-blue-900 font-bold">Products</a>
+                    <a href="contact.html" class="text-gray-600 hover:text-blue-900 font-medium transition-colors">Contact</a>
+                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-full font-semibold shadow-md flex items-center gap-2 transition hover:-translate-y-0.5">
+                        <i class="fab fa-whatsapp text-xl"></i> Chat Now
                     </a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Breadcrumb Navigation -->
-    <section class="bg-gray-100 py-4">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-sm text-gray-600">
-                <a href="index.html" class="hover:text-blue-600">Home</a> 
-                <i class="fas fa-chevron-right text-xs mx-2"></i> 
-                <a href="catalog.html" class="hover:text-blue-600">Product Catalog</a>
-                <i class="fas fa-chevron-right text-xs mx-2"></i> 
-                <span id="breadcrumb-product" class="text-gray-900 font-medium">[Product Category]</span>
-            </div>
+    <main class="flex-grow pt-8 pb-16">
+        <div id="loading" class="max-w-7xl mx-auto px-4 text-center py-20">
+            <div class="loading-spinner mx-auto mb-4"></div>
+            <p class="text-gray-600">Loading product details...</p>
         </div>
-    </section>
 
-    <!-- Loading State -->
-    <div id="loading" class="text-center py-20">
-        <div class="loading-spinner mx-auto mb-4"></div>
-        <p class="text-gray-600">Loading product details...</p>
-    </div>
+        <div id="error" class="hidden max-w-7xl mx-auto px-4 text-center py-20">
+            <i class="fas fa-exclamation-circle text-red-500 text-5xl mb-4"></i>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Product Not Found</h2>
+            <p class="text-gray-600 mb-6">The product you are looking for does not exist or has been removed.</p>
+            <a href="catalog.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                Return to Catalog
+            </a>
+        </div>
 
-    <!-- Error State -->
-    <div id="error" class="hidden text-center py-20">
-        <i class="fas fa-exclamation-triangle text-red-500 text-6xl mb-4"></i>
-        <h2 class="text-2xl font-bold mb-2">Unable to Load Product</h2>
-        <p class="text-gray-600 mb-6">This product could not be found or failed to load.</p>
-        <a href="catalog.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
-            <i class="fas fa-arrow-left mr-2"></i>Return to Catalog
-        </a>
-    </div>
+        <div id="product-content" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex mb-8 text-sm text-gray-500" aria-label="Breadcrumb">
+                <ol class="flex items-center space-x-2">
+                    <li><a href="index.html" class="hover:text-blue-600">Home</a></li>
+                    <li><i class="fas fa-chevron-right text-xs"></i></li>
+                    <li><a href="catalog.html" class="hover:text-blue-600">Products</a></li>
+                    <li><i class="fas fa-chevron-right text-xs"></i></li>
+                    <li><a href="#" id="crumb-category" class="hover:text-blue-600 capitalize">Category</a></li>
+                    <li><i class="fas fa-chevron-right text-xs"></i></li>
+                    <li class="font-semibold text-gray-800 truncate max-w-xs" id="crumb-name">Product Name</li>
+                </ol>
+            </nav>
 
-    <!-- Product Details -->
-    <section id="product-content" class="max-w-7xl mx-auto px-4 py-12 hidden fade-in">
-        <div class="grid lg:grid-cols-2 gap-12">
-            <!-- Product Images -->
-            <div>
-                <div class="bg-white rounded-xl shadow-md p-4 mb-4">
-                    <img id="main-product-image" src="" alt="[Product Name]" class="w-full h-auto rounded-lg">
-                </div>
-                <div class="grid grid-cols-4 gap-4" id="product-image-thumbs">
-                    <!-- Thumbnail images will be loaded here -->
-                </div>
-            </div>
-
-            <!-- Product Information -->
-            <div>
-                <div class="bg-white rounded-xl shadow-md p-6">
-                    <div class="mb-2">
-                        <span id="product-category" class="text-sm text-blue-600 font-medium uppercase"></span>
-                    </div>
-                    <h1 id="product-name" class="text-3xl font-bold text-gray-900 mb-4"></h1>
-                    
-                    <div class="flex items-center gap-2 mb-6">
-                        <div class="flex">
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="space-y-4">
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden aspect-[4/3] flex items-center justify-center relative group">
+                        <img id="product-image" src="" alt="Product Image" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm" id="product-badge">
+                            Medical Grade
                         </div>
-                        <span class="text-gray-600 text-sm">(12+ reviews)</span>
                     </div>
-                    
-                    <div class="mb-6">
-                        <span id="product-price" class="text-3xl font-bold text-gray-900"></span>
-                        <span class="text-gray-500 ml-2">/ unit</span>
+                    <div class="grid grid-cols-4 gap-4 hidden" id="thumbnails-container">
+                        </div>
+                </div>
+
+                <div>
+                    <div class="mb-2">
+                        <span id="product-category" class="text-blue-600 font-bold tracking-wide uppercase text-sm">Category</span>
                     </div>
+                    <h1 id="product-name" class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">Product Name</h1>
                     
-                    <div class="mb-6">
-                        <p id="product-description" class="text-gray-600 leading-relaxed"></p>
-                    </div>
-                    
-                    <!-- Product Features -->
-                    <div class="mb-8">
-                        <h3 class="font-bold text-lg mb-3">Product Features</h3>
-                        <ul id="product-features" class="space-y-2 text-gray-600">
-                            <!-- Features will be loaded here -->
+                    <div class="flex flex-wrap gap-2 mb-6" id="cert-tags">
+                        </div>
+
+                    <p id="product-short-desc" class="text-xl text-gray-600 mb-8 leading-relaxed font-light">
+                        Short description goes here.
+                    </p>
+
+                    <div class="bg-blue-50 rounded-xl p-6 mb-8 border border-blue-100">
+                        <h3 class="font-bold text-blue-900 mb-3 flex items-center">
+                            <i class="fas fa-star text-blue-500 mr-2"></i> Key Highlights
+                        </h3>
+                        <ul class="space-y-2 text-gray-700" id="highlights-list">
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i> <span>High quality medical grade material</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i> <span>ISO 13485 & CE Certified</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i> <span>Available for global shipping</span></li>
                         </ul>
                     </div>
-                    
-                    <!-- Certifications -->
-                    <div class="mb-8">
-                        <h3 class="font-bold text-lg mb-3">Certifications</h3>
-                        <div class="flex flex-wrap gap-3">
-                            <span class="certification-badge bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center gap-1">
-                                <i class="fas fa-certificate"></i> ISO 13485
-                            </span>
-                            <span class="certification-badge bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm flex items-center gap-1">
-                                <i class="fas fa-certificate"></i> CE Approved
-                            </span>
-                            <span class="certification-badge bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm flex items-center gap-1">
-                                <i class="fas fa-certificate"></i> FDA Registered
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <!-- Quantity Selector -->
-                    <div class="mb-8">
-                        <label class="block font-medium text-gray-700 mb-2">Quantity</label>
-                        <div class="flex items-center w-40 border rounded-lg">
-                            <button class="quantity-btn w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100" onclick="updateQuantity(-1)">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <input type="number" id="quantity" value="1" min="1" class="w-20 h-10 text-center border-x focus:outline-none" onchange="validateQuantity()">
-                            <button class="quantity-btn w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100" onclick="updateQuantity(1)">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        <p id="moq-info" class="text-sm text-gray-500 mt-2">Minimum order quantity: <span></span></p>
-                    </div>
-                    
-                    <!-- Action Buttons -->
-                    <div class="flex flex-wrap gap-4">
-                        <a id="whatsapp-link" href="" target="_blank" class="flex-1 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition text-center" onclick="trackWhatsAppClick()">
-                            <i class="fab fa-whatsapp mr-2"></i> Inquire on WhatsApp
+
+                    <div class="flex flex-col sm:flex-row gap-4 border-t border-gray-100 pt-8">
+                        <a href="https://wa.me/447895047944" target="_blank" class="flex-1 bg-green-500 hover:bg-green-600 text-white text-center px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 flex justify-center items-center gap-2">
+                            <i class="fab fa-whatsapp text-2xl"></i> Get Quote via WhatsApp
                         </a>
-                        <a href="contact.html" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition text-center">
-                            <i class="fas fa-envelope mr-2"></i> Send Inquiry
+                        <a href="contact.html" class="flex-1 bg-gray-800 hover:bg-black text-white text-center px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 flex justify-center items-center gap-2">
+                            <i class="fas fa-envelope"></i> Send Inquiry
                         </a>
                     </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Additional Product Details -->
-        <div class="mt-12 grid lg:grid-cols-3 gap-8">
-            <!-- Specifications -->
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                    <i class="fas fa-list-ul text-blue-600 mr-2"></i> Specifications
-                </h2>
-                <table id="product-specs" class="w-full text-gray-600">
-                    <!-- Specifications will be loaded here -->
-                </table>
-            </div>
-            
-            <!-- Packaging -->
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                    <i class="fas fa-box text-blue-600 mr-2"></i> Packaging Details
-                </h2>
-                <ul id="packaging-details" class="space-y-2 text-gray-600">
-                    <!-- Packaging details will be loaded here -->
-                </ul>
-            </div>
-            
-            <!-- Shipping -->
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                    <i class="fas fa-shipping-fast text-blue-600 mr-2"></i> Shipping Info
-                </h2>
-                <div class="space-y-3 text-gray-600">
-                    <div class="flex items-start gap-3">
-                        <i class="fas fa-truck mt-1 text-gray-400"></i>
-                        <div>
-                            <span class="font-medium">Delivery Time:</span>
-                            <p id="delivery-time">7-14 business days for stock items</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <i class="fas fa-globe mt-1 text-gray-400"></i>
-                        <div>
-                            <span class="font-medium">Shipping To:</span>
-                            <p>Worldwide (40+ countries)</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3">                            <i class="fas fa-file-import mt-1 text-gray-400"></i>
-                            <div>
-                                <span class="font-medium">Import Documentation:</span>
-                                <p>We provide all necessary import documents including commercial invoice, packing list, certificate of origin, and health certificates.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <i class="fas fa-shield-alt mt-1 text-gray-400"></i>
-                            <div>
-                                <span class="font-medium">Shipping Insurance:</span>
-                                <p>All shipments include basic insurance. Extended coverage available upon request.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Related Products -->
-        <div class="mt-16">
-            <h2 class="text-2xl font-bold text-gray-900 mb-8">You May Also Like</h2>
-            <div id="related-products" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Related products will be loaded here -->
-            </div>
-        </div>
-        
-        <!-- Customer Reviews -->
-        <div class="mt-16 bg-white rounded-xl shadow-md p-6">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Customer Reviews</h2>
-            
-            <div class="space-y-6">
-                <!-- Review 1 -->
-                <div class="border-b border-gray-100 pb-6">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
-                            DR
-                        </div>
-                        <div>
-                            <div class="font-semibold text-gray-900">Dr. Robert Martinez</div>
-                            <div class="text-sm text-gray-500">Surgeon, Madrid</div>
-                        </div>
-                        <div class="ml-auto flex">
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                        </div>
-                    </div>
-                    <p class="text-gray-600">
-                        "Excellent quality product. We've been using these sutures for over a year now and have had consistent results with minimal patient complications."
+                    <p class="text-xs text-gray-500 mt-4 text-center sm:text-left">
+                        <i class="fas fa-shield-alt mr-1"></i> Secure payment options available via Wise & Bank Transfer.
                     </p>
-                    <p class="text-sm text-gray-500 mt-2">Reviewed on June 15, 2024</p>
-                </div>
-                
-                <!-- Review 2 -->
-                <div>
-                    <div class="flex items-center gap-4 mb-3">
-                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold">
-                            SK
-                        </div>
-                        <div>
-                            <div class="font-semibold text-gray-900">Sarah Kim</div>
-                            <div class="text-sm text-gray-500">Procurement Manager, Seoul</div>
-                        </div>
-                        <div class="ml-auto flex">
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star-half-alt text-yellow-400"></i>
-                        </div>
-                    </div>
-                    <p class="text-gray-600">
-                        "Fast delivery and competitive pricing. The packaging was secure and all items arrived in perfect condition. Will definitely order again."
-                    </p>
-                    <p class="text-sm text-gray-500 mt-2">Reviewed on August 3, 2024</p>
                 </div>
             </div>
-            
-            <button class="mt-6 text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 transition">
-                Read All 12 Reviews <i class="fas fa-arrow-right text-sm"></i>
-            </button>
-        </div>
-    </section>
 
-    <!-- Call to Action -->
-    <section class="mt-16 py-12 bg-blue-50 border-t border-blue-100">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Need More Information?</h2>
-            <p class="text-gray-600 mb-8">Our medical supply experts are ready to help you find the right products for your needs.</p>
-            <div class="flex flex-wrap gap-4 justify-center">
-                <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition" onclick="trackWhatsAppClick()">
-                    <i class="fab fa-whatsapp mr-2"></i> Chat with Expert
-                </a>
-                <a href="contact.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
-                    <i class="fas fa-envelope mr-2"></i> Send Inquiry
-                </a>
-            </div>
-        </div>
-    </section>
+            <div class="mt-20 grid lg:grid-cols-3 gap-12">
+                <div class="lg:col-span-2 space-y-12">
+                    <section>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                            <span class="w-1 h-8 bg-blue-600 rounded-full mr-3"></span>
+                            Product Description
+                        </h2>
+                        <div id="product-long-desc" class="prose max-w-none text-gray-600 leading-relaxed">
+                            Loading description...
+                        </div>
+                    </section>
 
-    <!-- Footer -->
-    <footer class="bg-blue-900 text-white pt-12 pb-6">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <div class="flex items-center gap-3 mb-6">
-                        <img src="images/v5logo-white.png" onerror="this.src='https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo-white.png'" class="h-10" alt="V5 Medical">
-                        <div>
-                            <div class="font-bold text-xl">V5 Medical LTD</div>
-                            <div class="text-xs text-blue-200">Global Medical Supplier</div>
+                    <section>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                            <span class="w-1 h-8 bg-blue-600 rounded-full mr-3"></span>
+                            Technical Specifications
+                        </h2>
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                            <table class="w-full text-left spec-table" id="specs-table">
+                                </table>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                        <h3 class="font-bold text-gray-900 mb-4">Certifications</h3>
+                        <div class="flex gap-4">
+                            <img src="images/quality/iso13485-2016.jpg" alt="ISO 13485" class="h-12 opacity-80 hover:opacity-100 transition">
+                            <img src="images/quality/ce-mark.png" alt="CE Mark" class="h-12 opacity-80 hover:opacity-100 transition">
+                            <img src="images/quality/fda.jpg" alt="FDA" class="h-12 opacity-80 hover:opacity-100 transition">
                         </div>
                     </div>
-                    <p class="text-blue-200 mb-6">
-                        High-quality medical supplies with ISO 13485, CE & FDA certification, delivered to 40+ countries worldwide.
-                    </p>
-                    <div class="flex gap-4">
-                        <a href="#" class="text-blue-200 hover:text-white transition"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-blue-200 hover:text-white transition"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-blue-200 hover:text-white transition"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-blue-200 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+
+                    <div class="bg-blue-50 rounded-xl p-6 border border-blue-100">
+                        <h3 class="font-bold text-blue-900 mb-4">Frequently Asked Questions</h3>
+                        <div class="space-y-4">
+                            <details class="group">
+                                <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-blue-800">
+                                    <span>What is the MOQ?</span>
+                                    <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>
+                                </summary>
+                                <p class="text-gray-600 mt-2 text-sm">MOQ depends on the specific product. Generally, for small consumables, it's 1 carton. Contact us for details.</p>
+                            </details>
+                            <details class="group">
+                                <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-blue-800">
+                                    <span>Do you offer samples?</span>
+                                    <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>
+                                </summary>
+                                <p class="text-gray-600 mt-2 text-sm">Yes, we can provide free samples for quality evaluation. Shipping costs are usually covered by the buyer.</p>
+                            </details>
+                            <details class="group">
+                                <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-blue-800">
+                                    <span>What are the payment terms?</span>
+                                    <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>
+                                </summary>
+                                <p class="text-gray-600 mt-2 text-sm">We accept T/T (Bank Transfer) and Wise. Standard terms are 30% deposit and 70% before shipment.</p>
+                            </details>
+                        </div>
                     </div>
                 </div>
-                
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-300 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center md:text-left">
+            <div class="grid md:grid-cols-4 gap-8">
                 <div>
-                    <h3 class="font-bold text-lg mb-6">Quick Links</h3>
-                    <ul class="space-y-3">
-                        <li><a href="index.html" class="text-blue-200 hover:text-white transition">Home</a></li>
-                        <li><a href="about.html" class="text-blue-200 hover:text-white transition">About Us</a></li>
-                        <li><a href="catalog.html" class="text-blue-200 hover:text-white transition">Product Catalog</a></li>
-                        <li><a href="blog.html" class="text-blue-200 hover:text-white transition">Blog & News</a></li>
-                        <li><a href="contact.html" class="text-blue-200 hover:text-white transition">Contact</a></li>
+                    <div class="flex items-center justify-center md:justify-start gap-2 mb-4">
+                        <img src="images/v5logo.png" class="h-8 brightness-0 invert" alt="V5 Logo">
+                        <span class="text-white font-bold text-lg">V5 Medical</span>
+                    </div>
+                    <p class="text-sm text-gray-400">Professional supplier of high-quality medical consumables and surgical instruments. ISO 13485 Certified.</p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4 uppercase text-sm">Quick Links</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="catalog.html" class="hover:text-white">All Products</a></li>
+                        <li><a href="about.html" class="hover:text-white">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-white">Contact</a></li>
                     </ul>
                 </div>
-                
                 <div>
-                    <h3 class="font-bold text-lg mb-6">Product Categories</h3>
-                    <ul class="space-y-3">
-                        <li><a href="catalog.html#surgical-sutures" class="text-blue-200 hover:text-white transition">Surgical Sutures</a></li>
-                        <li><a href="catalog.html#surgical-packs" class="text-blue-200 hover:text-white transition">Surgical Packs</a></li>
-                        <li><a href="catalog.html#injection-infusion" class="text-blue-200 hover:text-white transition">Injection & Infusion</a></li>
-                        <li><a href="catalog.html#dental-consumables" class="text-blue-200 hover:text-white transition">Dental Consumables</a></li>
-                        <li><a href="catalog.html#other-products" class="text-blue-200 hover:text-white transition">Other Products</a></li>
+                    <h3 class="text-white font-bold mb-4 uppercase text-sm">Categories</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="catalog.html#surgical-sutures" class="hover:text-white">Sutures</a></li>
+                        <li><a href="catalog.html#surgical-instruments" class="hover:text-white">Instruments</a></li>
+                        <li><a href="catalog.html#protective-equipment" class="hover:text-white">Protective Gear</a></li>
                     </ul>
                 </div>
-                
                 <div>
-                    <h3 class="font-bold text-lg mb-6">Contact Us</h3>
-                    <ul class="space-y-3">
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-map-marker-alt mt-1 text-blue-300"></i>
-                            <span class="text-blue-200">123 Medical Avenue, London, UK, SW1A 1AA</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-phone text-blue-300"></i>
-                            <a href="tel:+442071234567" class="text-blue-200 hover:text-white transition">+44 (20) 7123-4567</a>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-envelope text-blue-300"></i>
-                            <a href="mailto:info@v5md.com" class="text-blue-200 hover:text-white transition">info@v5md.com</a>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fab fa-whatsapp text-blue-300"></i>
-                            <a href="https://wa.me/447895047944" target="_blank" class="text-blue-200 hover:text-white transition">+44 (789) 504-7944</a>
-                        </li>
+                    <h3 class="text-white font-bold mb-4 uppercase text-sm">Contact</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><i class="fab fa-whatsapp text-green-500 mr-2"></i> +44 7895 047944</li>
+                        <li><i class="fas fa-envelope text-blue-500 mr-2"></i> info@v5md.com</li>
                     </ul>
                 </div>
             </div>
-            
-            <div class="border-t border-blue-800 pt-6 mt-6 text-center text-blue-300 text-sm">
-                <p>&copy; 2024 V5 Medical LTD. All rights reserved.</p>
-                <div class="flex justify-center gap-4 mt-2">
-                    <a href="privacy.html" class="hover:text-white transition">Privacy Policy</a>
-                    <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
-                    <a href="shipping.html" class="hover:text-white transition">Shipping Policy</a>
-                </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-sm text-center">
+                &copy; 2025 V5 Medical LTD. All rights reserved.
             </div>
         </div>
     </footer>
 
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/447895047944" 
-       target="_blank" 
-       rel="noopener noreferrer"
-       onclick="trackWhatsAppClick()"
-       class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center z-50 transition-all duration-300 hover:scale-110 group"
-       aria-label="Contact us on WhatsApp">
-        <i class="fab fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i>
-    </a>
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+        <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-110 flex items-center justify-center" aria-label="Chat on WhatsApp">
+            <i class="fab fa-whatsapp text-2xl"></i>
+        </a>
+    </div>
 
-    <!-- Back to Top Button -->
-    <button id="back-to-top" 
-            class="fixed bottom-24 right-6 bg-blue-900 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 opacity-0 invisible hover:bg-blue-700 z-40" 
-            aria-label="Back to Top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <!-- Google Translate -->
-    <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-    <!-- JavaScript -->
+    <script src="js/complete-products.js"></script>
     <script src="js/main.js"></script>
     <script>
-        // Product data (would typically come from API)
-        let productData = null;
-        
-        // Get product ID from URL parameters
-        function getProductId() {
+        document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
-            return params.get('id');
-        }
-        
-        // Fetch product details
-        async function fetchProductDetails() {
-            try {
-                showLoading();
-                
-                // In a real implementation, this would be an API call
-                // For demo, we'll load from local products array
-                const response = await fetch('js/products.js');
-                if (!response.ok) throw new Error('Failed to fetch products');
-                
-                const products = await response.json();
-                const productId = getProductId();
-                
-                productData = products.find(p => p.id === productId);
-                
-                if (!productData) throw new Error('Product not found');
-                
-                renderProductDetails();
-                renderRelatedProducts(products);
-                
-                hideLoading();
-                document.getElementById('product-content').classList.remove('hidden');
-                
-            } catch (error) {
-                handleError(error);
-            }
-        }
-        
-        // Render product details
-        function renderProductDetails() {
-            if (!productData) return;
-            
-            // Update meta tags for SEO
-            document.title = `${productData.name} | V5 Medical LTD`;
-            document.querySelector('meta[name="description"]').setAttribute('content', 
-                `V5 Medical - ${productData.name} - ${productData.shortDescription}`);
-                
-            // Update breadcrumb
-            document.getElementById('breadcrumb-product').textContent = productData.name;
-            
-            // Main product image
-            const mainImage = document.getElementById('main-product-image');
-            mainImage.src = productData.images[0];
-            mainImage.alt = productData.name;
-            
-            // Image thumbnails
-            const thumbContainer = document.getElementById('product-image-thumbs');
-            productData.images.forEach((img, index) => {
-                const thumb = document.createElement('div');
-                thumb.className = `product-image-thumb border-2 rounded-lg overflow-hidden ${index === 0 ? 'active' : 'border-transparent'}`;
-                thumb.innerHTML = `<img src="${img}" alt="Product image ${index + 1}" class="w-full h-20 object-cover">`;
-                thumb.addEventListener('click', () => {
-                    mainImage.src = img;
-                    document.querySelectorAll('.product-image-thumb').forEach(t => t.classList.remove('active', 'border-blue-600'));
-                    document.querySelectorAll('.product-image-thumb').forEach(t => t.classList.add('border-transparent'));
-                    thumb.classList.add('active', 'border-blue-600');
-                    thumb.classList.remove('border-transparent');
-                });
-                thumbContainer.appendChild(thumb);                thumbContainer.appendChild(thumb);
-            });
-            
-            // Product title and details
-            document.getElementById('product-title').textContent = productData.name;
-            document.getElementById('product-short-desc').textContent = productData.short;
-            document.getElementById('product-full-desc').textContent = productData.description;
-            
-            // Price and availability
-            document.getElementById('product-price').textContent = productData.price;
-            document.getElementById('product-availability').textContent = productData.availability;
-            
-            // Stock level indicator
-            const stockLevelEl = document.getElementById('product-stock-level');
-            switch(productData.stockLevel.toLowerCase()) {
-                case 'high':
-                    stockLevelEl.className = 'text-green-600 font-medium';
-                    stockLevelEl.innerHTML = '<i class="fas fa-check-circle mr-1"></i> High Stock';
-                    break;
-                case 'medium':
-                    stockLevelEl.className = 'text-yellow-600 font-medium';
-                    stockLevelEl.innerHTML = '<i class="fas fa-exclamation-circle mr-1"></i> Medium Stock';
-                    break;
-                case 'low':
-                    stockLevelEl.className = 'text-orange-600 font-medium';
-                    stockLevelEl.innerHTML = '<i class="fas fa-exclamation-triangle mr-1"></i> Low Stock';
-                    break;
-                default:
-                    stockLevelEl.textContent = productData.stockLevel;
-            }
-            
-            // Certifications
-            const certsContainer = document.getElementById('product-certifications');
-            productData.certifications.forEach(cert => {
-                const certBadge = document.createElement('span');
-                certBadge.className = 'bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded mr-2 mb-2 inline-block';
-                certBadge.textContent = cert;
-                certsContainer.appendChild(certBadge);
-            });
-            
-            // Specifications
-            const specsContainer = document.getElementById('product-specifications');
-            for(const [key, value] of Object.entries(productData.specifications)) {
-                const specRow = document.createElement('div');
-                specRow.className = 'grid grid-cols-3 py-3 border-b border-gray-100';
-                specRow.innerHTML = `
-                    <div class="text-gray-500">${key}</div>
-                    <div class="col-span-2 font-medium">${value}</div>
-                `;
-                specsContainer.appendChild(specRow);
-            }
-            
-            // Update WhatsApp link with product reference
-            const whatsappLinks = document.querySelectorAll('a[href*="wa.me"]');
-            whatsappLinks.forEach(link => {
-                const currentHref = link.getAttribute('href');
-                const productRef = `%0A%0AReferring to: ${productData.name} (ID: ${productData.id})`;
-                link.setAttribute('href', currentHref.includes('?') 
-                    ? `${currentHref}${productRef}` 
-                    : `${currentHref}?text=${productRef}`);
-            });
-        }
-        
-        // Render related products
-        function renderRelatedProducts(allProducts) {
-            if (!productData) return;
-            
-            const relatedContainer = document.getElementById('related-products');
-            const relatedProducts = allProducts
-                .filter(p => p.category === productData.category && p.id !== productData.id)
-                .slice(0, 4); // Show up to 4 related products
-            
-            if (relatedProducts.length === 0) {
-                relatedContainer.innerHTML = '<p class="col-span-full text-center text-gray-500">No related products found</p>';
+            const productId = params.get('id');
+
+            if (!productId) {
+                showError('No product ID specified');
                 return;
             }
-            
-            relatedProducts.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.className = 'bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition';
-                productCard.innerHTML = `
-                    <a href="product-detail.html?id=${product.id}" class="block">
-                        <div class="relative h-48 bg-gray-100">
-                            <img src="${product.images[0]}" alt="${product.name}" class="w-full h-full object-cover">
-                            <div class="absolute top-3 right-3 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
-                                ${product.availability}
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2 h-12">${product.name}</h3>
-                            <p class="text-gray-500 text-sm mb-3 line-clamp-2">${product.short}</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-blue-600 font-bold">${product.price}</span>
-                                <span class="text-xs text-gray-500">
-                                    ${product.certifications.length > 0 ? product.certifications[0] : ''}
-                                </span>
-                            </div>
-                        </div>
-                    </a>
-                `;
-                relatedContainer.appendChild(productCard);
-            });
-        }
-        
-        // Loading state management
-        function showLoading() {
-            document.getElementById('loading-indicator').classList.remove('hidden');
-            document.getElementById('product-content').classList.add('hidden');
-            document.getElementById('error-message').classList.add('hidden');
-        }
-        
-        function hideLoading() {
-            document.getElementById('loading-indicator').classList.add('hidden');
-        }
-        
-        // Error handling
-        function handleError(error) {
-            hideLoading();
-            const errorEl = document.getElementById('error-message');
-            errorEl.textContent = error.message || 'An error occurred while loading product details';
-            errorEl.classList.remove('hidden');
-            console.error('Error loading product:', error);
-        }
-        
-        // Google Translate initialization
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,es,fr,de,zh-CN,zh-TW,ja,ko,ru,ar',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_translate_element');
-        }
-        
-        // Tracking function for WhatsApp clicks
-        function trackWhatsAppClick() {
-            if (typeof gtag === 'function' && productData) {
-                gtag('event', 'whatsapp_inquiry', {
-                    event_category: 'Product',
-                    event_label: productData.id,
-                    value: productData.name
-                });
+
+            // 从 completeProductDatabase 中查找产品
+            const product = window.completeProductDatabase?.byId?.[productId] || 
+                            window.completeProductDatabase?.products?.find(p => p.id === productId);
+
+            if (product) {
+                renderProduct(product);
+                generateSchema(product);
+                updateMeta(product);
+            } else {
+                showError('Product not found in database');
             }
-        }
-        
-        // Back to top button functionality
-        const backToTopBtn = document.getElementById('back-to-top');
-        if (backToTopBtn) {
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) {
-                    backToTopBtn.classList.remove('opacity-0', 'invisible');
-                    backToTopBtn.classList.add('opacity-100', 'visible');
-                } else {
-                    backToTopBtn.classList.add('opacity-0', 'invisible');
-                    backToTopBtn.classList.remove('opacity-100', 'visible');
-                }
-            });
+        });
+
+        function renderProduct(product) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('product-content').classList.remove('hidden');
+
+            // 基础信息填充
+            setText('product-name', product.name);
+            setText('product-category', formatCategory(product.category));
+            setText('product-short-desc', product.short || product.description);
+            setText('product-long-desc', product.description || product.short); // 如果没有长描述则使用短描述
             
-            backToTopBtn.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
+            // 面包屑填充
+            setText('crumb-name', product.name);
+            const catLink = document.getElementById('crumb-category');
+            catLink.textContent = formatCategory(product.category);
+            catLink.href = `catalog.html#${product.category}`;
+
+            // 图片处理
+            const imgEl = document.getElementById('product-image');
+            imgEl.src = product.images?.[0] || 'images/products/default-product.jpg';
+            imgEl.onerror = () => { imgEl.src = 'images/products/default-product.jpg'; };
+
+            // 渲染规格表
+            const specsTable = document.getElementById('specs-table');
+            if (product.specifications) {
+                Object.entries(product.specifications).forEach(([key, value]) => {
+                    const row = `<tr><td>${key}</td><td>${value}</td></tr>`;
+                    specsTable.innerHTML += row;
                 });
-            });
+            } else {
+                specsTable.innerHTML = '<tr><td colspan="2" class="text-gray-500 italic">No specific specifications listed. Please contact us for details.</td></tr>';
+            }
+
+            // 渲染认证标签
+            const certTags = document.getElementById('cert-tags');
+            const certs = product.certifications || ['ISO 13485', 'CE'];
+            certTags.innerHTML = certs.map(cert => 
+                `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                    <i class="fas fa-certificate mr-1"></i> ${cert}
+                 </span>`
+            ).join('');
         }
-        
-        // Initialize page when DOM is loaded
-        document.addEventListener('DOMContentLoaded', fetchProductDetails);
+
+        // 生成 JSON-LD 结构化数据 (SEO 核心)
+        function generateSchema(product) {
+            // 1. 面包屑 Schema
+            const breadcrumbData = {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [{
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://v5md.com/index.html"
+                },{
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Products",
+                    "item": "https://v5md.com/catalog.html"
+                },{
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": formatCategory(product.category),
+                    "item": `https://v5md.com/catalog.html#${product.category}`
+                },{
+                    "@type": "ListItem",
+                    "position": 4,
+                    "name": product.name
+                }]
+            };
+            document.getElementById('breadcrumb-schema').textContent = JSON.stringify(breadcrumbData);
+
+            // 2. 产品 Schema
+            const productSchema = {
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                "name": product.name,
+                "image": product.images ? product.images.map(img => img.startsWith('http') ? img : `https://v5md.com/${img}`) : ["https://v5md.com/images/products/default-product.jpg"],
+                "description": product.short || product.description,
+                "sku": product.id,
+                "brand": {
+                    "@type": "Brand",
+                    "name": "V5 Medical"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "url": window.location.href,
+                    "priceCurrency": "USD",
+                    "price": "0",
+                    "priceValidUntil": "2026-12-31",
+                    "availability": "https://schema.org/InStock",
+                    "itemCondition": "https://schema.org/NewCondition"
+                }
+            };
+            document.getElementById('product-schema').textContent = JSON.stringify(productSchema);
+        }
+
+        function updateMeta(product) {
+            document.title = `${product.name} - Specifications & Price | V5 Medical`;
+            document.querySelector('meta[name="description"]').setAttribute('content', 
+                `Buy ${product.name}. ${product.short ? product.short.substring(0, 100) : ''}... ISO 13485 Certified. Global shipping available.`);
+        }
+
+        function showError(msg) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('error').classList.remove('hidden');
+            console.error(msg);
+        }
+
+        function setText(id, text) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = text || '';
+        }
+
+        function formatCategory(cat) {
+            if (!cat) return 'Uncategorized';
+            return cat.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        }
     </script>
 </body>
 </html>
