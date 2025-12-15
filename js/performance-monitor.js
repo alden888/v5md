@@ -1,211 +1,179 @@
 /**
- * Performance Monitor for V5 Medical Website
- * Tracks and logs performance metrics
- * @version 1.0.0
+ * V5 Medical Performance Monitor
+ * Tracks Core Web Vitals (FCP, LCP, CLS) and custom application metrics
+ * @version 2.0.0
+ * @updated 2024-12-16
  */
 
 class PerformanceMonitor {
     constructor() {
-        this.config = window.V5Config || {};
-        this.metrics = new Map();
-        this.logger = this.createLogger();
-        this.initTime = performance.now();
+        // Singleton pattern to prevent duplicate monitors
+        if (window.performanceMonitor) return window.performanceMonitor;
+
+        this.config = window.V5Config?.PERFORMANCE || {};
+        this.metrics = {};
+        this.observers = [];
         
-        // Initialize core metrics
-        this.initCoreMetrics();
-        
-        // Start monitoring
-        this.startMonitoring();
+        // Initialize immediately
+        this.init();
+    }
+
+    init() {
+        if (typeof window.performance === 'undefined') return;
+
+        // 1. Basic Page Load Metrics (Navigation Timing API)
+        this.trackNavigationTiming();
+
+        // 2. Core Web Vitals (PerformanceObserver)
+        this.trackWebVitals();
     }
 
     /**
-     * Initialize core performance metrics
+     * Track standard page load events (TTFB, DOM Ready, Full Load)
      */
-    initCoreMetrics() {
-        this.metrics.set('page_load_start', {
-            value: this.initTime,
-            description: 'Page load start time'
-        });
-        
-        this.metrics.set('dom_content_loaded', {
-            value: null,
-            description: 'DOM Content Loaded time'
-        });
-        
-        this.metrics.set('window_load', {
-            value: null,
-            description: 'Window Load time'
-        });
-        
-        this.metrics.set('first_contentful_paint', {
-            value: null,
-            description: 'First Contentful Paint'
-        });
-        
-        this.metrics.set('product_database_load', {
-            value: null,
-            description: 'Product database load time'
-        });
-        
-        this.metrics.set('critical_images_loaded', {
-            value: null,
-            description: 'Critical images loaded time'
-        });
-    }
-
-    /**
-     * Start performance monitoring
-     */
-    startMonitoring() {
-        this.logger.info('Starting performance monitoring');
-
-        // DOM Content Loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            this.setMetric('dom_content_loaded', performance.now());
-            this.logger.info('DOM Content Loaded event fired');
-        });
-
-        // Window Load
+    trackNavigationTiming() {
         window.addEventListener('load', () => {
-            this.setMetric('window_load', performance.now());
-            this.logger.info('Window Load event fired');
-            this.logPerformanceSummary();
+            // Wait a tick to ensure load event is finished
+            setTimeout(() => {
+                const nav = performance.getEntriesByType('navigation')[0];
+                if (nav) {
+                    this.record('ttfb', nav.responseStart - nav.startTime);
+                    this.record('dom_ready', nav.domContentLoadedEventEnd - nav.startTime);
+                    this.record('full_load', nav.loadEventEnd - nav.startTime);
+                }
+                
+                // Report all collected metrics after load
+                this.reportAll();
+            }, 0);
         });
+    }
 
-        // First Contentful Paint using PerformanceObserver
-        if ('PerformanceObserver' in window) {
-            const observer = new PerformanceObserver((entryList) => {
-                for (const entry of entryList.getEntries()) {
-                    if (entry.name === 'first-contentful-paint') {
-                        this.setMetric('first_contentful_paint', entry.startTime);
-                        this.logger.info(`First Contentful Paint: ${entry.startTime.toFixed(0)}ms`);
-                    }
+    /**
+     * Track modern Web Vitals: FCP, LCP, CLS
+     */
+    trackWebVitals() {
+        if (typeof PerformanceObserver === 'undefined') return;
+
+        // FCP (First Contentful Paint)
+        this._observe('paint', (entries) => {
+            entries.forEach(entry => {
+                if (entry.name === 'first-contentful-paint') {
+                    this.record('fcp', entry.startTime);
                 }
             });
+        });
 
-            observer.observe({ entryTypes: ['paint'] });
-        }
+        // LCP (Largest Contentful Paint)
+        this._observe('largest-contentful-paint', (entries) => {
+            const lastEntry = entries[entries.length - 1];
+            if (lastEntry) {
+                this.record('lcp', lastEntry.startTime);
+            }
+        });
 
-        // Track product database load time
-        if (window.productLoader) {
-            window.productLoader.loadProducts().then(() => {
-                this.setMetric('product_database_load', performance.now());
-                this.logger.info('Product database loaded');
-            }).catch(error => {
-                this.logger.error(`Product database load failed: ${error.message}`);
+        // CLS (Cumulative Layout Shift)
+        let clsValue = 0;
+        this._observe('layout-shift', (entries) => {
+            entries.forEach(entry => {
+                if (!entry.hadRecentInput) {
+                    clsValue += entry.value;
+                }
             });
-        }
-    }
-
-    /**
-     * Set a performance metric
-     * @param {string} name - Metric name
-     * @param {number} value - Metric value
-     * @param {string} description - Metric description
-     */
-    setMetric(name, value, description = '') {
-        this.metrics.set(name, {
-            value,
-            description: description || this.metrics.get(name)?.description || ''
+            this.record('cls', clsValue);
         });
     }
 
     /**
-     * Get a performance metric
-     * @param {string} name - Metric name
-     * @returns {number|null} Metric value
+     * Helper to create observers safely
      */
-    getMetric(name) {
-        return this.metrics.get(name)?.value || null;
-    }
-
-    /**
-     * Calculate metric duration
-     * @param {string} startMetric - Start metric name
-     * @param {string} endMetric - End metric name
-     * @returns {number|null} Duration in milliseconds
-     */
-    calculateDuration(startMetric, endMetric) {
-        const start = this.getMetric(startMetric);
-        const end = this.getMetric(endMetric);
-        
-        if (start && end) {
-            return end - start;
-        }
-        
-        return null;
-    }
-
-    /**
-     * Log performance summary
-     */
-    logPerformanceSummary() {
-        const pageLoadDuration = this.calculateDuration('page_load_start', 'window_load');
-        const domContentLoadedDuration = this.calculateDuration('page_load_start', 'dom_content_loaded');
-        const productLoadDuration = this.calculateDuration('page_load_start', 'product_database_load');
-
-        const summary = {
-            page_load_duration: pageLoadDuration ? `${pageLoadDuration.toFixed(0)}ms` : 'N/A',
-            dom_content_loaded: domContentLoadedDuration ? `${domContentLoadedDuration.toFixed(0)}ms` : 'N/A',
-            product_database_load: productLoadDuration ? `${productLoadDuration.toFixed(0)}ms` : 'N/A',
-            first_contentful_paint: this.getMetric('first_contentful_paint') ? 
-                `${this.getMetric('first_contentful_paint').toFixed(0)}ms` : 'N/A'
-        };
-
-        this.logger.info('Performance Summary:', summary);
-
-        // Track performance metrics with analytics
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'performance_summary', {
-                event_category: this.config.ANALYTICS.EVENT_CATEGORIES.PERFORMANCE,
-                page_load_duration: pageLoadDuration,
-                dom_content_loaded: domContentLoadedDuration,
-                product_database_load: productLoadDuration,
-                first_contentful_paint: this.getMetric('first_contentful_paint'),
-                page_type: window.seoUtils?.currentPage || 'unknown'
-            });
+    _observe(type, callback) {
+        try {
+            const observer = new PerformanceObserver((list) => callback(list.getEntries()));
+            observer.observe({ type, buffered: true });
+            this.observers.push(observer);
+        } catch (e) {
+            // Browser might not support this specific observer type
+            // console.warn(`[Performance] ${type} observer not supported`);
         }
     }
 
     /**
-     * Log custom performance event
-     * @param {string} eventName - Event name
-     * @param {Object} data - Event data
+     * Record a metric value locally
      */
-    logCustomEvent(eventName, data = {}) {
-        this.logger.info(`Custom Performance Event: ${eventName}`, data);
+    record(name, value) {
+        if (typeof value !== 'number') return;
         
-        if (typeof gtag !== 'undefined') {
-            gtag('event', eventName, {
-                event_category: this.config.ANALYTICS.EVENT_CATEGORIES.PERFORMANCE,
-                ...data
-            });
+        this.metrics[name] = value;
+        
+        // Debug log in development
+        if (window.V5Config?.ENV?.IS_LOCAL || this.config.LOG_LEVEL === 'debug') {
+            console.log(`[Performance] ${name}:`, value.toFixed(2));
         }
     }
 
     /**
-     * Create logger instance
-     * @returns {Object} Logger object
+     * Start a custom timer (User Timing API)
      */
-    createLogger() {
-        const logLevel = this.config.PERFORMANCE?.LOG_LEVEL || 'info';
-        const levels = ['debug', 'info', 'warn', 'error'];
-        const levelIndex = levels.indexOf(logLevel);
+    mark(name) {
+        performance.mark(`${name}_start`);
+    }
 
-        return {
-            debug: (...args) => levelIndex <= 0 && console.debug('[PerformanceMonitor]', ...args),
-            info: (...args) => levelIndex <= 1 && console.info('[PerformanceMonitor]', ...args),
-            warn: (...args) => levelIndex <= 2 && console.warn('[PerformanceMonitor]', ...args),
-            error: (...args) => levelIndex <= 3 && console.error('[PerformanceMonitor]', ...args)
-        };
+    /**
+     * Stop a custom timer and record duration
+     */
+    measure(name) {
+        try {
+            const startMark = `${name}_start`;
+            const endMark = `${name}_end`;
+            performance.mark(endMark);
+            performance.measure(name, startMark, endMark);
+            
+            const entry = performance.getEntriesByName(name).pop();
+            if (entry) {
+                this.record(name, entry.duration);
+            }
+        } catch (e) {
+            console.warn(`[Performance] Measure failed for: ${name}`);
+        }
+    }
+
+    /**
+     * Send all metrics to Google Analytics
+     */
+    reportAll() {
+        if (!window.gtag) return;
+
+        // Send Web Vitals as specific events
+        const vitals = ['fcp', 'lcp', 'cls'];
+        vitals.forEach(metric => {
+            if (this.metrics[metric] !== undefined) {
+                gtag('event', metric, {
+                    event_category: 'Web Vitals',
+                    value: Math.round(this.metrics[metric]), // GA prefers integers for value
+                    metric_value: this.metrics[metric], // Custom parameter for precision
+                    non_interaction: true
+                });
+            }
+        });
+
+        // Send Load Times
+        const timings = ['ttfb', 'dom_ready', 'full_load'];
+        timings.forEach(metric => {
+            if (this.metrics[metric] !== undefined) {
+                gtag('event', 'timing_complete', {
+                    name: metric,
+                    value: Math.round(this.metrics[metric]),
+                    event_category: 'Page Load'
+                });
+            }
+        });
     }
 }
 
-// Initialize and make globally available
-const performanceMonitor = new PerformanceMonitor();
-window.performanceMonitor = performanceMonitor;
+// Initialize and Expose Global Instance
+window.performanceMonitor = new PerformanceMonitor();
 
 // Export for module usage
 if (typeof module !== 'undefined') {
-    module.exports = performanceMonitor;
+    module.exports = window.performanceMonitor;
 }
