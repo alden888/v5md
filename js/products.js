@@ -94,6 +94,10 @@ productDatabase.metadata.totalProducts = productData.length;
 window.productDatabase = productDatabase;
 window.productData = productData;
 
+// Make database available globally
+window.productDatabase = productDatabase;
+window.finalProductDatabase = productDatabase; // 新增：兼容product-loader.js的检查
+
 // 同时添加对模块化加载的支持（如果需要）
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
