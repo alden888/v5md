@@ -172,36 +172,74 @@
     
     <!-- Catalog Logic -->
     <script>
-        console.log('Catalog page loaded');
+        console.log('=== Catalog page loaded ===');
         
         let currentCategory = 'all';
         let allProducts = [];
+        let retryCount = 0;
+        const MAX_RETRIES = 5;
         
         // Wait for products to be ready
         function initializeCatalog() {
-            console.log('Initializing catalog...');
+            console.log(`Initializing catalog... (Attempt ${retryCount + 1}/${MAX_RETRIES})`);
             
-            // Check multiple possible sources
-            const db = window.productDatabase || window.finalProductDatabase || window.completeProductDatabase;
+            // Check ALL possible sources
+            const db = window.productDatabase || 
+                      window.finalProductDatabase || 
+                      window.completeProductDatabase ||
+                      window.productData;
+            
+            console.log('Checking database sources:');
+            console.log('- window.productDatabase:', !!window.productDatabase);
+            console.log('- window.finalProductDatabase:', !!window.finalProductDatabase);
+            console.log('- window.completeProductDatabase:', !!window.completeProductDatabase);
+            console.log('- window.productData:', !!window.productData);
             
             if (!db) {
                 console.error('Error: No product database found!');
+                retryCount++;
+                if (retryCount < MAX_RETRIES) {
+                    console.log(`Retrying in ${retryCount * 500}ms...`);
+                    setTimeout(initializeCatalog, retryCount * 500);
+                    return;
+                }
                 showError();
                 return;
             }
             
             console.log('Product database found:', db);
+            console.log('Database structure:', Object.keys(db));
             
-            // Get products array
-            allProducts = db.products || Object.values(db.byId || db) || [];
+            // Get products array - try multiple ways
+            if (Array.isArray(db)) {
+                allProducts = db;
+            } else if (db.products && Array.isArray(db.products)) {
+                allProducts = db.products;
+            } else if (db.byId) {
+                allProducts = Object.values(db.byId);
+            } else {
+                // Try to extract products from any object structure
+                const values = Object.values(db);
+                allProducts = values.filter(item => 
+                    item && typeof item === 'object' && item.id && item.name
+                );
+            }
             
             if (!allProducts || allProducts.length === 0) {
                 console.error('Error: Products array is empty!');
+                console.log('Extracted products:', allProducts);
+                retryCount++;
+                if (retryCount < MAX_RETRIES) {
+                    console.log(`Retrying in ${retryCount * 500}ms...`);
+                    setTimeout(initializeCatalog, retryCount * 500);
+                    return;
+                }
                 showError();
                 return;
             }
             
-            console.log(`Loaded ${allProducts.length} products`);
+            console.log(`✓ Successfully loaded ${allProducts.length} products`);
+            console.log('Sample product:', allProducts[0]);
             
             // Initialize UI
             hideLoading();
@@ -321,13 +359,13 @@
             initializeCatalog();
         }
         
-        // Also try after a short delay if database isn't ready yet
-        setTimeout(() => {
+        // Listen for product database ready event
+        window.addEventListener('productDatabaseReady', function(e) {
+            console.log('Product database ready event received:', e.detail);
             if (allProducts.length === 0) {
-                console.log('Retrying initialization...');
                 initializeCatalog();
             }
-        }, 500);
+        });
     </script>
 </body>
 </html>
