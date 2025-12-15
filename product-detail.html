@@ -4,13 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Dynamic Meta Tags (will be updated by JavaScript) -->
-    <meta name="description" content="V5 Medical Product Details - ISO 13485, CE & FDA certified medical consumables">
-    <meta name="keywords" content="medical product, ISO certified, CE mark, FDA approved">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="V5 Medical - [Product Name] - High-quality medical supplies with ISO 13485, CE & FDA certification">
+    <meta name="keywords" content="[product keywords], medical supplies, ISO certified medical products">
     <meta name="author" content="V5 Medical LTD">
     <meta name="robots" content="index, follow">
     
-    <title>Product Details | V5 Medical LTD</title>
+    <!-- Open Graph -->
+    <meta property="og:title" content="[Product Name] | V5 Medical LTD">
+    <meta property="og:description" content="High-quality [product type] for medical professionals">
+    <meta property="og:type" content="product">
+    <meta property="og:url" content="https://v5md.com/product-detail.html">
+    <meta property="og:image" content="[product image url]">
+    
+    <link rel="canonical" href="https://v5md.com/product-detail.html">
+    
+    <title>[Product Name] | V5 Medical LTD</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
@@ -21,17 +30,6 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        // Suppress Tailwind CDN warning
-        if (window.location.hostname === 'v5md.com') {
-            const originalWarn = console.warn;
-            console.warn = function(...args) {
-                if (args[0] && args[0].includes('cdn.tailwindcss.com')) {
-                    return;
-                }
-                originalWarn.apply(console, args);
-            };
-        }
-        
         tailwind.config = {
             theme: {
                 extend: {
@@ -39,6 +37,9 @@
                         primary: '#1e40af',
                         secondary: '#3b82f6',
                         accent: '#2563eb'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
                     }
                 }
             }
@@ -46,29 +47,29 @@
     </script>
     
     <style>
-        .spec-row {
-            transition: background-color 0.2s ease;
+        .product-image-thumb {
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .spec-row:hover {
-            background-color: #f9fafb;
-        }
-        .loading-spinner {
-            border: 3px solid #f3f4f6;
-            border-top: 3px solid #3b82f6;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .image-gallery img {
-            transition: transform 0.3s ease;
-        }
-        .image-gallery img:hover {
+        .product-image-thumb:hover, .product-image-thumb.active {
+            border-color: #3b82f6;
             transform: scale(1.05);
+        }
+        .certification-badge {
+            transition: transform 0.2s ease;
+        }
+        .certification-badge:hover {
+            transform: scale(1.05);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .quantity-btn {
+            user-select: none;
         }
     </style>
 </head>
@@ -79,7 +80,9 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <a href="index.html" class="flex items-center gap-3">
-                    <img src="images/v5logo.png" onerror="this.src='https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png'" class="h-10" alt="V5 Medical">
+                    <img src="images/v5logo.png" 
+                         onerror="this.src='https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png'" 
+                         class="h-10" alt="V5 Medical">
                     <div>
                         <div class="font-bold text-xl text-blue-900">V5 Medical LTD</div>
                         <div class="text-xs text-blue-600">Global Medical Supplier</div>
@@ -87,7 +90,9 @@
                 </a>
                 <div class="hidden md:flex gap-6 items-center">
                     <a href="index.html" class="text-gray-600 hover:text-blue-900 transition">Home</a>
-                    <a href="catalog.html" class="text-blue-900 font-semibold">← Back to Catalog</a>
+                    <a href="about.html" class="text-gray-600 hover:text-blue-900 transition">About</a>
+                    <a href="catalog.html" class="text-blue-900 border-b-2 border-blue-900 font-semibold">Products</a>
+                    <a href="contact.html" class="text-gray-600 hover:text-blue-900 transition">Contact</a>
                     <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold transition">
                         <i class="fab fa-whatsapp mr-2"></i>WhatsApp
                     </a>
@@ -95,6 +100,19 @@
             </div>
         </div>
     </nav>
+
+    <!-- Breadcrumb Navigation -->
+    <section class="bg-gray-100 py-4">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-sm text-gray-600">
+                <a href="index.html" class="hover:text-blue-600">Home</a> 
+                <i class="fas fa-chevron-right text-xs mx-2"></i> 
+                <a href="catalog.html" class="hover:text-blue-600">Product Catalog</a>
+                <i class="fas fa-chevron-right text-xs mx-2"></i> 
+                <span id="breadcrumb-product" class="text-gray-900 font-medium">[Product Category]</span>
+            </div>
+        </div>
+    </section>
 
     <!-- Loading State -->
     <div id="loading" class="text-center py-20">
@@ -104,313 +122,588 @@
 
     <!-- Error State -->
     <div id="error" class="hidden text-center py-20">
-        <div class="max-w-2xl mx-auto px-4">
-            <i class="fas fa-exclamation-triangle text-red-500 text-6xl mb-4"></i>
-            <h2 class="text-2xl font-bold mb-2">Product Not Found</h2>
-            <p class="text-gray-600 mb-6">The product you're looking for doesn't exist or has been removed.</p>
-            <a href="catalog.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold">
-                Browse Catalog
-            </a>
-        </div>
+        <i class="fas fa-exclamation-triangle text-red-500 text-6xl mb-4"></i>
+        <h2 class="text-2xl font-bold mb-2">Unable to Load Product</h2>
+        <p class="text-gray-600 mb-6">This product could not be found or failed to load.</p>
+        <a href="catalog.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+            <i class="fas fa-arrow-left mr-2"></i>Return to Catalog
+        </a>
     </div>
 
-    <!-- Main Content -->
-    <div id="main-content" class="hidden">
-        <div class="max-w-7xl mx-auto px-4 py-8">
-            <!-- Breadcrumb -->
-            <nav class="mb-6">
-                <div class="flex items-center text-sm text-gray-600">
-                    <a href="index.html" class="hover:text-blue-600">Home</a>
-                    <i class="fas fa-chevron-right mx-2 text-xs"></i>
-                    <a href="catalog.html" class="hover:text-blue-600">Products</a>
-                    <i class="fas fa-chevron-right mx-2 text-xs"></i>
-                    <span id="breadcrumb-product" class="text-blue-600 font-medium">Product</span>
+    <!-- Product Details -->
+    <section id="product-content" class="max-w-7xl mx-auto px-4 py-12 hidden fade-in">
+        <div class="grid lg:grid-cols-2 gap-12">
+            <!-- Product Images -->
+            <div>
+                <div class="bg-white rounded-xl shadow-md p-4 mb-4">
+                    <img id="main-product-image" src="" alt="[Product Name]" class="w-full h-auto rounded-lg">
                 </div>
-            </nav>
+                <div class="grid grid-cols-4 gap-4" id="product-image-thumbs">
+                    <!-- Thumbnail images will be loaded here -->
+                </div>
+            </div>
 
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- Left Column: Images -->
-                <div>
-                    <!-- Main Image -->
-                    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
-                        <img id="main-image" 
-                             src="" 
-                             alt="Product Image"
-                             class="w-full h-auto rounded-lg">
+            <!-- Product Information -->
+            <div>
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <div class="mb-2">
+                        <span id="product-category" class="text-sm text-blue-600 font-medium uppercase"></span>
+                    </div>
+                    <h1 id="product-name" class="text-3xl font-bold text-gray-900 mb-4"></h1>
+                    
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="flex">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                        <span class="text-gray-600 text-sm">(12+ reviews)</span>
                     </div>
                     
-                    <!-- Image Gallery (if multiple images) -->
-                    <div id="image-gallery" class="image-gallery grid grid-cols-4 gap-4 hidden">
-                        <!-- Thumbnails will be inserted here -->
+                    <div class="mb-6">
+                        <span id="product-price" class="text-3xl font-bold text-gray-900"></span>
+                        <span class="text-gray-500 ml-2">/ unit</span>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <p id="product-description" class="text-gray-600 leading-relaxed"></p>
+                    </div>
+                    
+                    <!-- Product Features -->
+                    <div class="mb-8">
+                        <h3 class="font-bold text-lg mb-3">Product Features</h3>
+                        <ul id="product-features" class="space-y-2 text-gray-600">
+                            <!-- Features will be loaded here -->
+                        </ul>
                     </div>
                     
                     <!-- Certifications -->
-                    <div class="bg-white rounded-xl shadow-md p-6 mt-6">
-                        <h3 class="font-bold text-lg mb-4">Certifications</h3>
-                        <div class="grid grid-cols-3 gap-4">
-                            <div class="bg-blue-50 p-4 rounded-lg text-center">
-                                <div class="w-16 h-16 mx-auto mb-2 flex items-center justify-center">
-                                    <i class="fas fa-certificate text-blue-600 text-3xl"></i>
-                                </div>
-                                <span class="text-xs font-semibold">CE Mark</span>
-                            </div>
-                            <div class="bg-green-50 p-4 rounded-lg text-center">
-                                <div class="w-16 h-16 mx-auto mb-2 flex items-center justify-center">
-                                    <i class="fas fa-shield-alt text-green-600 text-3xl"></i>
-                                </div>
-                                <span class="text-xs font-semibold">ISO 13485</span>
-                            </div>
-                            <div class="bg-red-50 p-4 rounded-lg text-center">
-                                <div class="w-16 h-16 mx-auto mb-2 flex items-center justify-center">
-                                    <i class="fas fa-check-circle text-red-600 text-3xl"></i>
-                                </div>
-                                <span class="text-xs font-semibold">FDA</span>
-                            </div>
+                    <div class="mb-8">
+                        <h3 class="font-bold text-lg mb-3">Certifications</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="certification-badge bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center gap-1">
+                                <i class="fas fa-certificate"></i> ISO 13485
+                            </span>
+                            <span class="certification-badge bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm flex items-center gap-1">
+                                <i class="fas fa-certificate"></i> CE Approved
+                            </span>
+                            <span class="certification-badge bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm flex items-center gap-1">
+                                <i class="fas fa-certificate"></i> FDA Registered
+                            </span>
                         </div>
                     </div>
-                </div>
-
-                <!-- Right Column: Details -->
-                <div>
-                    <!-- Product Name & Status -->
-                    <h1 id="product-name" class="text-3xl font-bold text-gray-900 mb-4"></h1>
                     
-                    <div class="flex items-center gap-3 mb-6">
-                        <span id="availability-badge" class="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full font-medium">
-                            In Stock
-                        </span>
-                        <span id="product-price" class="text-2xl font-bold text-blue-700"></span>
-                    </div>
-
-                    <!-- Category -->
-                    <div class="mb-6">
-                        <span class="text-sm text-gray-500">Category: </span>
-                        <span id="product-category" class="text-sm font-semibold text-gray-700"></span>
-                    </div>
-
-                    <!-- Description -->
+                    <!-- Quantity Selector -->
                     <div class="mb-8">
-                        <h3 class="text-xl font-bold mb-4">Description</h3>
-                        <div class="bg-white rounded-xl shadow-sm p-6">
-                            <p id="product-short" class="text-gray-700 mb-4 font-medium"></p>
-                            <p id="product-description" class="text-gray-700 leading-relaxed"></p>
+                        <label class="block font-medium text-gray-700 mb-2">Quantity</label>
+                        <div class="flex items-center w-40 border rounded-lg">
+                            <button class="quantity-btn w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100" onclick="updateQuantity(-1)">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" id="quantity" value="1" min="1" class="w-20 h-10 text-center border-x focus:outline-none" onchange="validateQuantity()">
+                            <button class="quantity-btn w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100" onclick="updateQuantity(1)">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
+                        <p id="moq-info" class="text-sm text-gray-500 mt-2">Minimum order quantity: <span></span></p>
                     </div>
-
-                    <!-- Specifications -->
-                    <div class="mb-8">
-                        <h3 class="text-xl font-bold mb-4">Specifications</h3>
-                        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                            <div id="specifications-content">
-                                <!-- Specifications will be inserted here -->
-                            </div>
-                        </div>
-                    </div>
-
+                    
                     <!-- Action Buttons -->
-                    <div class="flex gap-4">
-                        <a href="catalog.html" 
-                           class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg text-center transition">
-                            <i class="fas fa-arrow-left mr-2"></i> Back to Catalog
+                    <div class="flex flex-wrap gap-4">
+                        <a id="whatsapp-link" href="" target="_blank" class="flex-1 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition text-center" onclick="trackWhatsAppClick()">
+                            <i class="fab fa-whatsapp mr-2"></i> Inquire on WhatsApp
                         </a>
-                        <a id="whatsapp-link" 
-                           href="#"
-                           target="_blank"
-                           class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg text-center transition">
-                            <i class="fab fa-whatsapp mr-2"></i> WhatsApp Inquiry
+                        <a href="contact.html" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition text-center">
+                            <i class="fas fa-envelope mr-2"></i> Send Inquiry
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        
+        <!-- Additional Product Details -->
+        <div class="mt-12 grid lg:grid-cols-3 gap-8">
+            <!-- Specifications -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-list-ul text-blue-600 mr-2"></i> Specifications
+                </h2>
+                <table id="product-specs" class="w-full text-gray-600">
+                    <!-- Specifications will be loaded here -->
+                </table>
+            </div>
+            
+            <!-- Packaging -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-box text-blue-600 mr-2"></i> Packaging Details
+                </h2>
+                <ul id="packaging-details" class="space-y-2 text-gray-600">
+                    <!-- Packaging details will be loaded here -->
+                </ul>
+            </div>
+            
+            <!-- Shipping -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-shipping-fast text-blue-600 mr-2"></i> Shipping Info
+                </h2>
+                <div class="space-y-3 text-gray-600">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-truck mt-1 text-gray-400"></i>
+                        <div>
+                            <span class="font-medium">Delivery Time:</span>
+                            <p id="delivery-time">7-14 business days for stock items</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-globe mt-1 text-gray-400"></i>
+                        <div>
+                            <span class="font-medium">Shipping To:</span>
+                            <p>Worldwide (40+ countries)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">                            <i class="fas fa-file-import mt-1 text-gray-400"></i>
+                            <div>
+                                <span class="font-medium">Import Documentation:</span>
+                                <p>We provide all necessary import documents including commercial invoice, packing list, certificate of origin, and health certificates.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-shield-alt mt-1 text-gray-400"></i>
+                            <div>
+                                <span class="font-medium">Shipping Insurance:</span>
+                                <p>All shipments include basic insurance. Extended coverage available upon request.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Related Products -->
+        <div class="mt-16">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">You May Also Like</h2>
+            <div id="related-products" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Related products will be loaded here -->
+            </div>
+        </div>
+        
+        <!-- Customer Reviews -->
+        <div class="mt-16 bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Customer Reviews</h2>
+            
+            <div class="space-y-6">
+                <!-- Review 1 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
+                            DR
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-900">Dr. Robert Martinez</div>
+                            <div class="text-sm text-gray-500">Surgeon, Madrid</div>
+                        </div>
+                        <div class="ml-auto flex">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">
+                        "Excellent quality product. We've been using these sutures for over a year now and have had consistent results with minimal patient complications."
+                    </p>
+                    <p class="text-sm text-gray-500 mt-2">Reviewed on June 15, 2024</p>
+                </div>
+                
+                <!-- Review 2 -->
+                <div>
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold">
+                            SK
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-900">Sarah Kim</div>
+                            <div class="text-sm text-gray-500">Procurement Manager, Seoul</div>
+                        </div>
+                        <div class="ml-auto flex">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star-half-alt text-yellow-400"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">
+                        "Fast delivery and competitive pricing. The packaging was secure and all items arrived in perfect condition. Will definitely order again."
+                    </p>
+                    <p class="text-sm text-gray-500 mt-2">Reviewed on August 3, 2024</p>
+                </div>
+            </div>
+            
+            <button class="mt-6 text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 transition">
+                Read All 12 Reviews <i class="fas fa-arrow-right text-sm"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="mt-16 py-12 bg-blue-50 border-t border-blue-100">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Need More Information?</h2>
+            <p class="text-gray-600 mb-8">Our medical supply experts are ready to help you find the right products for your needs.</p>
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition" onclick="trackWhatsAppClick()">
+                    <i class="fab fa-whatsapp mr-2"></i> Chat with Expert
+                </a>
+                <a href="contact.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+                    <i class="fas fa-envelope mr-2"></i> Send Inquiry
+                </a>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-8 text-center mt-12">
+    <footer class="bg-blue-900 text-white pt-12 pb-6">
         <div class="max-w-7xl mx-auto px-4">
-            <p class="text-gray-400">© 2025 V5 Medical LTD. All rights reserved.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <img src="images/v5logo-white.png" onerror="this.src='https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo-white.png'" class="h-10" alt="V5 Medical">
+                        <div>
+                            <div class="font-bold text-xl">V5 Medical LTD</div>
+                            <div class="text-xs text-blue-200">Global Medical Supplier</div>
+                        </div>
+                    </div>
+                    <p class="text-blue-200 mb-6">
+                        High-quality medical supplies with ISO 13485, CE & FDA certification, delivered to 40+ countries worldwide.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-blue-200 hover:text-white transition"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-blue-200 hover:text-white transition"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-blue-200 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-blue-200 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-6">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="text-blue-200 hover:text-white transition">Home</a></li>
+                        <li><a href="about.html" class="text-blue-200 hover:text-white transition">About Us</a></li>
+                        <li><a href="catalog.html" class="text-blue-200 hover:text-white transition">Product Catalog</a></li>
+                        <li><a href="blog.html" class="text-blue-200 hover:text-white transition">Blog & News</a></li>
+                        <li><a href="contact.html" class="text-blue-200 hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-6">Product Categories</h3>
+                    <ul class="space-y-3">
+                        <li><a href="catalog.html#surgical-sutures" class="text-blue-200 hover:text-white transition">Surgical Sutures</a></li>
+                        <li><a href="catalog.html#surgical-packs" class="text-blue-200 hover:text-white transition">Surgical Packs</a></li>
+                        <li><a href="catalog.html#injection-infusion" class="text-blue-200 hover:text-white transition">Injection & Infusion</a></li>
+                        <li><a href="catalog.html#dental-consumables" class="text-blue-200 hover:text-white transition">Dental Consumables</a></li>
+                        <li><a href="catalog.html#other-products" class="text-blue-200 hover:text-white transition">Other Products</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-6">Contact Us</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt mt-1 text-blue-300"></i>
+                            <span class="text-blue-200">123 Medical Avenue, London, UK, SW1A 1AA</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-phone text-blue-300"></i>
+                            <a href="tel:+442071234567" class="text-blue-200 hover:text-white transition">+44 (20) 7123-4567</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-envelope text-blue-300"></i>
+                            <a href="mailto:info@v5md.com" class="text-blue-200 hover:text-white transition">info@v5md.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fab fa-whatsapp text-blue-300"></i>
+                            <a href="https://wa.me/447895047944" target="_blank" class="text-blue-200 hover:text-white transition">+44 (789) 504-7944</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-blue-800 pt-6 mt-6 text-center text-blue-300 text-sm">
+                <p>&copy; 2024 V5 Medical LTD. All rights reserved.</p>
+                <div class="flex justify-center gap-4 mt-2">
+                    <a href="privacy.html" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+                    <a href="shipping.html" class="hover:text-white transition">Shipping Policy</a>
+                </div>
+            </div>
         </div>
     </footer>
 
-    <!-- Load Products Database -->
-    <script src="js/products.js"></script>
-    
-    <!-- Product Detail Logic -->
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/447895047944" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       onclick="trackWhatsAppClick()"
+       class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center z-50 transition-all duration-300 hover:scale-110 group"
+       aria-label="Contact us on WhatsApp">
+        <i class="fab fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i>
+    </a>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" 
+            class="fixed bottom-24 right-6 bg-blue-900 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 opacity-0 invisible hover:bg-blue-700 z-40" 
+            aria-label="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Google Translate -->
+    <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
     <script>
-        console.log('Product detail page loaded');
+        // Product data (would typically come from API)
+        let productData = null;
         
-        // Get product ID from URL
+        // Get product ID from URL parameters
         function getProductId() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id') || urlParams.get('product');
-            console.log('Product ID from URL:', id);
-            return id;
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
         }
         
-        // Format category name
-        function formatCategoryName(category) {
-            if (!category) return 'Uncategorized';
-            return category
-                .split('-')
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(' ');
-        }
-        
-        // Update page meta tags
-        function updateMetaTags(product) {
-            document.title = `${product.name} | V5 Medical LTD`;
-            
-            // Update meta description
-            const metaDesc = document.querySelector('meta[name="description"]');
-            if (metaDesc) {
-                metaDesc.content = product.short || product.description || 'V5 Medical Product';
-            }
-            
-            // Update meta keywords
-            const metaKeywords = document.querySelector('meta[name="keywords"]');
-            if (metaKeywords) {
-                metaKeywords.content = `${product.name}, ${formatCategoryName(product.category)}, medical product, ISO certified`;
+        // Fetch product details
+        async function fetchProductDetails() {
+            try {
+                showLoading();
+                
+                // In a real implementation, this would be an API call
+                // For demo, we'll load from local products array
+                const response = await fetch('js/products.js');
+                if (!response.ok) throw new Error('Failed to fetch products');
+                
+                const products = await response.json();
+                const productId = getProductId();
+                
+                productData = products.find(p => p.id === productId);
+                
+                if (!productData) throw new Error('Product not found');
+                
+                renderProductDetails();
+                renderRelatedProducts(products);
+                
+                hideLoading();
+                document.getElementById('product-content').classList.remove('hidden');
+                
+            } catch (error) {
+                handleError(error);
             }
         }
         
         // Render product details
-        function renderProduct(product) {
-            console.log('Rendering product:', product);
+        function renderProductDetails() {
+            if (!productData) return;
             
-            // Update meta tags
-            updateMetaTags(product);
+            // Update meta tags for SEO
+            document.title = `${productData.name} | V5 Medical LTD`;
+            document.querySelector('meta[name="description"]').setAttribute('content', 
+                `V5 Medical - ${productData.name} - ${productData.shortDescription}`);
+                
+            // Update breadcrumb
+            document.getElementById('breadcrumb-product').textContent = productData.name;
             
-            // Hide loading, show content
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
+            // Main product image
+            const mainImage = document.getElementById('main-product-image');
+            mainImage.src = productData.images[0];
+            mainImage.alt = productData.name;
             
-            // Breadcrumb
-            document.getElementById('breadcrumb-product').textContent = product.name;
+            // Image thumbnails
+            const thumbContainer = document.getElementById('product-image-thumbs');
+            productData.images.forEach((img, index) => {
+                const thumb = document.createElement('div');
+                thumb.className = `product-image-thumb border-2 rounded-lg overflow-hidden ${index === 0 ? 'active' : 'border-transparent'}`;
+                thumb.innerHTML = `<img src="${img}" alt="Product image ${index + 1}" class="w-full h-20 object-cover">`;
+                thumb.addEventListener('click', () => {
+                    mainImage.src = img;
+                    document.querySelectorAll('.product-image-thumb').forEach(t => t.classList.remove('active', 'border-blue-600'));
+                    document.querySelectorAll('.product-image-thumb').forEach(t => t.classList.add('border-transparent'));
+                    thumb.classList.add('active', 'border-blue-600');
+                    thumb.classList.remove('border-transparent');
+                });
+                thumbContainer.appendChild(thumb);                thumbContainer.appendChild(thumb);
+            });
             
-            // Main image
-            const mainImage = product.image || product.images?.[0] || 'https://via.placeholder.com/600x400?text=Product+Image';
-            document.getElementById('main-image').src = mainImage;
-            document.getElementById('main-image').alt = product.name;
+            // Product title and details
+            document.getElementById('product-title').textContent = productData.name;
+            document.getElementById('product-short-desc').textContent = productData.short;
+            document.getElementById('product-full-desc').textContent = productData.description;
             
-            // Image gallery (if multiple images)
-            if (product.images && product.images.length > 1) {
-                const gallery = document.getElementById('image-gallery');
-                gallery.classList.remove('hidden');
-                gallery.innerHTML = product.images.map(img => `
-                    <img src="${img}" 
-                         alt="${product.name}"
-                         class="w-full h-20 object-cover rounded-lg cursor-pointer border-2 border-gray-200 hover:border-blue-500"
-                         onclick="document.getElementById('main-image').src='${img}'">
-                `).join('');
+            // Price and availability
+            document.getElementById('product-price').textContent = productData.price;
+            document.getElementById('product-availability').textContent = productData.availability;
+            
+            // Stock level indicator
+            const stockLevelEl = document.getElementById('product-stock-level');
+            switch(productData.stockLevel.toLowerCase()) {
+                case 'high':
+                    stockLevelEl.className = 'text-green-600 font-medium';
+                    stockLevelEl.innerHTML = '<i class="fas fa-check-circle mr-1"></i> High Stock';
+                    break;
+                case 'medium':
+                    stockLevelEl.className = 'text-yellow-600 font-medium';
+                    stockLevelEl.innerHTML = '<i class="fas fa-exclamation-circle mr-1"></i> Medium Stock';
+                    break;
+                case 'low':
+                    stockLevelEl.className = 'text-orange-600 font-medium';
+                    stockLevelEl.innerHTML = '<i class="fas fa-exclamation-triangle mr-1"></i> Low Stock';
+                    break;
+                default:
+                    stockLevelEl.textContent = productData.stockLevel;
             }
             
-            // Product details
-            document.getElementById('product-name').textContent = product.name;
-            document.getElementById('product-price').textContent = product.price || 'Contact for Price';
-            document.getElementById('product-category').textContent = formatCategoryName(product.category);
-            document.getElementById('product-short').textContent = product.short || '';
-            document.getElementById('product-description').textContent = product.description || '';
-            
-            // Availability badge
-            const badge = document.getElementById('availability-badge');
-            if (product.availability === 'In Stock') {
-                badge.className = 'bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full font-medium';
-                badge.textContent = 'In Stock';
-            } else if (product.availability === 'Out of Stock') {
-                badge.className = 'bg-red-100 text-red-800 text-sm px-3 py-1 rounded-full font-medium';
-                badge.textContent = 'Out of Stock';
-            } else {
-                badge.className = 'bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full font-medium';
-                badge.textContent = product.availability || 'Contact Us';
-            }
+            // Certifications
+            const certsContainer = document.getElementById('product-certifications');
+            productData.certifications.forEach(cert => {
+                const certBadge = document.createElement('span');
+                certBadge.className = 'bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded mr-2 mb-2 inline-block';
+                certBadge.textContent = cert;
+                certsContainer.appendChild(certBadge);
+            });
             
             // Specifications
-            const specsContainer = document.getElementById('specifications-content');
-            if (product.specifications && Object.keys(product.specifications).length > 0) {
-                specsContainer.innerHTML = Object.entries(product.specifications).map(([key, value]) => `
-                    <div class="spec-row flex justify-between py-3 px-6 border-b border-gray-100">
-                        <span class="text-gray-600 font-medium">${key}</span>
-                        <span class="text-gray-900 font-semibold">${value}</span>
-                    </div>
-                `).join('');
-            } else {
-                specsContainer.innerHTML = '<div class="p-6 text-gray-600">Specifications coming soon.</div>';
+            const specsContainer = document.getElementById('product-specifications');
+            for(const [key, value] of Object.entries(productData.specifications)) {
+                const specRow = document.createElement('div');
+                specRow.className = 'grid grid-cols-3 py-3 border-b border-gray-100';
+                specRow.innerHTML = `
+                    <div class="text-gray-500">${key}</div>
+                    <div class="col-span-2 font-medium">${value}</div>
+                `;
+                specsContainer.appendChild(specRow);
             }
             
-            // WhatsApp link
-            const whatsappLink = document.getElementById('whatsapp-link');
-            whatsappLink.href = `https://wa.me/447895047944?text=I'm interested in ${encodeURIComponent(product.name)}`;
+            // Update WhatsApp link with product reference
+            const whatsappLinks = document.querySelectorAll('a[href*="wa.me"]');
+            whatsappLinks.forEach(link => {
+                const currentHref = link.getAttribute('href');
+                const productRef = `%0A%0AReferring to: ${productData.name} (ID: ${productData.id})`;
+                link.setAttribute('href', currentHref.includes('?') 
+                    ? `${currentHref}${productRef}` 
+                    : `${currentHref}?text=${productRef}`);
+            });
         }
         
-        // Show error
-        function showError() {
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('error').classList.remove('hidden');
-        }
-        
-        // Initialize product detail page
-        function initializeProductDetail() {
-            console.log('Initializing product detail...');
+        // Render related products
+        function renderRelatedProducts(allProducts) {
+            if (!productData) return;
             
-            const productId = getProductId();
+            const relatedContainer = document.getElementById('related-products');
+            const relatedProducts = allProducts
+                .filter(p => p.category === productData.category && p.id !== productData.id)
+                .slice(0, 4); // Show up to 4 related products
             
-            if (!productId) {
-                console.error('Error: No product ID provided');
-                showError();
+            if (relatedProducts.length === 0) {
+                relatedContainer.innerHTML = '<p class="col-span-full text-center text-gray-500">No related products found</p>';
                 return;
             }
             
-            // Check for product database
-            const db = window.productDatabase || window.finalProductDatabase || window.completeProductDatabase;
-            
-            if (!db) {
-                console.error('Error: No product database found!');
-                showError();
-                return;
-            }
-            
-            console.log('Product database found:', db);
-            
-            // Find product
-            let product = null;
-            
-            // Try byId lookup first
-            if (db.byId && db.byId[productId]) {
-                product = db.byId[productId];
-            }
-            // Try products array
-            else if (db.products && Array.isArray(db.products)) {
-                product = db.products.find(p => p.id === productId);
-            }
-            // Try direct lookup
-            else if (db[productId]) {
-                product = db[productId];
-            }
-            
-            if (!product) {
-                console.error('Error: Product not found with ID:', productId);
-                showError();
-                return;
-            }
-            
-            renderProduct(product);
+            relatedProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition';
+                productCard.innerHTML = `
+                    <a href="product-detail.html?id=${product.id}" class="block">
+                        <div class="relative h-48 bg-gray-100">
+                            <img src="${product.images[0]}" alt="${product.name}" class="w-full h-full object-cover">
+                            <div class="absolute top-3 right-3 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                ${product.availability}
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2 h-12">${product.name}</h3>
+                            <p class="text-gray-500 text-sm mb-3 line-clamp-2">${product.short}</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-blue-600 font-bold">${product.price}</span>
+                                <span class="text-xs text-gray-500">
+                                    ${product.certifications.length > 0 ? product.certifications[0] : ''}
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+                relatedContainer.appendChild(productCard);
+            });
         }
         
-        // Initialize when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeProductDetail);
-        } else {
-            initializeProductDetail();
+        // Loading state management
+        function showLoading() {
+            document.getElementById('loading-indicator').classList.remove('hidden');
+            document.getElementById('product-content').classList.add('hidden');
+            document.getElementById('error-message').classList.add('hidden');
         }
         
-        // Retry after delay if needed
-        setTimeout(() => {
-            const content = document.getElementById('main-content');
-            if (content.classList.contains('hidden') && !document.getElementById('error').classList.contains('hidden')) {
-                console.log('Retrying initialization...');
-                initializeProductDetail();
+        function hideLoading() {
+            document.getElementById('loading-indicator').classList.add('hidden');
+        }
+        
+        // Error handling
+        function handleError(error) {
+            hideLoading();
+            const errorEl = document.getElementById('error-message');
+            errorEl.textContent = error.message || 'An error occurred while loading product details';
+            errorEl.classList.remove('hidden');
+            console.error('Error loading product:', error);
+        }
+        
+        // Google Translate initialization
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,es,fr,de,zh-CN,zh-TW,ja,ko,ru,ar',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+        
+        // Tracking function for WhatsApp clicks
+        function trackWhatsAppClick() {
+            if (typeof gtag === 'function' && productData) {
+                gtag('event', 'whatsapp_inquiry', {
+                    event_category: 'Product',
+                    event_label: productData.id,
+                    value: productData.name
+                });
             }
-        }, 500);
+        }
+        
+        // Back to top button functionality
+        const backToTopBtn = document.getElementById('back-to-top');
+        if (backToTopBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+        
+        // Initialize page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', fetchProductDetails);
     </script>
 </body>
 </html>
