@@ -1,257 +1,185 @@
-// generate-sitemap.js
-// Auto-generate sitemap.xml from finalProductDatabase with enhanced features
-// Run with: node generate-sitemap.js [--env=production] [--verbose]
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
-const fs = require('fs');
-const path = require('path');
-const { program } = require('commander');
+    <url>
+        <loc>https://v5md.com/</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://v5md.com/index.html</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://v5md.com/catalog.html</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://v5md.com/about.html</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://v5md.com/contact.html</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://v5md.com/blog.html</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://v5md.com/privacy.html</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
+    </url>
 
-// Configure command line arguments
-program
-  .option('--env <environment>', 'Environment (development, staging, production)', 'production')
-  .option('--verbose', 'Enable verbose logging', false)
-  .option('--output <path>', 'Output file path', 'sitemap.xml')
-  .option('--domain <url>', 'Base domain URL')
-  .parse(process.argv);
+    <url>
+        <loc>https://v5md.com/product-detail.html?id=pga-absorbable-suture</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://v5md.com/images/products/surgical-sutures/pga-absorbable-suture.jpg</image:loc>
+            <image:title>PGA Absorbable Suture</image:title>
+            <image:caption>Monofilament PGA suture with excellent tensile strength</image:caption>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://v5md.com/product-detail.html?id=pgla-absorbable-suture</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://v5md.com/images/products/surgical-sutures/pgla-braided-suture.jpg</image:loc>
+            <image:title>PGLA Absorbable Suture</image:title>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://v5md.com/product-detail.html?id=chromic-catgut</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://v5md.com/images/products/surgical-sutures/chromic-catgut.jpg</image:loc>
+            <image:title>Chromic Catgut Suture</image:title>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://v5md.com/product-detail.html?id=plain-catgut</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://v5md.com/images/products/surgical-sutures/plain-catgut.jpg</image:loc>
+            <image:title>Plain Catgut Suture</image:title>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://v5md.com/product-detail.html?id=silk-suture</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://v5md.com/images/products/surgical-sutures/silk-suture.jpg</image:loc>
+            <image:title>Silk Braided Suture</image:title>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://v5md.com/product-detail.html?id=nylon-suture</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://v5md.com/images/products/surgical-sutures/nylon-suture.jpg</image:loc>
+            <image:title>Nylon Monofilament Suture</image:title>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://v5md.com/product-detail.html?id=polypropylene-suture</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://v5md.com/images/products/surgical-sutures/polypropylene-suture.jpg</image:loc>
+            <image:title>Polypropylene Suture</image:title>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://v5md.com/product-detail.html?id=polyester-suture</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://v5md.com/images/products/surgical-sutures/polyester-suture.jpg</image:loc>
+            <image:title>Polyester Suture</image:title>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://v5md.com/product-detail.html?id=pdo-suture</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://v5md.com/images/products/surgical-sutures/pdo-suture.jpg</image:loc>
+            <image:title>PDO Suture</image:title>
+        </image:image>
+    </url>
 
-const options = program.opts();
+    <url>
+        <loc>https://v5md.com/product-detail.html?id=surgical-blades</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://v5md.com/images/products/surgical-instruments/surgical-blades.jpg</image:loc>
+            <image:title>Surgical Blades</image:title>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://v5md.com/product-detail.html?id=scalpels</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://v5md.com/images/products/surgical-instruments/scalpels.jpg</image:loc>
+            <image:title>Disposable Scalpels</image:title>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://v5md.com/product-detail.html?id=lancets</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://v5md.com/images/products/surgical-instruments/lancets.jpg</image:loc>
+            <image:title>Blood Lancets</image:title>
+        </image:image>
+    </url>
 
-// Configuration based on environment
-const config = {
-  development: {
-    domain: 'http://localhost:3000',
-    defaultPriority: '0.5',
-    defaultChangeFreq: 'daily'
-  },
-  staging: {
-    domain: 'https://staging.v5md.com',
-    defaultPriority: '0.6',
-    defaultChangeFreq: 'weekly'
-  },
-  production: {
-    domain: 'https://v5md.com',
-    defaultPriority: '0.7',
-    defaultChangeFreq: 'monthly'
-  }
-}[options.env] || config.production;
+    <url>
+        <loc>https://v5md.com/pdf/Catalog.pdf</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://v5md.com/pdf/price%20list.pdf</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
 
-// Override domain if provided
-if (options.domain) {
-  config.domain = options.domain;
-}
-
-const NOW = new Date().toISOString();
-const VERBOSE = options.verbose;
-
-// Logging utility
-function log(message, level = 'info') {
-  if (VERBOSE || level === 'error') {
-    console.log(`[${new Date().toISOString()}] [${level.toUpperCase()}] ${message}`);
-  }
-}
-
-// XML escaping utility
-function escapeXml(unsafe) {
-  if (!unsafe) return '';
-  return unsafe.replace(/[<>&'"]/g, function(c) {
-    switch(c) {
-      case '<': return '&lt;';
-      case '>': return '&gt;';
-      case '&': return '&amp;';
-      case "'": return '&apos;';
-      case '"': return '&quot;';
-      default: return c;
-    }
-  });
-}
-
-// URL generator with validation
-function createUrl(loc, options = {}) {
-  const {
-    priority = config.defaultPriority,
-    changefreq = config.defaultChangeFreq,
-    lastmod = NOW,
-    images = []
-  } = options;
-
-  // Validate URL
-  if (!loc || typeof loc !== 'string') {
-    log(`Invalid URL: ${loc}`, 'warning');
-    return null;
-  }
-
-  // Ensure URL starts with domain
-  let url = loc.startsWith('http') ? loc : `${config.domain}${loc.startsWith('/') ? '' : '/'}${loc}`;
-  
-  let xml = `  <url>\n    <loc>${escapeXml(url)}</loc>\n    <lastmod>${escapeXml(lastmod)}</lastmod>\n    <changefreq>${escapeXml(changefreq)}</changefreq>\n    <priority>${escapeXml(priority)}</priority>`;
-
-  // Add image entries if provided
-  if (images && images.length > 0) {
-    images.forEach(img => {
-      if (img.loc) {
-        xml += `\n    <image:image>\n      <image:loc>${escapeXml(img.loc)}</image:loc>`;
-        if (img.caption) xml += `\n      <image:caption>${escapeXml(img.caption)}</image:caption>`;
-        if (img.title) xml += `\n      <image:title>${escapeXml(img.title)}</image:title>`;
-        xml += '\n    </image:image>';
-      }
-    });
-  }
-
-  xml += '\n  </url>';
-  return xml;
-}
-
-// Main sitemap generation function
-async function generateSitemap() {
-  try {
-    log('Starting sitemap generation...');
-    
-    // Load products database with error handling
-    let finalProductDatabase = {};
-    try {
-      const productsPath = path.resolve(__dirname, 'js', 'products.js');
-      log(`Loading products from: ${productsPath}`);
-      
-      // Handle different export formats
-      const productsModule = require(productsPath);
-      finalProductDatabase = productsModule.finalProductDatabase || 
-                           productsModule.productDatabase || 
-                           productsModule.default || 
-                           {};
-      
-      if (typeof finalProductDatabase !== 'object' || finalProductDatabase === null) {
-        throw new Error('Product database is not an object');
-      }
-      
-      log(`Loaded ${Object.keys(finalProductDatabase).length} products`, 'info');
-      
-    } catch (error) {
-      log(`Error loading products: ${error.message}`, 'error');
-      log('Continuing with empty product database', 'warning');
-      finalProductDatabase = {};
-    }
-
-    const urls = [];
-
-    // Core pages with priority based on importance
-    const corePages = [
-      { loc: '/', priority: '1.0', changefreq: 'weekly', description: 'Homepage' },
-      { loc: '/catalog.html', priority: '0.9', changefreq: 'weekly', description: 'Product Catalog' },
-      { loc: '/about.html', priority: '0.8', changefreq: 'monthly', description: 'About Us' },
-      { loc: '/contact.html', priority: '0.8', changefreq: 'monthly', description: 'Contact' },
-      { loc: '/blog.html', priority: '0.8', changefreq: 'weekly', description: 'Blog' },
-      { loc: '/faq.html', priority: '0.7', changefreq: 'quarterly', description: 'FAQ' },
-      { loc: '/privacy.html', priority: '0.5', changefreq: 'yearly', description: 'Privacy Policy' },
-      { loc: '/terms.html', priority: '0.5', changefreq: 'yearly', description: 'Terms of Service' }
-    ];
-
-    corePages.forEach(page => {
-      const urlXml = createUrl(page.loc, {
-        priority: page.priority,
-        changefreq: page.changefreq
-      });
-      if (urlXml) {
-        urls.push(urlXml);
-        log(`Added core page: ${page.loc} (${page.description})`, 'info');
-      }
-    });
-
-    // Category pages with deduplication and SEO optimization
-    const productsArray = Object.values(finalProductDatabase);
-    const categories = [...new Set(productsArray.map(p => p.category).filter(c => c))];
-    
-    categories.forEach(cat => {
-      const safeCat = encodeURIComponent(cat);
-      const urlXml = createUrl(`/catalog.html?category=${safeCat}`, {
-        priority: '0.8',
-        changefreq: 'monthly'
-      });
-      if (urlXml) {
-        urls.push(urlXml);
-        log(`Added category: ${cat}`, 'info');
-      }
-    });
-
-    // Product detail pages with image sitemap support
-    productsArray.forEach(product => {
-      if (!product.id || !product.name) {
-        log(`Skipping invalid product: ${JSON.stringify(product)}`, 'warning');
-        return;
-      }
-
-      // Create product detail URL
-      const productUrl = `/product-detail.html?product=${product.id}`;
-      
-      // Prepare product images for image sitemap
-      const productImages = [];
-      if (product.images && Array.isArray(product.images)) {
-        product.images.forEach((imgUrl, index) => {
-          if (imgUrl) {
-            productImages.push({
-              loc: imgUrl.startsWith('http') ? imgUrl : `${config.domain}/images/products/${imgUrl}`,
-              caption: `${product.name} product image ${index + 1}`,
-              title: product.name
-            });
-          }
-        });
-      }
-
-      const urlXml = createUrl(productUrl, {
-        priority: '0.7',
-        changefreq: 'monthly',
-        images: productImages.length > 0 ? productImages : undefined
-      });
-      
-      if (urlXml) {
-        urls.push(urlXml);
-        log(`Added product: ${product.name} (${product.id})`, 'info');
-      }
-    });
-
-    // Generate sitemap XML with proper namespaces
-    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset 
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls.join('\n')}\n</urlset>`;
-
-    // Write sitemap to file
-    const outputPath = path.resolve(__dirname, options.output);
-    fs.writeFileSync(outputPath, sitemap, 'utf8');
-    
-    // Generate summary report
-    const summary = `
-Sitemap Generation Complete!
-============================
-Environment: ${options.env}
-Domain: ${config.domain}
-Output File: ${outputPath}
-Total URLs: ${urls.length}
-- Core Pages: ${corePages.length}
-- Categories: ${categories.length}
-- Products: ${productsArray.length}
-- Product Images: ${productImages.length}
-Generated at: ${NOW}
-`;
-
-    console.log(summary);
-    log('Sitemap generated successfully!', 'success');
-    
-    return {
-      success: true,
-      count: urls.length,
-      path: outputPath
-    };
-
-  } catch (error) {
-    log(`Sitemap generation failed: ${error.message}`, 'error');
-    log(error.stack, 'error');
-    return {
-      success: false,
-      error: error.message
-    };
-  }
-}
-
-// Run the sitemap generator
-generateSitemap();
-
-module.exports = { generateSitemap };
+</urlset>
