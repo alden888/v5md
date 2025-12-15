@@ -1,261 +1,165 @@
 /**
- * SEO Utilities for V5 Medical Website
- * Handles meta tags, structured data, and search engine optimization
- * @version 1.0.0
+ * V5 Medical SEO Utilities
+ * Handles dynamic meta tag updates and structured data injection (JSON-LD)
+ * @version 2.0.0
+ * @updated 2024-12-16
  */
 
 class SEOUtils {
     constructor() {
-        this.config = window.V5Config || {};
-        this.currentPage = this.detectCurrentPage();
-        this.logger = this.createLogger();
-        this.schemaScripts = new Map();
+        this.config = window.V5Config?.SEO || {};
+        this.baseUrl = window.V5Config?.BASE_URL || window.location.origin;
+        this.schemaId = 'v5-dynamic-schema';
     }
 
     /**
-     * Detect current page from URL
-     * @returns {string} Page identifier
+     * Main entry point to update all SEO elements for a page
+     * @param {Object} data - { title, description, image, type, keywords, product }
      */
-    detectCurrentPage() {
-        const pathname = window.location.pathname;
-        if (pathname.includes('product-detail')) return 'product';
-        if (pathname.includes('catalog')) return 'catalog';
-        if (pathname.includes('about')) return 'about';
-        if (pathname.includes('contact')) return 'contact';
-        if (pathname.includes('blog')) return 'blog';
-        return 'home';
-    }
+    updatePage(data = {}) {
+        const title = data.title || this.config.DEFAULT_TITLE;
+        const description = data.description || this.config.DEFAULT_DESC;
+        const image = this._resolveUrl(data.image || this.config.DEFAULT_IMAGE);
+        const url = window.location.href;
 
-    /**
-     * Update meta tags for current page
-     * @param {Object} options - SEO options
-     */
-    updateMetaTags(options = {}) {
-        const {
-            title = this.config.SEO.DEFAULT_TITLE,
-            description = this.config.SEO.DEFAULT_DESCRIPTION,
-            keywords = this.config.SEO.DEFAULT_KEYWORDS,
-            image = this.config.SEO.DEFAULT_IMAGE,
-            url = this.config.SEO.CANONICAL_URL + window.location.pathname
-        } = options;
+        // 1. Update Document Title
+        document.title = title;
 
-        this.logger.info(`Updating meta tags for: ${title}`);
+        // 2. Update Standard Meta Tags
+        this._setMeta('name', 'description', description);
+        this._setMeta('name', 'keywords', data.keywords || '');
+        this._setLink('rel', 'canonical', url);
 
-        // Basic meta tags
-        this.updateElementContent('meta-title', title);
-        this.updateMetaContent('meta-description', description);
-        this.updateMetaContent('meta-keywords', keywords);
+        // 3. Update Open Graph (Facebook/LinkedIn/WhatsApp)
+        this._setMeta('property', 'og:title', title);
+        this._setMeta('property', 'og:description', description);
+        this._setMeta('property', 'og:image', image);
+        this._setMeta('property', 'og:url', url);
+        this._setMeta('property', 'og:type', data.type || 'website');
+        this._setMeta('property', 'og:site_name', this.config.SITE_NAME);
+
+        // 4. Update Twitter Card
+        this._setMeta('name', 'twitter:card', 'summary_large_image');
+        this._setMeta('name', 'twitter:title', title);
+        this._setMeta('name', 'twitter:description', description);
+        this._setMeta('name', 'twitter:image', image);
+
+        // 5. Inject Structured Data (JSON-LD)
+        this._injectSchema(data);
         
-        // Canonical URL
-        this.updateElementAttribute('canonical-link', 'href', url);
-
-        // Open Graph tags
-        this.updateMetaProperty('og-title', title);
-        this.updateMetaProperty('og-description', description);
-        this.updateMetaProperty('og-image', image);
-        this.updateMetaProperty('og-url', url);
-
-        // Twitter Card tags
-        this.updateMetaName('twitter-title', title);
-        this.updateMetaName('twitter-description', description);
-        this.updateMetaName('twitter-image', image);
-
-        // Track SEO event
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'seo_update', {
-                event_category: 'SEO',
-                event_label: this.currentPage,
-                page_title: title,
-                page_type: this.currentPage
-            });
-        }
+        // 6. Track Update
+        console.log(`[SEO] Updated meta tags for: ${title}`);
     }
 
     /**
-     * Add Schema.org structured data
-     * @param {Object} schema - Schema.org data
-     * @param {string} type - Schema type identifier
+     * Helper: Set <meta> tag content. Creates tag if missing.
+     * @param {string} attrName - 'name' or 'property'
+     * @param {string} attrValue - e.g., 'description' or 'og:title'
+     * @param {string} content - The content value
      */
-    addSchemaData(schema, type = 'default') {
-        if (!schema['@context']) {
-            schema['@context'] = 'https://schema.org';
+    _setMeta(attrName, attrValue, content) {
+        if (!content) return;
+        let element = document.querySelector(`meta[${attrName}="${attrValue}"]`);
+        if (!element) {
+            element = document.createElement('meta');
+            element.setAttribute(attrName, attrValue);
+            document.head.appendChild(element);
         }
-
-        // Remove existing schema of the same type
-        if (this.schemaScripts.has(type)) {
-            const existingScript = this.schemaScripts.get(type);
-            if (existingScript && existingScript.parentNode) {
-                existingScript.parentNode.removeChild(existingScript);
-            }
-        }
-
-        // Create new schema script
-        const script = document.createElement('script');
-        script.type = 'application/ld+json';
-        script.textContent = JSON.stringify(schema);
-        script.dataset.schemaType = type;
-
-        document.head.appendChild(script);
-        this.schemaScripts.set(type, script);
-
-        this.logger.debug(`Added ${type} schema data:`, schema);
+        element.setAttribute('content', content);
     }
 
     /**
-     * Add product schema data
-     * @param {Object} product - Product data
+     * Helper: Set <link> tag href. Creates tag if missing.
      */
-    addProductSchema(product) {
-        if (!product) return;
-
-        const schema = {
-            "@type": "Product",
-            "name": product.name || "Medical Product",
-            "description": product.description || product.short || this.config.SEO.DEFAULT_DESCRIPTION,
-            "image": product.image ? window.imageUtils.getImageUrl(product.image) : this.config.SEO.DEFAULT_IMAGE,
-            "brand": {
-                "@type": "Brand",
-                "name": "V5 Medical LTD"
-            },
-            "offers": {
-                "@type": "Offer",
-                "availability": "https://schema.org/InStock",
-                "url": window.location.href
-            }
-        };
-
-        // Add price if available
-        if (product.price && product.price !== "Contact for Price" && product.price !== "Price on Request") {
-            const priceMatch = product.price.match(/\d+(\.\d+)?/);
-            if (priceMatch) {
-                schema.offers.price = priceMatch[0];
-                schema.offers.priceCurrency = "USD";
-            }
+    _setLink(attrName, attrValue, href) {
+        let element = document.querySelector(`link[${attrName}="${attrValue}"]`);
+        if (!element) {
+            element = document.createElement('link');
+            element.setAttribute(attrName, attrValue);
+            document.head.appendChild(element);
         }
-
-        // Add aggregate rating
-        schema.aggregateRating = {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "120"
-        };
-
-        this.addSchemaData(schema, 'product');
+        element.setAttribute('href', href);
     }
 
     /**
-     * Add organization schema data
+     * Helper: Resolve absolute URL for images (required for OG tags)
      */
-    addOrganizationSchema() {
-        const schema = {
-            "@type": "Organization",
+    _resolveUrl(path) {
+        if (!path) return '';
+        if (path.startsWith('http')) return path;
+        // Clean up path and join with base URL
+        const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+        return `${this.baseUrl}/${cleanPath}`;
+    }
+
+    /**
+     * Inject JSON-LD Schema based on page type
+     */
+    _injectSchema(data) {
+        const schemas = [];
+
+        // 1. Organization Schema (Always included)
+        schemas.push({
+            "@context": "https://schema.org",
+            "@type": "MedicalOrganization",
             "name": "V5 Medical LTD",
-            "url": this.config.SEO.CANONICAL_URL,
-            "logo": this.config.SEO.DEFAULT_IMAGE,
+            "url": this.baseUrl,
+            "logo": this._resolveUrl(this.config.DEFAULT_IMAGE),
             "contactPoint": {
                 "@type": "ContactPoint",
-                "telephone": this.config.CONTACT.WHATSAPP_UK,
-                "contactType": "customer service",
-                "availableLanguage": ["English", "Chinese"]
-            },
-            "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "No. 168, Luying Road",
-                "addressLocality": "Kunshan",
-                "addressRegion": "Jiangsu",
-                "addressCountry": "CN"
+                "telephone": window.V5Config?.CONTACT?.WHATSAPP?.DISPLAY || "+44 7895 047944",
+                "contactType": "customer service"
             }
-        };
+        });
 
-        this.addSchemaData(schema, 'organization');
-    }
-
-    /**
-     * Update element text content
-     * @param {string} id - Element ID
-     * @param {string} content - New content
-     */
-    updateElementContent(id, content) {
-        const element = document.getElementById(id);
-        if (element) {
-            element.textContent = content;
+        // 2. Product Schema (If product data exists)
+        if (data.product) {
+            schemas.push({
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                "name": data.product.name,
+                "image": data.product.images ? data.product.images.map(img => this._resolveUrl(img)) : [],
+                "description": data.product.short || data.product.description,
+                "sku": data.product.id,
+                "brand": { "@type": "Brand", "name": "V5 Medical" },
+                "offers": {
+                    "@type": "Offer",
+                    "url": window.location.href,
+                    "priceCurrency": "USD",
+                    "price": "0", // 0 indicates contact for price in B2B often, or omit
+                    "availability": "https://schema.org/InStock",
+                    "itemCondition": "https://schema.org/NewCondition"
+                }
+            });
         }
-    }
 
-    /**
-     * Update meta tag content
-     * @param {string} id - Meta element ID
-     * @param {string} content - New content
-     */
-    updateMetaContent(id, content) {
-        const element = document.getElementById(id);
-        if (element) {
-            element.setAttribute('content', content);
-        }
-    }
+        // 3. Breadcrumb Schema
+        schemas.push({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": this.baseUrl },
+                { "@type": "ListItem", "position": 2, "name": data.title || "Page", "item": window.location.href }
+            ]
+        });
 
-    /**
-     * Update meta tag property
-     * @param {string} id - Meta element ID
-     * @param {string} content - New content
-     */
-    updateMetaProperty(id, content) {
-        const element = document.getElementById(id);
-        if (element) {
-            element.setAttribute('property', `og:${id.replace('og-', '')}`);
-            element.setAttribute('content', content);
-        }
-    }
+        // Remove old dynamic schema
+        const oldScript = document.getElementById(this.schemaId);
+        if (oldScript) oldScript.remove();
 
-    /**
-     * Update meta tag name
-     * @param {string} id - Meta element ID
-     * @param {string} content - New content
-     */
-    updateMetaName(id, content) {
-        const element = document.getElementById(id);
-        if (element) {
-            element.setAttribute('name', id.replace('twitter-', 'twitter:'));
-            element.setAttribute('content', content);
-        }
-    }
-
-    /**
-     * Update element attribute
-     * @param {string} id - Element ID
-     * @param {string} attribute - Attribute name
-     * @param {string} value - Attribute value
-     */
-    updateElementAttribute(id, attribute, value) {
-        const element = document.getElementById(id);
-        if (element) {
-            element.setAttribute(attribute, value);
-        }
-    }
-
-    /**
-     * Create logger instance
-     * @returns {Object} Logger object
-     */
-    createLogger() {
-        const logLevel = this.config.PERFORMANCE?.LOG_LEVEL || 'info';
-        const levels = ['debug', 'info', 'warn', 'error'];
-        const levelIndex = levels.indexOf(logLevel);
-
-        return {
-            debug: (...args) => levelIndex <= 0 && console.debug('[SEOUtils]', ...args),
-            info: (...args) => levelIndex <= 1 && console.info('[SEOUtils]', ...args),
-            warn: (...args) => levelIndex <= 2 && console.warn('[SEOUtils]', ...args),
-            error: (...args) => levelIndex <= 3 && console.error('[SEOUtils]', ...args)
-        };
+        // Inject new schema
+        const script = document.createElement('script');
+        script.id = this.schemaId;
+        script.type = 'application/ld+json';
+        script.text = JSON.stringify(schemas);
+        document.head.appendChild(script);
     }
 }
 
-// Initialize and make globally available
-const seoUtils = new SEOUtils();
-window.seoUtils = seoUtils;
+// Initialize and Expose
+window.seoUtils = new SEOUtils();
 
 // Export for module usage
 if (typeof module !== 'undefined') {
-    module.exports = seoUtils;
+    module.exports = window.seoUtils;
 }
