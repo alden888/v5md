@@ -167,8 +167,10 @@
         </div>
     </footer>
 
-    <!-- Load Products Script FIRST -->
+    <!-- Load Products Scripts - Load complete database first -->
+    <script src="js/complete-products.js"></script>
     <script src="js/products.js"></script>
+    <script src="js/product-loader.js"></script>
     
     <!-- Catalog Logic -->
     <script>
@@ -178,25 +180,52 @@
         let allProducts = [];
         let retryCount = 0;
         const MAX_RETRIES = 5;
+        const productLoader = new ProductLoader();
         
-        // Wait for products to be ready
-        function initializeCatalog() {
+        // Initialize product loader and catalog
+        async function initializeCatalog() {
             console.log(`Initializing catalog... (Attempt ${retryCount + 1}/${MAX_RETRIES})`);
             
-            // Check ALL possible sources
-            const db = window.productDatabase || 
-                      window.finalProductDatabase || 
-                      window.completeProductDatabase ||
-                      window.productData;
-            
-            console.log('Checking database sources:');
-            console.log('- window.productDatabase:', !!window.productDatabase);
-            console.log('- window.finalProductDatabase:', !!window.finalProductDatabase);
-            console.log('- window.completeProductDatabase:', !!window.completeProductDatabase);
-            console.log('- window.productData:', !!window.productData);
-            
-            if (!db) {
-                console.error('Error: No product database found!');
+            try {
+                // Use the ProductLoader to handle database loading
+                const db = await productLoader.loadProducts();
+                
+                if (!db) {
+                    throw new Error('No product database available');
+                }
+                
+                console.log('Product database found:', db);
+                console.log('Database structure:', Object.keys(db));
+                
+                // Get products array - try multiple ways
+                if (Array.isArray(db)) {
+                    allProducts = db;
+                } else if (db.products && Array.isArray(db.products)) {
+                    allProducts = db.products;
+                } else if (db.byId) {
+                    allProducts = Object.values(db.byId);
+                } else {
+                    // Try to extract products from any object structure
+                    const values = Object.values(db);
+                    allProducts = values.filter(item => 
+                        item && typeof item === 'object' && item.id && item.name
+                    );
+                }
+                
+                if (!allProducts || allProducts.length === 0) {
+                    throw new Error('Products array is empty');
+                }
+                
+                console.log(`✓ Successfully loaded ${allProducts.length} products`);
+                console.log('Sample product:', allProducts[0]);
+                
+                // Initialize UI
+                hideLoading();
+                populateCategoryFilters(db.categories);
+                renderProducts(allProducts);
+                
+            } catch (error) {
+                console.error('Error initializing catalog:', error);
                 retryCount++;
                 if (retryCount < MAX_RETRIES) {
                     console.log(`Retrying in ${retryCount * 500}ms...`);
@@ -204,168 +233,106 @@
                     return;
                 }
                 showError();
-                return;
             }
-            
-            console.log('Product database found:', db);
-            console.log('Database structure:', Object.keys(db));
-            
-            // Get products array - try multiple ways
-            if (Array.isArray(db)) {
-                allProducts = db;
-            } else if (db.products && Array.isArray(db.products)) {
-                allProducts = db.products;
-            } else if (db.byId) {
-                allProducts = Object.values(db.byId);
-            } else {
-                // Try to extract products from any object structure
-                const values = Object.values(db);
-                allProducts = values.filter(item => 
-                    item && typeof item === 'object' && item.id && item.name
-                );
-            }
-            
-            if (!allProducts || allProducts.length === 0) {
-                console.error('Error: Products array is empty!');
-                console.log('Extracted products:', allProducts);
-                retryCount++;
-                if (retryCount < MAX_RETRIES) {
-                    console.log(`Retrying in ${retryCount * 500}ms...`);
-                    setTimeout(initializeCatalog, retryCount * 500);
-                    return;
-                }
-                showError();
-                return;
-            }
-            
-            console.log(`✓ Successfully loaded ${allProducts.length} products`);
-            console.log('Sample product:', allProducts[0]);
-            
-            // Initialize UI
-            hideLoading();
-            renderCategoryFilters();
-            renderProducts();
         }
         
-        function showError() {
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('error').classList.remove('hidden');
-        }
-        
+        // Helper functions
         function hideLoading() {
             document.getElementById('loading').classList.add('hidden');
         }
         
-        function renderCategoryFilters() {
-            const categories = {};
+        function showError() {
+            hideLoading();
+            document.getElementById('error').classList.remove('hidden');
+        }
+        
+        function populateCategoryFilters(categories) {
+            const filterContainer = document.getElementById('category-filters');
+            const allCount = document.getElementById('count-all');
+            allCount.textContent = allProducts.length;
             
             // Count products per category
+            const categoryCounts = {};
             allProducts.forEach(product => {
-                const cat = product.category || 'uncategorized';
-                categories[cat] = (categories[cat] || 0) + 1;
+                categoryCounts[product.category] = (categoryCounts[product.category] || 0) + 1;
             });
             
-            // Update "All Products" count
-            document.getElementById('count-all').textContent = allProducts.length;
-            
-            // Create category buttons
-            const container = document.getElementById('category-filters');
-            Object.entries(categories).forEach(([category, count]) => {
-                const categoryName = formatCategoryName(category);
+            // Add category filters
+            Object.entries(categories).forEach(([id, name]) => {
+                const count = categoryCounts[id] || 0;
                 const button = document.createElement('button');
-                button.className = 'category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300';
-                button.dataset.category = category;
-                button.innerHTML = `${categoryName} (${count})`;
-                button.onclick = () => filterByCategory(category);
-                container.appendChild(button);
+                button.className = 'category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-semibold hover:bg-blue-100';
+                button.dataset.category = id;
+                button.innerHTML = `${name} (${count})`;
+                button.addEventListener('click', () => filterByCategory(id, button));
+                filterContainer.appendChild(button);
             });
         }
         
-        function formatCategoryName(category) {
-            return category
-                .split('-')
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(' ');
-        }
-        
-        function filterByCategory(category) {
+        function filterByCategory(category, button) {
             currentCategory = category;
             
-            // Update active button
+            // Update active button styling
             document.querySelectorAll('.category-badge').forEach(btn => {
-                if (btn.dataset.category === category) {
-                    btn.className = 'category-badge px-4 py-2 rounded-full bg-blue-600 text-white font-semibold';
-                } else {
-                    btn.className = 'category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300';
-                }
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-800');
             });
+            button.classList.remove('bg-gray-200', 'text-gray-800');
+            button.classList.add('bg-blue-600', 'text-white');
             
-            renderProducts();
+            // Filter and render products
+            const filtered = category === 'all' 
+                ? allProducts 
+                : allProducts.filter(product => product.category === category);
+            
+            renderProducts(filtered);
+            
+            // Show no results if needed
+            document.getElementById('no-results').classList.toggle('hidden', filtered.length > 0);
         }
         
-        function renderProducts() {
+        function renderProducts(products) {
             const grid = document.getElementById('products-grid');
-            const noResults = document.getElementById('no-results');
+            grid.innerHTML = '';
             
-            // Filter products
-            const filtered = currentCategory === 'all' 
-                ? allProducts 
-                : allProducts.filter(p => p.category === currentCategory);
-            
-            if (filtered.length === 0) {
-                grid.innerHTML = '';
-                noResults.classList.remove('hidden');
-                return;
-            }
-            
-            noResults.classList.add('hidden');
-            
-            // Render products
-            grid.innerHTML = filtered.map(product => `
-                <div class="product-card bg-white rounded-xl shadow-md overflow-hidden">
-                    <div class="relative h-48 bg-gray-100">
-                        <img src="${product.image || product.images?.[0] || 'https://via.placeholder.com/400x300?text=Product+Image'}" 
-                             onerror="this.src='https://via.placeholder.com/400x300?text=Product+Image'" 
-                             alt="${product.name}"
-                             class="w-full h-full object-cover">
-                        ${product.availability === 'In Stock' ? `
-                            <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                                In Stock
-                            </span>
-                        ` : ''}
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card bg-white rounded-xl overflow-hidden shadow-md';
+                
+                // Get first image or placeholder
+                const imageUrl = product.images && product.images[0] 
+                    ? product.images[0] 
+                    : `https://via.placeholder.com/400x300?text=${encodeURIComponent(product.name)}`;
+                
+                card.innerHTML = `
+                    <div class="relative">
+                        <img src="${imageUrl}" 
+                             onerror="this.src='https://via.placeholder.com/400x300?text=${encodeURIComponent(product.name)}'" 
+                             alt="${product.name}" 
+                             class="w-full h-48 object-cover">
+                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                            ${product.availability || 'Available'}
+                        </div>
                     </div>
                     <div class="p-4">
-                        <h3 class="font-bold text-lg mb-2 text-gray-900 line-clamp-2">${product.name}</h3>
+                        <div class="text-sm text-blue-600 mb-1">${product.category}</div>
+                        <h3 class="font-bold text-lg mb-2">${product.name}</h3>
                         <p class="text-gray-600 text-sm mb-3 line-clamp-2">${product.short || product.description || ''}</p>
-                        <div class="mb-3">
-                            <span class="text-xs text-gray-500 uppercase">${formatCategoryName(product.category)}</span>
-                        </div>
                         <div class="flex justify-between items-center">
-                            <span class="font-semibold text-gray-900">${product.price || 'Contact for Price'}</span>
-                            <a href="product-detail.html?id=${product.id}" 
-                               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
-                                View Details
+                            <span class="font-semibold">${product.price || 'Inquire'}</span>
+                            <a href="product-detail.html?id=${product.id}" class="text-blue-600 hover:text-blue-800 font-medium">
+                                Details <i class="fas fa-arrow-right ml-1"></i>
                             </a>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+                
+                grid.appendChild(card);
+            });
         }
         
-        // Initialize when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeCatalog);
-        } else {
-            initializeCatalog();
-        }
-        
-        // Listen for product database ready event
-        window.addEventListener('productDatabaseReady', function(e) {
-            console.log('Product database ready event received:', e.detail);
-            if (allProducts.length === 0) {
-                initializeCatalog();
-            }
-        });
+        // Start initialization
+        window.addEventListener('DOMContentLoaded', initializeCatalog);
     </script>
 </body>
 </html>
