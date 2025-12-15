@@ -1,226 +1,273 @@
 /**
- * Shared Components for V5 Medical Website
- * Reusable UI components like navigation, footer, etc.
- * @version 1.0.0
+ * V5 Medical Layout Engine (formerly components.js)
+ * Dynamically renders Header, Footer, and Floating elements based on configuration.
+ * @version 2.0.0
+ * @updated 2024-12-16
  */
 
-class Components {
-    constructor() {
-        this.config = window.V5Config || {};
-        this.currentPage = this.detectCurrentPage();
-        this.logger = this.createLogger();
+const V5Components = (() => {
+    // Dependency Check
+    const config = window.V5Config;
+    if (!config) {
+        console.error('[Layout] V5Config not found. Ensure config.js is loaded first.');
+        return;
     }
 
-    /**
-     * Detect current page for active navigation
-     * @returns {string} Page identifier
-     */
-    detectCurrentPage() {
-        const pathname = window.location.pathname.toLowerCase();
-        if (pathname.includes('catalog')) return 'catalog';
-        if (pathname.includes('about')) return 'about';
-        if (pathname.includes('contact')) return 'contact';
-        if (pathname.includes('blog')) return 'blog';
-        if (pathname.includes('product-detail')) return 'product';
-        return 'home';
-    }
+    class LayoutManager {
+        constructor() {
+            this.config = config;
+            this.currentPage = this._detectPage();
+        }
 
-    /**
-     * Create navigation component
-     * @returns {string} Navigation HTML
-     */
-    createNavigation() {
-        const isProductPage = this.currentPage === 'product';
-        const navItems = [
-            { id: 'home', label: 'Home', href: 'index.html' },
-            { id: 'catalog', label: 'Products', href: 'catalog.html' },
-            { id: 'about', label: 'About', href: 'about.html' },
-            { id: 'contact', label: 'Contact', href: 'contact.html' }
-        ];
+        /**
+         * Initialize and render all layout components
+         */
+        init() {
+            console.time('[Layout] Render Time');
+            
+            this.renderHeader();
+            this.renderFooter();
+            this.renderFloatingElements();
+            
+            console.timeEnd('[Layout] Render Time');
 
-        return `
-            <nav class="fixed w-full z-50 bg-white shadow-md transition-all duration-300">
-                <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
-                    <div class="flex items-center gap-3 cursor-pointer" onclick="location.href='index.html'">
-                        <img src="${this.config.GITHUB_RAW_BASE}${this.config.PATHS.IMAGES}/${this.config.IMAGES.LOGO}" 
-                             onerror="this.onerror=null;" 
-                             class="h-12" 
-                             alt="V5 Medical" />
-                        <div>
-                            <div class="font-bold text-xl text-blue-900">V5 Medical LTD</div>
-                            <div class="text-xs text-blue-600">Global Medical Supplier</div>
+            // Dispatch event to notify main.js that DOM is ready for interaction
+            window.dispatchEvent(new Event('v5-layout-ready'));
+        }
+
+        /**
+         * 1. Render Header (Navigation)
+         */
+        renderHeader() {
+            const headerContainer = document.getElementById('v5-header');
+            if (!headerContainer) return;
+
+            const logoSrc = this._getImgPath(this.config.IMAGES.LOGO);
+            const navItems = [
+                { id: 'home', label: 'Home', href: 'index.html' },
+                { id: 'about', label: 'About Us', href: 'about.html' },
+                { id: 'catalog', label: 'Products', href: 'catalog.html' },
+                { id: 'blog', label: 'Blog', href: 'blog.html' },
+                { id: 'contact', label: 'Contact', href: 'contact.html' }
+            ];
+
+            const navLinksHTML = navItems.map(item => `
+                <a href="${item.href}" 
+                   class="nav-link font-medium transition duration-200 ${this._getActiveClass(item.id)}">
+                    ${item.label}
+                </a>
+            `).join('');
+
+            const mobileLinksHTML = navItems.map(item => `
+                <a href="${item.href}" 
+                   class="block px-4 py-3 rounded-lg text-base font-medium transition ${this._getMobileActiveClass(item.id)}">
+                    ${item.label}
+                </a>
+            `).join('');
+
+            headerContainer.innerHTML = `
+                <nav id="navbar" class="fixed w-full z-50 bg-white/95 backdrop-blur-sm shadow-sm transition-all duration-300">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="flex justify-between items-center h-20">
+                            <a href="index.html" class="flex items-center gap-3 group">
+                                <img src="${logoSrc}" 
+                                     onerror="this.style.display='none'" 
+                                     class="h-10 w-auto transition-transform group-hover:scale-105" 
+                                     alt="${this.config.SEO.SITE_NAME}">
+                                <div>
+                                    <div class="font-bold text-xl text-blue-900 leading-none tracking-tight">V5 Medical</div>
+                                    <div class="text-[10px] text-blue-600 font-medium tracking-wider uppercase mt-0.5">Global Supply Chain</div>
+                                </div>
+                            </a>
+
+                            <div class="hidden md:flex gap-8 items-center">
+                                ${navLinksHTML}
+                                <a href="${this.config.CONTACT.WHATSAPP_UK.API_URL}" 
+                                   target="_blank" 
+                                   class="bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-full font-semibold shadow-md flex items-center gap-2 transition transform hover:-translate-y-0.5"
+                                   onclick="window.trackWhatsAppClick && window.trackWhatsAppClick()">
+                                    <i class="fab fa-whatsapp text-lg"></i>
+                                    <span>Quick Chat</span>
+                                </a>
+                            </div>
+
+                            <button id="mobile-menu-btn" class="md:hidden text-gray-600 hover:text-blue-900 p-2 focus:outline-none" aria-label="Toggle menu">
+                                <i class="fas fa-bars text-2xl"></i>
+                            </button>
                         </div>
                     </div>
-                    <div class="hidden md:flex gap-8 items-center">
-                        ${navItems.map(item => `
-                            <a href="${item.href}" 
-                               class="font-medium ${this.currentPage === item.id ? 'text-blue-900 border-b-2 border-blue-900' : 'text-gray-600 hover:text-blue-900'} transition">
-                                ${item.label}
-                            </a>
-                        `).join('')}
-                        <a href="https://wa.me/${this.config.CONTACT.WHATSAPP_UK.replace(/\s/g, '')}" 
-                           target="_blank" rel="noopener noreferrer"
-                           class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-full font-semibold transition flex items-center"
-                           onclick="trackWhatsAppClick()">
-                            <i class="fab fa-whatsapp mr-2"></i> WhatsApp
-                        </a>
-                    </div>
-                    <button id="mobile-menu-btn" class="md:hidden text-gray-800" aria-label="Toggle Menu">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
-                </div>
-                
-                <div id="mobile-menu" class="hidden md:hidden bg-white border-t text-gray-800 absolute w-full left-0 top-20 shadow-lg animate-fade-in">
-                    <div class="px-4 py-4 space-y-3">
-                        ${navItems.map(item => `
-                            <a href="${item.href}" 
-                               class="block px-4 py-2 rounded-lg ${this.currentPage === item.id ? 'text-blue-900 font-semibold bg-blue-50' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-900'} transition">
-                                ${item.label}
-                            </a>
-                        `).join('')}
-                        <a href="https://wa.me/${this.config.CONTACT.WHATSAPP_UK.replace(/\s/g, '')}" 
-                           target="_blank" rel="noopener noreferrer"
-                           class="block bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-center font-semibold transition"
-                           onclick="trackWhatsAppClick()">
-                            <i class="fab fa-whatsapp mr-2"></i> WhatsApp Contact
-                        </a>
-                    </div>
-                </div>
-            </nav>
-        `;
-    }
 
-    /**
-     * Create footer component
-     * @returns {string} Footer HTML
-     */
-    createFooter() {
-        return `
-            <footer class="bg-gray-900 text-white py-12 text-center text-sm text-gray-400">
-                <div class="max-w-7xl mx-auto px-4">
-                    <div class="flex flex-col md:flex-row justify-center items-center gap-8 mb-8">
-                        <a href="index.html" class="hover:text-white transition">Home</a>
-                        <a href="catalog.html" class="hover:text-white transition">Products</a>
-                        <a href="about.html" class="hover:text-white transition">About</a>
-                        <a href="contact.html" class="hover:text-white transition">Contact</a>
-                        <a href="privacy.html" class="hover:text-white transition">Privacy Policy</a>
+                    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl">
+                        <div class="px-4 py-4 space-y-2">
+                            ${mobileLinksHTML}
+                            <div class="pt-4 mt-2 border-t border-gray-100">
+                                <a href="${this.config.CONTACT.WHATSAPP_UK.API_URL}" 
+                                   target="_blank"
+                                   class="flex items-center justify-center gap-2 w-full bg-green-500 text-white px-4 py-3 rounded-lg font-bold">
+                                    <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex justify-center gap-6 mb-6">
-                        <a href="https://linkedin.com/company/v5med" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">
-                            <i class="fab fa-linkedin-in text-xl"></i>
-                        </a>
-                        <a href="https://www.youtube.com/@v5med" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">
-                            <i class="fab fa-youtube text-xl"></i>
-                        </a>
-                        <a href="https://www.facebook.com/v5med" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">
-                            <i class="fab fa-facebook text-xl"></i>
-                        </a>
-                        <a href="https://www.instagram.com/v5med" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">
-                            <i class="fab fa-instagram text-xl"></i>
-                        </a>
-                    </div>
-                    <p>© 2025 V5 Medical LTD. All rights reserved.</p>
-                </div>
-            </footer>
-        `;
-    }
-
-    /**
-     * Create WhatsApp float button
-     * @returns {string} WhatsApp button HTML
-     */
-    createWhatsAppButton() {
-        return `
-            <a href="https://wa.me/${this.config.CONTACT.WHATSAPP_UK.replace(/\s/g, '')}" 
-               target="_blank" rel="noopener noreferrer" 
-               class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all z-50 hover:scale-110"
-               onclick="trackWhatsAppClick()">
-                <i class="fab fa-whatsapp text-2xl"></i>
-            </a>
-        `;
-    }
-
-    /**
-     * Create certifications section
-     * @returns {string} Certifications HTML
-     */
-    createCertifications() {
-        return `
-            <div class="flex gap-6 items-center">
-                <img src="${this.config.GITHUB_RAW_BASE}${this.config.PATHS.IMAGES}/${this.config.IMAGES.QUALITY_CERTS.CE}" 
-                     onerror="this.onerror=null;" 
-                     class="h-12 opacity-70 hover:opacity-100 transition" 
-                     alt="CE" />
-                <img src="${this.config.GITHUB_RAW_BASE}${this.config.PATHS.IMAGES}/${this.config.IMAGES.QUALITY_CERTS.ISO}" 
-                     onerror="this.onerror=null;" 
-                     class="h-12 opacity-70 hover:opacity-100 transition" 
-                     alt="ISO 13485" />
-                <img src="${this.config.GITHUB_RAW_BASE}${this.config.PATHS.IMAGES}/${this.config.IMAGES.QUALITY_CERTS.FDA}" 
-                     onerror="this.onerror=null;" 
-                     class="h-12 opacity-70 hover:opacity-100 transition" 
-                     alt="FDA" />
-            </div>
-        `;
-    }
-
-    /**
-     * Initialize navigation functionality
-     */
-    initNavigation() {
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        if (mobileMenuBtn && mobileMenu) {
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
-            
-            // Close mobile menu when clicking outside
-            document.addEventListener('click', (event) => {
-                if (!mobileMenuBtn.contains(event.target) && !mobileMenu.contains(event.target) && !mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.add('hidden');
-                }
-            });
+                </nav>
+            `;
         }
-        
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('nav');
-            if (navbar) {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('bg-white/95', 'shadow-md');
-                    navbar.classList.remove('bg-transparent');
-                } else {
-                    navbar.classList.add('bg-transparent');
-                    navbar.classList.remove('bg-white/95', 'shadow-md');
-                }
+
+        /**
+         * 2. Render Footer
+         */
+        renderFooter() {
+            const footerContainer = document.getElementById('v5-footer');
+            if (!footerContainer) return;
+
+            const year = new Date().getFullYear();
+            const { CONTACT, IMAGES } = this.config;
+
+            footerContainer.innerHTML = `
+                <footer class="bg-gray-900 text-gray-300 pt-16 pb-8 border-t border-gray-800">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-2 text-white font-bold text-xl">
+                                    <img src="${this._getImgPath(IMAGES.LOGO)}" class="h-8 brightness-0 invert" alt="V5 Logo">
+                                    <span>V5 Medical</span>
+                                </div>
+                                <p class="text-sm leading-relaxed text-gray-400">
+                                    Professional global medical consumables supplier. ISO 13485 certified manufacturer providing factory-direct solutions.
+                                </p>
+                                <div class="flex gap-4 pt-2">
+                                    <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-600 transition"><i class="fab fa-linkedin-in text-sm"></i></a>
+                                    <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-500 transition"><i class="fab fa-facebook-f text-sm"></i></a>
+                                    <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-red-500 transition"><i class="fab fa-youtube text-sm"></i></a>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="text-white font-bold mb-6 uppercase text-xs tracking-widest">Product Lines</h3>
+                                <ul class="space-y-3 text-sm">
+                                    <li><a href="catalog.html#surgical-sutures" class="hover:text-blue-400 transition">Surgical Sutures</a></li>
+                                    <li><a href="catalog.html#surgical-packs" class="hover:text-blue-400 transition">Surgical Packs</a></li>
+                                    <li><a href="catalog.html#injection" class="hover:text-blue-400 transition">Injection & Infusion</a></li>
+                                    <li><a href="catalog.html#protective" class="hover:text-blue-400 transition">Protective Equipment</a></li>
+                                    <li><a href="catalog.html#dental" class="hover:text-blue-400 transition">Dental Consumables</a></li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 class="text-white font-bold mb-6 uppercase text-xs tracking-widest">Company</h3>
+                                <ul class="space-y-3 text-sm">
+                                    <li><a href="about.html" class="hover:text-blue-400 transition">About Us</a></li>
+                                    <li><a href="blog.html" class="hover:text-blue-400 transition">News & Blog</a></li>
+                                    <li><a href="contact.html" class="hover:text-blue-400 transition">Contact Support</a></li>
+                                    <li><a href="privacy.html" class="hover:text-blue-400 transition">Privacy Policy</a></li>
+                                    <li><a href="terms.html" class="hover:text-blue-400 transition">Terms of Service</a></li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 class="text-white font-bold mb-6 uppercase text-xs tracking-widest">Get in Touch</h3>
+                                <ul class="space-y-4 text-sm">
+                                    <li class="flex items-start gap-3">
+                                        <i class="fas fa-map-marker-alt mt-1 text-blue-500"></i>
+                                        <span>${CONTACT.ADDRESS}</span>
+                                    </li>
+                                    <li class="flex items-center gap-3">
+                                        <i class="fas fa-envelope text-blue-500"></i>
+                                        <a href="mailto:${CONTACT.EMAIL.SALES}" class="hover:text-white transition">${CONTACT.EMAIL.SALES}</a>
+                                    </li>
+                                    <li class="flex items-center gap-3">
+                                        <i class="fab fa-whatsapp text-green-500 text-lg"></i>
+                                        <a href="${CONTACT.WHATSAPP.API_URL}" target="_blank" class="hover:text-white transition font-medium">${CONTACT.WHATSAPP.DISPLAY}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+                            <p>&copy; ${year} V5 Medical LTD. All rights reserved.</p>
+                            <p class="mt-2 md:mt-0">Professional Global Medical Supply Chain</p>
+                        </div>
+                    </div>
+                </footer>
+            `;
+        }
+
+        /**
+         * 3. Render Floating Elements (WhatsApp & BackToTop)
+         */
+        renderFloatingElements() {
+            // WhatsApp Float
+            if (!document.getElementById('whatsapp-float')) {
+                const waDiv = document.createElement('div');
+                waDiv.innerHTML = `
+                    <a href="${this.config.CONTACT.WHATSAPP.API_URL}" 
+                       id="whatsapp-float"
+                       target="_blank" 
+                       class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 z-50 hover:scale-110 hover:-rotate-12 group flex items-center justify-center"
+                       aria-label="Chat on WhatsApp"
+                       onclick="window.trackWhatsAppClick && window.trackWhatsAppClick()">
+                        <i class="fab fa-whatsapp text-3xl"></i>
+                        <span class="absolute right-full mr-3 bg-gray-900 text-white text-xs py-1 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                            Chat with us
+                        </span>
+                    </a>
+                `;
+                document.body.appendChild(waDiv.firstElementChild);
             }
-        });
+
+            // Back to Top Button
+            if (!document.getElementById('back-to-top')) {
+                const topBtn = document.createElement('button');
+                topBtn.id = 'back-to-top';
+                topBtn.className = 'fixed bottom-24 right-6 bg-blue-900/80 hover:bg-blue-900 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-40 opacity-0 invisible translate-y-10';
+                topBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+                topBtn.setAttribute('aria-label', 'Back to top');
+                document.body.appendChild(topBtn);
+            }
+        }
+
+        // --- Helpers ---
+
+        _detectPage() {
+            const path = window.location.pathname;
+            if (path.includes('catalog') || path.includes('product')) return 'catalog';
+            if (path.includes('about')) return 'about';
+            if (path.includes('contact')) return 'contact';
+            if (path.includes('blog')) return 'blog';
+            return 'home';
+        }
+
+        _getActiveClass(id) {
+            return this.currentPage === id 
+                ? 'text-blue-900 font-bold' 
+                : 'text-gray-600 hover:text-blue-900';
+        }
+
+        _getMobileActiveClass(id) {
+            return this.currentPage === id 
+                ? 'text-blue-700 bg-blue-50 font-bold' 
+                : 'text-gray-600 hover:bg-gray-50';
+        }
+
+        _getImgPath(path) {
+            // If already absolute or handled by config base URL
+            if (path.startsWith('http')) return path;
+            // Use config-defined base path + relative path
+            return `${this.config.BASE_URL}/${path}`;
+        }
     }
 
-    /**
-     * Create logger instance
-     * @returns {Object} Logger object
-     */
-    createLogger() {
-        const logLevel = this.config.PERFORMANCE?.LOG_LEVEL || 'info';
-        const levels = ['debug', 'info', 'warn', 'error'];
-        const levelIndex = levels.indexOf(logLevel);
+    return new LayoutManager();
+})();
 
-        return {
-            debug: (...args) => levelIndex <= 0 && console.debug('[Components]', ...args),
-            info: (...args) => levelIndex <= 1 && console.info('[Components]', ...args),
-            warn: (...args) => levelIndex <= 2 && console.warn('[Components]', ...args),
-            error: (...args) => levelIndex <= 3 && console.error('[Components]', ...args)
-        };
-    }
+// Auto-init when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => V5Components.init());
+} else {
+    V5Components.init();
 }
-
-// Initialize and make globally available
-const components = new Components();
-window.components = components;
 
 // Export for module usage
 if (typeof module !== 'undefined') {
-    module.exports = components;
+    module.exports = V5Components;
 }
