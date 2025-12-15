@@ -79,45 +79,44 @@ v5md/
 ├── robots.txt              # 搜索引擎爬虫规则 (SEO Optimized)
 ├── sitemap.xml             # 站点地图 (SEO Optimized)
 └── README.md               # 项目文档
-
-
+________________________________________
 🚀 Recent Optimizations (December 2024)
 1. Modular Architecture Implementation ✅
-• Shared Layout System: Implemented layout.js to dynamically inject Header, Footer, and Floating Action Buttons. This reduced HTML code duplication by 40% across all pages.
-• Unified Main Logic: Centralized core interactions (Loading spinner, Mobile menu, Back-to-top) into main.js.
+•	Shared Layout System: Implemented layout.js to dynamically inject Header, Footer, and Floating Action Buttons. This reduced HTML code duplication by 40% across all pages.
+•	Unified Main Logic: Centralized core interactions (Loading spinner, Mobile menu, Back-to-top) into main.js.
 2. SEO & Performance ✅
-• Sitemap Generation: Updated sitemap.xml to include dynamic product links (?id=xyz) and image sitemaps for better Google indexing.
-• Robots.txt Optimization: Fixed logic errors to allow proper crawling of CSS/JS/Images by Googlebot while blocking sensitive system files.
-• Structured Data: Enhanced JSON-LD Schema markup for Organization, Product, and BreadcrumbList.
+•	Sitemap Generation: Updated sitemap.xml to include dynamic product links (?id=xyz) and image sitemaps for better Google indexing.
+•	Robots.txt Optimization: Fixed logic errors to allow proper crawling of CSS/JS/Images by Googlebot while blocking sensitive system files.
+•	Structured Data: Enhanced JSON-LD Schema markup for Organization, Product, and BreadcrumbList.
 3. Data Management ✅
-• Centralized Database: Consolidated product data into complete-products.js (V3.0.0), serving as the single source of truth for Catalog and Detail pages.
-
+•	Centralized Database: Consolidated product data into complete-products.js (V3.0.0), serving as the single source of truth for Catalog and Detail pages.
+________________________________________
 🔄 Deployment
 Cloudflare Pages Deployment
 This website is deployed on Cloudflare Pages with automatic CI/CD pipeline:
-1. GitHub Integration: Connected to main repository.
-2. Auto-Deployment: Commits to main branch trigger instant deployment.
-3. Build Configuration: Static HTML (No build command required).
-4. Production URL: https://v5md.com
-
+1.	GitHub Integration: Connected to main repository.
+2.	Auto-Deployment: Commits to main branch trigger instant deployment.
+3.	Build Configuration: Static HTML (No build command required).
+4.	Production URL: https://v5md.com
+________________________________________
 📝 How to Update Content
 Adding a New Product
-1. Open js/complete-products.js.
-2. Add a new object to the completeProductData array.
-3. Ensure unique id and correct category mapping.
-4. Commit changes. The Catalog and Detail pages will update automatically.
+1.	Open js/complete-products.js.
+2.	Add a new object to the completeProductData array.
+3.	Ensure unique id and correct category mapping.
+4.	Commit changes. The Catalog and Detail pages will update automatically.
 Updating Header/Footer
-1. Open js/layout.js.
-2. Modify the headerHTML or footerHTML template strings.
-3. Changes apply instantly to all pages upon deployment.
-
+1.	Open js/layout.js.
+2.	Modify the headerHTML or footerHTML template strings.
+3.	Changes apply instantly to all pages upon deployment.
+________________________________________
 📞 Contact & Support
-• Business Inquiries: sales@v5md.com
-• WhatsApp: +44 78 9504 7944
-• Website: v5md.com
-
+•	Business Inquiries: sales@v5md.com
+•	WhatsApp: +44 78 9504 7944
+•	Website: v5md.com
+________________________________________
 📜 License
 © 2025 V5 Medical LTD. All rights reserved.
 Confidential and Proprietary
 This repository contains confidential business information of V5 Medical LTD. Unauthorized use, reproduction, or distribution is prohibited.
-
+________________________________________
