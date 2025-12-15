@@ -21,8 +21,11 @@
         }
     </script>
     <style>
+        /* 产品卡片悬停效果 */
         .product-card { transition: all 0.3s ease; }
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        
+        /* 加载动画 */
         .loading-spinner {
             border: 3px solid #f3f4f6;
             border-top: 3px solid #3b82f6;
@@ -32,104 +35,236 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* 回到顶部按钮的显示/隐藏状态 (配合 main.js 使用) */
+        #back-to-top {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        #back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* 导航栏滚动样式 (配合 main.js 使用) */
+        .nav-scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
-<body class="bg-gray-50">
-    <!-- 导航栏保持不变 -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <a href="index.html" class="flex items-center gap-3">
+<body class="bg-gray-50 flex flex-col min-h-screen">
+    
+    <nav id="navbar" class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center gap-3 group">
                     <img src="images/v5logo.png" 
                          onerror="this.src='https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png'" 
-                         class="h-10" alt="V5 Medical">
+                         class="h-10 w-auto transition-transform group-hover:scale-105" alt="V5 Medical">
                     <div>
-                        <div class="font-bold text-xl text-blue-900">V5 Medical LTD</div>
-                        <div class="text-xs text-blue-600">Global Medical Supplier</div>
+                        <div id="nav-title" class="font-bold text-xl text-blue-900 leading-none">V5 Medical LTD</div>
+                        <div id="nav-subtitle" class="text-xs text-blue-600 font-medium tracking-wide">Global Medical Supplier</div>
                     </div>
                 </a>
-                <div class="hidden md:flex gap-6 items-center">
-                    <a href="index.html" class="text-gray-600 hover:text-blue-900">Home</a>
-                    <a href="about.html" class="text-gray-600 hover:text-blue-900">About</a>
-                    <a href="catalog.html" class="text-blue-900 border-b-2 border-blue-900 font-semibold">Products</a>
-                    <a href="contact.html" class="text-gray-600 hover:text-blue-900">Contact</a>
-                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold">
-                        <i class="fab fa-whatsapp mr-2"></i>WhatsApp
+
+                <div class="hidden md:flex gap-8 items-center">
+                    <a href="index.html" class="nav-link text-gray-600 hover:text-blue-900 font-medium transition-colors relative group">
+                        Home
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-900 transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="about.html" class="nav-link text-gray-600 hover:text-blue-900 font-medium transition-colors relative group">
+                        About
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-900 transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="catalog.html" class="nav-link text-blue-900 font-bold relative group">
+                        Products
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-blue-900"></span>
+                    </a>
+                    <a href="contact.html" class="nav-link text-gray-600 hover:text-blue-900 font-medium transition-colors relative group">
+                        Contact
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-900 transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-full font-semibold shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                        <span>Chat Now</span>
                     </a>
                 </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-blue-900 focus:outline-none p-2" aria-label="Toggle menu">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+            <div class="px-4 py-3 space-y-3">
+                <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-gray-50">Home</a>
+                <a href="about.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-gray-50">About</a>
+                <a href="catalog.html" class="block px-3 py-2 rounded-md text-base font-medium text-blue-900 bg-blue-50">Products</a>
+                <a href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-gray-50">Contact</a>
+                <a href="https://wa.me/447895047944" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-green-600 hover:bg-green-50">
+                    <i class="fab fa-whatsapp mr-2"></i> WhatsApp Chat
+                </a>
             </div>
         </div>
     </nav>
 
-    <!-- 页面内容 -->
-    <section class="bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Medical Products Catalog</h1>
-            <p class="text-xl opacity-90">ISO 13485, CE & FDA Certified Medical Consumables</p>
-        </div>
-    </section>
-
-    <!-- 分类筛选 -->
-    <section class="bg-white py-6 sticky top-16 z-40 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex flex-wrap gap-3 justify-center" id="category-filters">
-                <button class="category-badge px-4 py-2 rounded-full bg-blue-600 text-white font-semibold" data-category="all">
-                    All Products (<span id="count-all">0</span>)
-                </button>
+    <main class="flex-grow">
+        <section class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-20 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10 pattern-grid-lg"></div>
+            <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight">Medical Products Catalog</h1>
+                <p class="text-xl md:text-2xl opacity-90 max-w-2xl mx-auto font-light">
+                    Premium Quality ISO 13485, CE & FDA Certified Medical Consumables
+                </p>
             </div>
+        </section>
+
+        <section class="bg-white py-4 sticky top-20 z-40 shadow-sm border-b border-gray-100 backdrop-blur-md bg-opacity-95">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-wrap gap-3 justify-center" id="category-filters">
+                    <button class="category-badge px-6 py-2 rounded-full bg-blue-600 text-white font-semibold shadow-sm hover:shadow transition-all" data-category="all">
+                        All Products (<span id="count-all">0</span>)
+                    </button>
+                    </div>
+            </div>
+        </section>
+
+        <div id="loading" class="text-center py-24">
+            <div class="loading-spinner mx-auto mb-6"></div>
+            <h3 class="text-xl font-semibold text-gray-700">Loading Catalog...</h3>
+            <p class="text-gray-500 mt-2" id="loading-detail">Fetching product data</p>
         </div>
-    </section>
 
-    <!-- 加载状态 -->
-    <div id="loading" class="text-center py-20">
-        <div class="loading-spinner mx-auto mb-4"></div>
-        <p class="text-gray-600">Loading products...</p>
-        <p class="text-sm text-gray-500 mt-2" id="loading-detail">Please wait while we fetch our product catalog</p>
-    </div>
-
-    <!-- 错误状态 -->
-    <div id="error" class="hidden text-center py-20">
-        <i class="fas fa-exclamation-triangle text-red-500 text-6xl mb-4"></i>
-        <h2 class="text-2xl font-bold mb-2">Unable to Load Products</h2>
-        <p class="text-gray-600 mb-6" id="error-message">Please refresh the page or contact support.</p>
-        <button onclick="retryLoading()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold">
-            <i class="fas fa-sync-alt mr-2"></i>Retry
-        </button>
-    </div>
-
-    <!-- 产品网格 -->
-    <section class="max-w-7xl mx-auto px-4 py-12">
-        <div id="products-grid" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
-        <div id="no-results" class="hidden text-center py-20">
-            <i class="fas fa-search text-gray-400 text-6xl mb-4"></i>
-            <h2 class="text-2xl font-bold mb-2">No Products Found</h2>
-            <p class="text-gray-600">Try selecting a different category.</p>
+        <div id="error" class="hidden text-center py-24 px-4">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mb-6">
+                <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Unable to Load Products</h2>
+            <p class="text-gray-600 mb-8 max-w-md mx-auto" id="error-message">We encountered an issue while loading the catalog.</p>
+            <button onclick="retryLoading()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                <i class="fas fa-sync-alt mr-2"></i> Retry Connection
+            </button>
         </div>
-    </section>
 
-    <!-- 页脚 -->
-    <footer class="bg-gray-900 text-white py-8 text-center">
-        <div class="max-w-7xl mx-auto px-4">
-            <p class="text-gray-400">© 2025 V5 Medical LTD. All rights reserved.</p>
+        <section class="max-w-7xl mx-auto px-4 py-16">
+            <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                </div>
+            
+            <div id="no-results" class="hidden text-center py-20">
+                <div class="text-gray-300 text-6xl mb-4"><i class="fas fa-search"></i></div>
+                <h2 class="text-2xl font-bold text-gray-700 mb-2">No Products Found</h2>
+                <p class="text-gray-500">Try selecting a different category or refreshing the page.</p>
+                <button onclick="resetFilters()" class="mt-6 text-blue-600 hover:text-blue-800 font-medium underline">View All Products</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-300 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="images/v5logo.png" class="h-8 brightness-0 invert" alt="V5 Logo">
+                        <span class="text-white font-bold text-lg">V5 Medical</span>
+                    </div>
+                    <p class="text-sm leading-relaxed text-gray-400">
+                        Professional supplier of high-quality medical consumables and surgical instruments. Serving global healthcare with ISO certified products.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Quick Links</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="catalog.html" class="hover:text-white transition-colors">Products</a></li>
+                        <li><a href="blog.html" class="hover:text-white transition-colors">News & Blog</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Categories</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="catalog.html#surgical-sutures" class="hover:text-white transition-colors">Surgical Sutures</a></li>
+                        <li><a href="catalog.html#surgical-instruments" class="hover:text-white transition-colors">Surgical Instruments</a></li>
+                        <li><a href="catalog.html#protective-equipment" class="hover:text-white transition-colors">Protective Gear</a></li>
+                        <li><a href="catalog.html#dental-products" class="hover:text-white transition-colors">Dental Products</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Contact</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt mt-1 text-blue-500"></i>
+                            <span>Kunshan, Jiangsu, China</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-envelope text-blue-500"></i>
+                            <a href="mailto:info@v5md.com" class="hover:text-white">info@v5md.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fab fa-whatsapp text-blue-500"></i>
+                            <a href="https://wa.me/447895047944" target="_blank" class="hover:text-white">+44 7895 047944</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm">
+                <p>&copy; 2025 V5 Medical LTD. All rights reserved.</p>
+                <div class="flex gap-4 mt-4 md:mt-0">
+                    <a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
         </div>
     </footer>
 
-    <!-- 脚本加载（修复顺序和重复问题） -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-center">
+        <button id="back-to-top" class="bg-gray-800 hover:bg-black text-white p-3 rounded-full shadow-lg transition-all transform hover:scale-110 focus:outline-none" aria-label="Back to top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+
+        <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white p-3.5 rounded-full shadow-lg transition-all transform hover:scale-110 hover:rotate-12 flex items-center justify-center relative group" aria-label="Chat on WhatsApp">
+            <i class="fab fa-whatsapp text-2xl"></i>
+            <span class="absolute right-full mr-3 bg-white text-gray-800 text-xs font-bold py-1 px-2 rounded shadow opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                Chat with us
+            </span>
+        </a>
+    </div>
+
     <script src="js/products.js"></script>
     <script src="js/complete-products.js"></script>
     <script src="js/product-loader.js"></script>
     
+    <script src="js/main.js"></script>
+
     <script>
-        // 1. 移除 let productLoader; (它导致了 'already declared' 错误)
         // 变量定义
         let currentCategory = 'all';
         let allProducts = [];
         let categoryCounts = {};
 
+        // 初始化加载器
         function initLoader() {
-            // 改为检查 window.productLoader
-            if (!window.productLoader) { 
-                // 实例化并挂载到 window 对象
+            // 修复：检查全局 window 对象，避免重复声明变量错误
+            if (!window.productLoader) {
+                // 确保 ProductLoader 类已加载
+                if (typeof ProductLoader === 'undefined') {
+                    console.error('ProductLoader class not found. Check script loading order.');
+                    // 紧急回退：如果 loader 脚本未加载，尝试延迟重试
+                    setTimeout(initLoader, 500);
+                    return;
+                }
                 window.productLoader = new ProductLoader();
                 window.addEventListener('productLoadError', handleLoadError);
             }
@@ -139,10 +274,12 @@
             showLoading('Initializing product catalog...');
             initLoader();
             
-            // 使用 window.productLoader 调用
-            window.productLoader.loadProducts()
-                .then(handleProductsLoaded)
-                .catch(handleLoadError);
+            // 使用 window.productLoader
+            if (window.productLoader) {
+                window.productLoader.loadProducts()
+                    .then(handleProductsLoaded)
+                    .catch(handleLoadError);
+            }
         }
 
         function handleProductsLoaded(database) {
@@ -156,7 +293,7 @@
             generateCategoryFilters();
             renderProducts(allProducts);
             hideLoading();
-            // 2. 修复之前的拼写错误 (删除了多余的 'handleUrl')
+            // 修复：已修正拼写错误 (原为 handleUrl handleUrlHash)
             handleUrlHash();
         }
 
@@ -174,12 +311,12 @@
             // 获取分类名称映射
             const categories = window.completeProductDatabase?.categories || {};
 
-            // 清空现有过滤器以防重复
+            // 清空现有过滤器
             filterContainer.innerHTML = ''; 
             
             // 重新添加 "All Products" 按钮
             const allBtn = document.createElement('button');
-            allBtn.className = 'category-badge px-4 py-2 rounded-full bg-blue-600 text-white font-semibold transition';
+            allBtn.className = 'category-badge px-6 py-2 rounded-full bg-blue-600 text-white font-semibold shadow-sm hover:shadow transition-all';
             allBtn.dataset.category = 'all';
             allBtn.innerHTML = `All Products (<span id="count-all">${categoryCounts['all']}</span>)`;
             allBtn.onclick = () => filterByCategory('all');
@@ -190,7 +327,7 @@
                 if (!categoryCounts[category]) return;
 
                 const button = document.createElement('button');
-                button.className = 'category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-semibold hover:bg-blue-100 transition';
+                button.className = 'category-badge px-6 py-2 rounded-full bg-white text-gray-700 font-semibold shadow-sm hover:bg-gray-50 border border-gray-200 transition-all';
                 button.dataset.category = category;
                 button.innerHTML = `${categories[category]} (<span id="count-${category}">${categoryCounts[category]}</span>)`;
                 button.addEventListener('click', () => filterByCategory(category));
@@ -205,11 +342,9 @@
             // 更新按钮样式
             document.querySelectorAll('.category-badge').forEach(btn => {
                 if (btn.dataset.category === category) {
-                    btn.classList.remove('bg-gray-200', 'text-gray-800');
-                    btn.classList.add('bg-blue-600', 'text-white');
+                    btn.className = 'category-badge px-6 py-2 rounded-full bg-blue-600 text-white font-semibold shadow-md transform scale-105 transition-all';
                 } else {
-                    btn.classList.remove('bg-blue-600', 'text-white');
-                    btn.classList.add('bg-gray-200', 'text-gray-800');
+                    btn.className = 'category-badge px-6 py-2 rounded-full bg-white text-gray-700 font-semibold shadow-sm hover:bg-gray-50 border border-gray-200 transition-all';
                 }
             });
 
@@ -220,7 +355,7 @@
 
             renderProducts(filteredProducts);
             
-            // 更新 URL hash 但不跳转
+            // 更新 URL hash
             if(history.pushState) {
                 history.pushState(null, null, '#' + category);
             } else {
@@ -251,7 +386,7 @@
 
         function createProductCard(product) {
             const card = document.createElement('div');
-            card.className = 'product-card bg-white rounded-xl shadow-md overflow-hidden fade-in';
+            card.className = 'product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden fade-in flex flex-col h-full';
 
             // 产品图片处理
             let imageUrl = 'images/products/default-product.jpg';
@@ -262,24 +397,30 @@
             const categoryName = formatCategoryName(product.category);
 
             card.innerHTML = `
-                <div class="h-48 overflow-hidden relative group">
+                <div class="h-56 overflow-hidden relative group bg-gray-100">
                     <img src="${imageUrl}" 
                          onerror="this.onerror=null; this.src='images/products/default-product.jpg';" 
                          alt="${product.name}" 
-                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                         loading="lazy"
+                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                     <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300"></div>
-                </div>
-                <div class="p-5">
-                    <div class="mb-2">
-                        <span class="text-xs font-bold text-blue-600 uppercase tracking-wider bg-blue-50 px-2 py-1 rounded-md">${categoryName}</span>
+                    <div class="absolute top-3 left-3">
+                        <span class="text-xs font-bold text-blue-800 uppercase tracking-wider bg-white bg-opacity-90 px-2 py-1 rounded shadow-sm backdrop-blur-sm">
+                            ${categoryName}
+                        </span>
                     </div>
-                    <h3 class="font-bold text-lg mb-2 text-gray-800 line-clamp-2 h-14 leading-tight">${product.name}</h3>
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-2 h-10">${product.short || (product.description?.substring(0, 60) + '...') || 'High quality medical product'}</p>
-                    <div class="flex justify-between items-center mt-auto pt-2 border-t border-gray-100">
-                        <span class="font-semibold text-gray-900">${product.price || 'Contact for Price'}</span>
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="font-bold text-lg mb-2 text-gray-900 line-clamp-2 h-14 leading-snug hover:text-blue-700 transition-colors">
+                        <a href="product-detail.html?id=${product.id}">${product.name}</a>
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow">${product.short || (product.description?.substring(0, 80) + '...') || 'Premium quality medical product.'}</p>
+                    
+                    <div class="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center">
+                        <span class="font-semibold text-gray-900 bg-gray-50 px-3 py-1 rounded text-sm">${product.price || 'Contact for Price'}</span>
                         <a href="product-detail.html?id=${product.id}" 
-                           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm hover:shadow-md transform active:scale-95">
-                            View Details
+                           class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition shadow-sm hover:shadow-md active:scale-95">
+                            Details
                         </a>
                     </div>
                 </div>
@@ -288,13 +429,11 @@
             return card;
         }
 
-        // 辅助函数：格式化分类名称
         function formatCategoryName(category) {
             if (!category) return 'Uncategorized';
             return category.charAt(0).toUpperCase() + category.slice(1).replace(/-/g, ' ');
         }
 
-        // 错误处理
         function handleLoadError(error) {
             console.error('Product load error:', error);
             hideLoading();
@@ -302,19 +441,16 @@
             const errorMsg = document.getElementById('error-message');
             if (errorEl && errorMsg) {
                 errorEl.classList.remove('hidden');
-                // 如果是 Event 对象，尝试获取 detail 或 message
                 const msg = error.detail?.message || error.message || (typeof error === 'string' ? error : 'Failed to load products');
-                errorMsg.textContent = msg + '. Please try again.';
+                errorMsg.textContent = msg + '. Please check your connection.';
             }
         }
 
-        // 加载状态控制
         function showLoading(detail) {
             const loadingEl = document.getElementById('loading');
             const loadingDetail = document.getElementById('loading-detail');
             if (loadingEl) loadingEl.classList.remove('hidden');
             if (loadingDetail && detail) loadingDetail.textContent = detail;
-            // 隐藏错误和内容
             document.getElementById('error')?.classList.add('hidden');
             document.getElementById('products-grid').innerHTML = '';
         }
@@ -324,7 +460,6 @@
             if (loadingEl) loadingEl.classList.add('hidden');
         }
 
-        // 处理URL哈希
         function handleUrlHash() {
             const hash = window.location.hash.substring(1);
             if (hash && categoryCounts[hash]) {
@@ -332,7 +467,12 @@
             }
         }
 
-        // 重试加载
+        function resetFilters() {
+            filterByCategory('all');
+            // 平滑滚动到过滤器位置
+            document.getElementById('category-filters')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
         function retryLoading() {
             document.getElementById('error').classList.add('hidden');
             initializeCatalog();
@@ -342,7 +482,4 @@
         document.addEventListener('DOMContentLoaded', initializeCatalog);
     </script>
 </body>
-
 </html>
-
-
