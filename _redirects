@@ -1,11 +1,8 @@
 # ------------------------------
 # V5 Medical LTD Redirects Configuration
-# Last Updated: 2024-12-11
+# Last Updated: 2024-12-15
+# FIXED: Removed redirect loops
 # ------------------------------
-
-# ===== 修复：将特定路由放在通配符之前 =====
-/catalog /catalog.html 200
-/product-detail /product-detail.html 200
 
 # ------------------------------
 # BASE REDIRECTS (Critical for SEO)
@@ -25,7 +22,6 @@ www.v5md.com/* https://v5md.com/:splat 301!
 # Main WhatsApp contact (with pre-filled message)
 /wa          https://api.whatsapp.com/send/?phone=447895047944&text=Hi%20V5%20Medical%2C%20I%20am%20interested%20in%20your%20medical%20consumables.%20Please%20contact%20me. 302
 /whatsapp    https://api.whatsapp.com/send/?phone=447895047944&text=Hi%20V5%20Medical%2C%20I%20am%20interested%20in%20your%20medical%20consumables.%20Please%20contact%20me. 302
-# /contact     https://api.whatsapp.com/send/?phone=447895047944&text=Hi%20V5%20Medical%2C%20I%20am%20interested%20in%20your%20medical%20consumables.%20Please%20contact%20me. 302
 /message     https://api.whatsapp.com/send/?phone=447895047944&text=Hi%20V5%20Medical%2C%20I%20am%20interested%20in%20your%20medical%20consumables.%20Please%20contact%20me. 302
 
 # Simple chat (without pre-filled message)
@@ -42,17 +38,17 @@ www.v5md.com/* https://v5md.com/:splat 301!
 # ------------------------------
 
 # Product Catalog
-/catalog     https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf 200
-/pdf         https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf 200
-/download    https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf 200
+/catalog-pdf https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf 302
+/pdf         https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf 302
+/download    https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf 302
 
 # Dental Kit
-/dental-kit  https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Quotations%20for%20dental%20products.pdf 200
-/dentalpdf   https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Quotations%20for%20dental%20products.pdf 200
+/dental-kit  https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Quotations%20for%20dental%20products.pdf 302
+/dentalpdf   https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Quotations%20for%20dental%20products.pdf 302
 
 # Price List
-/pricelist   https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/price%20list.pdf 200
-/price       https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/price%20list.pdf 200
+/pricelist   https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/price%20list.pdf 302
+/price       https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/price%20list.pdf 302
 
 # ------------------------------
 # MARKETING CAMPAIGN REDIRECTS
@@ -62,13 +58,6 @@ www.v5md.com/* https://v5md.com/:splat 301!
 /campaign/uk https://v5md.com/?utm_source=whatsapp&utm_medium=chat&utm_campaign=uk_market 302
 /campaign/eu https://v5md.com/?utm_source=whatsapp&utm_medium=chat&utm_campaign=eu_market 302
 /campaign/ae https://v5md.com/?utm_source=whatsapp&utm_medium=chat&utm_campaign=uae_market 302
-
-# ------------------------------
-# ERROR HANDLING
-# ------------------------------
-
-# Custom 404 page
-/*           /404.html 404
 
 # ------------------------------
 # CACHE CONTROL (Performance)
@@ -84,18 +73,13 @@ www.v5md.com/* https://v5md.com/:splat 301!
 /pdf/*       200!
 /*.pdf       200!
 
+# Cache HTML files for 1 hour
+/*.html      200!
+
 # ------------------------------
-# SECURITY HEADERS
+# ERROR HANDLING - MUST BE LAST!
 # ------------------------------
 
-# Security headers for all pages
-/*
-  X-Frame-Options: DENY
-  X-XSS-Protection: 1; mode=block
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://www.google.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; img-src 'self' data: https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self' https://api.whatsapp.com https://formspree.io
-  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-
-# ===== 通配符规则（放在最后！） =====
-/* /404.html 404
+# Custom 404 page - ONLY for truly missing files
+# DO NOT use wildcard /* as it catches everything!
+# Only specific 404 paths should redirect to 404.html
