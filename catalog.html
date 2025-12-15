@@ -120,15 +120,17 @@
     <script src="js/product-loader.js"></script>
     
     <script>
-        // 修复：使用全局ProductLoader，避免重复声明productLoader
-        let productLoader;
+        // 1. 移除 let productLoader; (它导致了 'already declared' 错误)
+        // 变量定义
         let currentCategory = 'all';
         let allProducts = [];
         let categoryCounts = {};
 
         function initLoader() {
-            if (!productLoader) { // 确保只实例化一次
-                productLoader = new ProductLoader();
+            // 改为检查 window.productLoader
+            if (!window.productLoader) { 
+                // 实例化并挂载到 window 对象
+                window.productLoader = new ProductLoader();
                 window.addEventListener('productLoadError', handleLoadError);
             }
         }
@@ -137,7 +139,8 @@
             showLoading('Initializing product catalog...');
             initLoader();
             
-            productLoader.loadProducts()
+            // 使用 window.productLoader 调用
+            window.productLoader.loadProducts()
                 .then(handleProductsLoaded)
                 .catch(handleLoadError);
         }
@@ -153,7 +156,7 @@
             generateCategoryFilters();
             renderProducts(allProducts);
             hideLoading();
-            // 修复：删除了多余的 handleUrl 文本
+            // 2. 修复之前的拼写错误 (删除了多余的 'handleUrl')
             handleUrlHash();
         }
 
@@ -161,7 +164,7 @@
             const filterContainer = document.getElementById('category-filters');
             if (!filterContainer) return;
 
-            // 计算分类数量（修复：避免重复声明categoryCounts）
+            // 初始化计数
             categoryCounts = { 'all': allProducts.length };
             allProducts.forEach(product => {
                 const category = product.category || 'uncategorized';
@@ -171,7 +174,18 @@
             // 获取分类名称映射
             const categories = window.completeProductDatabase?.categories || {};
 
-            // 生成分类按钮（修复：避免重复添加按钮）
+            // 清空现有过滤器以防重复
+            filterContainer.innerHTML = ''; 
+            
+            // 重新添加 "All Products" 按钮
+            const allBtn = document.createElement('button');
+            allBtn.className = 'category-badge px-4 py-2 rounded-full bg-blue-600 text-white font-semibold transition';
+            allBtn.dataset.category = 'all';
+            allBtn.innerHTML = `All Products (<span id="count-all">${categoryCounts['all']}</span>)`;
+            allBtn.onclick = () => filterByCategory('all');
+            filterContainer.appendChild(allBtn);
+
+            // 生成分类按钮
             Object.keys(categories).forEach(category => {
                 if (!categoryCounts[category]) return;
 
@@ -183,9 +197,6 @@
 
                 filterContainer.appendChild(button);
             });
-
-            // 更新"所有产品"数量（修复：确保数量正确显示）
-            document.getElementById('count-all').textContent = categoryCounts['all'];
         }
 
         function filterByCategory(category) {
@@ -208,15 +219,28 @@
                 : allProducts.filter(p => p.category === category);
 
             renderProducts(filteredProducts);
-            window.location.hash = category;
+            
+            // 更新 URL hash 但不跳转
+            if(history.pushState) {
+                history.pushState(null, null, '#' + category);
+            } else {
+                window.location.hash = category;
+            }
         }
 
         function renderProducts(products) {
             const grid = document.getElementById('products-grid');
             if (!grid) return;
 
-            // 显示"无结果"提示（修复：正确切换显示状态）
-            document.getElementById('no-results').classList.toggle('hidden', products.length > 0);
+            // 显示"无结果"提示
+            const noResults = document.getElementById('no-results');
+            if (noResults) {
+                if (products.length > 0) {
+                    noResults.classList.add('hidden');
+                } else {
+                    noResults.classList.remove('hidden');
+                }
+            }
 
             // 清空网格并添加产品卡片
             grid.innerHTML = '';
@@ -229,27 +253,32 @@
             const card = document.createElement('div');
             card.className = 'product-card bg-white rounded-xl shadow-md overflow-hidden fade-in';
 
-            // 产品图片（修复：确保图片路径正确，添加占位符）
-            const imageUrl = product.images?.[0] || `https://via.placeholder.com/600x400?text=${encodeURIComponent(product.name)}`;
+            // 产品图片处理
+            let imageUrl = 'images/products/default-product.jpg';
+            if (product.images && product.images.length > 0) {
+                imageUrl = product.images[0];
+            }
+            
             const categoryName = formatCategoryName(product.category);
 
             card.innerHTML = `
-                <div class="h-48 overflow-hidden">
+                <div class="h-48 overflow-hidden relative group">
                     <img src="${imageUrl}" 
-                         onerror="this.src='https://via.placeholder.com/600x400?text=Medical+Product'; this.classList.add('bg-gray-100')" 
+                         onerror="this.onerror=null; this.src='images/products/default-product.jpg';" 
                          alt="${product.name}" 
-                         class="w-full h-full object-cover transition-transform hover:scale-105 duration-500">
+                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300"></div>
                 </div>
                 <div class="p-5">
                     <div class="mb-2">
-                        <span class="text-xs text-gray-500 uppercase">${categoryName}</span>
+                        <span class="text-xs font-bold text-blue-600 uppercase tracking-wider bg-blue-50 px-2 py-1 rounded-md">${categoryName}</span>
                     </div>
-                    <h3 class="font-bold text-lg mb-2 line-clamp-2 h-12">${product.name}</h3>
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-2 h-10">${product.short || (product.description?.substring(0, 60) + '...') || 'No description available'}</p>
-                    <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-lg mb-2 text-gray-800 line-clamp-2 h-14 leading-tight">${product.name}</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2 h-10">${product.short || (product.description?.substring(0, 60) + '...') || 'High quality medical product'}</p>
+                    <div class="flex justify-between items-center mt-auto pt-2 border-t border-gray-100">
                         <span class="font-semibold text-gray-900">${product.price || 'Contact for Price'}</span>
                         <a href="product-detail.html?id=${product.id}" 
-                           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm hover:shadow-md transform active:scale-95">
                             View Details
                         </a>
                     </div>
@@ -265,7 +294,7 @@
             return category.charAt(0).toUpperCase() + category.slice(1).replace(/-/g, ' ');
         }
 
-        // 错误处理（修复：明确错误信息）
+        // 错误处理
         function handleLoadError(error) {
             console.error('Product load error:', error);
             hideLoading();
@@ -273,7 +302,9 @@
             const errorMsg = document.getElementById('error-message');
             if (errorEl && errorMsg) {
                 errorEl.classList.remove('hidden');
-                errorMsg.textContent = error.message || 'Failed to load products. Please try again.';
+                // 如果是 Event 对象，尝试获取 detail 或 message
+                const msg = error.detail?.message || error.message || (typeof error === 'string' ? error : 'Failed to load products');
+                errorMsg.textContent = msg + '. Please try again.';
             }
         }
 
@@ -283,6 +314,9 @@
             const loadingDetail = document.getElementById('loading-detail');
             if (loadingEl) loadingEl.classList.remove('hidden');
             if (loadingDetail && detail) loadingDetail.textContent = detail;
+            // 隐藏错误和内容
+            document.getElementById('error')?.classList.add('hidden');
+            document.getElementById('products-grid').innerHTML = '';
         }
 
         function hideLoading() {
@@ -290,17 +324,12 @@
             if (loadingEl) loadingEl.classList.add('hidden');
         }
 
-        // 处理URL哈希（支持直接访问分类）
+        // 处理URL哈希
         function handleUrlHash() {
             const hash = window.location.hash.substring(1);
             if (hash && categoryCounts[hash]) {
                 filterByCategory(hash);
             }
-        }
-
-        // 重置筛选器
-        function resetFilters() {
-            filterByCategory('all');
         }
 
         // 重试加载
@@ -315,4 +344,5 @@
 </body>
 
 </html>
+
 
