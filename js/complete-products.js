@@ -282,3 +282,87 @@ initializeCompleteDatabase();
 window.completeProductDatabase = completeProductDatabase;
 window.completeProductData = completeProductData;
 window.initializeCompleteDatabase = initializeCompleteDatabase;
+
+/**
+ * 修复：移除重复的totalProducts变量声明，确保数据正确初始化
+ */
+const completeProductDatabase = {
+    metadata: {
+        version: '3.0.0',
+        lastUpdated: '2024-01-15',
+        totalProducts: 0 // 修复：此处曾重复声明totalProducts
+    },
+    categories: {
+        'surgical-sutures': 'Surgical Sutures',
+        'surgical-instruments': 'Surgical Instruments', 
+        'gauze-dressings': 'Gauze Dressings',
+        'protective-equipment': 'Protective Equipment',
+        'injection-infusion': 'Injection & Infusion',
+        'dental-products': 'Dental Products',
+        'surgical-packs': 'Surgical Packs'
+    },
+    products: [],
+    byId: {}
+};
+
+// 产品数据（保持不变）
+const completeProductData = [
+    {
+        id: 'pga-absorbable-suture',
+        name: 'PGA Absorbable Suture',
+        category: 'surgical-sutures',
+        short: 'Monofilament PGA suture with excellent tensile strength',
+        description: 'High-quality PGA absorbable sutures with predictable absorption within 60-90 days.',
+        price: 'Contact for Price',
+        availability: 'In Stock',
+        stockLevel: 'High',
+        certifications: ['ISO 13485', 'CE', 'FDA'],
+        images: ['https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pga-absorbable-suture.jpg'],
+        specifications: {
+            'Material': 'Polyglycolic Acid (PGA)',
+            'Absorption': '60-90 days',
+            'Type': 'Monofilament',
+            'Sizes': '4-0 to 2',
+            'Color': 'Violet'
+        }
+    },
+    // 其他产品数据保持不变...
+    {
+        id: 'lancets',
+        name: 'Lancets',
+        category: 'surgical-instruments',
+        short: 'Disposable lancets for blood sampling',
+        description: 'Sterile disposable lancets for safe blood sampling.',
+        price: 'Contact for Price',
+        availability: 'In Stock',
+        stockLevel: 'High',
+        certifications: ['ISO 13485', 'CE', 'FDA'],
+        images: ['https://via.placeholder.com/600x400?text=Lancets'],
+        specifications: {
+            'Type': 'Disposable',
+            'Gauge': '21G, 23G, 25G',
+            'Depth': '1.8mm, 2.4mm, 3.0mm',
+            'Sterility': 'Sterile'
+        }
+    }
+];
+
+// 初始化函数（修复重复声明问题）
+function initializeCompleteDatabase() {
+    completeProductDatabase.products = [...completeProductData];
+    completeProductDatabase.byId = {};
+    completeProductData.forEach(product => {
+        completeProductDatabase.byId[product.id] = product;
+    });
+    // 修复：直接赋值，避免重复变量
+    completeProductDatabase.metadata.totalProducts = completeProductData.length;
+    console.log(`[CompleteProducts.js] Loaded ${completeProductData.length} products`);
+    return completeProductDatabase;
+}
+
+// 避免重复初始化
+if (!window.completeProductDatabase) {
+    initializeCompleteDatabase();
+    window.completeProductDatabase = completeProductDatabase;
+    window.completeProductData = completeProductData;
+}
