@@ -3,123 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Catalog | V5 Medical LTD</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="V5 Medical Product Catalog - ISO 13485, CE & FDA certified medical consumables including surgical sutures, packs, syringes, and protective equipment.">
+    <meta name="keywords" content="medical products catalog, surgical sutures, medical packs, syringes, ISO certified medical supplies">
+    <meta name="author" content="V5 Medical LTD">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Product Catalog - V5 Medical LTD">
+    <meta property="og:description" content="Browse our complete catalog of ISO certified medical consumables">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://v5md.com/catalog.html">
+    <meta property="og:image" content="https://v5md.com/images/v5logo.png">
+    
+    <link rel="canonical" href="https://v5md.com/catalog.html">
+    
+    <title>Product Catalog | V5 Medical LTD - ISO Certified Medical Supplies</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS - CDN for development, compile for production -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Suppress Tailwind CDN warning in console
+        if (window.location.hostname === 'v5md.com') {
+            const originalWarn = console.warn;
+            console.warn = function(...args) {
+                if (args[0] && args[0].includes('cdn.tailwindcss.com')) {
+                    return;
+                }
+                originalWarn.apply(console, args);
+            };
+        }
+        
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        accent: '#2563eb'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .product-card {
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .category-badge {
+            transition: all 0.2s ease;
+        }
+        .category-badge:hover {
+            transform: scale(1.05);
+        }
+        .loading-spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
+
 <body class="bg-gray-50">
     <!-- Navigation -->
-    <nav class="bg-white shadow-md py-4">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-3">
-                <img src="https://raw.githubusercontent.com/alden888/v5md/main/images/logo/v5logo.png" class="h-12" alt="V5 Medical">
-                <div>
-                    <div class="font-bold text-xl text-blue-900">V5 Medical LTD</div>
-                    <div class="text-xs text-blue-600">Global Medical Supplier</div>
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="images/v5logo.png" onerror="this.src='https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png'" class="h-10" alt="V5 Medical">
+                    <div>
+                        <div class="font-bold text-xl text-blue-900">V5 Medical LTD</div>
+                        <div class="text-xs text-blue-600">Global Medical Supplier</div>
+                    </div>
+                </a>
+                <div class="hidden md:flex gap-6 items-center">
+                    <a href="index.html" class="text-gray-600 hover:text-blue-900 transition">Home</a>
+                    <a href="about.html" class="text-gray-600 hover:text-blue-900 transition">About</a>
+                    <a href="catalog.html" class="text-blue-900 border-b-2 border-blue-900 font-semibold">Products</a>
+                    <a href="contact.html" class="text-gray-600 hover:text-blue-900 transition">Contact</a>
+                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold transition">
+                        <i class="fab fa-whatsapp mr-2"></i>WhatsApp
+                    </a>
                 </div>
-            </a>
-            <div class="flex gap-8 items-center">
-                <a href="index.html" class="text-gray-600 hover:text-blue-900">Home</a>
-                <a href="catalog.html" class="text-blue-900 border-b-2 border-blue-900">Products</a>
-                <a href="about.html" class="text-gray-600 hover:text-blue-900">About</a>
-                <a href="contact.html" class="text-gray-600 hover:text-blue-900">Contact</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="py-16 bg-gradient-to-r from-blue-600 to-cyan-500 text-white">
+    <section class="bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-16">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Our Product Catalog</h1>
-            <p class="text-xl opacity-90">ISO 13485, CE & FDA Certified Medical Products</p>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Medical Products Catalog</h1>
+            <p class="text-xl opacity-90">ISO 13485, CE & FDA Certified Medical Consumables</p>
         </div>
     </section>
 
-    <!-- Products -->
+    <!-- Category Filter -->
+    <section class="bg-white py-6 sticky top-16 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-wrap gap-3 justify-center" id="category-filters">
+                <button class="category-badge px-4 py-2 rounded-full bg-blue-600 text-white font-semibold" data-category="all">
+                    All Products (<span id="count-all">0</span>)
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading State -->
+    <div id="loading" class="text-center py-20">
+        <div class="loading-spinner mx-auto mb-4"></div>
+        <p class="text-gray-600">Loading products...</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error" class="hidden text-center py-20">
+        <i class="fas fa-exclamation-triangle text-red-500 text-6xl mb-4"></i>
+        <h2 class="text-2xl font-bold mb-2">Unable to Load Products</h2>
+        <p class="text-gray-600 mb-6">Please refresh the page or contact support.</p>
+        <button onclick="location.reload()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold">
+            Retry
+        </button>
+    </div>
+
+    <!-- Products Grid -->
     <section class="max-w-7xl mx-auto px-4 py-12">
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="products">
-            <!-- Products loaded by JavaScript -->
+        <div id="products-grid" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Products will be loaded here -->
+        </div>
+        
+        <!-- No Results -->
+        <div id="no-results" class="hidden text-center py-20">
+            <i class="fas fa-search text-gray-400 text-6xl mb-4"></i>
+            <h2 class="text-2xl font-bold mb-2">No Products Found</h2>
+            <p class="text-gray-600">Try selecting a different category.</p>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 text-center">
+    <footer class="bg-gray-900 text-white py-8 text-center">
+        <div class="max-w-7xl mx-auto px-4">
             <p class="text-gray-400">© 2025 V5 Medical LTD. All rights reserved.</p>
         </div>
     </footer>
 
+    <!-- Load Products Script FIRST -->
+    <script src="js/products.js"></script>
+    
+    <!-- Catalog Logic -->
     <script>
-        // 产品数据
-        const products = [
-            {
-                id: 'pga-absorbable-suture',
-                name: 'PGA Absorbable Suture',
-                category: 'Surgical Sutures',
-                short: 'Monofilament PGA suture with excellent tensile strength',
-                price: 'Contact for Price',
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pga-absorbable-suture.jpg'
-            },
-            {
-                id: 'pgla-absorbable-suture',
-                name: 'PGLA Absorbable Suture',
-                category: 'Surgical Sutures',
-                short: 'Braided PGLA suture with excellent handling',
-                price: 'Contact for Price',
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/pgla-braided-suture.jpg'
-            },
-            {
-                id: 'chromic-catgut',
-                name: 'Chromic Catgut',
-                category: 'Surgical Sutures',
-                short: 'Natural chromic catgut for ophthalmic surgery',
-                price: 'Contact for Price',
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-sutures/chromic-catgut.jpg'
-            },
-            {
-                id: 'surgical-blades',
-                name: 'Surgical Blades',
-                category: 'Surgical Instruments',
-                short: 'Sterile surgical blades in various sizes',
-                price: 'Contact for Price',
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/surgical-instruments/surgical-blades.jpg'
-            },
-            {
-                id: 'gauze-swabs',
-                name: 'Gauze Swabs',
-                category: 'Gauze Dressings',
-                short: 'Sterile cotton gauze swabs',
-                price: 'Contact for Price',
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/gauze-dressings/gauze-swabs.jpg'
-            },
-            {
-                id: 'surgical-face-masks',
-                name: 'Surgical Face Masks',
-                category: 'Protective Equipment',
-                short: '3-ply surgical masks with ear loops',
-                price: 'Contact for Price',
-                image: 'https://raw.githubusercontent.com/alden888/v5md/main/images/products/protective-equipment/surgical-face-masks.jpg'
+        console.log('Catalog page loaded');
+        
+        let currentCategory = 'all';
+        let allProducts = [];
+        
+        // Wait for products to be ready
+        function initializeCatalog() {
+            console.log('Initializing catalog...');
+            
+            // Check multiple possible sources
+            const db = window.productDatabase || window.finalProductDatabase || window.completeProductDatabase;
+            
+            if (!db) {
+                console.error('Error: No product database found!');
+                showError();
+                return;
             }
-        ];
-
-        // 渲染产品
+            
+            console.log('Product database found:', db);
+            
+            // Get products array
+            allProducts = db.products || Object.values(db.byId || db) || [];
+            
+            if (!allProducts || allProducts.length === 0) {
+                console.error('Error: Products array is empty!');
+                showError();
+                return;
+            }
+            
+            console.log(`Loaded ${allProducts.length} products`);
+            
+            // Initialize UI
+            hideLoading();
+            renderCategoryFilters();
+            renderProducts();
+        }
+        
+        function showError() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('error').classList.remove('hidden');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading').classList.add('hidden');
+        }
+        
+        function renderCategoryFilters() {
+            const categories = {};
+            
+            // Count products per category
+            allProducts.forEach(product => {
+                const cat = product.category || 'uncategorized';
+                categories[cat] = (categories[cat] || 0) + 1;
+            });
+            
+            // Update "All Products" count
+            document.getElementById('count-all').textContent = allProducts.length;
+            
+            // Create category buttons
+            const container = document.getElementById('category-filters');
+            Object.entries(categories).forEach(([category, count]) => {
+                const categoryName = formatCategoryName(category);
+                const button = document.createElement('button');
+                button.className = 'category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300';
+                button.dataset.category = category;
+                button.innerHTML = `${categoryName} (${count})`;
+                button.onclick = () => filterByCategory(category);
+                container.appendChild(button);
+            });
+        }
+        
+        function formatCategoryName(category) {
+            return category
+                .split('-')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
+        
+        function filterByCategory(category) {
+            currentCategory = category;
+            
+            // Update active button
+            document.querySelectorAll('.category-badge').forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.className = 'category-badge px-4 py-2 rounded-full bg-blue-600 text-white font-semibold';
+                } else {
+                    btn.className = 'category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300';
+                }
+            });
+            
+            renderProducts();
+        }
+        
         function renderProducts() {
-            const container = document.getElementById('products');
-            container.innerHTML = products.map(product => `
-                <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden">
-                    <img src="${product.image}" 
-                         alt="${product.name}"
-                         class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg mb-2">${product.name}</h3>
-                        <p class="text-gray-600 text-sm mb-3">${product.short}</p>
-                        <div class="mb-4">
-                            <span class="text-gray-500 text-xs uppercase">${product.category}</span>
+            const grid = document.getElementById('products-grid');
+            const noResults = document.getElementById('no-results');
+            
+            // Filter products
+            const filtered = currentCategory === 'all' 
+                ? allProducts 
+                : allProducts.filter(p => p.category === currentCategory);
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            
+            // Render products
+            grid.innerHTML = filtered.map(product => `
+                <div class="product-card bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="relative h-48 bg-gray-100">
+                        <img src="${product.image || product.images?.[0] || 'https://via.placeholder.com/400x300?text=Product+Image'}" 
+                             onerror="this.src='https://via.placeholder.com/400x300?text=Product+Image'" 
+                             alt="${product.name}"
+                             class="w-full h-full object-cover">
+                        ${product.availability === 'In Stock' ? `
+                            <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                                In Stock
+                            </span>
+                        ` : ''}
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-2 text-gray-900 line-clamp-2">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">${product.short || product.description || ''}</p>
+                        <div class="mb-3">
+                            <span class="text-xs text-gray-500 uppercase">${formatCategoryName(product.category)}</span>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="font-semibold text-gray-900">${product.price}</span>
+                            <span class="font-semibold text-gray-900">${product.price || 'Contact for Price'}</span>
                             <a href="product-detail.html?id=${product.id}" 
-                               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
                                 View Details
                             </a>
                         </div>
@@ -127,9 +313,21 @@
                 </div>
             `).join('');
         }
-
-        // 页面加载时渲染
-        document.addEventListener('DOMContentLoaded', renderProducts);
+        
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeCatalog);
+        } else {
+            initializeCatalog();
+        }
+        
+        // Also try after a short delay if database isn't ready yet
+        setTimeout(() => {
+            if (allProducts.length === 0) {
+                console.log('Retrying initialization...');
+                initializeCatalog();
+            }
+        }, 500);
     </script>
 </body>
 </html>
