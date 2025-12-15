@@ -1,4 +1,4 @@
-// 假设原有产品数据库定义...
+// 仅保留基础结构，避免与complete-products.js冲突
 const productDatabase = {
     metadata: {
         version: '2.0.0',
@@ -10,16 +10,13 @@ const productDatabase = {
     byId: {}
 };
 
-// 假设原有初始化函数...
 function initializeDatabase() {
-    // 原有初始化逻辑...
     console.log('[Products.js] Database initialized');
     return productDatabase;
 }
 
-// 自动执行初始化
-initializeDatabase();
-
-// 暴露到全局
-window.productDatabase = productDatabase;
-window.initializeDatabase = initializeDatabase;
+// 避免重复暴露全局变量
+if (!window.productDatabase) {
+    window.productDatabase = productDatabase;
+    window.initializeDatabase = initializeDatabase;
+}
