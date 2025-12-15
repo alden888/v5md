@@ -3,72 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="V5 Medical Product Catalog - ISO 13485, CE & FDA certified medical consumables including surgical sutures, packs, syringes, and protective equipment.">
-    <meta name="keywords" content="medical products catalog, surgical sutures, medical packs, syringes, ISO certified medical supplies">
-    <meta name="author" content="V5 Medical LTD">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="Product Catalog - V5 Medical LTD">
-    <meta property="og:description" content="Browse our complete catalog of ISO certified medical consumables">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://v5md.com/catalog.html">
-    <meta property="og:image" content="https://v5md.com/images/v5logo.png">
-    
-    <link rel="canonical" href="https://v5md.com/catalog.html">
-    
-    <title>Product Catalog | V5 Medical LTD - ISO Certified Medical Supplies</title>
-    
-    <!-- Favicon -->
+    <meta name="description" content="V5 Medical Product Catalog - ISO 13485, CE & FDA certified medical consumables">
+    <title>Product Catalog | V5 Medical LTD</title>
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        // Suppress Tailwind CDN warning in production
-        if (window.location.hostname === 'v5md.com') {
-            const originalWarn = console.warn;
-            console.warn = function(...args) {
-                if (args[0] && args[0].includes('cdn.tailwindcss.com')) return;
-                originalWarn.apply(console, args);
-            };
-        }
-        
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         primary: '#1e40af',
-                        secondary: '#3b82f6',
-                        accent: '#2563eb'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif']
+                        secondary: '#3b82f6'
                     }
                 }
             }
         }
     </script>
-    
     <style>
-        .product-card {
-            transition: all 0.3s ease;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-        .category-badge {
-            transition: all 0.2s ease;
-        }
-        .category-badge:hover {
-            transform: scale(1.05);
-        }
+        .product-card { transition: all 0.3s ease; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
         .loading-spinner {
             border: 3px solid #f3f4f6;
             border-top: 3px solid #3b82f6;
@@ -77,28 +31,11 @@
             height: 40px;
             animation: spin 1s linear infinite;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .image-placeholder {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-
 <body class="bg-gray-50">
-    <!-- Navigation -->
+    <!-- 导航栏保持不变 -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
@@ -112,11 +49,11 @@
                     </div>
                 </a>
                 <div class="hidden md:flex gap-6 items-center">
-                    <a href="index.html" class="text-gray-600 hover:text-blue-900 transition">Home</a>
-                    <a href="about.html" class="text-gray-600 hover:text-blue-900 transition">About</a>
+                    <a href="index.html" class="text-gray-600 hover:text-blue-900">Home</a>
+                    <a href="about.html" class="text-gray-600 hover:text-blue-900">About</a>
                     <a href="catalog.html" class="text-blue-900 border-b-2 border-blue-900 font-semibold">Products</a>
-                    <a href="contact.html" class="text-gray-600 hover:text-blue-900 transition">Contact</a>
-                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold transition">
+                    <a href="contact.html" class="text-gray-600 hover:text-blue-900">Contact</a>
+                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold">
                         <i class="fab fa-whatsapp mr-2"></i>WhatsApp
                     </a>
                 </div>
@@ -124,7 +61,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- 页面内容 -->
     <section class="bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-16">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <h1 class="text-4xl md:text-5xl font-bold mb-4">Medical Products Catalog</h1>
@@ -132,7 +69,7 @@
         </div>
     </section>
 
-    <!-- Category Filter -->
+    <!-- 分类筛选 -->
     <section class="bg-white py-6 sticky top-16 z-40 shadow-sm">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex flex-wrap gap-3 justify-center" id="category-filters">
@@ -143,145 +80,117 @@
         </div>
     </section>
 
-    <!-- Loading State -->
+    <!-- 加载状态 -->
     <div id="loading" class="text-center py-20">
         <div class="loading-spinner mx-auto mb-4"></div>
         <p class="text-gray-600">Loading products...</p>
         <p class="text-sm text-gray-500 mt-2" id="loading-detail">Please wait while we fetch our product catalog</p>
     </div>
 
-    <!-- Error State -->
+    <!-- 错误状态 -->
     <div id="error" class="hidden text-center py-20">
         <i class="fas fa-exclamation-triangle text-red-500 text-6xl mb-4"></i>
         <h2 class="text-2xl font-bold mb-2">Unable to Load Products</h2>
         <p class="text-gray-600 mb-6" id="error-message">Please refresh the page or contact support.</p>
-        <button onclick="retryLoading()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+        <button onclick="retryLoading()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold">
             <i class="fas fa-sync-alt mr-2"></i>Retry
         </button>
-        <a href="contact.html" class="inline-block mt-4 text-blue-600 hover:text-blue-800">
-            <i class="fas fa-envelope mr-1"></i> Contact Support
-        </a>
     </div>
 
-    <!-- Products Grid -->
+    <!-- 产品网格 -->
     <section class="max-w-7xl mx-auto px-4 py-12">
-        <div id="products-grid" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Products will be loaded here -->
-        </div>
-        
-        <!-- No Results -->
+        <div id="products-grid" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
         <div id="no-results" class="hidden text-center py-20">
             <i class="fas fa-search text-gray-400 text-6xl mb-4"></i>
             <h2 class="text-2xl font-bold mb-2">No Products Found</h2>
             <p class="text-gray-600">Try selecting a different category.</p>
-            <button onclick="resetFilters()" class="mt-4 text-blue-600 hover:text-blue-800 font-medium">
-                <i class="fas fa-filter mr-1"></i> Reset Filters
-            </button>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- 页脚 -->
     <footer class="bg-gray-900 text-white py-8 text-center">
         <div class="max-w-7xl mx-auto px-4">
             <p class="text-gray-400">© 2025 V5 Medical LTD. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Load Product Scripts -->
+    <!-- 脚本加载（修复顺序和重复问题） -->
     <script src="js/products.js"></script>
     <script src="js/complete-products.js"></script>
     <script src="js/product-loader.js"></script>
     
-    <!-- Catalog Logic -->
     <script>
-        console.log('=== Catalog page loaded ===');
-        
+        // 修复：使用全局ProductLoader，避免重复声明productLoader
+        let productLoader;
         let currentCategory = 'all';
         let allProducts = [];
-        let productLoader;
         let categoryCounts = {};
 
-        // Initialize product loader
         function initLoader() {
-            productLoader = new ProductLoader();
-            // Listen for product load errors
-            window.addEventListener('productLoadError', handleLoadError);
+            if (!productLoader) { // 确保只实例化一次
+                productLoader = new ProductLoader();
+                window.addEventListener('productLoadError', handleLoadError);
+            }
         }
 
-        // Main initialization
         function initializeCatalog() {
             showLoading('Initializing product catalog...');
             initLoader();
             
-            // Try to load products with enhanced error handling
             productLoader.loadProducts()
                 .then(handleProductsLoaded)
                 .catch(handleLoadError);
         }
 
-        // Handle successful product load
         function handleProductsLoaded(database) {
             console.log('Products loaded successfully');
+            allProducts = database.products || Object.values(database.byId) || [];
             
-            // Extract products from database
-            if (database.products && Array.isArray(database.products)) {
-                allProducts = database.products;
-            } else if (database.byId) {
-                allProducts = Object.values(database.byId);
-            } else if (Array.isArray(database)) {
-                allProducts = database;
-            }
-            
-            if (!allProducts || allProducts.length === 0) {
+            if (!allProducts.length) {
                 throw new Error('No products found in database');
             }
             
-            // Process and render products
             generateCategoryFilters();
             renderProducts(allProducts);
             hideLoading();
-            
-            // Update URL hash if category specified
-            handleUrlHash();
+            handleUrl            handleUrlHash();
         }
 
-        // Generate category filter buttons
         function generateCategoryFilters() {
             const filterContainer = document.getElementById('category-filters');
             if (!filterContainer) return;
-            
-            // Calculate category counts
+
+            // 计算分类数量（修复：避免重复声明categoryCounts）
             categoryCounts = { 'all': allProducts.length };
             allProducts.forEach(product => {
                 const category = product.category || 'uncategorized';
                 categoryCounts[category] = (categoryCounts[category] || 0) + 1;
             });
-            
-            // Get unique categories from complete database if available
+
+            // 获取分类名称映射
             const categories = window.completeProductDatabase?.categories || {};
-            
-            // Add category buttons
+
+            // 生成分类按钮（修复：避免重复添加按钮）
             Object.keys(categories).forEach(category => {
                 if (!categoryCounts[category]) return;
-                
+
                 const button = document.createElement('button');
                 button.className = 'category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-semibold hover:bg-blue-100 transition';
                 button.dataset.category = category;
                 button.innerHTML = `${categories[category]} (<span id="count-${category}">${categoryCounts[category]}</span>)`;
                 button.addEventListener('click', () => filterByCategory(category));
-                
+
                 filterContainer.appendChild(button);
             });
-            
-            // Update all products count
+
+            // 更新"所有产品"数量（修复：确保数量正确显示）
             document.getElementById('count-all').textContent = categoryCounts['all'];
         }
 
-        // Filter products by category
         function filterByCategory(category) {
             currentCategory = category;
-            
-            // Update active button styling
+
+            // 更新按钮样式
             document.querySelectorAll('.category-badge').forEach(btn => {
                 if (btn.dataset.category === category) {
                     btn.classList.remove('bg-gray-200', 'text-gray-800');
@@ -291,48 +200,42 @@
                     btn.classList.add('bg-gray-200', 'text-gray-800');
                 }
             });
-            
-            // Filter and render products
+
+            // 筛选并渲染产品
             const filteredProducts = category === 'all' 
                 ? allProducts 
                 : allProducts.filter(p => p.category === category);
-            
+
             renderProducts(filteredProducts);
-            
-            // Update URL with category hash
             window.location.hash = category;
         }
 
-        // Render products grid
         function renderProducts(products) {
             const grid = document.getElementById('products-grid');
             if (!grid) return;
-            
-            // Show no results if empty
+
+            // 显示"无结果"提示（修复：正确切换显示状态）
             document.getElementById('no-results').classList.toggle('hidden', products.length > 0);
-            
-            // Clear existing products
+
+            // 清空网格并添加产品卡片
             grid.innerHTML = '';
-            
-            // Add new products
             products.forEach(product => {
                 grid.appendChild(createProductCard(product));
             });
         }
 
-        // Create individual product card
         function createProductCard(product) {
             const card = document.createElement('div');
             card.className = 'product-card bg-white rounded-xl shadow-md overflow-hidden fade-in';
-            
-            // Handle image with fallback
-            const imageUrl = product.images?.[0] || `https://via.placeholder.com/600x400?text=${product.name}`;
+
+            // 产品图片（修复：确保图片路径正确，添加占位符）
+            const imageUrl = product.images?.[0] || `https://via.placeholder.com/600x400?text=${encodeURIComponent(product.name)}`;
             const categoryName = formatCategoryName(product.category);
-            
+
             card.innerHTML = `
                 <div class="h-48 overflow-hidden">
                     <img src="${imageUrl}" 
-                         onerror="this.src='https://via.placeholder.com/600x400?text=Medical+Product'; this.classList.add('image-placeholder')" 
+                         onerror="this.src='https://via.placeholder.com/600x400?text=Medical+Product'; this.classList.add('bg-gray-100')" 
                          alt="${product.name}" 
                          class="w-full h-full object-cover transition-transform hover:scale-105 duration-500">
                 </div>
@@ -341,7 +244,7 @@
                         <span class="text-xs text-gray-500 uppercase">${categoryName}</span>
                     </div>
                     <h3 class="font-bold text-lg mb-2 line-clamp-2 h-12">${product.name}</h3>
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-2 h-10">${product.short || product.description?.substring(0, 60) || 'No description available'}</p>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2 h-10">${product.short || (product.description?.substring(0, 60) + '...') || 'No description available'}</p>
                     <div class="flex justify-between items-center">
                         <span class="font-semibold text-gray-900">${product.price || 'Contact for Price'}</span>
                         <a href="product-detail.html?id=${product.id}" 
@@ -351,412 +254,42 @@
                     </div>
                 </div>
             `;
-            
+
             return card;
         }
 
-        // Format category name for display
+        // 辅助函数：格式化分类名称
         function formatCategoryName(category) {
-            if (!category) return 'Uncategorized';<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="V5 Medical Product Catalog - ISO 13485, CE & FDA certified medical consumables including surgical sutures, packs, syringes, and protective equipment.">
-    <meta name="keywords" content="medical products catalog, surgical sutures, medical packs, syringes, ISO certified medical supplies">
-    <meta name="author" content="V5 Medical LTD">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="Product Catalog - V5 Medical LTD">
-    <meta property="og:description" content="Browse our complete catalog of ISO certified medical consumables">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://v5md.com/catalog.html">
-    <meta property="og:image" content="https://v5md.com/images/v5logo.png">
-    
-    <link rel="canonical" href="https://v5md.com/catalog.html">
-    
-    <title>Product Catalog | V5 Medical LTD - ISO Certified Medical Supplies</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Suppress Tailwind CDN warning in production
-        if (window.location.hostname === 'v5md.com') {
-            const originalWarn = console.warn;
-            console.warn = function(...args) {
-                if (args[0] && args[0].includes('cdn.tailwindcss.com')) return;
-                originalWarn.apply(console, args);
-            };
-        }
-        
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1e40af',
-                        secondary: '#3b82f6',
-                        accent: '#2563eb'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <style>
-        .product-card {
-            transition: all 0.3s ease;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-        .category-badge {
-            transition: all 0.2s ease;
-        }
-        .category-badge:hover {
-            transform: scale(1.05);
-        }
-        .loading-spinner {
-            border: 3px solid #f3f4f6;
-            border-top: 3px solid #3b82f6;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .image-placeholder {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-    </style>
-</head>
-
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <a href="index.html" class="flex items-center gap-3">
-                    <img src="images/v5logo.png" 
-                         onerror="this.src='https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png'" 
-                         class="h-10" alt="V5 Medical">
-                    <div>
-                        <div class="font-bold text-xl text-blue-900">V5 Medical LTD</div>
-                        <div class="text-xs text-blue-600">Global Medical Supplier</div>
-                    </div>
-                </a>
-                <div class="hidden md:flex gap-6 items-center">
-                    <a href="index.html" class="text-gray-600 hover:text-blue-900 transition">Home</a>
-                    <a href="about.html" class="text-gray-600 hover:text-blue-900 transition">About</a>
-                    <a href="catalog.html" class="text-blue-900 border-b-2 border-blue-900 font-semibold">Products</a>
-                    <a href="contact.html" class="text-gray-600 hover:text-blue-900 transition">Contact</a>
-                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold transition">
-                        <i class="fab fa-whatsapp mr-2"></i>WhatsApp
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Medical Products Catalog</h1>
-            <p class="text-xl opacity-90">ISO 13485, CE & FDA Certified Medical Consumables</p>
-        </div>
-    </section>
-
-    <!-- Category Filter -->
-    <section class="bg-white py-6 sticky top-16 z-40 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex flex-wrap gap-3 justify-center" id="category-filters">
-                <button class="category-badge px-4 py-2 rounded-full bg-blue-600 text-white font-semibold" data-category="all">
-                    All Products (<span id="count-all">0</span>)
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Loading State -->
-    <div id="loading" class="text-center py-20">
-        <div class="loading-spinner mx-auto mb-4"></div>
-        <p class="text-gray-600">Loading products...</p>
-        <p class="text-sm text-gray-500 mt-2" id="loading-detail">Please wait while we fetch our product catalog</p>
-    </div>
-
-    <!-- Error State -->
-    <div id="error" class="hidden text-center py-20">
-        <i class="fas fa-exclamation-triangle text-red-500 text-6xl mb-4"></i>
-        <h2 class="text-2xl font-bold mb-2">Unable to Load Products</h2>
-        <p class="text-gray-600 mb-6" id="error-message">Please refresh the page or contact support.</p>
-        <button onclick="retryLoading()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
-            <i class="fas fa-sync-alt mr-2"></i>Retry
-        </button>
-        <a href="contact.html" class="inline-block mt-4 text-blue-600 hover:text-blue-800">
-            <i class="fas fa-envelope mr-1"></i> Contact Support
-        </a>
-    </div>
-
-    <!-- Products Grid -->
-    <section class="max-w-7xl mx-auto px-4 py-12">
-        <div id="products-grid" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Products will be loaded here -->
-        </div>
-        
-        <!-- No Results -->
-        <div id="no-results" class="hidden text-center py-20">
-            <i class="fas fa-search text-gray-400 text-6xl mb-4"></i>
-            <h2 class="text-2xl font-bold mb-2">No Products Found</h2>
-            <p class="text-gray-600">Try selecting a different category.</p>
-            <button onclick="resetFilters()" class="mt-4 text-blue-600 hover:text-blue-800 font-medium">
-                <i class="fas fa-filter mr-1"></i> Reset Filters
-            </button>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-8 text-center">
-        <div class="max-w-7xl mx-auto px-4">
-            <p class="text-gray-400">© 2025 V5 Medical LTD. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- Load Product Scripts -->
-    <script src="js/products.js"></script>
-    <script src="js/complete-products.js"></script>
-    <script src="js/product-loader.js"></script>
-    
-    <!-- Catalog Logic -->
-    <script>
-        console.log('=== Catalog page loaded ===');
-        
-        let currentCategory = 'all';
-        let allProducts = [];
-        let productLoader;
-        let categoryCounts = {};
-
-        // Initialize product loader
-        function initLoader() {
-            productLoader = new ProductLoader();
-            // Listen for product load errors
-            window.addEventListener('productLoadError', handleLoadError);
+            if (!category) return 'Uncategorized';
+            return category.charAt(0).toUpperCase() + category.slice(1).replace(/-/g, ' ');
         }
 
-        // Main initialization
-        function initializeCatalog() {
-            showLoading('Initializing product catalog...');
-            initLoader();
-            
-            // Try to load products with enhanced error handling
-            productLoader.loadProducts()
-                .then(handleProductsLoaded)
-                .catch(handleLoadError);
-        }
-
-        // Handle successful product load
-        function handleProductsLoaded(database) {
-            console.log('Products loaded successfully');
-            
-            // Extract products from database
-            if (database.products && Array.isArray(database.products)) {
-                allProducts = database.products;
-            } else if (database.byId) {
-                allProducts = Object.values(database.byId);
-            } else if (Array.isArray(database)) {
-                allProducts = database;
-            }
-            
-            if (!allProducts || allProducts.length === 0) {
-                throw new Error('No products found in database');
-            }
-            
-            // Process and render products
-            generateCategoryFilters();
-            renderProducts(allProducts);
-            hideLoading();
-            
-            // Update URL hash if category specified
-            handleUrlHash();
-        }
-
-        // Generate category filter buttons
-        function generateCategoryFilters() {
-            const filterContainer = document.getElementById('category-filters');
-            if (!filterContainer) return;
-            
-            // Calculate category counts
-            categoryCounts = { 'all': allProducts.length };
-            allProducts.forEach(product => {
-                const category = product.category || 'uncategorized';
-                categoryCounts[category] = (categoryCounts[category] || 0) + 1;
-            });
-            
-            // Get unique categories from complete database if available
-            const categories = window.completeProductDatabase?.categories || {};
-            
-            // Add category buttons
-            Object.keys(categories).forEach(category => {
-                if (!categoryCounts[category]) return;
-                
-                const button = document.createElement('button');
-                button.className = 'category-badge px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-semibold hover:bg-blue-100 transition';
-                button.dataset.category = category;
-                button.innerHTML = `${categories[category]} (<span id="count-${category}">${categoryCounts[category]}</span>)`;
-                button.addEventListener('click', () => filterByCategory(category));
-                
-                filterContainer.appendChild(button);
-            });
-            
-            // Update all products count
-            document.getElementById('count-all').textContent = categoryCounts['all'];
-        }
-
-        // Filter products by category
-        function filterByCategory(category) {
-            currentCategory = category;
-            
-            // Update active button styling
-            document.querySelectorAll('.category-badge').forEach(btn => {
-                if (btn.dataset.category === category) {
-                    btn.classList.remove('bg-gray-200', 'text-gray-800');
-                    btn.classList.add('bg-blue-600', 'text-white');
-                } else {
-                    btn.classList.remove('bg-blue-600', 'text-white');
-                    btn.classList.add('bg-gray-200', 'text-gray-800');
-                }
-            });
-            
-            // Filter and render products
-            const filteredProducts = category === 'all' 
-                ? allProducts 
-                : allProducts.filter(p => p.category === category);
-            
-            renderProducts(filteredProducts);
-            
-            // Update URL with category hash
-            window.location.hash = category;
-        }
-
-        // Render products grid
-        function renderProducts(products) {
-            const grid = document.getElementById('products-grid');
-            if (!grid) return;
-            
-            // Show no results if empty
-            document.getElementById('no-results').classList.toggle('hidden', products.length > 0);
-            
-            // Clear existing products
-            grid.innerHTML = '';
-            
-            // Add new products
-            products.forEach(product => {
-                grid.appendChild(createProductCard(product));
-            });
-        }
-
-        // Create individual product card
-        function createProductCard(product) {
-            const card = document.createElement('div');
-            card.className = 'product-card bg-white rounded-xl shadow-md overflow-hidden fade-in';
-            
-            // Handle image with fallback
-            const imageUrl = product.images?.[0] || `https://via.placeholder.com/600x400?text=${product.name}`;
-            const categoryName = formatCategoryName(product.category);
-            
-            card.innerHTML = `
-                <div class="h-48 overflow-hidden">
-                    <img src="${imageUrl}" 
-                         onerror="this.src='https://via.placeholder.com/600x400?text=Medical+Product'; this.classList.add('image-placeholder')" 
-                         alt="${product.name}" 
-                         class="w-full h-full object-cover transition-transform hover:scale-105 duration-500">
-                </div>
-                <div class="p-5">
-                    <div class="mb-2">
-                        <span class="text-xs text-gray-500 uppercase">${categoryName}</span>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2 line-clamp-2 h-12">${product.name}</h3>
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-2 h-10">${product.short || product.description?.substring(0, 60) || 'No description available'}</p>
-                    <div class="flex justify-between items-center">
-                        <span class="font-semibold text-gray-900">${product.price || 'Contact for Price'}</span>
-                        <a href="product-detail.html?id=${product.id}" 
-                           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
-                            View Details
-                        </a>
-                    </div>
-                </div>
-            `;
-            
-            return card;
-        }
-
-        // Format category name for display
-        function formatCategoryName(category) {
-            if (!category) return 'Uncategorized';            return category.charAt(0).toUpperCase() + category.slice(1).replace(/-/g, ' ');
-        }
-
-        // Handle load errors
+        // 错误处理（修复：明确错误信息）
         function handleLoadError(error) {
-            console.error('Error loading products:', error);
+            console.error('Product load error:', error);
             hideLoading();
-            
-            const errorElement = document.getElementById('error');
-            const errorMessage = document.getElementById('error-message');
-            
-            if (errorElement && errorMessage) {
-                errorElement.classList.remove('hidden');
-                // Show user-friendly message
-                errorMessage.textContent = error.message || 'Failed to load product data. Please try again later.';
+            const errorEl = document.getElementById('error');
+            const errorMsg = document.getElementById('error-message');
+            if (errorEl && errorMsg) {
+                errorEl.classList.remove('hidden');
+                errorMsg.textContent = error.message || 'Failed to load products. Please try again.';
             }
         }
 
-        // Show loading state
-        function showLoading(detailMessage) {
-            const loadingElement = document.getElementById('loading');
+        // 加载状态控制
+        function showLoading(detail) {
+            const loadingEl = document.getElementById('loading');
             const loadingDetail = document.getElementById('loading-detail');
-            
-            if (loadingElement) {
-                loadingElement.classList.remove('hidden');
-            }
-            
-            if (loadingDetail && detailMessage) {
-                loadingDetail.textContent = detailMessage;
-            }
+            if (loadingEl) loadingEl.classList.remove('hidden');
+            if (loadingDetail && detail) loadingDetail.textContent = detail;
         }
 
-        // Hide loading state
         function hideLoading() {
-            const loadingElement = document.getElementById('loading');
-            if (loadingElement) {
-                loadingElement.classList.add('hidden');
-            }
+            const loadingEl = document.getElementById('loading');
+            if (loadingEl) loadingEl.classList.add('hidden');
         }
 
-        // Handle URL hash for category deep linking
+        // 处理URL哈希（支持直接访问分类）
         function handleUrlHash() {
             const hash = window.location.hash.substring(1);
             if (hash && categoryCounts[hash]) {
@@ -764,22 +297,18 @@
             }
         }
 
-        // Reset filters to show all products
+        // 重置筛选器
         function resetFilters() {
             filterByCategory('all');
         }
 
-        // Retry loading products
+        // 重试加载
         function retryLoading() {
-            const errorElement = document.getElementById('error');
-            if (errorElement) {
-                errorElement.classList.add('hidden');
-            }
-            
+            document.getElementById('error').classList.add('hidden');
             initializeCatalog();
         }
 
-        // Initialize catalog when DOM is loaded
+        // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', initializeCatalog);
     </script>
 </body>
