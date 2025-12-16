@@ -17,13 +17,13 @@
     <meta property="og:site_name" content="V5 Medical LTD">
 
     <link rel="canonical" href="https://v5md.com/privacy.html">
-
     <title>Privacy Policy | V5 Medical LTD</title>
     
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
     
     <script>
         tailwind.config = {
@@ -37,16 +37,13 @@
     </script>
 
     <style>
-        .page-loader { position: fixed; inset: 0; background: #1e40af; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
-        
-        /* 文本排版优化 */
-        .privacy-section { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e5e7eb; }
-        .privacy-section:last-child { border-bottom: none; }
-        .privacy-heading { color: #1e40af; font-weight: 700; margin-bottom: 1rem; }
-        .privacy-subheading { color: #1e3a8a; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; }
-        .privacy-list { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; color: #374151; }
-        .privacy-list li { margin-bottom: 0.5rem; padding-left: 0.5rem; }
-        .policy-date { background-color: #eff6ff; padding: 1.5rem; border-radius: 0.75rem; margin-bottom: 2.5rem; text-align: center; border: 1px solid #dbeafe; }
+        /* Custom typography for legal text */
+        .privacy-content h2 { color: #1e3a8a; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem; }
+        .privacy-content h3 { color: #1e40af; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .privacy-content p { margin-bottom: 1rem; line-height: 1.7; color: #4b5563; }
+        .privacy-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; color: #4b5563; }
+        .privacy-content li { margin-bottom: 0.5rem; }
+        .policy-card { border-left: 4px solid #3b82f6; }
     </style>
 
     <script type="application/ld+json">
@@ -57,141 +54,144 @@
       "publisher": {
         "@type": "Organization",
         "name": "V5 Medical LTD",
-        "logo": { "@type": "ImageObject", "url": "https://v5md.com/images/v5medlogo.png" }
+        "logo": { "@type": "ImageObject", "url": "https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" }
       },
       "datePublished": "2024-01-01",
-      "dateModified": "2024-01-01"
+      "dateModified": "2024-12-16"
     }
     </script>
 </head>
 
-<body class="smooth-scroll font-sans bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+<body class="smooth-scroll font-sans text-gray-800 flex flex-col min-h-screen">
 
     <div id="loader" class="page-loader">
-        <i class="fas fa-circle-notch fa-spin text-white text-4xl"></i>
+        <div class="loader-spinner"></div>
     </div>
+    <script>
+        setTimeout(function() {
+            var loader = document.getElementById('loader');
+            if(loader) { loader.style.opacity = '0'; setTimeout(function(){ loader.style.display = 'none'; }, 500); }
+        }, 3000);
+    </script>
 
     <div id="v5-header"></div>
 
     <main class="flex-grow pt-20">
         
-        <div class="bg-white border-b border-gray-200">
-            <div class="max-w-4xl mx-auto px-4 py-16 text-center">
-                <img src="images/v5medlogo.png" 
-                     onerror="this.src='https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png'" 
-                     class="h-20 mx-auto mb-6" 
-                     alt="V5 Medical LTD">
-                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Privacy Policy</h1>
-                <p class="text-gray-500 text-lg">Your privacy is important to us. Transparency is key.</p>
+        <section class="bg-gradient-to-r from-blue-900 to-blue-800 text-white py-20 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-pattern opacity-10"></div>
+            <div class="relative z-10 px-4">
+                <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" 
+                     onerror="this.style.display='none'" 
+                     class="h-16 mx-auto mb-6 drop-shadow-md brightness-0 invert opacity-90" 
+                     alt="V5 Medical Logo">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Privacy Policy</h1>
+                <p class="text-xl text-blue-100 font-light max-w-2xl mx-auto">
+                    Transparency, trust, and your data security are our top priorities.
+                </p>
             </div>
-        </div>
+        </section>
 
-        <div class="max-w-4xl mx-auto px-4 py-12">
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
-                
-                <div class="policy-date">
-                    <p class="text-blue-900 font-bold text-lg"><i class="far fa-clock mr-2"></i> Last Updated: January 1, 2024</p>
-                    <p class="text-gray-600 text-sm mt-1">Effective Date: January 1, 2024</p>
-                </div>
-
-                <div class="privacy-section">
-                    <h2 class="text-2xl privacy-heading">1. Introduction</h2>
-                    <p class="text-gray-700 mb-4 leading-relaxed">
-                        V5 Medical LTD ("we", "us", or "our") is committed to protecting the privacy and security of your personal information. This Privacy Policy explains how we collect, use, disclose, and protect your personal information when you visit our website, use our services, or interact with us globally.
-                    </p>
-                    <p class="text-gray-700 leading-relaxed">
-                        By using our website or providing us with your personal information, you consent to the collection, use, and disclosure of your personal information as described in this Privacy Policy.
-                    </p>
-                </div>
-
-                <div class="privacy-section">
-                    <h2 class="text-2xl privacy-heading">2. Information We Collect</h2>
-                    <p class="text-gray-700 mb-4">We may collect the following types of personal information from you:</p>
-
-                    <h3 class="text-xl privacy-subheading">2.1 Information You Provide to Us</h3>
-                    <ul class="privacy-list">
-                        <li><strong>Contact Information:</strong> Name, company name, email address, phone number, and shipping/billing address.</li>
-                        <li><strong>Business Information:</strong> Job title, industry sector, and specific product requirements.</li>
-                        <li><strong>Communications:</strong> Information provided through contact forms, WhatsApp inquiries, emails, or customer support channels.</li>
-                    </ul>
-
-                    <h3 class="text-xl privacy-subheading">2.2 Information Collected Automatically</h3>
-                    <ul class="privacy-list">
-                        <li><strong>Usage Data:</strong> Pages visited, time spent on site, and click patterns (via Google Analytics).</li>
-                        <li><strong>Technical Data:</strong> IP address, browser type, device type, and operating system.</li>
-                        <li><strong>Cookies:</strong> Small data files stored on your device to enhance user experience.</li>
-                    </ul>
-                </div>
-
-                <div class="privacy-section">
-                    <h2 class="text-2xl privacy-heading">3. How We Use Your Information</h2>
-                    <ul class="privacy-list">
-                        <li>To process quotations, orders, and facilitate global shipping logistics.</li>
-                        <li>To communicate with you regarding your inquiries, order status, and product updates.</li>
-                        <li>To comply with international trade regulations, customs requirements, and legal obligations.</li>
-                        <li>To improve our website functionality and tailor our product offerings to market needs.</li>
-                    </ul>
-                </div>
-
-                <div class="privacy-section">
-                    <h2 class="text-2xl privacy-heading">4. Data Security</h2>
-                    <p class="text-gray-700 leading-relaxed">
-                        We implement strict technical, administrative, and physical security measures to protect your personal data from unauthorized access, loss, or misuse. Our payment processing partners utilize industry-standard encryption protocols. However, please note that no method of transmission over the internet is 100% secure.
-                    </p>
-                </div>
-
-                <div class="privacy-section">
-                    <h2 class="text-2xl privacy-heading">5. Contact Us</h2>
-                    <p class="text-gray-700 mb-6">
-                        If you have specific questions about our data practices or wish to exercise your data rights (such as access or deletion), please contact our Data Protection Officer:
-                    </p>
+        <section class="py-16 px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12 policy-card">
                     
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 hover:border-blue-200 transition">
-                            <h3 class="font-bold text-blue-900 mb-2 flex items-center"><i class="fas fa-envelope mr-2"></i> Email Support</h3>
-                            <a href="mailto:info@v5md.com" class="text-blue-600 hover:underline block mb-1">info@v5md.com</a>
-                            <a href="mailto:sales@v5md.com" class="text-blue-600 hover:underline block">sales@v5md.com</a>
+                    <div class="bg-blue-50 rounded-lg p-4 mb-10 flex items-center justify-center gap-2 text-blue-800 text-sm border border-blue-100">
+                        <i class="far fa-clock"></i>
+                        <span><strong>Last Updated:</strong> January 1, 2024</span>
+                    </div>
+
+                    <div class="privacy-content">
+                        
+                        <h2 class="text-2xl">1. Introduction</h2>
+                        <p>
+                            V5 Medical LTD ("we", "us", or "our") is committed to protecting the privacy and security of your personal information. This Privacy Policy explains how we collect, use, disclose, and protect your personal information when you visit our website, use our services, or interact with us globally.
+                        </p>
+                        <p>
+                            By using our website or providing us with your personal information, you consent to the collection, use, and disclosure of your personal information as described in this Privacy Policy.
+                        </p>
+
+                        <h2 class="text-2xl">2. Information We Collect</h2>
+                        <p>We may collect the following types of personal information from you:</p>
+
+                        <h3 class="text-xl">2.1 Information You Provide to Us</h3>
+                        <ul>
+                            <li><strong>Contact Information:</strong> Name, company name, email address, phone number, and shipping/billing address.</li>
+                            <li><strong>Business Information:</strong> Job title, industry sector, and specific product requirements.</li>
+                            <li><strong>Communications:</strong> Information provided through contact forms, WhatsApp inquiries, emails, or customer support channels.</li>
+                        </ul>
+
+                        <h3 class="text-xl">2.2 Information Collected Automatically</h3>
+                        <ul>
+                            <li><strong>Usage Data:</strong> Pages visited, time spent on site, and click patterns (via Google Analytics).</li>
+                            <li><strong>Technical Data:</strong> IP address, browser type, device type, and operating system.</li>
+                            <li><strong>Cookies:</strong> Small data files stored on your device to enhance user experience.</li>
+                        </ul>
+
+                        <h2 class="text-2xl">3. How We Use Your Information</h2>
+                        <ul>
+                            <li>To process quotations, orders, and facilitate global shipping logistics.</li>
+                            <li>To communicate with you regarding your inquiries, order status, and product updates.</li>
+                            <li>To comply with international trade regulations, customs requirements, and legal obligations.</li>
+                            <li>To improve our website functionality and tailor our product offerings to market needs.</li>
+                        </ul>
+
+                        <h2 class="text-2xl">4. Data Security</h2>
+                        <p>
+                            We implement strict technical, administrative, and physical security measures to protect your personal data from unauthorized access, loss, or misuse. Our payment processing partners utilize industry-standard encryption protocols. However, please note that no method of transmission over the internet is 100% secure.
+                        </p>
+
+                        <h2 class="text-2xl">5. Contact Us</h2>
+                        <p>
+                            If you have specific questions about our data practices or wish to exercise your data rights (such as access or deletion), please contact our Data Protection Officer:
+                        </p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6 mt-10">
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 hover:border-blue-200 transition group">
+                            <h3 class="font-bold text-blue-900 mb-3 flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-sm">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                Email Support
+                            </h3>
+                            <a href="mailto:info@v5md.com" class="text-gray-600 hover:text-blue-600 block mb-1 transition pl-10">info@v5md.com</a>
+                            <a href="mailto:sales@v5md.com" class="text-gray-600 hover:text-blue-600 block transition pl-10">sales@v5md.com</a>
                         </div>
-                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 hover:border-blue-200 transition">
-                            <h3 class="font-bold text-blue-900 mb-2 flex items-center"><i class="fas fa-building mr-2"></i> Corporate Office</h3>
-                            <p class="text-gray-600 text-sm">
+                        
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 hover:border-blue-200 transition group">
+                            <h3 class="font-bold text-blue-900 mb-3 flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-sm">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                Corporate Office
+                            </h3>
+                            <p class="text-gray-600 text-sm pl-10 leading-relaxed">
                                 No. 168, Luying Road,<br>
                                 Kunshan Development Zone,<br>
                                 Jiangsu, China 215300
                             </p>
                         </div>
                     </div>
+
                 </div>
 
+                <div class="mt-12 text-center">
+                    <a href="index.html" class="inline-flex items-center gap-2 text-gray-500 hover:text-blue-600 font-medium transition">
+                        <i class="fas fa-arrow-left"></i> Back to Home
+                    </a>
+                </div>
             </div>
-            
-            <div class="mt-12 text-center">
-                <a href="contact.html" class="text-gray-500 hover:text-blue-600 font-medium transition flex justify-center items-center gap-2">
-                    <i class="fas fa-arrow-left"></i> Back to Contact Page
-                </a>
-            </div>
-        </div>
+        </section>
     </main>
 
     <div id="v5-footer"></div>
 
+    <script src="js/config.js?v=2.4"></script>
     <script src="js/layout.js?v=2.9.0"></script>
-    <script src="js/main.js?v=2.1.0"></script>
-    
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const loader = document.getElementById('loader');
-            if(loader) {
-                setTimeout(() => {
-                    loader.style.opacity = '0';
-                    setTimeout(() => loader.style.display = 'none', 500);
-                }, 800);
-            }
-        });
-    </script>
+    <script src="js/main.js?v=2.1"></script>
     
     <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
