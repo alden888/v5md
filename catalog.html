@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <meta name="description" content="Browse V5 Medical's complete catalog. Surgical sutures, packs, injection devices, and dental products. ISO 13485 Certified.">
     <title>Product Catalog | V5 Medical LTD</title>
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
@@ -14,30 +15,31 @@
     <script>
         tailwind.config = {
             theme: {
-                extend: { colors: { primary: '#1e40af', secondary: '#3b82f6' } }
+                extend: { colors: { primary: '#1e40af', secondary: '#3b82f6', accent: '#2563eb' } }
             }
         }
     </script>
+    
     <style>
         /* Sidebar active state */
         .cat-link.active {
-            background-color: #eff6ff; /* blue-50 */
-            color: #1e40af; /* blue-800 */
+            background-color: #eff6ff;
+            color: #1e40af;
             border-left: 3px solid #1e40af;
             padding-left: 0.75rem;
             font-weight: 600;
         }
         .cat-link { border-left: 3px solid transparent; }
         
-        /* Mobile scrollbar hide */
+        /* Mobile horizontal scroll */
         .mobile-scroll::-webkit-scrollbar { display: none; }
         .mobile-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Sidebar scrollbar styling */
+        /* Sidebar custom scroll */
         .sidebar-scroll::-webkit-scrollbar { width: 4px; }
         .sidebar-scroll::-webkit-scrollbar-thumb { background-color: #e5e7eb; border-radius: 4px; }
         
-        /* Search clear button visibility */
+        /* Search input clear button */
         .search-clear { display: none; }
         .search-container.has-value .search-clear { display: block; }
     </style>
@@ -45,12 +47,22 @@
 
 <body class="bg-gray-50 flex flex-col min-h-screen font-sans">
     
+    <div id="loader" class="page-loader">
+        <div class="loader-spinner"></div>
+    </div>
+    <script>
+        setTimeout(function() {
+            var loader = document.getElementById('loader');
+            if(loader) { loader.style.opacity = '0'; setTimeout(function(){ loader.style.display = 'none'; }, 500); }
+        }, 2000);
+    </script>
+
     <div id="v5-header"></div>
 
-    <main class="flex-grow pt-24 pb-12"> 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <main class="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8"> 
+        <div class="max-w-7xl mx-auto">
             
-            <div class="md:hidden mb-6 space-y-4">
+            <div class="md:hidden mb-6 space-y-4 sticky top-20 z-30 bg-gray-50 pt-2 pb-2">
                 <div class="relative search-container">
                     <input type="text" id="mobile-search" placeholder="Search products..." 
                            class="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition-all"
@@ -60,7 +72,7 @@
                         <i class="fas fa-times-circle"></i>
                     </button>
                 </div>
-                <div class="flex gap-2 overflow-x-auto mobile-scroll pb-2" id="mobile-filters">
+                <div class="flex gap-2 overflow-x-auto mobile-scroll pb-1" id="mobile-filters">
                     </div>
             </div>
 
@@ -84,10 +96,10 @@
                         <div class="bg-blue-50 rounded-xl p-5 border border-blue-100">
                             <h3 class="font-bold text-blue-900 mb-2 text-sm">Need a Custom Quote?</h3>
                             <p class="text-xs text-blue-700 mb-4">Our team responds within 24 hours.</p>
-                            <a href="contact.html" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center py-2 rounded-lg text-sm font-bold transition shadow-sm mb-2">
+                            <a href="contact.html" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center py-2 rounded-lg text-sm font-bold transition shadow-sm mb-2 hover:-translate-y-0.5 transform">
                                 Contact Sales
                             </a>
-                            <a href="#" onclick="window.trackWhatsAppClick && window.trackWhatsAppClick(); window.open(window.V5Config.CONTACT.WHATSAPP.API_URL, '_blank')" class="block w-full bg-white text-green-600 border border-green-200 hover:bg-green-50 text-center py-2 rounded-lg text-sm font-bold transition">
+                            <a href="#" onclick="window.trackWhatsAppClick && window.trackWhatsAppClick(); window.open(window.V5Config.CONTACT.WHATSAPP.API_URL, '_blank')" class="block w-full bg-white text-green-600 border border-green-200 hover:bg-green-50 text-center py-2 rounded-lg text-sm font-bold transition hover:-translate-y-0.5 transform">
                                 <i class="fab fa-whatsapp mr-1"></i> WhatsApp
                             </a>
                         </div>
@@ -99,10 +111,10 @@
                     <div class="hidden md:flex justify-between items-center mb-6 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
                         <div>
                             <h1 class="text-xl font-bold text-gray-800" id="page-title">All Products</h1>
-                            <p class="text-xs text-gray-500 mt-1" id="result-count">Showing all products</p>
+                            <p class="text-xs text-gray-500 mt-1" id="result-count">Loading products...</p>
                         </div>
                         <div class="relative w-80 search-container">
-                            <input type="text" id="desktop-search" placeholder="Search by name, model..." 
+                            <input type="text" id="desktop-search" placeholder="Search by name, category..." 
                                    class="w-full pl-10 pr-10 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 text-sm transition-all"
                                    oninput="handleSearch(this.value)">
                             <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
@@ -137,12 +149,12 @@
 
     <div id="v5-footer"></div>
 
-    <script src="js/config.js?v=2.0"></script>
-    <script src="js/layout.js?v=2.2"></script>
+    <script src="js/config.js?v=2.2"></script>
+    <script src="js/layout.js?v=2.5"></script>
     <script src="js/seo-utils.js?v=2.0"></script>
     <script src="js/complete-products.js?v=3.2.0"></script>
     <script src="js/product-loader.js?v=2.0"></script>
-    <script src="js/main.js?v=2.0"></script>
+    <script src="js/main.js?v=2.1"></script>
 
     <script>
         // State
@@ -151,7 +163,7 @@
         let searchQuery = '';
         let categoryCounts = {};
         let categoriesMap = {};
-        let searchTimeout = null; // For debounce
+        let searchTimeout = null;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
@@ -173,7 +185,7 @@
                 renderSidebar();
                 renderMobileFilters();
                 
-                // Handle URL Hash (Deep linking)
+                // Deep Linking (#surgical-sutures)
                 const hash = window.location.hash.substring(1);
                 if (hash && (categoriesMap[hash] || hash === 'all')) {
                     currentCategory = hash;
@@ -192,7 +204,7 @@
             }
         });
 
-        // --- Logic ---
+        // --- Core Logic ---
 
         function calculateCounts() {
             categoryCounts = { 'all': allProducts.length };
@@ -218,7 +230,7 @@
             `;
 
             Object.keys(categoriesMap).forEach(key => {
-                // Only show categories that have products
+                // Show categories with products
                 if (categoryCounts[key] > 0) {
                     const isActive = currentCategory === key;
                     html += `
@@ -257,9 +269,8 @@
             container.innerHTML = html;
         }
 
-        // Search with Debounce
+        // Search + Debounce
         function handleSearch(val) {
-            // Update UI state immediately
             const hasValue = val.length > 0;
             document.querySelectorAll('.search-container').forEach(el => 
                 el.classList.toggle('has-value', hasValue)
@@ -271,12 +282,11 @@
             if (document.getElementById('desktop-search').value !== val) 
                 document.getElementById('desktop-search').value = val;
 
-            // Debounce the actual filtering
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
                 searchQuery = val.toLowerCase().trim();
                 applyFilters();
-            }, 300); // 300ms delay
+            }, 300);
         }
 
         function clearSearch() {
@@ -286,7 +296,7 @@
         function filterByCategory(cat) {
             currentCategory = cat;
             
-            // Update Title & SEO
+            // SEO Update
             const title = cat === 'all' ? 'All Products' : categoriesMap[cat];
             document.getElementById('page-title').textContent = title;
             
@@ -300,7 +310,6 @@
             // Update UI Active States
             renderSidebar();
             renderMobileFilters();
-            
             applyFilters();
             
             // Update URL
@@ -308,7 +317,7 @@
                 history.pushState(null, null, cat === 'all' ? 'catalog.html' : '#' + cat);
             }
             
-            // Scroll to top on mobile
+            // Mobile: Scroll to top
             if (window.innerWidth < 768) {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -318,7 +327,6 @@
             const grid = document.getElementById('products-grid');
             const noResults = document.getElementById('no-results');
 
-            // Filter Logic
             const filtered = allProducts.filter(p => {
                 const matchCat = currentCategory === 'all' || p.category === currentCategory;
                 const matchSearch = !searchQuery || 
@@ -329,7 +337,6 @@
                 return matchCat && matchSearch;
             });
 
-            // Update Count
             const countText = document.getElementById('result-count');
             if (countText) {
                 countText.textContent = `Showing ${filtered.length} product${filtered.length !== 1 ? 's' : ''}`;
@@ -352,6 +359,7 @@
 
         function renderProductCard(product) {
             const fallbackImg = window.V5Config?.IMAGES?.PLACEHOLDER || 'images/products/default-product.jpg';
+            // Primary image
             const imgPath = product.images?.[0] || fallbackImg;
             const catLabel = categoriesMap[product.category] || 'Medical Supply';
 
@@ -390,5 +398,7 @@
             </div>`;
         }
     </script>
+    
+    <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
 </body>
 </html>
