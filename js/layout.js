@@ -2,7 +2,7 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements based on V5Config.
- * @version 2.2.0 (Restored Original Footer Design)
+ * @version 2.2.1 (Enhanced Google Translate Button Visibility)
  * @updated 2024-12-16
  */
 
@@ -18,6 +18,8 @@ const V5Layout = (() => {
         constructor() {
             this.config = config;
             this.currentPage = this._detectPage();
+            // 添加谷歌翻译按钮样式
+            this._addTranslateButtonStyles();
         }
 
         /**
@@ -27,6 +29,9 @@ const V5Layout = (() => {
             this.renderHeader();
             this.renderFooter();
             this.renderFloatingElements();
+            
+            // 初始化谷歌翻译按钮
+            this._initGoogleTranslate();
             
             // 通知 main.js 绑定事件
             window.dispatchEvent(new Event('v5-layout-ready'));
@@ -246,6 +251,178 @@ const V5Layout = (() => {
             }
         }
 
+        /**
+         * 添加谷歌翻译按钮的自定义样式
+         */
+        _addTranslateButtonStyles() {
+            // 创建样式元素
+            const style = document.createElement('style');
+            style.id = 'v5-translate-styles';
+            style.textContent = `
+                /* 谷歌翻译按钮样式 - 增强可见性 */
+                .google-translate-button {
+                    position: fixed;
+                    top: 6rem; /* 放在导航栏下方 */
+                    right: 1rem;
+                    z-index: 9999;
+                    background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+                    border: 2px solid #ffffff;
+                    border-radius: 8px;
+                    padding: 6px 12px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    cursor: pointer;
+                    font-family: 'Inter', sans-serif;
+                }
+                
+                .google-translate-button:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+                    background: linear-gradient(135deg, #3367d6 0%, #2e8b57 100%);
+                }
+                
+                .google-translate-button:active {
+                    transform: translateY(0);
+                }
+                
+                .translate-icon {
+                    color: white;
+                    font-size: 1.1rem;
+                }
+                
+                .translate-text {
+                    color: white;
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                    white-space: nowrap;
+                }
+                
+                /* 调整谷歌翻译小工具样式 */
+                .goog-te-gadget {
+                    font-family: 'Inter', sans-serif !important;
+                    font-size: 12px !important;
+                }
+                
+                .goog-te-gadget-simple {
+                    background-color: transparent !important;
+                    border: none !important;
+                    padding: 0 !important;
+                }
+                
+                /* 移动端适配 */
+                @media (max-width: 768px) {
+                    .google-translate-button {
+                        top: 5.5rem;
+                        right: 0.75rem;
+                        padding: 5px 10px;
+                    }
+                    
+                    .translate-text {
+                        display: none; /* 移动端只显示图标 */
+                    }
+                }
+                
+                /* 语言选择器样式优化 */
+                .goog-te-menu2 {
+                    max-height: 300px !important;
+                    overflow-y: auto !important;
+                    border-radius: 8px !important;
+                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+                    border: 1px solid #e5e7eb !important;
+                }
+                
+                .goog-te-menu2-item {
+                    padding: 10px 16px !important;
+                    font-size: 14px !important;
+                }
+                
+                .goog-te-menu2-item:hover {
+                    background-color: #f3f4f6 !important;
+                }
+            `;
+            
+            document.head.appendChild(style);
+        }
+
+        /**
+         * 初始化谷歌翻译功能
+         */
+        _initGoogleTranslate() {
+            // 创建翻译按钮容器
+            const translateContainer = document.getElementById('google_translate_element');
+            if (!translateContainer) return;
+            
+            // 清空现有内容
+            translateContainer.innerHTML = '';
+            
+            // 添加自定义按钮
+            const customButton = document.createElement('div');
+            customButton.className = 'google-translate-button';
+            customButton.innerHTML = `
+                <i class="fas fa-language translate-icon"></i>
+                <span class="translate-text">Translate</span>
+            `;
+            
+            translateContainer.appendChild(customButton);
+            
+            // 点击自定义按钮触发谷歌翻译
+            customButton.addEventListener('click', () => {
+                const googleFrame = document.querySelector('.goog-te-menu-frame');
+                if (googleFrame) {
+                    googleFrame.style.display = googleFrame.style.display === 'none' ? 'block' : 'none';
+                } else {
+                    // 如果谷歌翻译小工具还没有初始化，显示默认的翻译菜单
+                    const translateDiv = document.querySelector('.goog-te-gadget');
+                    if (translateDiv) {
+                        const select = translateDiv.querySelector('select');
+                        if (select) {
+                            select.focus();
+                            select.click();
+                        }
+                    }
+                }
+            });
+            
+            // 延迟加载谷歌翻译脚本
+            setTimeout(() => {
+                if (!window.google || !window.google.translate) {
+                    const script = document.createElement('script');
+                    script.type = 'text/javascript';
+                    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+                    document.head.appendChild(script);
+                }
+                
+                // 定义回调函数
+                window.googleTranslateElementInit = () => {
+                    if (window.google && window.google.translate) {
+                        new google.translate.TranslateElement({
+                            pageLanguage: 'en',
+                            includedLanguages: 'en,es,fr,de,zh-CN,zh-TW,ar,ru,ja,ko',
+                            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                            autoDisplay: false,
+                            multilanguagePage: true
+                        }, 'google_translate_element');
+                        
+                        // 隐藏默认的谷歌翻译小工具，只保留我们的自定义按钮
+                        setTimeout(() => {
+                            const googleGadget = document.querySelector('.goog-te-gadget');
+                            if (googleGadget) {
+                                googleGadget.style.display = 'none';
+                            }
+                        }, 1000);
+                    }
+                };
+                
+                // 如果谷歌翻译已经加载，立即初始化
+                if (window.google && window.google.translate) {
+                    window.googleTranslateElementInit();
+                }
+            }, 500);
+        }
+
         // --- 内部辅助函数 ---
 
         _detectPage() {
@@ -287,4 +464,3 @@ if (document.readyState === 'loading') {
 } else {
     V5Layout.init();
 }
-
