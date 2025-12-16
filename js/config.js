@@ -1,7 +1,7 @@
 /**
  * V5 Medical Website Configuration
  * Centralized configuration for all aspects of the website
- * @version 2.0.0
+ * @version 2.1.0
  * @updated 2024-12-16
  */
 
@@ -19,8 +19,9 @@ const V5Config = (() => {
         },
 
         // Base URLs
-        // 生产环境使用相对路径以利用 Cloudflare CDN，开发环境可指定
-        BASE_URL: isProduction ? 'https://v5md.com' : (isLocal ? '' : 'https://alden888.github.io/v5md'),
+        // 生产环境: 使用相对路径 '/' 以适应可能得 CDN 代理或子目录
+        // 开发/预览: 使用完整路径确保资源加载正确
+        BASE_URL: isProduction ? '' : (isLocal ? '' : 'https://alden888.github.io/v5md'),
         
         // Paths
         PATHS: {
@@ -32,10 +33,9 @@ const V5Config = (() => {
         },
         
         // Product Database Configuration
-        // 指向最新的完整数据库文件
         PRODUCT_DB: {
             FILE_PATH: 'js/complete-products.js',
-            GLOBAL_VAR: 'completeProductDatabase', // window 对象下的变量名
+            GLOBAL_VAR: 'completeProductDatabase',
             TIMEOUT: 8000,
             RETRY_ATTEMPTS: 2
         },
@@ -43,7 +43,13 @@ const V5Config = (() => {
         // Image Configuration
         IMAGES: {
             PLACEHOLDER: 'images/products/default-product.jpg',
-            LOGO: 'images/v5logo.png',
+            
+            // [修复] 使用 Cloudflare R2 绝对路径作为首选 Logo，解决显示不稳问题
+            LOGO: 'https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png',
+            
+            // 本地回退路径 (用于 onerror)
+            LOGO_LOCAL: 'images/v5logo.png',
+
             // 外部资源回退 (GitHub Raw)
             FALLBACK_BASE: 'https://raw.githubusercontent.com/alden888/v5md/main/'
         },
@@ -53,7 +59,8 @@ const V5Config = (() => {
             SITE_NAME: 'V5 Medical LTD',
             DEFAULT_TITLE: 'V5 Medical LTD - Global Medical Consumables Supplier',
             DEFAULT_DESC: 'ISO 13485, CE & FDA certified medical consumables manufacturer. Factory direct pricing for surgical sutures, packs, and injection devices.',
-            DEFAULT_IMAGE: 'images/v5medlogo.png'
+            DEFAULT_IMAGE: 'images/v5medlogo.png',
+            CANONICAL_URL: 'https://v5md.com'
         },
         
         // Analytics Configuration
@@ -67,11 +74,11 @@ const V5Config = (() => {
             }
         },
         
-        // Contact Information (Centralized)
+        // Contact Information
         CONTACT: {
             WHATSAPP: {
                 DISPLAY: '+44 078 9504 7944',
-                NUMBER: '447895047944', // API 纯数字格式
+                NUMBER: '447895047944',
                 API_URL: 'https://wa.me/447895047944'
             },
             WHATSAPP_CN: {
@@ -89,7 +96,7 @@ const V5Config = (() => {
         // Feature Flags
         FEATURES: {
             ENABLE_LAZY_LOAD: true,
-            SHOW_PRICES: false, // B2B 网站通常隐藏具体价格
+            SHOW_PRICES: false,
             ENABLE_DEBUG: isLocal
         }
     };
