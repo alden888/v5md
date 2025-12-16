@@ -96,19 +96,23 @@ const V5Layout = (() => {
             `;
             const { CONTACT } = this.config;
 
-            container.innerHTML = `
+            footerContainer.innerHTML = `
                 <footer class="bg-gray-900 text-white py-12 px-4 border-t border-gray-800">
                     <div class="max-w-7xl mx-auto">
                         <div class="grid md:grid-cols-12 gap-8 mb-12">
                             
                             <div class="md:col-span-3">
                                 <div class="flex items-center gap-2 mb-4">
-                                    ${logoHtml}
+                                    <img src="${logoSrc}" 
+                                         onerror="this.src='images/v5logo.png'; this.onerror=null;" 
+                                         class="h-10 w-auto" 
+                                         alt="V5 Medical Logo">
                                     <span class="text-xl font-bold">V5 Medical LTD</span>
                                 </div>
                                 <p class="text-gray-400 text-sm mb-4">Professional Global Medical Consumables Supplier</p>
                                 <p class="text-gray-400 text-sm mb-4">Factory Direct Medical Consumables Manufacturer</p> 
                                 <p class="text-gray-400 text-sm italic">20+ Years Exporting Experience</p>
+                                <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
                             </div>
                             
                             <div class="hidden md:block md:col-span-1"></div>
@@ -119,47 +123,66 @@ const V5Layout = (() => {
                                     <li><a href="index.html" class="hover:text-white transition">Home</a></li>
                                     <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
                                     <li><a href="catalog.html" class="hover:text-white transition">Products</a></li>
-                                    <li><a href="blog.html" class="hover:text-white transition">Blog</a></li>
-                                    <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+                                    <li><a href="blog.html" class="hover:text-white transition">Blog & News</a></li>
+                                    <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
+                                    <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
                                 </ul>
                             </div>
                             
                             <div class="md:col-span-3 pl-0 md:pl-4">
                                 <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
                                 <div class="space-y-3 text-sm text-gray-400">
-                                    <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${CONTACT.WHATSAPP.DISPLAY} (UK)</p>
-                                    <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${CONTACT.WHATSAPP_CN.DISPLAY} (Backup)</p>
-                                    <p class="flex items-center gap-2"><i class="fas fa-envelope text-blue-400 w-5"></i> ${CONTACT.EMAIL.SALES}</p>
-                                    <p class="flex items-start gap-2"><i class="fas fa-map-marker-alt mt-1 w-5"></i> ${CONTACT.ADDRESS}</p>
+                                    <p class="flex items-center gap-2">
+                                        <i class="fab fa-whatsapp text-green-500 w-5"></i> 
+                                        <span>${CONTACT.WHATSAPP.DISPLAY} (UK)</span>
+                                    </p>
+                                    <p class="flex items-center gap-2">
+                                        <i class="fab fa-whatsapp text-green-500 w-5"></i> 
+                                        <span>${CONTACT.WHATSAPP_CN.DISPLAY} (Backup)</span>
+                                    </p>
+                                    <p class="flex items-center gap-2">
+                                        <i class="fas fa-envelope text-blue-400 w-5"></i> 
+                                        <a href="mailto:${CONTACT.EMAIL.SALES}" class="hover:text-white transition" onclick="window.trackEmailClick && window.trackEmailClick()">${CONTACT.EMAIL.SALES}</a>
+                                    </p>
+                                    <p class="flex items-center gap-2">
+                                        <i class="fab fa-google text-red-400 w-5"></i> 
+                                        <a href="mailto:v5md.com@gmail.com" class="hover:text-white transition" onclick="window.trackEmailClick && window.trackEmailClick()">v5md.com@gmail.com</a>
+                                    </p>
+                                    <p class="flex items-start gap-2">
+                                        <i class="fas fa-map-marker-alt mt-1 w-5"></i> 
+                                        <span>${CONTACT.ADDRESS}</span>
+                                    </p>
                                 </div>
                             </div>
                             
                             <div class="md:col-span-3 pl-0 md:pl-4">
                                 <h4 class="font-bold mb-4 text-lg text-white">Downloads</h4>
                                 <div class="space-y-2 mb-8 text-sm">
-                                    <a href="pdf/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition">
+                                    <a href="pdf/Catalog.pdf" target="_blank" onclick="window.trackPDFDownload && window.trackPDFDownload('Product Catalog')" class="flex items-center gap-2 text-gray-400 hover:text-white transition">
                                         <i class="fas fa-file-pdf text-red-400"></i> Product Catalog
                                     </a>
-                                    <a href="pdf/Quotations for dental products.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition">
+                                    <a href="pdf/Quotations for dental products.pdf" target="_blank" onclick="window.trackPDFDownload && window.trackPDFDownload('Dental Kit')" class="flex items-center gap-2 text-gray-400 hover:text-white transition">
                                         <i class="fas fa-file-pdf text-red-400"></i> Dental Kit
                                     </a>
-                                    <a href="pdf/price list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition">
+                                    <a href="pdf/price list.pdf" target="_blank" onclick="window.trackPDFDownload && window.trackPDFDownload('Price List')" class="flex items-center gap-2 text-gray-400 hover:text-white transition">
                                         <i class="fas fa-file-pdf text-red-400"></i> Price List
                                     </a>
                                 </div>
                                 
                                 <h4 class="font-bold mb-4 text-lg text-white">Follow Us</h4>
-                                <div class="flex gap-3">
-                                    <a href="https://linkedin.com/company/v5med" target="_blank" class="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 text-white"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="https://www.facebook.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 text-white"><i class="fab fa-facebook-f"></i></a>
-                                    <a href="https://www.youtube.com/@v5med" target="_blank" class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 text-white"><i class="fab fa-youtube"></i></a>
+                                <div class="flex gap-3 flex-wrap">
+                                    <a href="https://linkedin.com/company/v5med" target="_blank" class="w-9 h-9 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 transition text-white"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="https://www.youtube.com/@v5med" target="_blank" class="w-9 h-9 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition text-white"><i class="fab fa-youtube"></i></a>
+                                    <a href="https://www.facebook.com/v5med" target="_blank" class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition text-white"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://www.instagram.com/v5med" target="_blank" class="w-9 h-9 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 rounded-full flex items-center justify-center transition text-white"><i class="fab fa-instagram"></i></a>
+                                    <a href="https://www.tiktok.com/@v5med" target="_blank" class="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center hover:bg-black transition text-white"><i class="fab fa-tiktok"></i></a>
+                                    <a href="https://x.com/v5med" target="_blank" class="w-9 h-9 rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition text-white"><i class="fab fa-twitter"></i></a>
                                 </div>
                             </div>
-
                         </div>
                         
-                        <div class="text-center mt-8 text-sm text-gray-500 border-t border-gray-800 pt-8">
-                            <p>&copy; ${new Date().getFullYear()} V5 Medical LTD. All rights reserved.</p>
+                        <div class="text-center mt-8 text-sm text-gray-500">
+                            <p>&copy; ${year} V5 Medical LTD. All rights reserved.</p>
                         </div>
                     </div>
                 </footer>
@@ -210,3 +233,4 @@ const V5Layout = (() => {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 else V5Layout.init();
+
