@@ -1,7 +1,7 @@
 /**
  * V5 Medical Website Configuration
  * Centralized configuration for all aspects of the website
- * @version 2.2.0
+ * @version 2.3.0 (Added Google Translate support)
  * @updated 2024-12-16
  */
 
@@ -67,6 +67,25 @@ const V5Config = (() => {
         ANALYTICS: {
             GA_ID: 'G-JE15YSMC2W',
             ENABLED: true
+        },
+        
+        // Google Translate Configuration
+        GOOGLE_TRANSLATE: {
+            ENABLED: true,
+            PAGE_LANGUAGE: 'en',
+            LANGUAGES: 'en,es,fr,de,zh-CN,zh-TW,ar,ru,ja,ko,pt,it,hi',
+            DEFAULT_LABEL: 'Translate',
+            POSITION: {
+                DESKTOP: { top: '6rem', right: '1rem' },
+                MOBILE: { top: '5.5rem', right: '0.75rem' }
+            },
+            STYLE: {
+                BACKGROUND: 'linear-gradient(135deg, #4285f4 0%, #34a853 100%)',
+                HOVER_BACKGROUND: 'linear-gradient(135deg, #3367d6 0%, #2e8b57 100%)',
+                BORDER: '2px solid #ffffff',
+                SHADOW: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                HOVER_SHADOW: '0 6px 16px rgba(0, 0, 0, 0.2)'
+            }
         },
         
         // Contact Information
