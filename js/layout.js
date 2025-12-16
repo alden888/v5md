@@ -96,7 +96,7 @@ const V5Layout = (() => {
             `;
             const { CONTACT } = this.config;
 
-            footerContainer.innerHTML = `
+            Container.innerHTML = `
                 <footer class="bg-gray-900 text-white py-12 px-4 border-t border-gray-800">
                     <div class="max-w-7xl mx-auto">
                         <div class="grid md:grid-cols-12 gap-8 mb-12">
@@ -233,4 +233,5 @@ const V5Layout = (() => {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 else V5Layout.init();
+
 
