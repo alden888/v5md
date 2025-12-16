@@ -65,7 +65,7 @@ const V5Layout = (() => {
                                 <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-10 w-auto transition-transform group-hover:scale-105" alt="${this.config.SEO.SITE_NAME}">
                                 <div>
                                     <div class="font-bold text-xl text-blue-900 leading-none">V5 Medical LTD</div>
-                                    <div class="text-[10px] text-blue-600 font-medium tracking-wider uppercase mt-0.5">Global Supply Chain</div>
+                                    <div class="text-[10px] text-blue-600 font-medium tracking-wider uppercase mt-0.5">Global Medical Supply Chain</div>
                                 </div>
                             </a>
                             <div class="hidden md:flex gap-8 items-center">
@@ -244,3 +244,4 @@ const V5Layout = (() => {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 else V5Layout.init();
+
