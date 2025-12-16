@@ -146,10 +146,17 @@ const V5Medical = (() => {
             
             const style = document.createElement('style');
             style.innerHTML = `
-                .goog-te-gadget { font-family: inherit !important; color: #4b5563 !important; }
-                .goog-te-gadget-simple { background-color: transparent !important; border: none !important; padding: 0 !important; }
-                .goog-te-banner-frame { display: none !important; }
-                body { top: 0 !important; }
+                .goog-te-gadget { font-family: inherit !important; color: white !important; } /* 文字白色 */
+    .goog-te-gadget-simple { 
+        background-color: rgba(255,255,255,0.15) !important; /* 半透明背景 */
+        border: 1px solid rgba(255,255,255,0.3) !important; 
+        padding: 8px 12px !important;
+        border-radius: 99px !important;
+    }
+    .goog-te-gadget-simple span { color: white !important; font-weight: 600 !important; }
+    .goog-te-gadget-icon { display: none !important; }
+    .goog-te-banner-frame { display: none !important; }
+    body { top: 0 !important; }
             `;
             document.head.appendChild(style);
         };
