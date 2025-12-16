@@ -63,7 +63,7 @@ const V5Layout = (() => {
                                 ${logoHtml}
                                 <div>
                                     <div class="font-bold text-xl text-blue-900 leading-none">V5 Medical LTD</div>
-                                    <div class="text-[10px] text-blue-600 font-medium tracking-wider uppercase mt-0.5">Global Supply Chain</div>
+                                    <div class="text-[10px] text-blue-600 font-medium tracking-wider uppercase mt-0.5">Global Medical Supply Chain</div>
                                 </div>
                             </a>
                             <div class="hidden md:flex gap-8 items-center">
@@ -233,5 +233,6 @@ const V5Layout = (() => {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 else V5Layout.init();
+
 
 
