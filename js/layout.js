@@ -1,310 +1,160 @@
 /**
  * V5 Medical Layout Engine
- * (Unified Layout Manager)
- * Dynamically renders Header, Footer, and Floating elements based on V5Config.
- * @version 2.3.0 (Enhanced Google Translate with Config support)
- * @updated 2024-12-16
+ * @version 2.6.0 (Unified Footer & Robust Logo)
  */
-
 const V5Layout = (() => {
-    // 依赖检查：确保 config.js 已加载
     const config = window.V5Config;
-    if (!config) {
-        console.error('[Layout] V5Config not found. Ensure config.js is loaded before layout.js.');
-        return { init: () => console.error('Layout init aborted due to missing config') };
-    }
+    if (!config) return { init: () => console.error('Config missing') };
 
     class LayoutManager {
         constructor() {
             this.config = config;
-            this.currentPage = this._detectPage();
-            // 添加谷歌翻译按钮样式
-            if (config.GOOGLE_TRANSLATE && config.GOOGLE_TRANSLATE.ENABLED) {
-                this._addTranslateButtonStyles();
-            }
         }
 
-        /**
-         * 初始化并渲染所有布局组件
-         */
         init() {
             this.renderHeader();
             this.renderFooter();
             this.renderFloatingElements();
-            
-            // 初始化谷歌翻译按钮（如果启用）
-            if (this.config.GOOGLE_TRANSLATE && this.config.GOOGLE_TRANSLATE.ENABLED) {
-                this._initGoogleTranslate();
-            }
-            
-            // 通知 main.js 绑定事件
             window.dispatchEvent(new Event('v5-layout-ready'));
-            console.log('[Layout] Initialization complete');
         }
 
-        /**
-         * 添加谷歌翻译按钮的自定义样式（使用配置）
-         */
-        _addTranslateButtonStyles() {
-            const translateConfig = this.config.GOOGLE_TRANSLATE;
-            
-            // 创建样式元素
-            const style = document.createElement('style');
-            style.id = 'v5-translate-styles';
-            style.textContent = `
-                /* 谷歌翻译按钮样式 - 使用配置值 */
-                .google-translate-button {
-                    position: fixed;
-                    top: ${translateConfig.POSITION.DESKTOP.top};
-                    right: ${translateConfig.POSITION.DESKTOP.right};
-                    z-index: 9999;
-                    background: ${translateConfig.STYLE.BACKGROUND};
-                    border: ${translateConfig.STYLE.BORDER};
-                    border-radius: 8px;
-                    padding: 6px 12px;
-                    box-shadow: ${translateConfig.STYLE.SHADOW};
-                    transition: all 0.3s ease;
-                    display: flex;
-                    align-items: center;
-                    gap: 6px;
-                    cursor: pointer;
-                    font-family: 'Inter', sans-serif;
-                }
-                
-                .google-translate-button:hover {
-                    transform: translateY(-2px);
-                    box-shadow: ${translateConfig.STYLE.HOVER_SHADOW};
-                    background: ${translateConfig.STYLE.HOVER_BACKGROUND};
-                }
-                
-                .google-translate-button:active {
-                    transform: translateY(0);
-                }
-                
-                .translate-icon {
-                    color: white;
-                    font-size: 1.1rem;
-                }
-                
-                .translate-text {
-                    color: white;
-                    font-size: 0.85rem;
-                    font-weight: 600;
-                    white-space: nowrap;
-                }
-                
-                /* 调整谷歌翻译小工具样式 */
-                .goog-te-gadget {
-                    font-family: 'Inter', sans-serif !important;
-                    font-size: 12px !important;
-                }
-                
-                .goog-te-gadget-simple {
-                    background-color: transparent !important;
-                    border: none !important;
-                    padding: 0 !important;
-                }
-                
-                /* 移动端适配 */
-                @media (max-width: 768px) {
-                    .google-translate-button {
-                        top: ${translateConfig.POSITION.MOBILE.top};
-                        right: ${translateConfig.POSITION.MOBILE.right};
-                        padding: 5px 10px;
-                    }
-                    
-                    .translate-text {
-                        display: none; /* 移动端只显示图标 */
-                    }
-                }
-                
-                /* 语言选择器样式优化 */
-                .goog-te-menu2 {
-                    max-height: 300px !important;
-                    overflow-y: auto !important;
-                    border-radius: 8px !important;
-                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
-                    border: 1px solid #e5e7eb !important;
-                }
-                
-                .goog-te-menu2-item {
-                    padding: 10px 16px !important;
-                    font-size: 14px !important;
-                }
-                
-                .goog-te-menu2-item:hover {
-                    background-color: #f3f4f6 !important;
-                }
+        // 渲染头部
+        renderHeader() {
+            const container = document.getElementById('v5-header');
+            if (!container) return;
+
+            // Logo 逻辑：优先 CDN，失败则加载本地
+            const logoHtml = `
+                <img src="${this.config.IMAGES.LOGO}" 
+                     onerror="this.onerror=null; this.src='${this.config.IMAGES.LOGO_LOCAL}';" 
+                     class="h-10 w-auto transition-transform group-hover:scale-105" 
+                     alt="${this.config.SEO.SITE_NAME}">
             `;
-            
-            document.head.appendChild(style);
-        }
 
-        /**
-         * 初始化谷歌翻译功能
-         */
-        _initGoogleTranslate() {
-            // 确保翻译容器存在，如果不存在则创建
-            let translateContainer = document.getElementById('google_translate_element');
-            
-            if (!translateContainer) {
-                translateContainer = document.createElement('div');
-                translateContainer.id = 'google_translate_element';
-                translateContainer.className = 'fixed top-24 right-4 z-50';
-                document.body.appendChild(translateContainer);
-            }
-            
-            // 清空现有内容
-            translateContainer.innerHTML = '';
-            
-            // 添加自定义按钮
-            const customButton = document.createElement('div');
-            customButton.className = 'google-translate-button';
-            customButton.innerHTML = `
-                <i class="fas fa-language translate-icon"></i>
-                <span class="translate-text">${this.config.GOOGLE_TRANSLATE.DEFAULT_LABEL}</span>
+            // 导航链接
+            const navLinks = [
+                { href: 'index.html', label: 'Home' },
+                { href: 'about.html', label: 'About Us' },
+                { href: 'catalog.html', label: 'Products' },
+                { href: 'blog.html', label: 'Blog' },
+                { href: 'contact.html', label: 'Contact' }
+            ].map(link => `
+                <a href="${link.href}" class="nav-link font-medium text-gray-600 hover:text-blue-900 transition ${window.location.pathname.includes(link.href) ? 'text-blue-900 font-bold' : ''}">
+                    ${link.label}
+                </a>
+            `).join('');
+
+            // 移动端链接 (简化版)
+            const mobileLinks = [
+                { href: 'index.html', label: 'Home' },
+                { href: 'catalog.html', label: 'Products' },
+                { href: 'contact.html', label: 'Contact' }
+            ].map(link => `
+                <a href="${link.href}" class="block px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">${link.label}</a>
+            `).join('');
+
+            container.innerHTML = `
+                <nav id="navbar" class="fixed w-full z-50 bg-white/95 backdrop-blur-sm shadow-sm transition-all duration-300">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="flex justify-between items-center h-20">
+                            <a href="index.html" class="flex items-center gap-3 group">
+                                ${logoHtml}
+                                <div>
+                                    <div class="font-bold text-xl text-blue-900 leading-none">V5 Medical LTD</div>
+                                    <div class="text-[10px] text-blue-600 font-medium tracking-wider uppercase mt-0.5">Global Supply Chain</div>
+                                </div>
+                            </a>
+                            <div class="hidden md:flex gap-8 items-center">
+                                ${navLinks}
+                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-full font-semibold shadow-md flex items-center gap-2 transition hover:-translate-y-0.5">
+                                    <i class="fab fa-whatsapp text-lg"></i><span>Quick Chat</span>
+                                </a>
+                            </div>
+                            <button id="mobile-menu-btn" class="md:hidden text-gray-600 p-2"><i class="fas fa-bars text-2xl"></i></button>
+                        </div>
+                    </div>
+                    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl">
+                        <div class="px-4 py-4 space-y-2">${mobileLinks}</div>
+                    </div>
+                </nav>
             `;
-            
-            translateContainer.appendChild(customButton);
-            
-            // 点击自定义按钮触发谷歌翻译
-            customButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // 检查谷歌翻译是否已加载
-                if (window.google && window.google.translate) {
-                    const googleFrame = document.querySelector('.goog-te-menu-frame');
-                    if (googleFrame) {
-                        googleFrame.style.display = googleFrame.style.display === 'none' ? 'block' : 'none';
-                    } else {
-                        // 触发默认的谷歌翻译小工具
-                        const translateDiv = document.querySelector('.goog-te-gadget');
-                        if (translateDiv) {
-                            const select = translateDiv.querySelector('select');
-                            if (select) {
-                                select.focus();
-                                select.click();
-                            }
-                        }
-                    }
-                } else {
-                    // 如果谷歌翻译尚未加载，先加载脚本
-                    this._loadGoogleTranslateScript();
-                    // 延迟触发点击
-                    setTimeout(() => {
-                        const translateDiv = document.querySelector('.goog-te-gadget');
-                        if (translateDiv) {
-                            const select = translateDiv.querySelector('select');
-                            if (select) select.click();
-                        }
-                    }, 1000);
-                }
-            });
-            
-            // 加载谷歌翻译脚本
-            this._loadGoogleTranslateScript();
         }
 
-        /**
-         * 加载谷歌翻译脚本
-         */
-        _loadGoogleTranslateScript() {
-            // 如果已经加载过，直接初始化
-            if (window.google && window.google.translate) {
-                this._initGoogleTranslateWidget();
-                return;
-            }
-            
-            // 检查是否正在加载
-            if (window.googleTranslateLoading) return;
-            window.googleTranslateLoading = true;
-            
-            // 创建脚本
-            const script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-            script.onload = () => {
-                window.googleTranslateLoading = false;
-            };
-            script.onerror = () => {
-                console.error('[Google Translate] Failed to load translation script');
-                window.googleTranslateLoading = false;
-                // 如果失败，显示一个提示
-                const translateContainer = document.getElementById('google_translate_element');
-                if (translateContainer) {
-                    const errorMsg = document.createElement('div');
-                    errorMsg.className = 'text-xs text-red-500 mt-1';
-                    errorMsg.textContent = 'Translation service unavailable';
-                    translateContainer.appendChild(errorMsg);
-                }
-            };
-            
-            document.head.appendChild(script);
-            
-            // 定义回调函数
-            window.googleTranslateElementInit = () => {
-                this._initGoogleTranslateWidget();
-            };
+        // 渲染页脚 (确保全站统一)
+        renderFooter() {
+            const container = document.getElementById('v5-footer');
+            if (!container) return;
+
+            const logoHtml = `
+                <img src="${this.config.IMAGES.LOGO}" 
+                     onerror="this.onerror=null; this.src='${this.config.IMAGES.LOGO_LOCAL}';" 
+                     class="h-10 w-auto" alt="Logo">
+            `;
+
+            container.innerHTML = `
+                <footer class="bg-gray-900 text-white py-12 px-4 border-t border-gray-800">
+                    <div class="max-w-7xl mx-auto">
+                        <div class="grid md:grid-cols-12 gap-8 mb-12">
+                            <div class="md:col-span-3">
+                                <div class="flex items-center gap-2 mb-4">
+                                    ${logoHtml}
+                                    <span class="text-xl font-bold">V5 Medical LTD</span>
+                                </div>
+                                <p class="text-gray-400 text-sm mb-4">Professional Global Medical Consumables Supplier</p>
+                                <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
+                            </div>
+                            <div class="hidden md:block md:col-span-1"></div>
+                            <div class="md:col-span-2">
+                                <h4 class="font-bold mb-4 text-lg text-white">Quick Links</h4>
+                                <ul class="space-y-2 text-sm text-gray-400">
+                                    <li><a href="index.html" class="hover:text-white transition">Home</a></li>
+                                    <li><a href="catalog.html" class="hover:text-white transition">Products</a></li>
+                                    <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
+                                    <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+                                    <li><a href="blog.html" class="hover:text-white transition">Blog</a></li>
+                                </ul>
+                            </div>
+                            <div class="md:col-span-3 pl-0 md:pl-4">
+                                <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
+                                <div class="space-y-3 text-sm text-gray-400">
+                                    <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${this.config.CONTACT.WHATSAPP.DISPLAY} (UK)</p>
+                                    <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${this.config.CONTACT.WHATSAPP_CN.DISPLAY} (Backup)</p>
+                                    <p class="flex items-center gap-2"><i class="fas fa-envelope text-blue-400 w-5"></i> ${this.config.CONTACT.EMAIL.SALES}</p>
+                                    <p class="flex items-start gap-2"><i class="fas fa-map-marker-alt mt-1 w-5"></i> ${this.config.CONTACT.ADDRESS}</p>
+                                </div>
+                            </div>
+                            <div class="md:col-span-3 pl-0 md:pl-4">
+                                <h4 class="font-bold mb-4 text-lg text-white">Downloads</h4>
+                                <div class="space-y-2 mb-8 text-sm">
+                                    <a href="pdf/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Product Catalog</a>
+                                    <a href="pdf/price list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Price List</a>
+                                </div>
+                                <h4 class="font-bold mb-4 text-lg text-white">Follow Us</h4>
+                                <div class="flex gap-3">
+                                    <a href="#" class="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 text-white"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="#" class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 text-white"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#" class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 text-white"><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-8 text-sm text-gray-500 border-t border-gray-800 pt-8">
+                            <p>&copy; ${new Date().getFullYear()} V5 Medical LTD. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            `;
         }
 
-        /**
-         * 初始化谷歌翻译小工具
-         */
-        _initGoogleTranslateWidget() {
-            if (!window.google || !window.google.translate) {
-                console.error('[Google Translate] Google Translate API not available');
-                return;
-            }
-            
-            try {
-                const translateConfig = this.config.GOOGLE_TRANSLATE;
-                
-                new google.translate.TranslateElement({
-                    pageLanguage: translateConfig.PAGE_LANGUAGE,
-                    includedLanguages: translateConfig.LANGUAGES,
-                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                    autoDisplay: false,
-                    multilanguagePage: true
-                }, 'google_translate_element');
-                
-                // 隐藏默认的谷歌翻译小工具
-                const hideGoogleGadget = () => {
-                    const googleGadget = document.querySelector('.goog-te-gadget');
-                    if (googleGadget) {
-                        googleGadget.style.display = 'none';
-                        return true;
-                    }
-                    return false;
-                };
-                
-                // 立即尝试隐藏，然后设置间隔检查
-                if (!hideGoogleGadget()) {
-                    const interval = setInterval(() => {
-                        if (hideGoogleGadget()) {
-                            clearInterval(interval);
-                        }
-                    }, 100);
-                    
-                    // 最多尝试5秒
-                    setTimeout(() => clearInterval(interval), 5000);
-                }
-                
-            } catch (error) {
-                console.error('[Google Translate] Failed to initialize:', error);
+        renderFloatingElements() {
+            if (!document.getElementById('whatsapp-float')) {
+                const div = document.createElement('div');
+                div.innerHTML = `<a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110"><i class="fab fa-whatsapp text-3xl"></i></a>`;
+                document.body.appendChild(div.firstElementChild);
             }
         }
-
-        // ... 其余方法保持不变 ...
-
     }
-
     return new LayoutManager();
 })();
 
-// 在 DOM 加载完成后初始化
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => V5Layout.init());
-} else {
-    V5Layout.init();
-}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
+else V5Layout.init();
