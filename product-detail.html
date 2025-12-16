@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <meta name="description" content="View detailed specifications and pricing for our premium medical products. V5 Medical LTD - Global Medical Supplier.">
-    <title>Product Detail | V5 Medical LTD</title>
-    
+    <title>Product Details | V5 Medical LTD</title>
+    <meta name="description" content="Premium medical products from V5 Medical LTD. ISO 13485 certified manufacturer.">
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
     
     <script>
         tailwind.config = {
@@ -22,151 +22,142 @@
             }
         }
     </script>
-    
-    <style>
-        .spec-table tr:nth-child(even) { background-color: #f8fafc; }
-        .spec-table td { padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; }
-        .spec-table td:first-child { font-weight: 600; color: #475569; width: 35%; }
-        
-        /* 页面加载动画 */
-        .page-loader { position: fixed; inset: 0; background: #1e40af; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
-        
-        /* 局部加载 Spinner */
-        .loading-spinner {
-            border: 3px solid #f3f4f6; border-top: 3px solid #3b82f6; border-radius: 50%;
-            width: 40px; height: 40px; animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
-    
-    <script type="application/ld+json" id="product-schema"></script>
-    <script type="application/ld+json" id="breadcrumb-schema"></script>
 </head>
 
 <body class="bg-gray-50 flex flex-col min-h-screen font-sans text-gray-800">
 
     <div id="loader" class="page-loader">
-        <i class="fas fa-circle-notch fa-spin text-white text-4xl"></i>
+        <div class="loader-spinner"></div>
     </div>
 
     <div id="v5-header"></div>
 
-    <main class="flex-grow pt-20 pb-16">
+    <main class="flex-grow pt-24 pb-16 px-4">
         
-        <div id="loading-state" class="max-w-7xl mx-auto px-4 text-center py-20">
-            <div class="loading-spinner mx-auto mb-4"></div>
-            <p class="text-gray-600">Loading product details...</p>
+        <div id="loading-state" class="max-w-7xl mx-auto text-center py-20">
+            <div class="loader-spinner border-blue-600 border-t-transparent mx-auto mb-4"></div>
+            <p class="text-gray-500 font-medium">Retrieving product information...</p>
         </div>
 
-        <div id="error-state" class="hidden max-w-7xl mx-auto px-4 text-center py-20">
-            <i class="fas fa-exclamation-circle text-red-500 text-5xl mb-4"></i>
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Product Not Found</h2>
-            <p class="text-gray-600 mb-6">The product you are looking for does not exist or has been removed.</p>
-            <a href="catalog.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
-                Return to Catalog
+        <div id="error-state" class="hidden max-w-2xl mx-auto text-center py-20 bg-white rounded-xl shadow-sm p-8">
+            <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Product Not Found</h2>
+            <p class="text-gray-600 mb-6">The product you are looking for may have been removed or the link is incorrect.</p>
+            <a href="catalog.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition">
+                <i class="fas fa-arrow-left"></i> Return to Catalog
             </a>
         </div>
 
-        <div id="product-content" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav class="flex mb-8 text-sm text-gray-500 pt-4" aria-label="Breadcrumb">
+        <div id="product-content" class="hidden max-w-7xl mx-auto animate-fade-in">
+            
+            <nav class="flex mb-8 text-sm text-gray-500" aria-label="Breadcrumb">
                 <ol class="flex items-center space-x-2 flex-wrap">
-                    <li><a href="index.html" class="hover:text-blue-600">Home</a></li>
-                    <li><i class="fas fa-chevron-right text-xs"></i></li>
-                    <li><a href="catalog.html" class="hover:text-blue-600">Products</a></li>
-                    <li><i class="fas fa-chevron-right text-xs"></i></li>
-                    <li><a href="#" id="crumb-category" class="hover:text-blue-600 capitalize">Category</a></li>
-                    <li><i class="fas fa-chevron-right text-xs"></i></li>
-                    <li class="font-semibold text-gray-800 truncate max-w-xs" id="crumb-name">Product</li>
+                    <li><a href="index.html" class="hover:text-blue-600 transition">Home</a></li>
+                    <li><i class="fas fa-chevron-right text-[10px] text-gray-400"></i></li>
+                    <li><a href="catalog.html" class="hover:text-blue-600 transition">Products</a></li>
+                    <li><i class="fas fa-chevron-right text-[10px] text-gray-400"></i></li>
+                    <li><a href="#" id="crumb-category" class="hover:text-blue-600 transition capitalize">Category</a></li>
+                    <li><i class="fas fa-chevron-right text-[10px] text-gray-400"></i></li>
+                    <li class="font-semibold text-gray-900 truncate max-w-[200px]" id="crumb-name">Product</li>
                 </ol>
             </nav>
 
-            <div class="grid lg:grid-cols-2 gap-12">
-                <div class="space-y-4">
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden aspect-[4/3] flex items-center justify-center relative group">
-                        <img id="product-image" src="" alt="Product" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
-                            Medical Grade
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
+                
+                <div class="space-y-6">
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden aspect-square flex items-center justify-center relative group">
+                        <img id="product-image" src="" alt="Product" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-1">
+                            <i class="fas fa-shield-alt"></i> Medical Grade
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <div class="mb-2">
-                        <span id="product-category" class="text-blue-600 font-bold tracking-wide uppercase text-sm">Category</span>
+                    <div class="mb-3">
+                        <span id="product-category" class="inline-block bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded border border-blue-100 uppercase tracking-wide">Category</span>
                     </div>
-                    <h1 id="product-name" class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">Product Name</h1>
+                    
+                    <h1 id="product-name" class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">Product Name</h1>
                     
                     <div class="flex flex-wrap gap-2 mb-6" id="cert-tags">
                         </div>
 
-                    <p id="product-short-desc" class="text-xl text-gray-600 mb-8 leading-relaxed font-light">
-                        Loading description...
-                    </p>
+                    <div class="prose prose-blue text-gray-600 mb-8 leading-relaxed">
+                        <p id="product-desc">Loading description...</p>
+                    </div>
 
-                    <div class="bg-blue-50 rounded-xl p-6 mb-8 border border-blue-100">
-                        <h3 class="font-bold text-blue-900 mb-3 flex items-center">
-                            <i class="fas fa-star text-blue-500 mr-2"></i> Key Features
+                    <div class="bg-gray-50 rounded-xl p-6 mb-8 border border-gray-100">
+                        <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                            <i class="fas fa-check-circle text-green-500"></i> Why Choose This Product?
                         </h3>
-                        <ul class="space-y-2 text-gray-700">
-                            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i> <span>Premium Medical Grade Material</span></li>
-                            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i> <span>ISO 13485 & CE Certified Factory</span></li>
-                            <li class="flex items-start"><i class="fas fa-check text-green-500 mt-1 mr-2"></i> <span>Global Shipping Available</span></li>
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li class="flex items-start gap-2"><i class="fas fa-check text-blue-500 mt-1"></i> Manufactured in ISO 13485 certified facility</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check text-blue-500 mt-1"></i> Strict quality control standards (CE/FDA)</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check text-blue-500 mt-1"></i> Competitive factory-direct pricing</li>
                         </ul>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-4 border-t border-gray-100 pt-8">
-                        <a id="whatsapp-btn" href="#" target="_blank" class="flex-1 bg-green-500 hover:bg-green-600 text-white text-center px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 flex justify-center items-center gap-2">
-                            <i class="fab fa-whatsapp text-2xl"></i> Get Quote via WhatsApp
+                    <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                        <a id="whatsapp-btn" href="#" target="_blank" class="flex-1 bg-green-500 hover:bg-green-600 text-white text-center px-6 py-3.5 rounded-xl font-bold shadow-lg hover:shadow-green-500/30 transition transform hover:-translate-y-0.5 flex justify-center items-center gap-2">
+                            <i class="fab fa-whatsapp text-xl"></i> Get Best Quote
                         </a>
-                        <a href="contact.html" class="flex-1 bg-gray-800 hover:bg-black text-white text-center px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 flex justify-center items-center gap-2">
-                            <i class="fas fa-envelope"></i> Send Inquiry
+                        <a href="contact.html" class="flex-1 bg-white border-2 border-gray-200 hover:border-blue-600 text-gray-700 hover:text-blue-600 text-center px-6 py-3.5 rounded-xl font-bold transition flex justify-center items-center gap-2">
+                            <i class="fas fa-envelope text-lg"></i> Email Inquiry
                         </a>
                     </div>
-                    <p class="text-xs text-gray-500 mt-4 text-center sm:text-left">
-                        <i class="fas fa-shield-alt mr-1"></i> Factory direct pricing. T/T, L/C accepted.
+                    
+                    <p class="text-xs text-gray-400 mt-4 flex items-center justify-center sm:justify-start gap-1">
+                        <i class="fas fa-lock"></i> Secure Transaction • Fast Global Shipping
                     </p>
                 </div>
             </div>
 
-            <div class="mt-20 grid lg:grid-cols-3 gap-12">
-                <div class="lg:col-span-2 space-y-12">
-                    <section>
-                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                            <span class="w-1 h-8 bg-blue-600 rounded-full mr-3"></span>
-                            Product Description
-                        </h2>
-                        <div id="product-long-desc" class="prose max-w-none text-gray-600 leading-relaxed">
-                            </div>
-                    </section>
-
-                    <section>
-                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                            <span class="w-1 h-8 bg-blue-600 rounded-full mr-3"></span>
-                            Technical Specifications
-                        </h2>
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                            <table class="w-full text-left spec-table" id="specs-table">
+            <div class="mt-20 grid lg:grid-cols-3 gap-8">
+                
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                            <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                                <i class="fas fa-sliders-h text-blue-600"></i> Technical Specifications
+                            </h2>
+                        </div>
+                        <div class="p-6">
+                            <table class="w-full text-sm text-left spec-table" id="specs-table">
                                 </table>
                         </div>
-                    </section>
+                    </div>
                 </div>
 
-                <div class="space-y-8">
-                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-gray-900 mb-4">Certifications</h3>
-                        <div class="flex gap-4 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition duration-300">
+                <div class="space-y-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
+                        <h3 class="font-bold text-gray-900 mb-4 text-sm uppercase tracking-wide">Certified Quality</h3>
+                        <div class="flex justify-center gap-4 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition duration-500">
                             <img src="images/quality/iso13485-2016.jpg" alt="ISO" class="h-10 object-contain">
                             <img src="images/quality/ce-mark.png" alt="CE" class="h-10 object-contain">
                             <img src="images/quality/fda.jpg" alt="FDA" class="h-10 object-contain">
                         </div>
                     </div>
 
-                    <div class="bg-blue-50 rounded-xl p-6 border border-blue-100">
-                        <h3 class="font-bold text-blue-900 mb-4">Quick FAQ</h3>
-                        <div class="space-y-4 text-sm text-gray-700">
-                            <p><strong>MOQ:</strong> Depends on product (usually 1 carton).</p>
-                            <p><strong>Samples:</strong> Free samples available (freight collect).</p>
-                            <p><strong>Lead Time:</strong> 7-15 days for standard stock.</p>
+                    <div class="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                        <h3 class="font-bold text-blue-900 mb-3 text-sm flex items-center gap-2">
+                            <i class="fas fa-question-circle"></i> Quick FAQ
+                        </h3>
+                        <div class="space-y-3 text-xs text-gray-700">
+                            <div>
+                                <p class="font-semibold text-blue-800">MOQ?</p>
+                                <p>Flexible MOQ, starting from 1 carton.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-blue-800">Lead Time?</p>
+                                <p>7-15 days for standard orders.</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-blue-800">Samples?</p>
+                                <p>Available upon request.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -176,24 +167,15 @@
 
     <div id="v5-footer"></div>
 
-    <script src="js/layout.js"></script>
-    <script src="js/complete-products.js"></script>
+    <script src="js/config.js?v=2.0"></script>
+    <script src="js/image-utils.js?v=1.0"></script> <script src="js/seo-utils.js?v=1.0"></script>   <script src="js/layout.js?v=2.1"></script>
+    
+    <script src="js/complete-products.js?v=3.2.0"></script>
+    <script src="js/product-loader.js?v=2.0"></script>
     <script src="js/main.js"></script>
 
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const loader = document.getElementById('loader');
-            if(loader) {
-                setTimeout(() => {
-                    loader.style.opacity = '0';
-                    setTimeout(() => loader.style.display = 'none', 500);
-                }, 1000);
-            }
-        });
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             const productId = params.get('id');
 
@@ -202,91 +184,94 @@
                 return;
             }
 
-            // 从 completeProductDatabase 中查找产品
-            // 确保数据库已初始化
-            const db = window.completeProductDatabase || (window.initializeCompleteDatabase && window.initializeCompleteDatabase());
-            
-            const product = db?.byId?.[productId] || db?.products?.find(p => p.id === productId);
+            try {
+                // Use ProductLoader (Global Instance)
+                const db = await window.productLoader.loadProducts();
+                
+                // Find Product (Support array or object structure)
+                let product = null;
+                if (db.byId && db.byId[productId]) {
+                    product = db.byId[productId];
+                } else if (Array.isArray(db.products)) {
+                    product = db.products.find(p => p.id === productId);
+                }
 
-            if (product) {
-                renderProduct(product);
-                generateSchema(product);
-                updateMeta(product);
-            } else {
+                if (product) {
+                    renderProductPage(product);
+                } else {
+                    showError();
+                }
+            } catch (err) {
+                console.error("Product load failed", err);
                 showError();
             }
         });
 
-        function renderProduct(product) {
+        function renderProductPage(product) {
+            // 1. Update SEO (Title, Meta, Schema, OG) using SEO Utils
+            if (window.seoUtils) {
+                window.seoUtils.updatePage({
+                    title: `${product.name} | V5 Medical Factory Direct`,
+                    description: product.description || product.short,
+                    image: product.images[0],
+                    product: product // Automatically generates Product Schema
+                });
+            }
+
+            // 2. Hide Loader / Show Content
             document.getElementById('loading-state').classList.add('hidden');
             document.getElementById('product-content').classList.remove('hidden');
 
-            // 文本填充
+            // 3. Populate Content
             setText('product-name', product.name);
             setText('product-category', formatCategory(product.category));
-            setText('product-short-desc', product.short || product.description);
-            setText('product-long-desc', product.description || product.short);
+            setText('product-desc', product.description || product.short);
             
-            // 导航填充
+            // Breadcrumb
             setText('crumb-name', product.name);
             const catLink = document.getElementById('crumb-category');
             catLink.textContent = formatCategory(product.category);
             catLink.href = `catalog.html#${product.category}`;
 
-            // 图片处理
+            // 4. Handle Image with ImageUtils (Smart Fallback)
             const imgEl = document.getElementById('product-image');
-            const imgSrc = product.images?.[0] || 'images/products/default-product.jpg';
-            // 处理 GitHub raw 链接或其他链接
-            imgEl.src = imgSrc;
-            imgEl.onerror = () => { imgEl.src = 'images/products/default-product.jpg'; };
+            if (window.imageUtils) {
+                // Use helper to resolve path
+                const imgSrc = product.images?.[0] || 'default-product.jpg';
+                // Try to load
+                imgEl.src = imgSrc.startsWith('http') ? imgSrc : `images/products/${product.category}/${product.id}.jpg`;
+                
+                // Fallback on error
+                imgEl.onerror = () => { 
+                    imgEl.src = window.V5Config.IMAGES.PLACEHOLDER || 'images/products/default-product.jpg';
+                };
+            } else {
+                imgEl.src = product.images?.[0] || 'images/products/default-product.jpg';
+            }
 
-            // 规格表生成
+            // 5. Specs Table
             const specsTable = document.getElementById('specs-table');
             if (product.specifications) {
                 specsTable.innerHTML = Object.entries(product.specifications)
-                    .map(([key, value]) => `<tr><td>${key}</td><td>${value}</td></tr>`)
+                    .map(([key, value]) => `<tr><td class="text-gray-500">${key}</td><td class="font-medium text-gray-900">${value}</td></tr>`)
                     .join('');
             } else {
-                specsTable.innerHTML = '<tr><td colspan="2" class="text-gray-500 italic">Specifications available upon request.</td></tr>';
+                specsTable.innerHTML = '<tr><td colspan="2" class="text-gray-400 italic text-center py-4">Detailed specifications available upon request.</td></tr>';
             }
 
-            // 证书标签
+            // 6. Cert Tags
             const certTags = document.getElementById('cert-tags');
             const certs = product.certifications || ['ISO 13485', 'CE'];
             certTags.innerHTML = certs.map(cert => 
-                `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
-                    <i class="fas fa-certificate mr-1"></i> ${cert}
+                `<span class="inline-flex items-center px-2.5 py-1 rounded text-xs font-bold bg-green-100 text-green-800 border border-green-200">
+                    <i class="fas fa-check mr-1"></i> ${cert}
                  </span>`
             ).join('');
 
-            // 更新 WhatsApp 按钮链接，包含产品信息
+            // 7. Dynamic WhatsApp Link
             const waBtn = document.getElementById('whatsapp-btn');
-            waBtn.href = `https://wa.me/447895047944?text=Hi, I am interested in ${encodeURIComponent(product.name)} (ID: ${product.id}). Can you provide a quote?`;
-        }
-
-        function generateSchema(product) {
-            const productSchema = {
-                "@context": "https://schema.org/",
-                "@type": "Product",
-                "name": product.name,
-                "image": product.images || [],
-                "description": product.short,
-                "sku": product.id,
-                "brand": { "@type": "Brand", "name": "V5 Medical" },
-                "offers": {
-                    "@type": "Offer",
-                    "url": window.location.href,
-                    "priceCurrency": "USD",
-                    "price": "0",
-                    "availability": "https://schema.org/InStock"
-                }
-            };
-            document.getElementById('product-schema').textContent = JSON.stringify(productSchema);
-        }
-
-        function updateMeta(product) {
-            document.title = `${product.name} | V5 Medical LTD`;
-            document.querySelector('meta[name="description"]').setAttribute('content', `Buy ${product.name} direct from V5 Medical factory. ISO 13485 Certified.`);
+            const phone = window.V5Config?.CONTACT?.WHATSAPP?.NUMBER || '447895047944';
+            waBtn.href = `https://wa.me/${phone}?text=Hello, I am interested in *${encodeURIComponent(product.name)}* (ID: ${product.id}). Could you please provide a quote?`;
         }
 
         function showError() {
