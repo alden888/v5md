@@ -1,7 +1,7 @@
 /**
  * V5 Medical Website Configuration
  * Centralized configuration for all aspects of the website
- * @version 2.1.0
+ * @version 2.2.0
  * @updated 2024-12-16
  */
 
@@ -19,8 +19,8 @@ const V5Config = (() => {
         },
 
         // Base URLs
-        // 生产环境: 使用相对路径 '/' 以适应可能得 CDN 代理或子目录
-        // 开发/预览: 使用完整路径确保资源加载正确
+        // 生产环境: 使用相对路径 '' 以适应 CDN
+        // 开发环境: 如果是本地服务器使用 ''，如果是 GitHub Pages 预览可能需要仓库名前缀
         BASE_URL: isProduction ? '' : (isLocal ? '' : 'https://alden888.github.io/v5md'),
         
         // Paths
@@ -44,13 +44,13 @@ const V5Config = (() => {
         IMAGES: {
             PLACEHOLDER: 'images/products/default-product.jpg',
             
-            // [修复] 使用 Cloudflare R2 绝对路径作为首选 Logo，解决显示不稳问题
+            // [关键修复] 使用 Cloudflare R2 直链作为首选 Logo
             LOGO: 'https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png',
             
-            // 本地回退路径 (用于 onerror)
+            // 本地回退路径 (当 CDN 不可用时使用)
             LOGO_LOCAL: 'images/v5logo.png',
 
-            // 外部资源回退 (GitHub Raw)
+            // 外部资源回退 (GitHub Raw) - 用于产品图片
             FALLBACK_BASE: 'https://raw.githubusercontent.com/alden888/v5md/main/'
         },
         
@@ -66,12 +66,7 @@ const V5Config = (() => {
         // Analytics Configuration
         ANALYTICS: {
             GA_ID: 'G-JE15YSMC2W',
-            ENABLED: true,
-            EVENTS: {
-                LEAD: 'generate_lead',
-                VIEW: 'view_item',
-                DOWNLOAD: 'file_download'
-            }
+            ENABLED: true
         },
         
         // Contact Information
@@ -91,23 +86,16 @@ const V5Config = (() => {
                 SUPPORT: 'info@v5md.com'
             },
             ADDRESS: 'No. 168, Luying Road, Kunshan, Jiangsu, China'
-        },
-        
-        // Feature Flags
-        FEATURES: {
-            ENABLE_LAZY_LOAD: true,
-            SHOW_PRICES: false,
-            ENABLE_DEBUG: isLocal
         }
     };
 })();
 
-// Export for module usage (Node.js environments)
+// Export for module usage
 if (typeof module !== 'undefined') {
     module.exports = V5Config;
 }
 
-// Make globally available in Browser
+// Make globally available
 if (typeof window !== 'undefined') {
     window.V5Config = V5Config;
 }
