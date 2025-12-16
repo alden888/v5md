@@ -1,8 +1,8 @@
 /*!
  * V5 Medical LTD Core Interaction Script
- * @version 2.0.0
+ * @version 2.1.0
  * @author V5 Medical Development Team
- * @description Centralized logic for UI interactions, analytics, and performance
+ * @description Centralized logic for UI interactions, analytics, and forms
  */
 
 'use strict';
@@ -23,7 +23,6 @@ const V5Medical = (() => {
 
     // === 2. 工具函数 ===
     
-    // 节流函数
     const throttle = (func, limit) => {
         let inThrottle;
         return function() {
@@ -37,26 +36,18 @@ const V5Medical = (() => {
         };
     };
 
-    // 安全执行
     const safeExecute = (func, name = 'Function') => {
         try { return func(); } 
         catch (e) { console.warn(`[V5Medical] ${name} error:`, e); }
     };
 
-    // 延迟工具
     const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     // === 3. 核心模块 ===
 
-    /**
-     * 全局分析追踪 (暴露给 Window 以支持 onclick)
-     */
     const initAnalytics = () => {
-        // 初始化 DataLayer
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
-        
-        // 挂载 gtag 到 window 供内部使用
         window.gtag = gtag;
 
         if (!document.querySelector(`script[src*="${config.analytics.trackingId}"]`)) {
@@ -71,39 +62,19 @@ const V5Medical = (() => {
             };
         }
 
-        // 定义全局追踪函数 (修复 HTML 中的 ReferenceError)
-        window.trackWhatsAppClick = () => {
-            gtag('event', 'whatsapp_click', { event_category: 'Lead', event_label: 'WhatsApp Button' });
-        };
-        
-        window.trackPDFDownload = (name) => {
-            gtag('event', 'pdf_download', { event_category: 'Resource', event_label: name });
-        };
-        
-        window.trackEmailClick = () => {
-            gtag('event', 'email_click', { event_category: 'Contact', event_label: 'Email Link' });
-        };
-
-        window.trackProductClick = (name) => {
-            gtag('event', 'view_item', { event_category: 'Product', event_label: name });
-        };
-        
-        window.trackNavigationClick = (section) => {
-            gtag('event', 'navigation', { event_category: 'UI', event_label: section });
-        };
+        // Global Tracking Functions
+        window.trackWhatsAppClick = () => gtag('event', 'whatsapp_click', { event_category: 'Lead', event_label: 'WhatsApp Button' });
+        window.trackPDFDownload = (name) => gtag('event', 'pdf_download', { event_category: 'Resource', event_label: name });
+        window.trackEmailClick = () => gtag('event', 'email_click', { event_category: 'Contact', event_label: 'Email Link' });
+        window.trackProductClick = (name) => gtag('event', 'view_item', { event_category: 'Product', event_label: name });
     };
 
-    /**
-     * UI 交互逻辑 (菜单、滚动、回到顶部)
-     * 等待 Layout 注入完成后再绑定
-     */
     const initUI = () => {
-        // 1. 移动端菜单 (接管 Layout 的逻辑)
+        // Mobile Menu
         const menuBtn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
         
         if (menuBtn && menu) {
-            // 移除旧的监听器 (如果存在) 并添加新的
             const newBtn = menuBtn.cloneNode(true);
             menuBtn.parentNode.replaceChild(newBtn, menuBtn);
             
@@ -129,7 +100,7 @@ const V5Medical = (() => {
             });
         }
 
-        // 2. 导航栏滚动效果
+        // Navbar Scroll
         const navbar = document.getElementById('navbar');
         if (navbar) {
             const handleScroll = throttle(() => {
@@ -144,16 +115,16 @@ const V5Medical = (() => {
             window.addEventListener('scroll', handleScroll);
         }
 
-        // 3. 回到顶部按钮
+        // Back to Top
         const backToTop = document.getElementById('back-to-top');
         if (backToTop) {
             const handleBackToTop = throttle(() => {
                 if (window.scrollY > config.scroll.backToTopThreshold) {
-                    backToTop.classList.remove('opacity-0', 'invisible');
-                    backToTop.classList.add('opacity-100', 'visible');
+                    backToTop.classList.remove('opacity-0', 'invisible', 'translate-y-10');
+                    backToTop.classList.add('opacity-100', 'visible', 'translate-y-0');
                 } else {
-                    backToTop.classList.add('opacity-0', 'invisible');
-                    backToTop.classList.remove('opacity-100', 'visible');
+                    backToTop.classList.add('opacity-0', 'invisible', 'translate-y-10');
+                    backToTop.classList.remove('opacity-100', 'visible', 'translate-y-0');
                 }
             }, 100);
             
@@ -162,11 +133,7 @@ const V5Medical = (() => {
         }
     };
 
-    /**
-     * 谷歌翻译
-     */
     const initTranslate = () => {
-        // 避免重复初始化
         if (window.googleTranslateInitialized) return;
         
         window.googleTranslateElementInit = () => {
@@ -177,7 +144,6 @@ const V5Medical = (() => {
                 autoDisplay: config.translate.autoDisplay
             }, 'google_translate_element');
             
-            // 样式修复
             const style = document.createElement('style');
             style.innerHTML = `
                 .goog-te-gadget { font-family: inherit !important; color: #4b5563 !important; }
@@ -198,33 +164,33 @@ const V5Medical = (() => {
     };
 
     /**
-     * 表单处理
+     * 表单处理逻辑更新
      */
     const initForms = () => {
-        const form = document.getElementById('contact-form');
+        // Updated ID selector
+        const form = document.getElementById('inquiry-form') || document.getElementById('contact-form');
         if (!form) return;
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = form.querySelector('button[type="submit"]');
-            const originalText = btn.innerHTML;
+            const originalHTML = btn.innerHTML;
             
             // 验证
             let isValid = true;
             form.querySelectorAll('[required]').forEach(input => {
                 if (!input.value.trim()) {
                     isValid = false;
-                    input.classList.add('border-red-500');
-                } else {
-                    input.classList.remove('border-red-500');
+                    input.classList.add('border-red-500', 'ring-1', 'ring-red-500');
+                    input.addEventListener('input', () => input.classList.remove('border-red-500', 'ring-1', 'ring-red-500'), { once: true });
                 }
             });
 
-            if (!isValid) return showNotification('Please fill in all required fields.', 'error');
+            if (!isValid) return showNotification('Please fill in all required fields marked with *', 'error');
 
-            // 提交
+            // 提交状态
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin animate-spin"></i> Sending...';
 
             try {
                 const response = await fetch(form.action, {
@@ -235,90 +201,87 @@ const V5Medical = (() => {
 
                 if (response.ok) {
                     form.reset();
-                    showNotification('Message sent successfully!', 'success');
-                    if(window.gtag) gtag('event', 'generate_lead', { event_category: 'Form', event_label: 'Contact' });
+                    showNotification('Inquiry sent successfully! We will contact you shortly.', 'success');
+                    if(window.gtag) gtag('event', 'generate_lead', { event_category: 'Form', event_label: 'Inquiry' });
                 } else {
                     throw new Error('Submission failed');
                 }
             } catch (err) {
-                showNotification('Failed to send message. Please try WhatsApp.', 'error');
+                showNotification('Connection error. Please try WhatsApp instead.', 'error');
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = originalText;
+                btn.innerHTML = originalHTML;
             }
         });
     };
 
-    /**
-     * 通知气泡
-     */
     const showNotification = (msg, type = 'info') => {
         const div = document.createElement('div');
-        const colors = { success: 'bg-green-500', error: 'bg-red-500', info: 'bg-blue-500' };
-        div.className = `fixed top-4 right-4 z-[9999] ${colors[type]} text-white px-6 py-3 rounded-lg shadow-xl transform transition-all duration-300 translate-x-full flex items-center gap-3`;
-        div.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check' : 'fa-info-circle'}"></i> <span>${msg}</span>`;
+        const colors = { 
+            success: 'bg-green-600 border-green-700', 
+            error: 'bg-red-600 border-red-700', 
+            info: 'bg-blue-600 border-blue-700' 
+        };
+        
+        div.className = `fixed top-24 right-4 z-[9999] ${colors[type]} text-white px-6 py-4 rounded-lg shadow-2xl border flex items-center gap-3 transform transition-all duration-500 translate-x-full opacity-0 max-w-sm`;
+        div.innerHTML = `
+            <div class="bg-white/20 rounded-full p-1"><i class="fas ${type === 'success' ? 'fa-check' : 'fa-info-circle'}"></i></div>
+            <span class="font-medium text-sm">${msg}</span>
+        `;
         document.body.appendChild(div);
         
-        requestAnimationFrame(() => div.classList.remove('translate-x-full'));
+        // 动画进入
+        requestAnimationFrame(() => {
+            div.classList.remove('translate-x-full', 'opacity-0');
+        });
+        
+        // 自动移除
         setTimeout(() => {
-            div.classList.add('translate-x-full');
-            setTimeout(() => div.remove(), 300);
+            div.classList.add('translate-x-full', 'opacity-0');
+            setTimeout(() => div.remove(), 500);
         }, 4000);
     };
 
-    /**
-     * 4. 页面加载动画控制
-     */
     const initLoader = () => {
         const loader = document.getElementById('loader');
         if (loader) {
-            // 确保至少显示一瞬间，避免闪烁
             setTimeout(() => {
                 loader.style.opacity = '0';
                 setTimeout(() => {
                     loader.style.display = 'none';
                 }, config.loader.fadeDuration);
-            }, 300); // 最小显示时间
+            }, 300);
         }
     };
 
     // === 4. 初始化入口 ===
     const init = async () => {
-        // 1. 初始化分析工具 (最优先)
         safeExecute(initAnalytics, 'Analytics');
 
-        // 2. 等待 Layout.js 注入 DOM (如果是动态注入的)
-        // 简单的检查机制：如果 #navbar 不存在，稍微等待一下
+        // 等待 Layout 渲染
         let attempts = 0;
-        while (!document.getElementById('navbar') && attempts < 10) {
+        while (!document.getElementById('navbar') && attempts < 20) {
             await wait(50);
             attempts++;
         }
 
-        // 3. 初始化 UI 和功能
         safeExecute(initUI, 'UI Interactions');
         safeExecute(initTranslate, 'Google Translate');
         safeExecute(initForms, 'Forms');
         
-        // 4. 图片懒加载
-        if ('loading' in HTMLImageElement.prototype) {
-            document.querySelectorAll('img[loading="lazy"]').forEach(img => {
-                if (img.dataset.src) img.src = img.dataset.src;
-            });
-        } else {
+        // Lazy Load Polyfill
+        if (!('loading' in HTMLImageElement.prototype)) {
             const script = document.createElement('script');
             script.src = 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js';
             document.body.appendChild(script);
         }
 
-        // 5. 隐藏加载动画
         initLoader();
     };
 
     return { init, showNotification };
 })();
 
-// 启动
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', V5Medical.init);
 } else {
