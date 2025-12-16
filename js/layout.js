@@ -1,18 +1,25 @@
 /**
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
- * Dynamically renders Header, Footer, and Floating elements based on V5Config.
- * @version 2.3.0 (Fixed Logo Loading & Path Resolution)
+ * Dynamically renders Header, Footer, and Floating elements.
+ * Optimized with Cloudflare R2 CDN for Logo assets.
+ * @version 2.4.0
  * @updated 2024-12-16
  */
 
 const V5Layout = (() => {
-    // 依赖检查：确保 config.js 已加载
+    // 依赖检查
     const config = window.V5Config;
     if (!config) {
         console.error('[Layout] V5Config not found. Ensure config.js is loaded before layout.js.');
-        return { init: () => console.error('Layout init aborted due to missing config') };
+        return { init: () => console.error('Layout init aborted') };
     }
+
+    // 🏆 核心优化：定义高可用的 CDN Logo 地址
+    const LOGO_SOURCES = {
+        CDN: 'https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png', // Cloudflare R2 (首选)
+        LOCAL: 'images/v5logo.png' // 本地备用
+    };
 
     class LayoutManager {
         constructor() {
@@ -20,31 +27,23 @@ const V5Layout = (() => {
             this.currentPage = this._detectPage();
         }
 
-        /**
-         * 初始化并渲染所有布局组件
-         */
         init() {
             this.renderHeader();
             this.renderFooter();
             this.renderFloatingElements();
             
-            // 发送布局就绪事件 (通知 main.js 可以绑定交互了)
             window.dispatchEvent(new Event('v5-layout-ready'));
             console.log('[Layout] Initialization complete');
         }
 
         /**
          * 渲染头部 (Header)
-         * 修复：增加 Logo 加载失败的回退逻辑
          */
         renderHeader() {
             const headerContainer = document.getElementById('v5-header');
             if (!headerContainer) return;
 
-            // 获取 Logo 路径
-            const logoSrc = this._getImgPath(this.config.IMAGES.LOGO);
-            
-            // 定义菜单项
+            // 导航菜单配置
             const navItems = [
                 { id: 'home', label: 'Home', href: 'index.html' },
                 { id: 'about', label: 'About Us', href: 'about.html' },
@@ -53,6 +52,7 @@ const V5Layout = (() => {
                 { id: 'contact', label: 'Contact', href: 'contact.html' }
             ];
 
+            // 生成菜单 HTML
             const navLinksHTML = navItems.map(item => `
                 <a href="${item.href}" 
                    class="nav-link font-medium transition duration-200 ${this._getActiveClass(item.id)}">
@@ -72,8 +72,8 @@ const V5Layout = (() => {
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div class="flex justify-between items-center h-20">
                             <a href="index.html" class="flex items-center gap-3 group">
-                                <img src="${logoSrc}" 
-                                     onerror="this.onerror=null; this.src='images/v5logo.png';" 
+                                <img src="${LOGO_SOURCES.CDN}" 
+                                     onerror="this.onerror=null; this.src='${LOGO_SOURCES.LOCAL}';" 
                                      class="h-10 w-auto transition-transform group-hover:scale-105" 
                                      alt="${this.config.SEO.SITE_NAME}">
                                 <div>
@@ -117,15 +117,13 @@ const V5Layout = (() => {
 
         /**
          * 渲染页脚 (Footer)
-         * 修复：增加 Logo 加载失败的回退逻辑
          */
         renderFooter() {
             const footerContainer = document.getElementById('v5-footer');
             if (!footerContainer) return;
 
             const year = new Date().getFullYear();
-            const { CONTACT, IMAGES } = this.config;
-            const logoSrc = this._getImgPath(IMAGES.LOGO);
+            const { CONTACT } = this.config;
 
             footerContainer.innerHTML = `
                 <footer class="bg-gray-900 text-white py-12 px-4 border-t border-gray-800">
@@ -134,8 +132,8 @@ const V5Layout = (() => {
                             
                             <div class="md:col-span-3">
                                 <div class="flex items-center gap-2 mb-4">
-                                    <img src="${logoSrc}" 
-                                         onerror="this.onerror=null; this.src='images/v5logo.png';" 
+                                    <img src="${LOGO_SOURCES.CDN}" 
+                                         onerror="this.onerror=null; this.src='${LOGO_SOURCES.LOCAL}';" 
                                          class="h-10 w-auto" 
                                          alt="V5 Medical Logo">
                                     <span class="text-xl font-bold">V5 Medical LTD</span>
@@ -220,11 +218,7 @@ const V5Layout = (() => {
             `;
         }
 
-        /**
-         * 渲染悬浮按钮 (WhatsApp & BackToTop)
-         */
         renderFloatingElements() {
-            // 1. WhatsApp Float
             if (!document.getElementById('whatsapp-float')) {
                 const waDiv = document.createElement('div');
                 waDiv.innerHTML = `
@@ -235,15 +229,11 @@ const V5Layout = (() => {
                        aria-label="Chat on WhatsApp"
                        onclick="window.trackWhatsAppClick && window.trackWhatsAppClick()">
                         <i class="fab fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i>
-                        <span class="absolute right-full mr-3 bg-gray-900 text-white text-xs py-1 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                            Chat with us
-                        </span>
                     </a>
                 `;
                 document.body.appendChild(waDiv.firstElementChild);
             }
 
-            // 2. Back to Top Button
             if (!document.getElementById('back-to-top')) {
                 const topBtn = document.createElement('button');
                 topBtn.id = 'back-to-top';
@@ -253,8 +243,6 @@ const V5Layout = (() => {
                 document.body.appendChild(topBtn);
             }
         }
-
-        // --- 内部辅助函数 ---
 
         _detectPage() {
             const path = window.location.pathname;
@@ -277,19 +265,15 @@ const V5Layout = (() => {
                 : 'text-gray-600 hover:bg-gray-50';
         }
 
-        // 路径处理优化：防止双斜杠
         _getImgPath(path) {
             if (path.startsWith('http')) return path;
-            const baseUrl = this.config.BASE_URL.replace(/\/$/, ''); // 移除末尾斜杠
-            const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-            return `${baseUrl}/${cleanPath}`;
+            return `${this.config.BASE_URL}/${path}`;
         }
     }
 
     return new LayoutManager();
 })();
 
-// DOM 加载完成后自动执行初始化
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 } else {
