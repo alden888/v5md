@@ -50,11 +50,7 @@
         "telephone": "+44-078-9504-7944",
         "contactType": "customer service",
         "areaServed": "Global"
-      },
-      "sameAs": [
-        "https://www.linkedin.com/company/v5med",
-        "https://www.facebook.com/v5med"
-      ]
+      }
     }
     </script>
 </head>
@@ -79,51 +75,51 @@
 
     <main class="flex-grow pt-20"> 
         
-        <div class="relative min-h-[650px] flex items-center justify-center text-center px-4 overflow-hidden bg-gray-900">
+        <div class="relative min-h-[700px] flex items-center justify-center text-center px-4 overflow-hidden bg-gray-900">
             <div class="absolute inset-0 z-0">
                 <img src="images/hero-bg.jpg" 
                      onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920&q=80'" 
-                     class="w-full h-full object-cover opacity-30" 
+                     class="w-full h-full object-cover opacity-40 mix-blend-overlay" 
                      alt="Medical Manufacturing Factory"
                      fetchpriority="high"
                      decoding="async">
-                <div class="absolute inset-0 hero-gradient"></div>
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-900/90 via-blue-900/80 to-black/60"></div>
             </div>
 
             <div class="relative z-10 max-w-5xl mx-auto mt-8 fade-in-up">
                 <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" 
                      onerror="this.style.display='none'" 
-                     class="h-28 md:h-32 mx-auto mb-8 drop-shadow-2xl" 
+                     class="h-28 md:h-32 mx-auto mb-8 drop-shadow-2xl brightness-0 invert opacity-90" 
                      alt="V5 Medical Logo">
                 
-                <h1 class="text-4xl md:text-6xl font-extrabold mb-6 text-blue-900 hero-text-shadow leading-tight tracking-tight">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-6 text-white leading-tight tracking-tight drop-shadow-lg">
                     Factory Direct Medical Consumables<br>
-                    <span class="text-3xl md:text-5xl text-blue-600 mt-3 block font-bold">ISO 13485, CE & FDA Certified</span>
+                    <span class="text-3xl md:text-5xl text-blue-300 mt-4 block font-bold">ISO 13485, CE & FDA Certified</span>
                 </h1>
                 
-                <p class="text-xl md:text-2xl mb-10 text-gray-700 font-light max-w-3xl mx-auto leading-relaxed">
+                <p class="text-xl md:text-2xl mb-12 text-blue-100 font-light max-w-3xl mx-auto leading-relaxed drop-shadow-md">
                     Stop paying middleman fees. Partner directly with a premier manufacturer with 20+ years of experience exporting to 40+ countries.
                 </p>
                 
-                <div class="flex flex-wrap justify-center gap-4">
+                <div class="flex flex-wrap justify-center gap-5">
                     <a href="pdf/Catalog.pdf" target="_blank" 
-                       class="download-btn bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg flex items-center gap-2 hover:scale-105 transition-transform"
+                       class="download-btn bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-bold shadow-xl shadow-blue-900/50 flex items-center gap-2 hover:scale-105 transition-transform"
                        onclick="window.trackPDFDownload && window.trackPDFDownload('Catalog')">
                         <i class="fas fa-download"></i> Download Catalog
                     </a>
                     <a href="catalog.html" 
-                       class="download-btn bg-white text-blue-900 border-2 border-blue-100 hover:border-blue-300 px-8 py-4 rounded-full text-lg font-bold shadow-lg flex items-center gap-2 hover:scale-105 transition-transform">
+                       class="download-btn bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-900 px-8 py-4 rounded-full text-lg font-bold shadow-lg flex items-center gap-2 hover:scale-105 transition-transform">
                         <i class="fas fa-search"></i> View Products
                     </a>
                 </div>
 
-                <div class="mt-10 flex flex-wrap justify-center gap-6 text-sm font-medium text-gray-500">
-                    <a href="pdf/Quotations for dental products.pdf" target="_blank" class="hover:text-blue-600 underline decoration-blue-300 decoration-2 underline-offset-4 transition" onclick="window.trackPDFDownload && window.trackPDFDownload('Dental Kit')">
-                        <i class="fas fa-file-pdf mr-1"></i> Dental Kit PDF
+                <div class="mt-12 flex flex-wrap justify-center gap-8 text-sm font-medium text-blue-200/80">
+                    <a href="pdf/Quotations for dental products.pdf" target="_blank" class="hover:text-white underline decoration-blue-400 decoration-1 underline-offset-4 transition flex items-center gap-2" onclick="window.trackPDFDownload && window.trackPDFDownload('Dental Kit')">
+                        <i class="fas fa-file-pdf"></i> Dental Kit PDF
                     </a>
-                    <span class="text-gray-300 hidden sm:inline">|</span>
-                    <a href="pdf/price list.pdf" target="_blank" class="hover:text-blue-600 underline decoration-blue-300 decoration-2 underline-offset-4 transition" onclick="window.trackPDFDownload && window.trackPDFDownload('Price List')">
-                        <i class="fas fa-file-pdf mr-1"></i> Price List PDF
+                    <span class="text-blue-500 hidden sm:inline">|</span>
+                    <a href="pdf/price list.pdf" target="_blank" class="hover:text-white underline decoration-blue-400 decoration-1 underline-offset-4 transition flex items-center gap-2" onclick="window.trackPDFDownload && window.trackPDFDownload('Price List')">
+                        <i class="fas fa-file-pdf"></i> Price List PDF
                     </a>
                 </div>
             </div>
