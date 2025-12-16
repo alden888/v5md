@@ -4,63 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <meta name="description" content="V5 Medical LTD: ISO/CE/FDA certified factory direct supplier of surgical sutures, packs & injection devices. 20+ years delivering medical solutions globally.">
+    <meta name="description" content="V5 Medical LTD - Factory Direct Medical Consumables Supplier. ISO/CE/FDA certified surgical sutures, packs, injection solutions. 20+ years exporting to 40+ countries.">
     <meta name="keywords" content="medical consumables, surgical sutures, medical devices, surgical packs, medical supplier, ISO certified, CE certified, FDA registered, factory direct medical supplies">
     <meta name="author" content="V5 Medical LTD">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <meta name="googlebot" content="index, follow">
 
     <meta property="og:title" content="V5 Medical LTD - Global Medical Consumables Supplier">
-    <meta property="og:description" content="ISO/CE/FDA certified medical devices including surgical sutures, surgical packs, injection solutions. Factory direct pricing with 20+ years of exporting experience.">
+    <meta property="og:description" content="ISO/CE/FDA certified medical devices including surgical sutures, surgical packs, injection solutions. Factory direct pricing.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://v5md.com">
     <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png">
     <meta property="og:site_name" content="V5 Medical LTD">
-    <meta property="og:locale" content="en_US">
-
-    <link rel="canonical" href="https://v5md.com">
+    
     <title>V5 Medical LTD - Global Medical Consumables Supplier | ISO/CE/FDA Certified</title>
     
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
-    <link rel="shortcut icon" type="image/x-icon" href="images/icons/favicon.ico">
       
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        primary: '#1e40af', secondary: '#3b82f6', accent: '#2563eb',
-                        success: '#10b981', warning: '#f59e0b', danger: '#ef4444'
-                    },
+                    colors: { primary: '#1e40af', secondary: '#3b82f6', accent: '#2563eb' },
                     fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
                 }
             }
         }
     </script>
-
-    <style>
-        .page-loader { position: fixed; inset: 0; background: #1e40af; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
-        .hero-gradient {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 25%, rgba(191, 219, 254, 0.8) 50%, rgba(240, 249, 255, 0.9) 75%, rgba(255, 255, 255, 0.95) 100%);
-        }
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .hero-text-shadow { text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .download-btn { transition: all 0.3s ease; }
-        .download-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-        .hero-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 2rem; }
-        @media (max-width: 768px) { .hero-buttons { flex-direction: column; align-items: center; } .hero-buttons a { width: 100%; max-width: 300px; text-align: center; } }
-        .faq-question { cursor: pointer; transition: all 0.3s ease; }
-        .faq-question:hover { color: #1e40af; }
-        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-        .faq-answer.show { max-height: 500px; }
-        /* Style for internal text links */
-        .text-link { color: #2563eb; text-decoration: underline; text-decoration-color: rgba(37, 99, 235, 0.3); text-underline-offset: 2px; transition: all 0.2s; }
-        .text-link:hover { color: #1e40af; text-decoration-color: #1e40af; }
-    </style>
 
     <script type="application/ld+json">
     {
@@ -69,7 +42,11 @@
       "name": "V5 Medical LTD",
       "url": "https://v5md.com",
       "logo": "https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png",
-      "contactPoint": { "@type": "ContactPoint", "telephone": "+44-078-9504-7944", "contactType": "customer service" }
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+44-078-9504-7944",
+        "contactType": "customer service"
+      }
     }
     </script>
 </head>
@@ -77,45 +54,54 @@
 <body class="smooth-scroll font-sans text-gray-800 flex flex-col min-h-screen">
 
     <div id="loader" class="page-loader">
-        <i class="fas fa-circle-notch fa-spin text-white text-4xl"></i>
+        <div class="loader-spinner"></div>
     </div>
 
     <div id="v5-header"></div>
 
-    <main class="flex-grow pt-20">
+    <main class="flex-grow pt-20"> 
         
         <div class="relative min-h-[650px] flex items-center justify-center text-center px-4 overflow-hidden">
             <div class="absolute inset-0 z-0">
-                <img src="images/hero-bg.jpg" onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1920&q=80'" class="w-full h-full object-cover" alt="Medical Manufacturing Facility">
+                <img src="images/hero-bg.jpg" 
+                     onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920&q=80'" 
+                     class="w-full h-full object-cover" 
+                     alt="Medical Factory"
+                     fetchpriority="high">
                 <div class="absolute inset-0 hero-gradient"></div>
             </div>
 
-            <div class="relative z-10 max-w-5xl mx-auto mt-8">
-                <img src="images/v5medlogo.png" onerror="this.src='https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png'" class="h-32 mx-auto mb-8 drop-shadow-lg" alt="V5 Medical LTD">
+            <div class="relative z-10 max-w-5xl mx-auto mt-8 fade-in-up">
+                <img src="images/v5medlogo.png" 
+                     onerror="this.style.display='none'" 
+                     class="h-32 mx-auto mb-8 drop-shadow-lg" 
+                     alt="V5 Medical">
                 
                 <h1 class="text-4xl md:text-6xl font-bold mb-6 text-blue-900 hero-text-shadow leading-tight">
                     Factory Direct Medical Consumables<br>
                     <span class="text-3xl md:text-5xl text-blue-600 mt-2 block">ISO 13485, CE & FDA Certified</span>
                 </h1>
                 
-                <p class="text-xl md:text-2xl mb-6 text-gray-700 font-light max-w-3xl mx-auto">
-                    Stop paying middleman fees. Partner directly with a premier manufacturer with 20+ years of experience exporting 
-                    <a href="catalog.html" class="text-link font-normal">medical consumables</a> to over 40 countries worldwide.
-                </p>
-                <p class="text-lg text-gray-600 mb-10 max-w-2xl mx-auto hidden md:block">
-                    We specialize in high-quality surgical sutures, sterile packs, and injection systems, ensuring compliance with global medical standards.
+                <p class="text-xl md:text-2xl mb-10 text-gray-700 font-light max-w-3xl mx-auto">
+                    Stop paying middleman fees. Partner directly with a manufacturer with 20+ years of experience exporting to 40+ countries.
                 </p>
                 
-                <div class="hero-buttons">
-                    <a href="pdf/Catalog.pdf" target="_blank" class="download-btn bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg flex items-center gap-2">
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="pdf/Catalog.pdf" target="_blank" 
+                       class="download-btn bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg flex items-center gap-2 animate-pulse-slow"
+                       onclick="window.trackPDFDownload && window.trackPDFDownload('Catalog')">
                         <i class="fas fa-download"></i> Download Catalog
                     </a>
-                    <a href="pdf/Quotations for dental products.pdf" target="_blank" class="download-btn bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg flex items-center gap-2">
-                        <i class="fas fa-file-pdf"></i> Dental Kit
+                    <a href="catalog.html" 
+                       class="download-btn bg-white text-blue-900 border-2 border-blue-100 hover:border-blue-300 px-8 py-4 rounded-full text-lg font-bold shadow-lg flex items-center gap-2">
+                        <i class="fas fa-search"></i> View Products
                     </a>
-                    <a href="pdf/price list.pdf" target="_blank" class="download-btn bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg flex items-center gap-2">
-                        <i class="fas fa-file-pdf"></i> Price List
-                    </a>
+                </div>
+
+                <div class="mt-8 flex flex-wrap justify-center gap-3 text-sm font-medium">
+                    <a href="pdf/Quotations for dental products.pdf" target="_blank" class="text-gray-500 hover:text-blue-600 underline" onclick="window.trackPDFDownload && window.trackPDFDownload('Dental Kit')">Dental Kit PDF</a>
+                    <span class="text-gray-300">|</span>
+                    <a href="pdf/price list.pdf" target="_blank" class="text-gray-500 hover:text-blue-600 underline" onclick="window.trackPDFDownload && window.trackPDFDownload('Price List')">Price List PDF</a>
                 </div>
             </div>
         </div>
@@ -124,11 +110,11 @@
             <div class="grid grid-cols-2 md:grid-cols-5 gap-8 text-center px-4">
                 <div>
                     <div class="text-3xl font-bold text-blue-600 mb-1">40+</div>
-                    <div class="text-sm text-gray-500 font-medium uppercase tracking-wide">Countries Served</div>
+                    <div class="text-sm text-gray-500 font-medium uppercase tracking-wide">Countries</div>
                 </div>
                 <div>
                     <div class="text-3xl font-bold text-green-600 mb-1">20+</div>
-                    <div class="text-sm text-gray-500 font-medium uppercase tracking-wide">Years Experience</div>
+                    <div class="text-sm text-gray-500 font-medium uppercase tracking-wide">Years Exp.</div>
                 </div>
                 <div>
                     <div class="text-3xl font-bold text-purple-600 mb-1">ISO/CE</div>
@@ -136,11 +122,11 @@
                 </div>
                 <div>
                     <div class="text-3xl font-bold text-orange-600 mb-1">10K+</div>
-                    <div class="text-sm text-gray-500 font-medium uppercase tracking-wide">Happy Clients</div>
+                    <div class="text-sm text-gray-500 font-medium uppercase tracking-wide">Clients</div>
                 </div>
                 <div>
                     <div class="text-3xl font-bold text-red-600 mb-1">500+</div>
-                    <div class="text-sm text-gray-500 font-medium uppercase tracking-wide">Products</div>
+                    <div class="text-sm text-gray-600 font-medium uppercase tracking-wide">Products</div>
                 </div>
             </div>
         </section>
@@ -150,67 +136,37 @@
                 <div class="space-y-6">
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Why Choose V5 Medical?</h2>
                     <p class="text-lg text-gray-600 leading-relaxed">
-                        V5 Medical LTD is a professional global supplier of high-quality medical consumables. Unlike trading companies, we operate with a factory-direct model that eliminates middleman costs, ensuring you receive the most competitive pricing for premium medical devices.
-                    </p>
-                    <p class="text-lg text-gray-600 leading-relaxed">
-                        Our commitment to excellence is backed by over two decades of industry experience. We don't just sell products; we provide comprehensive supply chain solutions for hospitals, clinics, and distributors worldwide. You can learn more about our history and values on our <a href="about.html" class="text-link">About Us page</a>.
+                        We eliminate middleman costs by providing factory-direct pricing. Our strategic partnerships with leading manufacturers ensure you get the best value without compromising on quality.
                     </p>
                     
-                    <div class="space-y-4 pt-4">
+                    <div class="space-y-4">
                         <div class="flex gap-4">
                             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 text-blue-600 text-xl"><i class="fas fa-industry"></i></div>
                             <div>
-                                <h3 class="font-bold text-gray-900">Factory Direct Manufacturing</h3>
-                                <p class="text-sm text-gray-600">Our strategic manufacturing bases in Shandong, Suqian, and Shenzhen utilize advanced production lines to ensure consistent quality and scalability for large orders.</p>
+                                <h3 class="font-bold text-gray-900">Factory Direct</h3>
+                                <p class="text-sm text-gray-600">Direct manufacturing in Shandong, Suqian, and Shenzhen.</p>
                             </div>
                         </div>
                         <div class="flex gap-4">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 text-green-600 text-xl"><i class="fas fa-check-double"></i></div>
                             <div>
-                                <h3 class="font-bold text-gray-900"> rigorous Quality Assurance</h3>
-                                <p class="text-sm text-gray-600">Every product undergoes strict quality control. We hold ISO 13485, CE, and FDA certifications, meeting the highest international safety standards.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-4">
-                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 text-purple-600 text-xl"><i class="fas fa-shipping-fast"></i></div>
-                            <div>
-                                <h3 class="font-bold text-gray-900">Global Logistics Expertise</h3>
-                                <p class="text-sm text-gray-600">We offer efficient shipping solutions to over 40 countries, handling all necessary export documentation to ensure smooth customs clearance.</p>
+                                <h3 class="font-bold text-gray-900">Quality Assurance</h3>
+                                <p class="text-sm text-gray-600">ISO 13485, CE, and FDA compliance strictly enforced.</p>
                             </div>
                         </div>
                     </div>
+                    
+                    <a href="about.html" class="inline-block text-blue-600 font-semibold hover:text-blue-800 transition mt-4">
+                        Learn More About Us <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
                 </div>
-                <div class="relative">
-                    <div class="absolute inset-0 bg-blue-600 rounded-2xl transform rotate-3 opacity-10"></div>
-                    <img src="images/products/SURGICAL SUTURE KIT.jpg" onerror="this.src='https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&w=800&q=80'" class="relative rounded-2xl shadow-xl w-full object-cover h-96 hover:scale-[1.02] transition duration-500" alt="V5 Medical Products">
-                </div>
-            </div>
-        </section>
-
-        <section class="py-16 bg-white border-t border-gray-100">
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Manufacturing Excellence</h2>
-                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-                        We leverage state-of-the-art technology and sterile production environments to deliver medical products you can trust.
-                    </p>
-                </div>
-                <div class="grid md:grid-cols-3 gap-8 text-center">
-                    <div class="p-6 bg-gray-50 rounded-xl">
-                        <i class="fas fa-microscope text-4xl text-blue-600 mb-4"></i>
-                        <h3 class="font-bold text-xl mb-2">Clean Room Production</h3>
-                        <p class="text-gray-600 text-sm">Our facilities feature Class 100,000 clean rooms to ensure the sterility of <a href="catalog.html#surgical-sutures" class="text-link">surgical sutures</a> and other invasive devices.</p>
-                    </div>
-                    <div class="p-6 bg-gray-50 rounded-xl">
-                        <i class="fas fa-flask text-4xl text-blue-600 mb-4"></i>
-                        <h3 class="font-bold text-xl mb-2">Material Sourcing</h3>
-                        <p class="text-gray-600 text-sm">We use only premium medical-grade raw materials, ensuring biocompatibility and performance for all our <a href="catalog.html" class="text-link">medical consumables</a>.</p>
-                    </div>
-                    <div class="p-6 bg-gray-50 rounded-xl">
-                        <i class="fas fa-user-md text-4xl text-blue-600 mb-4"></i>
-                        <h3 class="font-bold text-xl mb-2">Clinical Standards</h3>
-                        <p class="text-gray-600 text-sm">Our manufacturing processes adhere strictly to GMP standards, designed to meet the rigorous demands of modern clinical environments.</p>
-                    </div>
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-blue-600 rounded-2xl transform rotate-3 opacity-10 transition group-hover:rotate-6"></div>
+                    <img src="images/products/SURGICAL SUTURE KIT.jpg" 
+                         onerror="this.src='https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800'" 
+                         class="relative rounded-2xl shadow-xl w-full object-cover h-96 transition duration-500" 
+                         alt="Products"
+                         loading="lazy">
                 </div>
             </div>
         </section>
@@ -218,74 +174,35 @@
         <section class="py-20 px-4 bg-gray-50">
             <div class="max-w-7xl mx-auto text-center">
                 <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Core Product Lines</h2>
-                <p class="text-gray-600 mb-12 max-w-2xl mx-auto">
-                    Discover our comprehensive range of certified medical consumables designed for healthcare professionals.
-                    Visit our <a href="catalog.html" class="text-link">Full Product Catalog</a> for more details.
-                </p>
+                <p class="text-gray-600 mb-12 max-w-2xl mx-auto">Factory direct prices for surgical, injection, and dental solutions.</p>
                 
                 <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden group border border-gray-100">
-                        <div class="h-2 bg-blue-600 w-full"></div>
-                        <div class="p-8">
-                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-600 text-3xl group-hover:scale-110 transition">
-                                <i class="fas fa-cut"></i>
-                            </div>
-                            <h3 class="text-xl font-bold mb-3"><a href="catalog.html#surgical-sutures" class="hover:text-blue-600">Surgical Sutures</a></h3>
-                            <p class="text-gray-600 mb-6 text-sm">
-                                Premium quality absorbable (PGA, PDO, Chromic Catgut) and non-absorbable sutures. Engineered for superior tensile strength and knot security.
-                            </p>
-                            <div class="flex gap-2">
-                                <a href="product-detail.html?id=pga-absorbable-suture" class="flex-1 bg-blue-50 text-blue-600 py-2 rounded-lg font-semibold hover:bg-blue-100 transition text-sm">Details</a>
-                                <a href="https://wa.me/447895047944" target="_blank" class="flex-1 bg-green-500 text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition text-sm flex items-center justify-center gap-1">
-                                    <i class="fab fa-whatsapp"></i> Quote
-                                </a>
-                            </div>
+                    <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden group border border-gray-100 p-8 card-hover">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-600 text-3xl group-hover:scale-110 transition">
+                            <i class="fas fa-cut"></i>
                         </div>
+                        <h3 class="text-xl font-bold mb-3">Surgical Sutures</h3>
+                        <p class="text-gray-600 mb-6 text-sm">Absorbable & Non-absorbable sutures. Excellent tensile strength.</p>
+                        <a href="product-detail.html?id=pga-absorbable-suture" class="text-blue-600 font-semibold hover:underline">View Options</a>
                     </div>
 
-                    <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden group border border-gray-100">
-                        <div class="h-2 bg-green-600 w-full"></div>
-                        <div class="p-8">
-                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 text-green-600 text-3xl group-hover:scale-110 transition">
-                                <i class="fas fa-box-open"></i>
-                            </div>
-                            <h3 class="text-xl font-bold mb-3"><a href="catalog.html#surgical-packs" class="hover:text-green-600">Surgical Packs</a></h3>
-                            <p class="text-gray-600 mb-6 text-sm">
-                                Comprehensive sterile surgical packs for Universal, Delivery, and Orthopedic procedures. Made with high-barrier SMS material (AAMI Level 3).
-                            </p>
-                            <div class="flex gap-2">
-                                <a href="catalog.html#surgical-packs" class="flex-1 bg-green-50 text-green-600 py-2 rounded-lg font-semibold hover:bg-green-100 transition text-sm">Catalog</a>
-                                <a href="https://wa.me/447895047944" target="_blank" class="flex-1 bg-green-500 text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition text-sm flex items-center justify-center gap-1">
-                                    <i class="fab fa-whatsapp"></i> Quote
-                                </a>
-                            </div>
+                    <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden group border border-gray-100 p-8 card-hover">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 text-green-600 text-3xl group-hover:scale-110 transition">
+                            <i class="fas fa-box-open"></i>
                         </div>
+                        <h3 class="text-xl font-bold mb-3">Surgical Packs</h3>
+                        <p class="text-gray-600 mb-6 text-sm">Sterile Universal, Delivery, and Orthopedic packs. Custom kits available.</p>
+                        <a href="catalog.html#surgical-packs" class="text-green-600 font-semibold hover:underline">View Options</a>
                     </div>
 
-                    <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden group border border-gray-100">
-                        <div class="h-2 bg-purple-600 w-full"></div>
-                        <div class="p-8">
-                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-600 text-3xl group-hover:scale-110 transition">
-                                <i class="fas fa-syringe"></i>
-                            </div>
-                            <h3 class="text-xl font-bold mb-3"><a href="catalog.html#injection" class="hover:text-purple-600">Injection & Infusion</a></h3>
-                            <p class="text-gray-600 mb-6 text-sm">
-                                Safe and precise disposable syringes, needles, and infusion sets. Available with Luer lock/slip options and various gauge sizes.
-                            </p>
-                            <div class="flex gap-2">
-                                <a href="catalog.html#injection" class="flex-1 bg-purple-50 text-purple-600 py-2 rounded-lg font-semibold hover:bg-purple-100 transition text-sm">Details</a>
-                                <a href="https://wa.me/447895047944" target="_blank" class="flex-1 bg-green-500 text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition text-sm flex items-center justify-center gap-1">
-                                    <i class="fab fa-whatsapp"></i> Quote
-                                </a>
-                            </div>
+                    <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden group border border-gray-100 p-8 card-hover">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-600 text-3xl group-hover:scale-110 transition">
+                            <i class="fas fa-syringe"></i>
                         </div>
+                        <h3 class="text-xl font-bold mb-3">Injection & Infusion</h3>
+                        <p class="text-gray-600 mb-6 text-sm">Disposable syringes, needles, infusion sets. Safe and precise.</p>
+                        <a href="catalog.html#injection-infusion" class="text-purple-600 font-semibold hover:underline">View Options</a>
                     </div>
-                </div>
-                
-                <div class="mt-12">
-                    <a href="catalog.html" class="inline-flex items-center gap-2 bg-blue-900 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-800 transition shadow-lg hover:shadow-xl">
-                        View All Products <i class="fas fa-arrow-right"></i>
-                    </a>
                 </div>
             </div>
         </section>
@@ -293,139 +210,45 @@
         <section class="py-16 px-4">
             <div class="max-w-6xl mx-auto text-center">
                 <h2 class="text-3xl font-bold text-gray-900 mb-12">International Certifications</h2>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
-                        <img src="images/quality/iso13485-2016.jpg" onerror="this.src='https://via.placeholder.com/150x100?text=ISO+13485'" class="h-20 mx-auto mb-4 object-contain" alt="ISO 13485">
-                        <h3 class="font-bold text-lg mb-2">ISO 13485</h3>
-                        <p class="text-sm text-gray-500">Medical Device Quality Management Standard</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
-                        <img src="images/quality/ce-mark.png" onerror="this.src='https://via.placeholder.com/150x100?text=CE+Mark'" class="h-20 mx-auto mb-4 object-contain" alt="CE Mark">
-                        <h3 class="font-bold text-lg mb-2">CE Mark</h3>
-                        <p class="text-sm text-gray-500">European Conformity for Medical Safety</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
-                        <img src="images/quality/fda.jpg" onerror="this.src='https://via.placeholder.com/150x100?text=FDA'" class="h-20 mx-auto mb-4 object-contain" alt="FDA">
-                        <h3 class="font-bold text-lg mb-2">FDA Registered</h3>
-                        <p class="text-sm text-gray-500">US Market Compliance & Registration</p>
-                    </div>
+                <div class="flex justify-center gap-8 flex-wrap grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition duration-500">
+                    <img src="images/quality/iso13485-2016.jpg" onerror="this.style.display='none'" class="h-24 object-contain" alt="ISO" loading="lazy">
+                    <img src="images/quality/ce-mark.png" onerror="this.style.display='none'" class="h-24 object-contain" alt="CE" loading="lazy">
+                    <img src="images/quality/fda.jpg" onerror="this.style.display='none'" class="h-24 object-contain" alt="FDA" loading="lazy">
                 </div>
             </div>
         </section>
 
         <section class="py-16 px-4 bg-gray-50">
-            <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
-                    <p class="text-lg text-gray-600">Find answers to common questions about our medical products and services.</p>
-                </div>
-                
-                <div class="space-y-4">
-                    <div class="bg-white p-6 rounded-xl shadow-md cursor-pointer group" onclick="this.querySelector('.faq-answer').classList.toggle('show')">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition">What certifications do your products have?</h3>
-                            <i class="fas fa-chevron-down text-gray-400"></i>
-                        </div>
-                        <div class="faq-answer mt-2 text-gray-600">
-                            <p class="pt-2">Our products are manufactured in strict compliance with international standards. We hold <strong>ISO 13485</strong>, <strong>CE</strong>, and <strong>FDA</strong> certifications, ensuring that our medical devices are safe and effective for use in global markets, including Europe and the USA.</p>
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-md cursor-pointer group" onclick="this.querySelector('.faq-answer').classList.toggle('show')">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition">What is your minimum order quantity (MOQ)?</h3>
-                            <i class="fas fa-chevron-down text-gray-400"></i>
-                        </div>
-                        <div class="faq-answer mt-2 text-gray-600">
-                            <p class="pt-2">We strive to be flexible. For most standard items, our MOQ starts from just <strong>1 carton</strong>. However, for custom-branded or specialized surgical packs, MOQs may vary. Please <a href="contact.html" class="text-link">contact our sales team</a> for specific details.</p>
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-md cursor-pointer group" onclick="this.querySelector('.faq-answer').classList.toggle('show')">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition">Do you provide product samples?</h3>
-                            <i class="fas fa-chevron-down text-gray-400"></i>
-                        </div>
-                        <div class="faq-answer mt-2 text-gray-600">
-                            <p class="pt-2">Yes, we provide samples for quality evaluation. Sample costs and shipping fees apply initially, but these costs can be <strong>deducted from your first bulk order</strong>. We believe in the quality of our products and want you to test them with confidence.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-16 px-4 bg-blue-900 text-white">
-            <div class="max-w-6xl mx-auto text-center">
-                <h2 class="text-3xl font-bold mb-12">Trusted by Professionals Worldwide</h2>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-blue-800 p-8 rounded-xl text-left border border-blue-700">
-                        <div class="flex text-yellow-400 mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                        <p class="italic mb-6 text-blue-100">"V5 Medical has been our reliable partner for over 5 years. Their surgical sutures offer excellent handling and tensile strength, comparable to major brands but at a much better value."</p>
-                        <div class="font-bold">Dr. Michael Johnson</div>
-                        <div class="text-sm text-blue-300">Hospital Director, UK</div>
-                    </div>
-                    <div class="bg-blue-800 p-8 rounded-xl text-left border border-blue-700">
-                        <div class="flex text-yellow-400 mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                        <p class="italic mb-6 text-blue-100">"The customization options for their surgical packs are fantastic. They tailored the contents exactly to our orthopedic department's requirements. Delivery was prompt and professional."</p>
-                        <div class="font-bold">Maria Sanchez</div>
-                        <div class="text-sm text-blue-300">Surgical Nurse, Spain</div>
-                    </div>
-                    <div class="bg-blue-800 p-8 rounded-xl text-left border border-blue-700">
-                        <div class="flex text-yellow-400 mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                        <p class="italic mb-6 text-blue-100">"As a distributor, consistency is key. V5 Medical's ISO certifications and consistent product quality give us the confidence to supply major clinics across our region."</p>
-                        <div class="font-bold">Adeolu Kalu</div>
-                        <div class="text-sm text-blue-300">Medical Distributor, Nigeria</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-16 px-4 bg-white">
-            <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Latest Medical Insights</h2>
-                    <p class="text-lg text-gray-600">Stay updated with the latest news and trends from the medical industry.</p>
-                </div>
-                
-                <div class="grid md:grid-cols-3 gap-8">
-                    <article class="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition group">
-                        <img src="https://images.unsplash.com/photo-1584634731339-252c581abfc5?w=600" class="w-full h-48 object-cover" alt="Medical Trends">
-                        <div class="p-6">
-                            <span class="text-sm text-gray-500 block mb-2">Jan 15, 2024</span>
-                            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition"><a href="blog.html">Medical Device Trends in 2024</a></h3>
-                            <p class="text-gray-600 mb-4 line-clamp-2">The medical device industry is constantly evolving with new technologies and regulatory changes impacting global supply chains.</p>
-                            <a href="blog.html" class="text-blue-600 font-semibold hover:underline">Read More →</a>
-                        </div>
-                    </article>
-                    <article class="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition group">
-                        <img src="https://images.unsplash.com/photo-1582003492749-3d5d85b8e947?w=600" class="w-full h-48 object-cover" alt="Suture Guide">
-                        <div class="p-6">
-                            <span class="text-sm text-gray-500 block mb-2">Dec 28, 2023</span>
-                            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition"><a href="blog.html">Choosing the Right Surgical Suture</a></h3>
-                            <p class="text-gray-600 mb-4 line-clamp-2">A comprehensive guide on selecting the appropriate surgical suture for different types of procedures and tissue healing.</p>
-                            <a href="blog.html" class="text-blue-600 font-semibold hover:underline">Read More →</a>
-                        </div>
-                    </article>
-                    <article class="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition group">
-                        <img src="https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?w=600" class="w-full h-48 object-cover" alt="Supply Chain">
-                        <div class="p-6">
-                            <span class="text-sm text-gray-500 block mb-2">Nov 10, 2023</span>
-                            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition"><a href="blog.html">Medical Supply Chain Resilience</a></h3>
-                            <p class="text-gray-600 mb-4 line-clamp-2">Learn about the strategies V5 Medical uses to maintain supply continuity during global logistics challenges.</p>
-                            <a href="blog.html" class="text-blue-600 font-semibold hover:underline">Read More →</a>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-20 px-4 text-center">
             <div class="max-w-3xl mx-auto">
-                <h2 class="text-3xl font-bold text-gray-900 mb-6">Ready to Streamline Your Supply Chain?</h2>
-                <p class="text-lg text-gray-600 mb-8">Join hundreds of satisfied hospitals and distributors worldwide. Get a competitive factory-direct quote today.</p>
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-10">Common Questions</h2>
+                <div class="space-y-4">
+                    <div class="bg-white p-6 rounded-xl shadow-sm cursor-pointer group" onclick="this.querySelector('.faq-ans').classList.toggle('hidden')">
+                        <div class="flex justify-between items-center font-semibold text-gray-900">
+                            <span>What is your MOQ?</span>
+                            <i class="fas fa-chevron-down text-gray-400 group-hover:text-blue-600"></i>
+                        </div>
+                        <p class="faq-ans hidden mt-3 text-gray-600 text-sm border-t border-gray-100 pt-3">We are flexible. Standard MOQ starts from 1 carton. Custom orders may vary.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm cursor-pointer group" onclick="this.querySelector('.faq-ans').classList.toggle('hidden')">
+                        <div class="flex justify-between items-center font-semibold text-gray-900">
+                            <span>Do you offer samples?</span>
+                            <i class="fas fa-chevron-down text-gray-400 group-hover:text-blue-600"></i>
+                        </div>
+                        <p class="faq-ans hidden mt-3 text-gray-600 text-sm border-t border-gray-100 pt-3">Yes, free samples are available for quality evaluation (freight collect).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 px-4 text-center bg-blue-900 text-white">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold mb-6">Ready to Streamline Your Supply Chain?</h2>
+                <p class="text-lg text-blue-100 mb-8">Join hundreds of satisfied hospitals and distributors. Get a factory-direct quote today.</p>
                 <div class="flex flex-wrap justify-center gap-4">
-                    <a href="contact.html" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full font-bold shadow-lg transition flex items-center gap-2">
-                        <i class="fas fa-envelope"></i> Send Inquiry
+                    <a href="contact.html" class="bg-white text-blue-900 px-8 py-3 rounded-full font-bold shadow-lg hover:bg-gray-100 transition">
+                        Send Inquiry
                     </a>
-                    <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-bold shadow-lg transition flex items-center gap-2">
+                    <a href="#" onclick="window.trackWhatsAppClick && window.trackWhatsAppClick(); window.open(window.V5Config.CONTACT.WHATSAPP.API_URL, '_blank')" class="bg-green-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-green-600 transition flex items-center gap-2">
                         <i class="fab fa-whatsapp"></i> WhatsApp Us
                     </a>
                 </div>
@@ -436,23 +259,7 @@
 
     <div id="v5-footer"></div>
 
-    <script src="js/layout.js"></script>
-    <script src="js/main.js"></script>
-    
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const loader = document.getElementById('loader');
-            if(loader) {
-                setTimeout(() => {
-                    loader.style.opacity = '0';
-                    setTimeout(() => loader.style.display = 'none', 500);
-                }, 800);
-            }
-        });
-    </script>
-    
-    <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script src="js/config.js?v=2.0"></script>   <script src="js/layout.js?v=2.2"></script>   <script src="js/main.js?v=2.0"></script>     <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
 
 </body>
 </html>
