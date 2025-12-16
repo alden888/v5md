@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <meta name="description" content="Browse V5 Medical's complete catalog of ISO 13485 certified medical consumables. Surgical sutures, packs, injection devices, and dental products.">
+    <meta name="description" content="Browse V5 Medical's complete catalog. Surgical sutures, packs, injection devices, and dental products. ISO 13485 Certified.">
     <title>Product Catalog | V5 Medical LTD</title>
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
 
@@ -15,81 +14,100 @@
     <script>
         tailwind.config = {
             theme: {
-                extend: {
-                    colors: { primary: '#1e40af', secondary: '#3b82f6' }
-                }
+                extend: { colors: { primary: '#1e40af', secondary: '#3b82f6' } }
             }
         }
     </script>
+    <style>
+        /* Sidebar active state styling */
+        .cat-link.active {
+            background-color: #eff6ff; /* blue-50 */
+            color: #1e40af; /* blue-800 */
+            border-right: 3px solid #1e40af;
+            font-weight: 600;
+        }
+        /* Mobile horizontal scroll */
+        .mobile-scroll::-webkit-scrollbar { display: none; }
+        .mobile-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
 
 <body class="bg-gray-50 flex flex-col min-h-screen">
     
     <div id="v5-header"></div>
 
-    <main class="flex-grow pt-20">
-        
-        <section class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 relative overflow-hidden">
-            <div class="absolute inset-0 bg-pattern opacity-10"></div>
-            <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Medical Products Catalog</h1>
-                <p class="text-xl opacity-90 font-light">ISO 13485, CE & FDA Certified Medical Consumables</p>
-            </div>
-        </section>
-
-        <section class="bg-white py-6 sticky top-20 z-40 shadow-sm border-b border-gray-100">
-            <div class="max-w-7xl mx-auto px-4">
-                
-                <div class="max-w-md mx-auto mb-6 relative">
-                    <input type="text" id="product-search" 
-                           placeholder="Search products (e.g. 'Suture', 'Syringe')..." 
-                           class="w-full pl-12 pr-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition shadow-sm"
+    <main class="flex-grow pt-24 pb-12"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="md:hidden mb-6 space-y-4">
+                <div class="relative">
+                    <input type="text" id="mobile-search" placeholder="Search products..." 
+                           class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
                            oninput="handleSearch(this.value)">
-                    <i class="fas fa-search absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
+                <div class="flex gap-2 overflow-x-auto mobile-scroll pb-2" id="mobile-filters">
+                    </div>
+            </div>
 
-                <div class="flex flex-wrap gap-2 justify-center" id="category-filters">
-                    <div class="animate-pulse flex gap-2">
-                        <div class="h-10 w-24 bg-gray-200 rounded-full"></div>
-                        <div class="h-10 w-24 bg-gray-200 rounded-full"></div>
-                        <div class="h-10 w-24 bg-gray-200 rounded-full"></div>
+            <div class="flex flex-col md:flex-row gap-8 lg:gap-12">
+                
+                <aside class="hidden md:block w-64 flex-shrink-0">
+                    <div class="sticky top-28 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <h3 class="font-bold text-gray-900 mb-4 px-2 uppercase text-xs tracking-wider">Categories</h3>
+                        <nav class="space-y-1" id="desktop-sidebar">
+                            <div class="animate-pulse space-y-3">
+                                <div class="h-6 bg-gray-100 rounded w-3/4"></div>
+                                <div class="h-6 bg-gray-100 rounded w-full"></div>
+                                <div class="h-6 bg-gray-100 rounded w-5/6"></div>
+                            </div>
+                        </nav>
+
+                        <div class="mt-8 pt-6 border-t border-gray-100">
+                            <h3 class="font-bold text-gray-900 mb-4 px-2 uppercase text-xs tracking-wider">Need Help?</h3>
+                            <a href="contact.html" class="flex items-center gap-3 px-2 py-2 text-sm text-gray-600 hover:text-blue-600 transition">
+                                <i class="far fa-envelope"></i> Contact Sales
+                            </a>
+                            <a href="https://wa.me/447895047944" target="_blank" class="flex items-center gap-3 px-2 py-2 text-sm text-gray-600 hover:text-green-600 transition">
+                                <i class="fab fa-whatsapp"></i> WhatsApp Chat
+                            </a>
+                        </div>
+                    </div>
+                </aside>
+
+                <div class="flex-1">
+                    
+                    <div class="hidden md:flex justify-between items-center mb-8 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h1 class="text-xl font-bold text-gray-800" id="page-title">All Products</h1>
+                        <div class="relative w-72">
+                            <input type="text" id="desktop-search" placeholder="Search name, category..." 
+                                   class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm"
+                                   oninput="handleSearch(this.value)">
+                            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        </div>
+                    </div>
+
+                    <div id="loading" class="text-center py-20">
+                        <div class="loader-spinner border-blue-600 border-t-transparent mx-auto mb-4"></div>
+                        <p class="text-gray-500">Loading catalog...</p>
+                    </div>
+
+                    <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        </div>
+
+                    <div id="no-results" class="hidden text-center py-16 bg-white rounded-xl border border-dashed border-gray-300">
+                        <div class="text-gray-300 text-5xl mb-4"><i class="fas fa-search"></i></div>
+                        <p class="text-gray-600 font-medium">No products match your search.</p>
+                        <button onclick="resetFilters()" class="mt-4 text-blue-600 font-semibold hover:underline text-sm">View All Products</button>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <div id="loading" class="text-center py-24">
-            <div class="loader-spinner mx-auto mb-6 border-blue-600 border-t-transparent"></div>
-            <p class="text-gray-600 font-medium">Loading catalog data...</p>
         </div>
-
-        <div id="error" class="hidden text-center py-24">
-            <i class="fas fa-exclamation-triangle text-red-500 text-5xl mb-4"></i>
-            <h2 class="text-2xl font-bold mb-2 text-gray-800">Unable to Load Products</h2>
-            <p class="text-gray-500 mb-6">Please check your internet connection.</p>
-            <button onclick="window.location.reload()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
-                Retry
-            </button>
-        </div>
-
-        <section class="max-w-7xl mx-auto px-4 py-12">
-            <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                </div>
-            
-            <div id="no-results" class="hidden text-center py-20">
-                <div class="text-gray-300 text-6xl mb-4"><i class="fas fa-search"></i></div>
-                <p class="text-gray-500 text-xl font-medium">No products found.</p>
-                <p class="text-gray-400 text-sm mt-2">Try adjusting your search or category filter.</p>
-                <button onclick="resetFilters()" class="mt-6 text-blue-600 font-semibold hover:underline">Clear Filters</button>
-            </div>
-        </section>
     </main>
 
     <div id="v5-footer"></div>
 
     <script src="js/config.js?v=2.0"></script>
     <script src="js/layout.js?v=2.1"></script>
-    
     <script src="js/complete-products.js?v=3.2.0"></script>
     <script src="js/product-loader.js?v=2.0"></script>
 
@@ -99,192 +117,194 @@
         let currentCategory = 'all';
         let searchQuery = '';
         let categoryCounts = {};
+        let categoriesMap = {};
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
             try {
-                // Ensure loader exists
-                if (!window.productLoader) {
-                    throw new Error('ProductLoader not initialized');
-                }
-
-                // Load Data
+                // Load Products
                 const db = await window.productLoader.loadProducts();
-                
-                // Process Data
                 allProducts = db.products || [];
-                
-                if (allProducts.length === 0) {
-                    // Fallback to array if object structure differs
-                    if (Array.isArray(db)) allProducts = db;
-                    else if (db.byId) allProducts = Object.values(db.byId);
-                }
+                categoriesMap = db.categories || {};
 
-                if (!allProducts.length) throw new Error('Product list is empty');
+                if (!allProducts.length) throw new Error('No products loaded');
 
-                console.log(`[Catalog] Loaded ${allProducts.length} products`);
+                console.log(`[Catalog] Loaded ${allProducts.length} items`);
 
                 // Initial Render
-                initCategories(db.categories);
-                applyFilters(); // Renders products based on default state
-                
-                // Hide Loader
+                calculateCounts();
+                renderSidebar();
+                renderMobileFilters();
+                applyFilters();
+
                 document.getElementById('loading').classList.add('hidden');
 
-                // Handle URL Hash (e.g. #surgical-sutures)
+                // Check URL Hash
                 const hash = window.location.hash.substring(1);
                 if (hash) filterByCategory(hash);
 
             } catch (err) {
-                console.error('[Catalog] Init error:', err);
+                console.error(err);
+                document.getElementById('products-grid').innerHTML = 
+                    `<div class="col-span-full text-center py-10 text-red-500">Failed to load products. Please refresh.</div>`;
                 document.getElementById('loading').classList.add('hidden');
-                document.getElementById('error').classList.remove('hidden');
             }
         });
 
-        // Generate Category Buttons
-        function initCategories(categoriesMap) {
-            const container = document.getElementById('category-filters');
-            if (!container) return;
+        // --- Logic ---
 
-            // Calculate counts
+        function calculateCounts() {
             categoryCounts = { 'all': allProducts.length };
             allProducts.forEach(p => {
                 const c = p.category || 'uncategorized';
                 categoryCounts[c] = (categoryCounts[c] || 0) + 1;
             });
+        }
 
-            container.innerHTML = '';
-            
-            // "All" Button
-            container.appendChild(createBtn('All Products', 'all', categoryCounts['all']));
+        function renderSidebar() {
+            const sidebar = document.getElementById('desktop-sidebar');
+            if (!sidebar) return;
 
-            // Category Buttons (Only if they have products)
-            const sortedCats = Object.keys(categoriesMap || {}).sort();
-            sortedCats.forEach(catKey => {
-                if (categoryCounts[catKey] > 0) {
-                    container.appendChild(createBtn(categoriesMap[catKey], catKey, categoryCounts[catKey]));
+            let html = `
+                <a href="#" onclick="filterByCategory('all'); return false;" 
+                   class="cat-link group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-md transition-colors ${currentCategory === 'all' ? 'active' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}">
+                    <span>All Products</span>
+                    <span class="bg-gray-100 text-gray-600 py-0.5 px-2 rounded-full text-xs">${categoryCounts['all']}</span>
+                </a>
+            `;
+
+            Object.keys(categoriesMap).forEach(key => {
+                if (categoryCounts[key]) {
+                    const isActive = currentCategory === key;
+                    html += `
+                        <a href="#${key}" onclick="filterByCategory('${key}'); return false;" 
+                           class="cat-link group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-md transition-colors ${isActive ? 'active' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}">
+                            <span>${categoriesMap[key]}</span>
+                            <span class="bg-gray-100 text-gray-600 py-0.5 px-2 rounded-full text-xs">${categoryCounts[key]}</span>
+                        </a>
+                    `;
                 }
             });
+
+            sidebar.innerHTML = html;
         }
 
-        function createBtn(label, value, count) {
-            const btn = document.createElement('button');
-            // Base classes
-            btn.className = `category-btn px-5 py-2 rounded-full font-medium text-sm transition-all duration-200 border whitespace-nowrap
-                ${value === 'all' ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'}`;
-            
-            btn.dataset.category = value;
-            btn.innerHTML = `${label} <span class="ml-1 opacity-70 text-xs bg-black/10 px-1.5 py-0.5 rounded-full">${count}</span>`;
-            
-            btn.onclick = () => filterByCategory(value);
-            return btn;
+        function renderMobileFilters() {
+            const container = document.getElementById('mobile-filters');
+            if (!container) return;
+
+            let html = `
+                <button onclick="filterByCategory('all')" 
+                        class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border transition-colors ${currentCategory === 'all' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300'}">
+                    All (${categoryCounts['all']})
+                </button>
+            `;
+
+            Object.keys(categoriesMap).forEach(key => {
+                if (categoryCounts[key]) {
+                    const isActive = currentCategory === key;
+                    html += `
+                        <button onclick="filterByCategory('${key}')" 
+                                class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border transition-colors ${isActive ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300'}">
+                            ${categoriesMap[key]}
+                        </button>
+                    `;
+                }
+            });
+
+            container.innerHTML = html;
         }
 
-        // Core Filter Logic
+        function handleSearch(val) {
+            searchQuery = val.toLowerCase().trim();
+            // Sync both inputs
+            document.getElementById('mobile-search').value = val;
+            document.getElementById('desktop-search').value = val;
+            applyFilters();
+        }
+
+        function filterByCategory(cat) {
+            currentCategory = cat;
+            
+            // Update Title
+            const title = cat === 'all' ? 'All Products' : categoriesMap[cat];
+            document.getElementById('page-title').textContent = title;
+
+            // Re-render navs to update active state
+            renderSidebar();
+            renderMobileFilters();
+            
+            applyFilters();
+            
+            // Update URL hash without scroll
+            if(history.pushState) history.pushState(null, null, cat === 'all' ? ' ' : '#' + cat);
+        }
+
         function applyFilters() {
             const grid = document.getElementById('products-grid');
             const noResults = document.getElementById('no-results');
-            
-            // Filter by Category AND Search Query
+
+            // Advanced Filter Logic
             const filtered = allProducts.filter(p => {
-                const matchesCategory = currentCategory === 'all' || p.category === currentCategory;
-                const matchesSearch = !searchQuery || 
+                const matchCat = currentCategory === 'all' || p.category === currentCategory;
+                const matchSearch = !searchQuery || 
                     p.name.toLowerCase().includes(searchQuery) || 
-                    (p.short && p.short.toLowerCase().includes(searchQuery));
+                    (p.short && p.short.toLowerCase().includes(searchQuery)) ||
+                    (p.category && p.category.toLowerCase().includes(searchQuery)); // Also search category name
                 
-                return matchesCategory && matchesSearch;
+                return matchCat && matchSearch;
             });
 
-            // Update UI
             if (filtered.length === 0) {
                 grid.innerHTML = '';
                 noResults.classList.remove('hidden');
             } else {
                 noResults.classList.add('hidden');
-                grid.innerHTML = filtered.map(renderCard).join('');
+                grid.innerHTML = filtered.map(renderProductCard).join('');
             }
-        }
-
-        // Filter Actions
-        function filterByCategory(category) {
-            currentCategory = category;
-            
-            // Update Active State
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                const isActive = btn.dataset.category === category;
-                if (isActive) {
-                    btn.className = 'category-btn px-5 py-2 rounded-full font-medium text-sm transition-all duration-200 border whitespace-nowrap bg-blue-600 text-white border-blue-600 shadow-md transform scale-105';
-                } else {
-                    btn.className = 'category-btn px-5 py-2 rounded-full font-medium text-sm transition-all duration-200 border whitespace-nowrap bg-white text-gray-600 border-gray-200 hover:bg-gray-50 hover:border-blue-300';
-                }
-            });
-
-            applyFilters();
-            
-            // Update URL
-            if(history.pushState) {
-                history.pushState(null, null, category === 'all' ? ' ' : '#' + category);
-            }
-        }
-
-        function handleSearch(query) {
-            searchQuery = query.toLowerCase().trim();
-            applyFilters();
         }
 
         function resetFilters() {
-            document.getElementById('product-search').value = '';
-            searchQuery = '';
+            handleSearch('');
             filterByCategory('all');
         }
 
-        // HTML Generators
-        function renderCard(product) {
+        function renderProductCard(product) {
             const imgPath = product.images?.[0] || 'images/products/default-product.jpg';
-            const catName = formatCatName(product.category);
-            
+            const catLabel = categoriesMap[product.category] || 'Product';
+
             return `
-            <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full group hover:shadow-lg transition-all duration-300">
-                <div class="h-56 overflow-hidden relative bg-gray-50">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
+                <div class="relative h-48 bg-gray-50 overflow-hidden">
                     <img src="${imgPath}" 
                          onerror="this.src='images/products/default-product.jpg'" 
-                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                         alt="${product.name}" 
-                         loading="lazy">
-                    <div class="absolute top-3 left-3">
-                        <span class="text-[10px] font-bold text-blue-800 uppercase bg-blue-50/90 px-2 py-1 rounded backdrop-blur-sm border border-blue-100">
-                            ${catName}
-                        </span>
-                    </div>
+                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                         alt="${product.name}" loading="lazy">
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
+                    <span class="absolute top-2 right-2 bg-white/90 backdrop-blur text-xs font-bold text-gray-700 px-2 py-1 rounded shadow-sm">
+                        ${catLabel}
+                    </span>
                 </div>
                 
                 <div class="p-5 flex flex-col flex-grow">
-                    <h3 class="font-bold text-lg mb-2 text-gray-900 line-clamp-2 hover:text-blue-700 transition-colors">
+                    <h3 class="font-bold text-lg text-gray-900 mb-2 line-clamp-2 hover:text-blue-600 transition">
                         <a href="product-detail.html?id=${product.id}">${product.name}</a>
                     </h3>
-                    
-                    <p class="text-gray-500 text-sm mb-4 line-clamp-2 flex-grow">
-                        ${product.short || product.description?.substring(0, 60) + '...'}
+                    <p class="text-sm text-gray-500 mb-4 line-clamp-2 flex-grow">
+                        ${product.short || product.description}
                     </p>
                     
-                    <div class="pt-4 border-t border-gray-50 flex justify-between items-center mt-auto">
-                        <a href="product-detail.html?id=${product.id}" class="text-blue-600 font-semibold text-sm hover:underline">
-                            View Specs
+                    <div class="pt-4 mt-auto border-t border-gray-50 flex items-center justify-between gap-2">
+                        <a href="product-detail.html?id=${product.id}" class="text-sm font-medium text-blue-600 hover:text-blue-800">
+                            Details <i class="fas fa-arrow-right text-xs ml-1"></i>
                         </a>
-                        <a href="https://wa.me/447895047944?text=Inquiry about ${encodeURIComponent(product.name)}" 
-                           target="_blank" 
-                           class="bg-gray-900 text-white px-3 py-1.5 rounded-md text-xs font-bold hover:bg-blue-600 transition flex items-center gap-1">
+                        <a href="https://wa.me/447895047944?text=Inquiry: ${encodeURIComponent(product.name)}" target="_blank" 
+                           class="bg-gray-100 text-gray-600 hover:bg-green-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1">
                             <i class="fab fa-whatsapp"></i> Quote
                         </a>
                     </div>
                 </div>
             </div>`;
-        }
-
-        function formatCatName(cat) {
-            if (!cat) return '';
-            return cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
         }
     </script>
 </body>
