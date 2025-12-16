@@ -75,7 +75,7 @@ const V5Layout = (() => {
                                      alt="${this.config.SEO.SITE_NAME}">
                                 <div>
                                     <div class="font-bold text-xl text-blue-900 leading-none tracking-tight">V5 Medical LTD</div>
-                                    <div class="text-[10px] text-blue-600 font-medium tracking-wider uppercase mt-0.5">Global Supply Chain</div>
+                                    <div class="text-[10px] text-blue-600 font-medium tracking-wider uppercase mt-0.5">Global Medical Supply Chain</div>
                                 </div>
                             </a>
 
@@ -287,3 +287,4 @@ if (document.readyState === 'loading') {
 } else {
     V5Layout.init();
 }
+
