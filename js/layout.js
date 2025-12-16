@@ -2,7 +2,7 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements based on V5Config.
- * @version 2.2.0 (Restored Original 12-Grid Footer Design)
+ * @version 2.3.0 (Fixed Logo Loading & Path Resolution)
  * @updated 2024-12-16
  */
 
@@ -28,20 +28,23 @@ const V5Layout = (() => {
             this.renderFooter();
             this.renderFloatingElements();
             
-            // 通知 main.js 绑定事件
+            // 发送布局就绪事件 (通知 main.js 可以绑定交互了)
             window.dispatchEvent(new Event('v5-layout-ready'));
             console.log('[Layout] Initialization complete');
         }
 
         /**
-         * 渲染头部 (Header) - 保持不变
+         * 渲染头部 (Header)
+         * 修复：增加 Logo 加载失败的回退逻辑
          */
         renderHeader() {
             const headerContainer = document.getElementById('v5-header');
             if (!headerContainer) return;
 
+            // 获取 Logo 路径
             const logoSrc = this._getImgPath(this.config.IMAGES.LOGO);
             
+            // 定义菜单项
             const navItems = [
                 { id: 'home', label: 'Home', href: 'index.html' },
                 { id: 'about', label: 'About Us', href: 'about.html' },
@@ -70,12 +73,12 @@ const V5Layout = (() => {
                         <div class="flex justify-between items-center h-20">
                             <a href="index.html" class="flex items-center gap-3 group">
                                 <img src="${logoSrc}" 
-                                     onerror="this.style.display='none'" 
+                                     onerror="this.onerror=null; this.src='images/v5logo.png';" 
                                      class="h-10 w-auto transition-transform group-hover:scale-105" 
                                      alt="${this.config.SEO.SITE_NAME}">
                                 <div>
                                     <div class="font-bold text-xl text-blue-900 leading-none tracking-tight">V5 Medical LTD</div>
-                                    <div class="text-[10px] text-blue-600 font-medium tracking-wider uppercase mt-0.5">Global Medical Supplier</div>
+                                    <div class="text-[10px] text-blue-600 font-medium tracking-wider uppercase mt-0.5">Global Supply Chain</div>
                                 </div>
                             </a>
 
@@ -86,7 +89,7 @@ const V5Layout = (() => {
                                    class="bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-full font-semibold shadow-md flex items-center gap-2 transition transform hover:-translate-y-0.5"
                                    onclick="window.trackWhatsAppClick && window.trackWhatsAppClick()">
                                     <i class="fab fa-whatsapp text-lg"></i>
-                                    <span>WhatsApp</span>
+                                    <span>Quick Chat</span>
                                 </a>
                             </div>
 
@@ -103,7 +106,7 @@ const V5Layout = (() => {
                                 <a href="${this.config.CONTACT.WHATSAPP.API_URL}" 
                                    target="_blank"
                                    class="flex items-center justify-center gap-2 w-full bg-green-500 text-white px-4 py-3 rounded-lg font-bold">
-                                    <i class="fab fa-whatsapp"></i> WhatsApp Contact
+                                    <i class="fab fa-whatsapp"></i> Chat on WhatsApp
                                 </a>
                             </div>
                         </div>
@@ -113,7 +116,8 @@ const V5Layout = (() => {
         }
 
         /**
-         * 渲染页脚 (Footer) - 已恢复为您要求的 12-Grid 布局设计
+         * 渲染页脚 (Footer)
+         * 修复：增加 Logo 加载失败的回退逻辑
          */
         renderFooter() {
             const footerContainer = document.getElementById('v5-footer');
@@ -124,14 +128,14 @@ const V5Layout = (() => {
             const logoSrc = this._getImgPath(IMAGES.LOGO);
 
             footerContainer.innerHTML = `
-                <footer class="bg-gray-900 text-white py-12 px-4">
+                <footer class="bg-gray-900 text-white py-12 px-4 border-t border-gray-800">
                     <div class="max-w-7xl mx-auto">
                         <div class="grid md:grid-cols-12 gap-8 mb-12">
                             
                             <div class="md:col-span-3">
                                 <div class="flex items-center gap-2 mb-4">
                                     <img src="${logoSrc}" 
-                                         onerror="this.src='images/v5logo.png'; this.onerror=null;" 
+                                         onerror="this.onerror=null; this.src='images/v5logo.png';" 
                                          class="h-10 w-auto" 
                                          alt="V5 Medical Logo">
                                     <span class="text-xl font-bold">V5 Medical LTD</span>
@@ -185,13 +189,13 @@ const V5Layout = (() => {
                             <div class="md:col-span-3 pl-0 md:pl-4">
                                 <h4 class="font-bold mb-4 text-lg text-white">Downloads</h4>
                                 <div class="space-y-2 mb-8 text-sm">
-                                    <a href="pdf/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition" onclick="window.trackPDFDownload && window.trackPDFDownload('Product Catalog')">
+                                    <a href="pdf/Catalog.pdf" target="_blank" onclick="window.trackPDFDownload && window.trackPDFDownload('Product Catalog')" class="flex items-center gap-2 text-gray-400 hover:text-white transition">
                                         <i class="fas fa-file-pdf text-red-400"></i> Product Catalog
                                     </a>
-                                    <a href="pdf/Quotations for dental products.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition" onclick="window.trackPDFDownload && window.trackPDFDownload('Dental Kit')">
+                                    <a href="pdf/Quotations for dental products.pdf" target="_blank" onclick="window.trackPDFDownload && window.trackPDFDownload('Dental Kit')" class="flex items-center gap-2 text-gray-400 hover:text-white transition">
                                         <i class="fas fa-file-pdf text-red-400"></i> Dental Kit
                                     </a>
-                                    <a href="pdf/price list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition" onclick="window.trackPDFDownload && window.trackPDFDownload('Price List')">
+                                    <a href="pdf/price list.pdf" target="_blank" onclick="window.trackPDFDownload && window.trackPDFDownload('Price List')" class="flex items-center gap-2 text-gray-400 hover:text-white transition">
                                         <i class="fas fa-file-pdf text-red-400"></i> Price List
                                     </a>
                                 </div>
@@ -209,7 +213,7 @@ const V5Layout = (() => {
                         </div>
                         
                         <div class="text-center mt-8 text-sm text-gray-500">
-                            <p>© ${year} V5 Medical LTD. All rights reserved.</p>
+                            <p>&copy; ${year} V5 Medical LTD. All rights reserved.</p>
                         </div>
                     </div>
                 </footer>
@@ -231,6 +235,9 @@ const V5Layout = (() => {
                        aria-label="Chat on WhatsApp"
                        onclick="window.trackWhatsAppClick && window.trackWhatsAppClick()">
                         <i class="fab fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i>
+                        <span class="absolute right-full mr-3 bg-gray-900 text-white text-xs py-1 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                            Chat with us
+                        </span>
                     </a>
                 `;
                 document.body.appendChild(waDiv.firstElementChild);
@@ -270,9 +277,12 @@ const V5Layout = (() => {
                 : 'text-gray-600 hover:bg-gray-50';
         }
 
+        // 路径处理优化：防止双斜杠
         _getImgPath(path) {
             if (path.startsWith('http')) return path;
-            return `${this.config.BASE_URL}/${path}`;
+            const baseUrl = this.config.BASE_URL.replace(/\/$/, ''); // 移除末尾斜杠
+            const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+            return `${baseUrl}/${cleanPath}`;
         }
     }
 
