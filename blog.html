@@ -14,9 +14,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://v5md.com/blog.html">
     <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png">
-    <meta property="og:site_name" content="V5 Medical LTD">
-
-    <link rel="canonical" href="https://v5md.com/blog.html">
+    
     <title>V5 Medical Blog - Shipment Photos & Success Stories</title>
     
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
@@ -38,36 +36,18 @@
     
     <style>
         .blog-card { transition: all 0.3s ease; }
-        .blog-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .blog-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         
-        .category-badge { transition: all 0.2s ease; }
-        .category-badge:hover { transform: scale(1.05); }
+        .category-badge { transition: all 0.2s ease; cursor: pointer; }
+        .category-badge:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
         
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 0.75rem; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-        
-        .gallery-item { transition: all 0.3s ease; cursor: pointer; }
-        .gallery-item:hover { transform: scale(1.03); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        
-        /* Lightbox */
-        .lightbox {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center;
-            z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-        }
+        /* Lightbox & Modal Transitions */
+        .lightbox, #blog-post-modal { transition: opacity 0.3s ease; }
         .lightbox.active { opacity: 1; pointer-events: auto; }
-        .lightbox img { max-width: 90%; max-height: 90%; object-fit: contain; border-radius: 0.5rem; }
-        .lightbox-close {
-            position: absolute; top: 20px; right: 30px; color: white; font-size: 3rem;
-            cursor: pointer; transition: all 0.2s ease; line-height: 1;
-        }
-        .lightbox-close:hover { transform: scale(1.1); color: #ef4444; }
-
-        .pagination-btn {
-            padding: 0.5rem 1rem; border-radius: 0.5rem; background: white;
-            color: #1e40af; border: 1px solid #e2e8f0; transition: all 0.2s ease;
-        }
-        .pagination-btn:hover, .pagination-btn.active { background: #1e40af; color: white; border-color: #1e40af; }
+        
+        /* Custom Scrollbar for Modal */
+        #blog-post-modal .overflow-y-auto::-webkit-scrollbar { width: 8px; }
+        #blog-post-modal .overflow-y-auto::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
     </style>
 
     <script type="application/ld+json">
@@ -79,7 +59,7 @@
       "publisher": {
         "@type": "Organization",
         "name": "V5 Medical LTD",
-        "logo": { "@type": "ImageObject", "url": "https://v5md.com/images/v5medlogo.png" }
+        "logo": { "@type": "ImageObject", "url": "https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" }
       }
     }
     </script>
@@ -91,7 +71,6 @@
         <div class="loader-spinner"></div>
     </div>
     <script>
-        // Fallback to ensure loader removal
         setTimeout(function() {
             var loader = document.getElementById('loader');
             if(loader) { loader.style.opacity = '0'; setTimeout(function(){ loader.style.display = 'none'; }, 500); }
@@ -102,69 +81,68 @@
 
     <main class="flex-grow pt-20"> 
         
-        <section class="text-white py-32 px-4 relative overflow-hidden bg-gray-900">
+        <section class="relative py-24 bg-gray-900 overflow-hidden text-center text-white">
             <div class="absolute inset-0 z-0">
-                <img src="images/hero-bg.jpg" class="w-full h-full object-cover opacity-40" alt="Blog Hero" fetchpriority="high">
-                <div class="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-600/80"></div>
+                <img src="images/hero-bg.jpg" 
+                     onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920&q=80'" 
+                     class="w-full h-full object-cover opacity-30" 
+                     alt="Blog Hero" 
+                     fetchpriority="high">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-900/90 to-slate-900/80"></div>
             </div>
 
-            <div class="max-w-7xl mx-auto text-center relative z-10 fade-in-up">
-                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight drop-shadow-lg">
-                    Our Blog
-                </h1>
-                <p class="text-2xl md:text-3xl mb-4 font-light text-blue-100">
-                    Shipment Photos & Success Stories
-                </p>
-                <p class="text-lg md:text-xl mb-12 text-blue-200 max-w-2xl mx-auto">
-                    See our latest shipments, delivery videos, and customer success stories from around the world.
+            <div class="relative z-10 max-w-4xl mx-auto px-4 fade-in-up">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">Our Blog & Updates</h1>
+                <p class="text-xl text-blue-100 font-light mb-10 max-w-2xl mx-auto">
+                    Explore our latest shipment photos, global success stories, and quality control insights.
                 </p>
                 
-                <div class="flex flex-wrap gap-4 justify-center">
-                    <a href="#latest-posts" class="bg-white text-blue-900 px-8 py-3 rounded-full text-lg font-bold shadow-lg hover:bg-gray-100 transition transform hover:scale-105 flex items-center gap-2">
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#latest-posts" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full font-bold shadow-lg transition transform hover:-translate-y-1 flex items-center gap-2">
                         <i class="fas fa-newspaper"></i> Latest Posts
                     </a>
-                    <a href="#categories" class="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full text-lg font-bold hover:bg-white hover:text-blue-900 transition transform hover:scale-105 flex items-center gap-2">
-                        <i class="fas fa-th-large"></i> Categories
+                    <a href="#categories" class="bg-white/10 hover:bg-white/20 border border-white/30 text-white px-8 py-3 rounded-full font-bold backdrop-blur-sm transition transform hover:-translate-y-1 flex items-center gap-2">
+                        <i class="fas fa-th-large"></i> Topics
                     </a>
                 </div>
             </div>
         </section>
 
-        <section id="categories" class="py-16 px-4 bg-white">
+        <section id="categories" class="py-16 px-4 bg-white border-b border-gray-100">
             <div class="max-w-7xl mx-auto">
-                <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Explore Topics</h2>
+                <h2 class="text-2xl font-bold text-center mb-10 text-gray-900 uppercase tracking-wide text-sm">Explore by Topic</h2>
                 
-                <div class="grid md:grid-cols-4 gap-6">
-                    <div class="category-badge bg-blue-50 hover:bg-blue-100 p-6 rounded-xl text-center cursor-pointer border border-blue-100" onclick="filterPosts('shipments')">
-                        <div class="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md text-white text-2xl">
-                            <i class="fas fa-ship"></i>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="category-badge bg-blue-50 p-6 rounded-2xl text-center border border-blue-100" onclick="filterPosts('shipments')">
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-xl shadow-lg shadow-blue-200">
+                            <i class="fas fa-shipping-fast"></i>
                         </div>
-                        <h3 class="text-lg font-bold mb-1 text-gray-900">Shipments</h3>
-                        <p class="text-gray-500 text-xs">Global delivery updates</p>
+                        <h3 class="font-bold text-gray-900">Shipments</h3>
+                        <p class="text-gray-500 text-xs mt-1">Global Deliveries</p>
                     </div>
                     
-                    <div class="category-badge bg-green-50 hover:bg-green-100 p-6 rounded-xl text-center cursor-pointer border border-green-100" onclick="filterPosts('success-stories')">
-                        <div class="w-14 h-14 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md text-white text-2xl">
-                            <i class="fas fa-trophy"></i>
+                    <div class="category-badge bg-green-50 p-6 rounded-2xl text-center border border-green-100" onclick="filterPosts('success-stories')">
+                        <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-xl shadow-lg shadow-green-200">
+                            <i class="fas fa-star"></i>
                         </div>
-                        <h3 class="text-lg font-bold mb-1 text-gray-900">Success Stories</h3>
-                        <p class="text-gray-500 text-xs">Customer testimonials</p>
+                        <h3 class="font-bold text-gray-900">Success Stories</h3>
+                        <p class="text-gray-500 text-xs mt-1">Client Reviews</p>
                     </div>
                     
-                    <div class="category-badge bg-purple-50 hover:bg-purple-100 p-6 rounded-xl text-center cursor-pointer border border-purple-100" onclick="filterPosts('quality-control')">
-                        <div class="w-14 h-14 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md text-white text-2xl">
-                            <i class="fas fa-check-circle"></i>
+                    <div class="category-badge bg-purple-50 p-6 rounded-2xl text-center border border-purple-100" onclick="filterPosts('quality-control')">
+                        <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-xl shadow-lg shadow-purple-200">
+                            <i class="fas fa-microscope"></i>
                         </div>
-                        <h3 class="text-lg font-bold mb-1 text-gray-900">Quality Control</h3>
-                        <p class="text-gray-500 text-xs">Safety standards</p>
+                        <h3 class="font-bold text-gray-900">Quality Control</h3>
+                        <p class="text-gray-500 text-xs mt-1">Lab Reports</p>
                     </div>
                     
-                    <div class="category-badge bg-orange-50 hover:bg-orange-100 p-6 rounded-xl text-center cursor-pointer border border-orange-100" onclick="filterPosts('company-updates')">
-                        <div class="w-14 h-14 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md text-white text-2xl">
+                    <div class="category-badge bg-orange-50 p-6 rounded-2xl text-center border border-orange-100" onclick="filterPosts('company-updates')">
+                        <div class="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-xl shadow-lg shadow-orange-200">
                             <i class="fas fa-bullhorn"></i>
                         </div>
-                        <h3 class="text-lg font-bold mb-1 text-gray-900">Company News</h3>
-                        <p class="text-gray-500 text-xs">Latest announcements</p>
+                        <h3 class="font-bold text-gray-900">Company News</h3>
+                        <p class="text-gray-500 text-xs mt-1">Announcements</p>
                     </div>
                 </div>
             </div>
@@ -172,99 +150,110 @@
 
         <section id="latest-posts" class="py-20 px-4 bg-gray-50">
             <div class="max-w-7xl mx-auto">
-                <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-4">
-                    <h2 class="text-4xl font-bold text-gray-900">Latest Updates</h2>
-                    <div class="flex gap-2 bg-white p-1.5 rounded-lg shadow-sm border border-gray-200">
-                        <button class="category-filter-btn active px-4 py-2 rounded-md bg-blue-600 text-white text-sm font-medium transition" data-category="all">All</button>
-                        <button class="category-filter-btn px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 text-sm font-medium transition" data-category="shipments">Shipments</button>
-                        <button class="category-filter-btn px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 text-sm font-medium transition" data-category="success-stories">Success</button>
+                <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
+                    <h2 class="text-3xl font-bold text-gray-900">Latest Updates</h2>
+                    
+                    <div class="flex gap-2 bg-white p-1.5 rounded-xl shadow-sm border border-gray-200 overflow-x-auto max-w-full">
+                        <button class="category-filter-btn active px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium transition shadow-sm whitespace-nowrap" data-category="all">All</button>
+                        <button class="category-filter-btn px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition whitespace-nowrap" data-category="shipments">Shipments</button>
+                        <button class="category-filter-btn px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition whitespace-nowrap" data-category="success-stories">Success</button>
+                        <button class="category-filter-btn px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition whitespace-nowrap" data-category="quality-control">QC</button>
                     </div>
                 </div>
                 
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-posts-container">
-                    <article class="blog-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full" data-category="shipments">
-                        <div class="relative h-48 overflow-hidden group">
+                    
+                    <article class="blog-card bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full" data-category="shipments">
+                        <div class="relative h-52 overflow-hidden group cursor-pointer" onclick="openBlogPost('london-hospital-shipment')">
                             <img src="images/blog/london-shipment.jpg" 
-                                 onerror="this.src='https://images.unsplash.com/photo-1542281286-9e0a16bb7366?w=800'" 
-                                 alt="London" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            <div class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-                                Shipment
-                            </div>
+                                 onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800'" 
+                                 alt="London Hospital" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                            <div class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">Shipment</div>
                         </div>
                         <div class="p-6 flex flex-col flex-grow">
-                            <div class="flex items-center gap-3 mb-3 text-xs text-gray-500 font-medium">
+                            <div class="flex items-center gap-3 mb-3 text-xs text-gray-500 font-medium uppercase tracking-wide">
                                 <span><i class="far fa-calendar-alt mr-1"></i> Oct 15, 2024</span>
-                                <span><i class="fas fa-map-marker-alt mr-1"></i> London, UK</span>
+                                <span><i class="fas fa-map-marker-alt mr-1"></i> UK</span>
                             </div>
-                            <h3 class="text-xl font-bold mb-3 text-gray-900 line-clamp-2">Successful Delivery to London Hospital</h3>
-                            <p class="text-gray-600 mb-4 text-sm line-clamp-3 flex-grow">Our latest shipment of surgical sutures and medical supplies successfully delivered to St. Mary's Hospital.</p>
-                            <button class="text-blue-600 font-bold hover:text-blue-800 text-sm flex items-center gap-1 transition self-start" onclick="openBlogPost('london-hospital-shipment')">
-                                Read Full Story <i class="fas fa-arrow-right text-xs"></i>
+                            <h3 class="text-xl font-bold mb-3 text-gray-900 line-clamp-2 hover:text-blue-600 transition cursor-pointer" onclick="openBlogPost('london-hospital-shipment')">
+                                Successful Delivery to London Hospital
+                            </h3>
+                            <p class="text-gray-600 mb-6 text-sm line-clamp-3 flex-grow">
+                                Our latest air freight shipment of surgical sutures and sterile packs has successfully arrived at St. Mary's Hospital.
+                            </p>
+                            <button class="text-blue-600 font-bold hover:text-blue-800 text-sm flex items-center gap-2 transition group self-start" onclick="openBlogPost('london-hospital-shipment')">
+                                Read Full Story <i class="fas fa-arrow-right text-xs transform group-hover:translate-x-1 transition-transform"></i>
                             </button>
                         </div>
                     </article>
                     
-                    <article class="blog-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full" data-category="success-stories">
-                        <div class="relative h-48 overflow-hidden group">
+                    <article class="blog-card bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full" data-category="success-stories">
+                        <div class="relative h-52 overflow-hidden group cursor-pointer" onclick="openBlogPost('dubai-customer-testimonial')">
                             <img src="https://images.unsplash.com/photo-1581090464777-f7ef2a8a0fda?w=800" 
-                                 alt="Dubai" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            <div class="absolute top-4 left-4 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-                                Success Story
-                            </div>
+                                 alt="Dubai Clinic" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                            <div class="absolute top-4 left-4 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">Success Story</div>
                         </div>
                         <div class="p-6 flex flex-col flex-grow">
-                            <div class="flex items-center gap-3 mb-3 text-xs text-gray-500 font-medium">
+                            <div class="flex items-center gap-3 mb-3 text-xs text-gray-500 font-medium uppercase tracking-wide">
                                 <span><i class="far fa-calendar-alt mr-1"></i> Oct 10, 2024</span>
-                                <span><i class="fas fa-map-marker-alt mr-1"></i> Dubai, UAE</span>
+                                <span><i class="fas fa-map-marker-alt mr-1"></i> UAE</span>
                             </div>
-                            <h3 class="text-xl font-bold mb-3 text-gray-900 line-clamp-2">5-Star Feedback from Dubai Clinic</h3>
-                            <p class="text-gray-600 mb-4 text-sm line-clamp-3 flex-grow">"V5 Medical has been our reliable partner for over a year. Their quality is consistent..."</p>
-                            <button class="text-blue-600 font-bold hover:text-blue-800 text-sm flex items-center gap-1 transition self-start" onclick="openBlogPost('dubai-customer-testimonial')">
-                                Read Full Story <i class="fas fa-arrow-right text-xs"></i>
+                            <h3 class="text-xl font-bold mb-3 text-gray-900 line-clamp-2 hover:text-blue-600 transition cursor-pointer" onclick="openBlogPost('dubai-customer-testimonial')">
+                                5-Star Feedback from Dubai Clinic
+                            </h3>
+                            <p class="text-gray-600 mb-6 text-sm line-clamp-3 flex-grow">
+                                "V5 Medical has been our reliable partner for over a year. Their quality is consistent and delivery is prompt."
+                            </p>
+                            <button class="text-blue-600 font-bold hover:text-blue-800 text-sm flex items-center gap-2 transition group self-start" onclick="openBlogPost('dubai-customer-testimonial')">
+                                Read Full Story <i class="fas fa-arrow-right text-xs transform group-hover:translate-x-1 transition-transform"></i>
                             </button>
                         </div>
                     </article>
 
-                    <article class="blog-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full" data-category="shipments">
-                        <div class="relative h-48 overflow-hidden group">
+                    <article class="blog-card bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full" data-category="shipments">
+                        <div class="relative h-52 overflow-hidden group cursor-pointer" onclick="openBlogPost('nigeria-humanitarian-aid')">
                             <img src="images/blog/643922556be97215970549.png" 
-                                 onerror="this.src='https://images.unsplash.com/photo-1551269901-5c5e14c25df7?w=800'" 
-                                 alt="Nigeria" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            <div class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-                                Shipment
-                            </div>
+                                 onerror="this.src='https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=800'" 
+                                 alt="Nigeria Aid" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                            <div class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">Shipment</div>
                         </div>
                         <div class="p-6 flex flex-col flex-grow">
-                            <div class="flex items-center gap-3 mb-3 text-xs text-gray-500 font-medium">
+                            <div class="flex items-center gap-3 mb-3 text-xs text-gray-500 font-medium uppercase tracking-wide">
                                 <span><i class="far fa-calendar-alt mr-1"></i> Oct 5, 2024</span>
-                                <span><i class="fas fa-map-marker-alt mr-1"></i> Lagos, Nigeria</span>
+                                <span><i class="fas fa-map-marker-alt mr-1"></i> Nigeria</span>
                             </div>
-                            <h3 class="text-xl font-bold mb-3 text-gray-900 line-clamp-2">Humanitarian Aid Shipment</h3>
-                            <p class="text-gray-600 mb-4 text-sm line-clamp-3 flex-grow">Successfully delivered essential medical supplies to hospitals in Lagos as part of our aid program.</p>
-                            <button class="text-blue-600 font-bold hover:text-blue-800 text-sm flex items-center gap-1 transition self-start" onclick="openBlogPost('nigeria-humanitarian-aid')">
-                                Read Full Story <i class="fas fa-arrow-right text-xs"></i>
+                            <h3 class="text-xl font-bold mb-3 text-gray-900 line-clamp-2 hover:text-blue-600 transition cursor-pointer" onclick="openBlogPost('nigeria-humanitarian-aid')">
+                                Humanitarian Aid Shipment to Lagos
+                            </h3>
+                            <p class="text-gray-600 mb-6 text-sm line-clamp-3 flex-grow">
+                                Successfully delivered essential medical supplies to three major hospitals in Lagos to support local healthcare.
+                            </p>
+                            <button class="text-blue-600 font-bold hover:text-blue-800 text-sm flex items-center gap-2 transition group self-start" onclick="openBlogPost('nigeria-humanitarian-aid')">
+                                Read Full Story <i class="fas fa-arrow-right text-xs transform group-hover:translate-x-1 transition-transform"></i>
                             </button>
                         </div>
                     </article>
                     
-                    <article class="blog-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full" data-category="quality-control">
-                        <div class="relative h-48 overflow-hidden group">
+                    <article class="blog-card bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full" data-category="quality-control">
+                        <div class="relative h-52 overflow-hidden group cursor-pointer" onclick="openBlogPost('quality-control-lab')">
                             <img src="images/blog/Quality Inspection.jpg" 
                                  onerror="this.src='https://images.unsplash.com/photo-1579684385183-1908d5c96b00?w=800'" 
-                                 alt="Lab" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            <div class="absolute top-4 left-4 bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-                                QC
-                            </div>
+                                 alt="QC Lab" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                            <div class="absolute top-4 left-4 bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">QC Update</div>
                         </div>
                         <div class="p-6 flex flex-col flex-grow">
-                            <div class="flex items-center gap-3 mb-3 text-xs text-gray-500 font-medium">
+                            <div class="flex items-center gap-3 mb-3 text-xs text-gray-500 font-medium uppercase tracking-wide">
                                 <span><i class="far fa-calendar-alt mr-1"></i> Sep 28, 2024</span>
-                                <span><i class="fas fa-flask mr-1"></i> Lab Report</span>
+                                <span><i class="fas fa-flask mr-1"></i> Lab</span>
                             </div>
-                            <h3 class="text-xl font-bold mb-3 text-gray-900 line-clamp-2">New QC Laboratory Opening</h3>
-                            <p class="text-gray-600 mb-4 text-sm line-clamp-3 flex-grow">We've expanded our quality control facilities with a new state-of-the-art laboratory.</p>
-                            <button class="text-blue-600 font-bold hover:text-blue-800 text-sm flex items-center gap-1 transition self-start" onclick="openBlogPost('quality-control-lab')">
-                                Read Full Story <i class="fas fa-arrow-right text-xs"></i>
+                            <h3 class="text-xl font-bold mb-3 text-gray-900 line-clamp-2 hover:text-blue-600 transition cursor-pointer" onclick="openBlogPost('quality-control-lab')">
+                                New QC Laboratory Opening
+                            </h3>
+                            <p class="text-gray-600 mb-6 text-sm line-clamp-3 flex-grow">
+                                We've expanded our quality control facilities with advanced tensile testing machines and sterilization verification.
+                            </p>
+                            <button class="text-blue-600 font-bold hover:text-blue-800 text-sm flex items-center gap-2 transition group self-start" onclick="openBlogPost('quality-control-lab')">
+                                Read Full Story <i class="fas fa-arrow-right text-xs transform group-hover:translate-x-1 transition-transform"></i>
                             </button>
                         </div>
                     </article>
@@ -274,97 +263,92 @@
 
         <section class="py-20 px-4 bg-white border-t border-gray-100">
             <div class="max-w-7xl mx-auto">
-                <h2 class="text-4xl font-bold text-center mb-12 text-gray-900">Featured Gallery</h2>
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-900">Featured Gallery</h2>
                 
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="gallery-item rounded-xl overflow-hidden shadow-md group" onclick="openLightbox('images/blog/Shipment Preparation.jpg')">
-                        <div class="h-56 overflow-hidden relative">
-                            <img src="images/blog/Shipment Preparation.jpg" 
-                                 onerror="this.src='https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800'"
-                                 alt="Shipment" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                                <p class="font-bold text-sm">Shipment Prep</p>
-                            </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-sm group relative h-64" onclick="openLightbox('images/blog/Shipment Preparation.jpg')">
+                        <img src="images/blog/Shipment Preparation.jpg" 
+                             onerror="this.src='https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800'"
+                             alt="Shipment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                            <p class="font-bold text-sm">Shipment Prep</p>
                         </div>
                     </div>
                     
-                    <div class="gallery-item rounded-xl overflow-hidden shadow-md group" onclick="openLightbox('images/blog/Warehouse Inventory.jpg')">
-                        <div class="h-56 overflow-hidden relative">
-                            <img src="images/blog/Warehouse Inventory.jpg" 
-                                 onerror="this.src='https://images.unsplash.com/photo-1553413077-190dd305871c?w=800'"
-                                 alt="Inventory" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                                <p class="font-bold text-sm">Warehouse Stock</p>
-                            </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-sm group relative h-64" onclick="openLightbox('images/blog/Warehouse Inventory.jpg')">
+                        <img src="images/blog/Warehouse Inventory.jpg" 
+                             onerror="this.src='https://images.unsplash.com/photo-1553413077-190dd305871c?w=800'"
+                             alt="Inventory" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                            <p class="font-bold text-sm">Warehouse Stock</p>
                         </div>
                     </div>
                     
-                    <div class="gallery-item rounded-xl overflow-hidden shadow-md group" onclick="openLightbox('images/blog/Quality Inspection.jpg')">
-                        <div class="h-56 overflow-hidden relative">
-                            <img src="images/blog/Quality Inspection.jpg" 
-                                 onerror="this.src='https://images.unsplash.com/photo-1581093458791-9f302e683c9c?w=800'"
-                                 alt="Quality" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                                <p class="font-bold text-sm">Quality Check</p>
-                            </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-sm group relative h-64" onclick="openLightbox('images/blog/Quality Inspection.jpg')">
+                        <img src="images/blog/Quality Inspection.jpg" 
+                             onerror="this.src='https://images.unsplash.com/photo-1581093458791-9f302e683c9c?w=800'"
+                             alt="Quality" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                            <p class="font-bold text-sm">Strict Quality Control</p>
                         </div>
                     </div>
                     
-                    <div class="gallery-item rounded-xl overflow-hidden shadow-md group" onclick="openLightbox('images/blog/Hospital Delivery.jpg')">
-                        <div class="h-56 overflow-hidden relative">
-                            <img src="images/blog/Hospital Delivery.jpg" 
-                                 onerror="this.src='https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=800'"
-                                 alt="Delivery" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                                <p class="font-bold text-sm">On-Site Delivery</p>
-                            </div>
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-sm group relative h-64" onclick="openLightbox('images/blog/Hospital Delivery.jpg')">
+                        <img src="images/blog/Hospital Delivery.jpg" 
+                             onerror="this.src='https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=800'"
+                             alt="Delivery" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                            <p class="font-bold text-sm">On-Site Delivery</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="py-16 px-4 bg-blue-900 text-white text-center">
+        <section class="py-20 px-4 bg-blue-900 text-white text-center">
             <div class="max-w-3xl mx-auto">
-                <h2 class="text-3xl font-bold mb-6">Stay Connected</h2>
-                <p class="text-xl mb-8 text-blue-100 opacity-90">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">Stay Connected</h2>
+                <p class="text-xl mb-10 text-blue-100 opacity-90 max-w-2xl mx-auto">
                     Follow our journey and get the latest updates from the medical manufacturing world.
                 </p>
-                <a href="contact.html" class="bg-white text-blue-900 px-8 py-3 rounded-full text-lg font-bold shadow-lg hover:bg-gray-100 transition transform hover:scale-105 inline-flex items-center gap-2">
-                    <i class="fas fa-envelope"></i> Contact Us
-                </a>
+                <div class="flex justify-center gap-4">
+                    <a href="contact.html" class="bg-white text-blue-900 px-8 py-3.5 rounded-full text-lg font-bold shadow-xl hover:bg-blue-50 transition transform hover:-translate-y-1 inline-flex items-center gap-2">
+                        <i class="fas fa-envelope"></i> Contact Us
+                    </a>
+                </div>
             </div>
         </section>
     </main>
 
     <div id="v5-footer"></div>
 
-    <div class="lightbox" id="lightbox">
-        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-        <img id="lightbox-image" src="" alt="Enlarged image">
+    <div class="lightbox fixed inset-0 z-[9999] hidden" id="lightbox">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm"></div>
+        <span class="lightbox-close z-50" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-image" src="" alt="Enlarged" class="relative z-10 shadow-2xl">
     </div>
 
-    <div id="blog-post-modal" class="fixed inset-0 bg-black/80 z-[6000] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[85vh] overflow-y-auto transform transition-all scale-100">
-            <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center z-10">
-                <h3 id="modal-title" class="text-xl font-bold text-gray-800 line-clamp-1"></h3>
+    <div id="blog-post-modal" class="fixed inset-0 bg-black/80 z-[6000] hidden flex items-center justify-center p-4 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[85vh] overflow-y-auto transform scale-95 transition-transform duration-300 relative">
+            <div class="sticky top-0 bg-white/95 backdrop-blur border-b px-6 py-4 flex justify-between items-center z-10">
+                <h3 id="modal-title" class="text-xl font-bold text-gray-900 line-clamp-1"></h3>
                 <button onclick="closeBlogPost()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-red-50 hover:text-red-500 transition">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="p-6 md:p-8 space-y-6" id="modal-content">
+            <div class="p-6 md:p-8 space-y-6 text-gray-700 leading-relaxed" id="modal-content">
                 </div>
         </div>
     </div>
 
-    <script src="js/config.js?v=2.0"></script>
-    <script src="js/layout.js?v=2.2"></script>
+    <script src="js/config.js?v=2.2"></script>
+    <script src="js/layout.js?v=2.5"></script>
     <script src="js/seo-utils.js?v=2.0"></script>
-    <script src="js/main.js?v=2.0"></script>
+    <script src="js/main.js?v=2.1"></script>
 
     <script>
         // --- Filter Logic ---
@@ -372,19 +356,19 @@
             const posts = document.querySelectorAll('.blog-card');
             const btns = document.querySelectorAll('.category-filter-btn');
             
-            // Toggle active buttons
+            // Toggle buttons
             btns.forEach(btn => {
                 const isActive = btn.dataset.category === category;
                 btn.className = isActive 
-                    ? 'category-filter-btn active px-4 py-2 rounded-md bg-blue-600 text-white text-sm font-medium transition shadow-md'
-                    : 'category-filter-btn px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 text-sm font-medium transition';
+                    ? 'category-filter-btn active px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium transition shadow-md'
+                    : 'category-filter-btn px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 text-sm font-medium transition';
             });
             
-            // Show/Hide Posts
+            // Filter cards
             posts.forEach(post => {
                 if (category === 'all' || post.dataset.category === category) {
                     post.parentElement.classList.remove('hidden'); 
-                    post.style.display = 'flex'; // Reset to flex since card uses flex
+                    post.style.display = 'flex'; 
                 } else {
                     post.style.display = 'none';
                 }
@@ -396,50 +380,56 @@
         const lightboxImg = document.getElementById('lightbox-image');
 
         function openLightbox(src) {
-            // Check if fallback needed (for demo purpose, use src directly)
             lightboxImg.src = src;
+            lightbox.classList.remove('hidden');
+            // Trigger reflow for transition
+            void lightbox.offsetWidth;
             lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Lock scroll
+            document.body.style.overflow = 'hidden';
         }
 
         function closeLightbox() {
             lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto'; // Unlock scroll
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 300);
         }
 
         lightbox.addEventListener('click', (e) => {
-            if(e.target === lightbox) closeLightbox();
+            if(e.target === lightbox || e.target.classList.contains('lightbox-close')) closeLightbox();
         });
 
         // --- Blog Modal Logic ---
+        const modal = document.getElementById('blog-post-modal');
+        const modalContent = modal.querySelector('div');
+
         function openBlogPost(postId) {
-            const modal = document.getElementById('blog-post-modal');
             const titleEl = document.getElementById('modal-title');
             const contentEl = document.getElementById('modal-content');
             
-            // Data Store (In real app, this might come from JSON file)
+            // Sample Data (Replace with real JSON fetch if needed)
             const postData = {
                 'london-hospital-shipment': {
                     title: 'Successful Delivery to London Hospital',
                     content: `
                         <img src="images/blog/london-shipment.jpg" onerror="this.src='https://images.unsplash.com/photo-1542281286-9e0a16bb7366?w=800'" class="w-full h-64 object-cover rounded-xl shadow-md mb-6">
-                        <p class="text-gray-600 mb-4 leading-relaxed">We are proud to announce the successful delivery of our latest shipment to St. Mary's Hospital in London. This milestone reinforces our commitment to supporting the UK healthcare system with reliable, high-quality medical consumables.</p>
+                        <p class="mb-4">We are proud to announce the successful delivery of our latest shipment to St. Mary's Hospital in London. This milestone reinforces our commitment to supporting the UK healthcare system with reliable, high-quality medical consumables.</p>
                         <div class="bg-blue-50 p-6 rounded-lg border border-blue-100 mb-6">
                             <h4 class="font-bold text-blue-900 mb-3">Shipment Highlights:</h4>
-                            <ul class="space-y-2 text-sm text-gray-700">
+                            <ul class="space-y-2 text-sm">
                                 <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> 5,000 units of Surgical Sutures</li>
                                 <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> 2,000 Sterile Surgical Packs</li>
                                 <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> On-time delivery via Air Freight (48 hours)</li>
                             </ul>
                         </div>
-                        <p class="text-gray-600 italic">"Efficiency and quality are what we look for, and V5 Medical delivered on both fronts." - Procurement Manager, London.</p>
                     `
                 },
                 'dubai-customer-testimonial': {
                     title: '5-Star Feedback from Dubai Clinic',
                     content: `
                         <div class="flex items-center gap-4 mb-6">
-                            <img src="https://images.unsplash.com/photo-1581090464777-f7ef2a8a0fda?w=100" class="w-16 h-16 rounded-full object-cover shadow-sm">
+                            <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-2xl text-gray-500"><i class="fas fa-user-md"></i></div>
                             <div>
                                 <h4 class="font-bold text-gray-900">Dr. Ahmed Al-Fayed</h4>
                                 <p class="text-sm text-gray-500">Chief Surgeon, Dubai Elite Clinic</p>
@@ -448,24 +438,24 @@
                         <blockquote class="border-l-4 border-blue-500 pl-6 py-2 italic text-gray-700 text-lg mb-8 bg-gray-50 rounded-r-lg">
                             "V5 Medical has been our reliable partner for over a year. Their quality is consistent, and delivery is always prompt. The factory-direct pricing allows us to maintain high standards without overspending."
                         </blockquote>
-                        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800" class="w-full h-48 object-cover rounded-xl opacity-80 mb-4">
+                        <img src="https://images.unsplash.com/photo-1581090464777-f7ef2a8a0fda?w=800" class="w-full h-48 object-cover rounded-xl opacity-90 mb-4">
                     `
                 },
                 'nigeria-humanitarian-aid': {
                     title: 'Humanitarian Aid Shipment to Nigeria',
                     content: `
                         <img src="images/blog/643922556be97215970549.png" onerror="this.src='https://images.unsplash.com/photo-1551269901-5c5e14c25df7?w=800'" class="w-full h-64 object-cover rounded-xl shadow-md mb-6">
-                        <p class="text-gray-600 mb-6 leading-relaxed">Our team successfully coordinated the delivery of essential medical supplies to three major hospitals in Lagos, Nigeria. This initiative aims to support local healthcare providers facing supply chain challenges.</p>
+                        <p class="mb-6">Our team successfully coordinated the delivery of essential medical supplies to three major hospitals in Lagos, Nigeria. This initiative aims to support local healthcare providers facing supply chain challenges.</p>
                         <h4 class="font-bold text-gray-900 mb-3">Impact:</h4>
-                        <p class="text-gray-600 mb-4">The shipment included vital surgical kits, gloves, and protective gear that will support over 500 surgeries in the coming month.</p>
+                        <p class="mb-4">The shipment included vital surgical kits, gloves, and protective gear that will support over 500 surgeries in the coming month.</p>
                     `
                 },
                 'quality-control-lab': {
                     title: 'New QC Laboratory Opening',
                     content: `
                         <img src="images/blog/Quality Inspection.jpg" onerror="this.src='https://images.unsplash.com/photo-1579684385183-1908d5c96b00?w=800'" class="w-full h-64 object-cover rounded-xl shadow-md mb-6">
-                        <p class="text-gray-600 mb-4">We are thrilled to unveil our upgraded Quality Control Laboratory in Suzhou. This new facility features advanced tensile testing machines and sterilization verification equipment.</p>
-                        <p class="text-gray-600">This investment ensures that every batch of V5 Medical products exceeds ISO 13485 standards before leaving our factory.</p>
+                        <p class="mb-4">We are thrilled to unveil our upgraded Quality Control Laboratory in Suzhou. This new facility features advanced tensile testing machines and sterilization verification equipment.</p>
+                        <p>This investment ensures that every batch of V5 Medical products exceeds ISO 13485 standards before leaving our factory.</p>
                     `
                 }
             };
@@ -476,12 +466,22 @@
             contentEl.innerHTML = data.content;
             
             modal.classList.remove('hidden');
+            // Trigger reflow
+            void modal.offsetWidth;
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
             document.body.style.overflow = 'hidden';
         }
 
         function closeBlogPost() {
-            document.getElementById('blog-post-modal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 300);
         }
         
         // Bind click events for filters
