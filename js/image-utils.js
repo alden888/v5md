@@ -1,196 +1,122 @@
 /**
- * Image Utilities for V5 Medical Website
- * Handles image path management, preloading, error handling, and optimization
- * @version 1.0.0
+ * V5 Medical Image Utilities
+ * Handles image path resolution, lazy loading, and robust error fallback.
+ * @version 2.0.0
+ * @updated 2024-12-16
  */
 
 class ImageUtils {
     constructor() {
-        this.config = window.V5Config || {};
-        this.placeholderImage = this.getPlaceholderImage();
-        this.loadedImages = new Map();
-        this.preloadQueue = [];
-        this.logger = this.createLogger();
-    }
-
-    /**
-     * Get the full URL for an image
-     * @param {string} imagePath - Relative or absolute image path
-     * @param {string} category - Optional category folder
-     * @returns {string} Full image URL
-     */
-    getImageUrl(imagePath, category = '') {
-        if (!imagePath) return this.placeholderImage;
-        
-        // If already a full URL, use it
-        if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-            return imagePath;
+        // Dependency Check
+        if (!window.V5Config) {
+            console.error('[ImageUtils] V5Config not found.');
+            this.config = { BASE_URL: '', IMAGES: { FALLBACK_BASE: '' } }; // Empty fallback
+        } else {
+            this.config = window.V5Config;
         }
+
+        this.placeholder = this._resolveUrl(this.config.IMAGES?.PLACEHOLDER || 'images/products/default-product.jpg');
+        this.fallbackBase = this.config.IMAGES?.FALLBACK_BASE || '';
         
-        // If starts with /, it's relative to root
-        if (imagePath.startsWith('/')) {
-            return `${this.config.GITHUB_RAW_BASE}${imagePath}`;
+        // Logger setup
+        this.logger = window.console; 
+    }
+
+    /**
+     * Get the full usable URL for an image
+     * @param {string} path - Relative path (e.g. "products/suture.jpg")
+     * @param {string} type - Optional sub-folder (e.g. "products")
+     */
+    getImageUrl(path, type = null) {
+        if (!path) return this.placeholder;
+        if (path.startsWith('http')) return path;
+
+        // Clean up path
+        let cleanPath = path.startsWith('/') ? path.substring(1) : path;
+        
+        // Handle Type prefix if provided and not already in path
+        if (type && !cleanPath.includes(type)) {
+            const typePath = this.config.PATHS?.[type.toUpperCase()] || type;
+            cleanPath = `${typePath}/${cleanPath}`;
         }
-        
-        // If category is provided, build path with category
-        if (category) {
-            return `${this.config.GITHUB_RAW_BASE}${this.config.PATHS.PRODUCTS}/${category}/${imagePath}`;
-        }
-        
-        // Check if it's a product image (contains products/)
-        if (imagePath.includes('products/')) {
-            return `${this.config.GITHUB_RAW_BASE}/${imagePath}`;
-        }
-        
-        // Default to images folder
-        return `${this.config.GITHUB_RAW_BASE}${this.config.PATHS.IMAGES}/${imagePath}`;
+
+        // Return primary URL (usually local or CDN based on config)
+        return this._resolveUrl(cleanPath);
     }
 
     /**
-     * Get placeholder image URL
-     * @returns {string} Placeholder image URL
+     * Global Image Error Handler (Call this from HTML onerror)
+     * Implements 3-Level Fallback: Primary -> GitHub Raw -> Placeholder
+     * @param {HTMLImageElement} img - The image element
      */
-    getPlaceholderImage() {
-        return this.getImageUrl(this.config.IMAGES.PLACEHOLDER);
-    }
-
-    /**
-     * Preload an image with error handling
-     * @param {string} imageUrl - Image URL to preload
-     * @param {Object} options - Preload options
-     * @returns {Promise<string>} Resolved with valid image URL
-     */
-    preloadImage(imageUrl, options = {}) {
-        const { timeout = 5000, retry = 1 } = options;
+    handleError(img) {
+        const currentSrc = img.src;
         
-        return new Promise((resolve) => {
-            // If already loaded, return immediately
-            if (this.loadedImages.has(imageUrl)) {
-                return resolve(this.loadedImages.get(imageUrl));
-            }
-            
-            const startTime = performance.now();
-            const img = new Image();
-            let retryCount = 0;
-            
-            const loadHandler = () => {
-                const loadTime = performance.now() - startTime;
-                this.loadedImages.set(imageUrl, imageUrl);
-                this.logger.info(`Image loaded: ${imageUrl} (${loadTime.toFixed(0)}ms)`);
-                resolve(imageUrl);
-            };
-            
-            const errorHandler = () => {
-                this.logger.warn(`Image failed to load: ${imageUrl}`);
-                if (retryCount < retry) {
-                    retryCount++;
-                    this.logger.info(`Retrying image load (${retryCount}/${retry}): ${imageUrl}`);
-                    setTimeout(() => img.src = imageUrl, 500 * retryCount);
-                } else {
-                    this.loadedImages.set(imageUrl, this.placeholderImage);
-                    resolve(this.placeholderImage);
-                }
-            };
-            
-            img.onload = loadHandler;
-            img.onerror = errorHandler;
-            img.src = imageUrl;
-            
-            // Timeout handling
-            setTimeout(() => {
-                if (!this.loadedImages.has(imageUrl)) {
-                    this.logger.warn(`Image load timed out: ${imageUrl}`);
-                    errorHandler();
-                }
-            }, timeout);
-        });
-    }
+        // Prevent infinite loops
+        img.onerror = null;
 
-    /**
-     * Preload multiple images in parallel
-     * @param {Array<string>} imageUrls - Array of image URLs
-     * @param {Object} options - Preload options
-     * @returns {Promise<Array<string>>} Resolved with array of valid image URLs
-     */
-    preloadImages(imageUrls, options = {}) {
-        return Promise.all(imageUrls.map(url => this.preloadImage(url, options)));
-    }
-
-    /**
-     * Create lazy loading observer
-     * @param {string} selector - CSS selector for lazy images
-     */
-    initLazyLoading(selector = 'img[data-src]') {
-        if (!('IntersectionObserver' in window)) {
-            this.logger.warn('IntersectionObserver not supported, falling back to immediate loading');
-            this.loadAllLazyImages(selector);
+        // Level 1 Fail -> Try Level 2 (GitHub Raw)
+        // Check if we haven't tried fallback yet and if fallback is configured
+        if (this.fallbackBase && !currentSrc.includes('raw.githubusercontent.com')) {
+            // Extract relative path from current URL
+            // This logic assumes standard structure, might need adjustment based on specific deployment
+            const urlObj = new URL(currentSrc);
+            const relativePath = urlObj.pathname.substring(1); // Remove leading slash
+            
+            const fallbackUrl = `${this.fallbackBase}${relativePath}`;
+            this.logger.warn(`[Image] Load failed, trying fallback: ${fallbackUrl}`);
+            img.src = fallbackUrl;
             return;
         }
 
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    const src = img.getAttribute('data-src');
-                    if (src) {
-                        this.preloadImage(src).then(validUrl => {
-                            img.src = validUrl;
-                            img.removeAttribute('data-src');
-                            this.logger.info(`Lazy loaded image: ${validUrl}`);
-                        });
-                        observer.unobserve(img);
-                    }
+        // Level 2 Fail -> Try Level 3 (Placeholder)
+        if (currentSrc !== this.placeholder) {
+            this.logger.warn(`[Image] Fallback failed, showing placeholder.`);
+            img.src = this.placeholder;
+        }
+    }
+
+    /**
+     * Initialize Lazy Loading
+     */
+    initLazyLoad(selector = 'img[loading="lazy"]') {
+        if ('loading' in HTMLImageElement.prototype) {
+            // Browser native lazy loading - just ensure src is set
+            document.querySelectorAll(selector).forEach(img => {
+                if (img.dataset.src) {
+                    img.src = this.getImageUrl(img.dataset.src);
                 }
             });
-        }, {
-            rootMargin: '200px 0px',
-            threshold: 0.01
-        });
-
-        document.querySelectorAll(selector).forEach(img => {
-            observer.observe(img);
-        });
+        } else {
+            // Polyfill or simple load for older browsers
+            this._loadImagesImmediately(selector);
+        }
     }
 
-    /**
-     * Load all lazy images immediately (fallback)
-     * @param {string} selector - CSS selector for lazy images
-     */
-    loadAllLazyImages(selector = 'img[data-src]') {
-        document.querySelectorAll(selector).forEach(img => {
-            const src = img.getAttribute('data-src');
-            if (src) {
-                this.preloadImage(src).then(validUrl => {
-                    img.src = validUrl;
-                    img.removeAttribute('data-src');
-                });
-            }
-        });
+    // --- Private Helpers ---
+
+    _resolveUrl(path) {
+        if (path.startsWith('http')) return path;
+        
+        const baseUrl = this.config.BASE_URL || '';
+        // Ensure no double slashes between base and path
+        const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+        const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+        
+        return cleanBase ? `${cleanBase}/${cleanPath}` : cleanPath;
     }
 
-    /**
-     * Create logger instance
-     * @returns {Object} Logger object
-     */
-    createLogger() {
-        const logLevel = this.config.PERFORMANCE?.LOG_LEVEL || 'info';
-        const levels = ['debug', 'info', 'warn', 'error'];
-        const levelIndex = levels.indexOf(logLevel);
-
-        return {
-            debug: (...args) => levelIndex <= 0 && console.debug('[ImageUtils]', ...args),
-            info: (...args) => levelIndex <= 1 && console.info('[ImageUtils]', ...args),
-            warn: (...args) => levelIndex <= 2 && console.warn('[ImageUtils]', ...args),
-            error: (...args) => levelIndex <= 3 && console.error('[ImageUtils]', ...args)
-        };
+    _loadImagesImmediately(selector) {
+        document.querySelectorAll(selector).forEach(img => {
+            if (img.dataset.src) img.src = this.getImageUrl(img.dataset.src);
+        });
     }
 }
 
-// Initialize and make globally available
-const imageUtils = new ImageUtils();
-window.imageUtils = imageUtils;
+// Initialize and Expose
+window.imageUtils = new ImageUtils();
 
-// Export for module usage
+// Export
 if (typeof module !== 'undefined') {
-    module.exports = imageUtils;
+    module.exports = window.imageUtils;
 }
