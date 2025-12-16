@@ -24,7 +24,7 @@
             background-color: #eff6ff; /* blue-50 */
             color: #1e40af; /* blue-800 */
             border-left: 3px solid #1e40af;
-            padding-left: 0.75rem; /* compensate for border */
+            padding-left: 0.75rem;
             font-weight: 600;
         }
         .cat-link { border-left: 3px solid transparent; }
@@ -33,9 +33,12 @@
         .mobile-scroll::-webkit-scrollbar { display: none; }
         .mobile-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Search clear button */
+        /* Sidebar scrollbar styling */
+        .sidebar-scroll::-webkit-scrollbar { width: 4px; }
+        .sidebar-scroll::-webkit-scrollbar-thumb { background-color: #e5e7eb; border-radius: 4px; }
+        
+        /* Search clear button visibility */
         .search-clear { display: none; }
-        .search-container:focus-within .search-clear, 
         .search-container.has-value .search-clear { display: block; }
     </style>
 </head>
@@ -64,12 +67,12 @@
             <div class="flex flex-col md:flex-row gap-8 lg:gap-10">
                 
                 <aside class="hidden md:block w-64 flex-shrink-0">
-                    <div class="sticky top-28 space-y-8">
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-                            <h3 class="font-bold text-gray-900 mb-4 px-2 uppercase text-xs tracking-wider border-b border-gray-100 pb-2">
+                    <div class="sticky top-28 space-y-6">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col max-h-[calc(100vh-12rem)]">
+                            <h3 class="font-bold text-gray-900 mb-4 px-2 uppercase text-xs tracking-wider border-b border-gray-100 pb-2 flex-shrink-0">
                                 Product Categories
                             </h3>
-                            <nav class="space-y-1" id="desktop-sidebar">
+                            <nav class="space-y-1 overflow-y-auto sidebar-scroll pr-1" id="desktop-sidebar">
                                 <div class="animate-pulse space-y-3 px-2">
                                     <div class="h-5 bg-gray-100 rounded w-3/4"></div>
                                     <div class="h-5 bg-gray-100 rounded w-full"></div>
@@ -135,8 +138,9 @@
     <div id="v5-footer"></div>
 
     <script src="js/config.js?v=2.0"></script>
-    <script src="js/layout.js?v=2.1"></script>
-    <script src="js/seo-utils.js?v=2.0"></script> <script src="js/complete-products.js?v=3.2.0"></script>
+    <script src="js/layout.js?v=2.2"></script>
+    <script src="js/seo-utils.js?v=2.0"></script>
+    <script src="js/complete-products.js?v=3.2.0"></script>
     <script src="js/product-loader.js?v=2.0"></script>
     <script src="js/main.js?v=2.0"></script>
 
@@ -147,6 +151,7 @@
         let searchQuery = '';
         let categoryCounts = {};
         let categoriesMap = {};
+        let searchTimeout = null; // For debounce
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
@@ -191,7 +196,6 @@
 
         function calculateCounts() {
             categoryCounts = { 'all': allProducts.length };
-            // Initialize all categories with 0
             Object.keys(categoriesMap).forEach(k => categoryCounts[k] = 0);
             
             allProducts.forEach(p => {
@@ -209,19 +213,19 @@
                 <a href="#all" onclick="filterByCategory('all'); return false;" 
                    class="cat-link group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-md transition-all duration-200 ${currentCategory === 'all' ? 'active' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}">
                     <span>All Products</span>
-                    <span class="bg-gray-100 text-gray-500 py-0.5 px-2 rounded-full text-xs">${categoryCounts['all']}</span>
+                    <span class="bg-gray-100 text-gray-500 py-0.5 px-2 rounded-full text-xs font-semibold">${categoryCounts['all']}</span>
                 </a>
             `;
 
             Object.keys(categoriesMap).forEach(key => {
-                // Only show categories that have products (optional: remove check to show empty cats)
+                // Only show categories that have products
                 if (categoryCounts[key] > 0) {
                     const isActive = currentCategory === key;
                     html += `
                         <a href="#${key}" onclick="filterByCategory('${key}'); return false;" 
                            class="cat-link group flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-md transition-all duration-200 ${isActive ? 'active' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}">
                             <span>${categoriesMap[key]}</span>
-                            <span class="${isActive ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'} py-0.5 px-2 rounded-full text-xs transition-colors">${categoryCounts[key]}</span>
+                            <span class="${isActive ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'} py-0.5 px-2 rounded-full text-xs font-semibold transition-colors">${categoryCounts[key]}</span>
                         </a>
                     `;
                 }
@@ -253,18 +257,26 @@
             container.innerHTML = html;
         }
 
+        // Search with Debounce
         function handleSearch(val) {
-            searchQuery = val.toLowerCase().trim();
+            // Update UI state immediately
+            const hasValue = val.length > 0;
+            document.querySelectorAll('.search-container').forEach(el => 
+                el.classList.toggle('has-value', hasValue)
+            );
             
-            // UI: Toggle clear button visibility
-            const containers = document.querySelectorAll('.search-container');
-            containers.forEach(el => el.classList.toggle('has-value', searchQuery.length > 0));
-
             // Sync inputs
-            document.getElementById('mobile-search').value = val;
-            document.getElementById('desktop-search').value = val;
-            
-            applyFilters();
+            if (document.getElementById('mobile-search').value !== val) 
+                document.getElementById('mobile-search').value = val;
+            if (document.getElementById('desktop-search').value !== val) 
+                document.getElementById('desktop-search').value = val;
+
+            // Debounce the actual filtering
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                searchQuery = val.toLowerCase().trim();
+                applyFilters();
+            }, 300); // 300ms delay
         }
 
         function clearSearch() {
@@ -274,7 +286,7 @@
         function filterByCategory(cat) {
             currentCategory = cat;
             
-            // 1. Update Title & SEO
+            // Update Title & SEO
             const title = cat === 'all' ? 'All Products' : categoriesMap[cat];
             document.getElementById('page-title').textContent = title;
             
@@ -285,16 +297,20 @@
                 });
             }
 
-            // 2. Update Active States UI
-            renderSidebar(); // Re-render to update active class
+            // Update UI Active States
+            renderSidebar();
             renderMobileFilters();
             
-            // 3. Filter Grid
             applyFilters();
             
-            // 4. Update URL without scrolling
+            // Update URL
             if(history.pushState) {
                 history.pushState(null, null, cat === 'all' ? 'catalog.html' : '#' + cat);
+            }
+            
+            // Scroll to top on mobile
+            if (window.innerWidth < 768) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
@@ -313,7 +329,7 @@
                 return matchCat && matchSearch;
             });
 
-            // Update Result Count Text
+            // Update Count
             const countText = document.getElementById('result-count');
             if (countText) {
                 countText.textContent = `Showing ${filtered.length} product${filtered.length !== 1 ? 's' : ''}`;
@@ -335,7 +351,6 @@
         }
 
         function renderProductCard(product) {
-            // Config-based fallback image path
             const fallbackImg = window.V5Config?.IMAGES?.PLACEHOLDER || 'images/products/default-product.jpg';
             const imgPath = product.images?.[0] || fallbackImg;
             const catLabel = categoriesMap[product.category] || 'Medical Supply';
