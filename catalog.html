@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="V5 Medical Product Catalog - ISO 13485, CE & FDA certified medical consumables">
+    
+    <meta name="description" content="Browse V5 Medical's complete catalog of ISO 13485 certified medical consumables. Surgical sutures, packs, injection devices, and dental products.">
     <title>Product Catalog | V5 Medical LTD</title>
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
     <script>
         tailwind.config = {
             theme: {
@@ -17,215 +21,271 @@
             }
         }
     </script>
-    <style>
-        .product-card { transition: all 0.3s ease; }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
-        .loading-spinner {
-            border: 3px solid #f3f4f6; border-top: 3px solid #3b82f6; border-radius: 50%;
-            width: 40px; height: 40px; animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
 </head>
+
 <body class="bg-gray-50 flex flex-col min-h-screen">
     
     <div id="v5-header"></div>
 
-    <main class="flex-grow pt-20"> <section class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 relative overflow-hidden">
+    <main class="flex-grow pt-20">
+        
+        <section class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 relative overflow-hidden">
+            <div class="absolute inset-0 bg-pattern opacity-10"></div>
             <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
                 <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Medical Products Catalog</h1>
                 <p class="text-xl opacity-90 font-light">ISO 13485, CE & FDA Certified Medical Consumables</p>
             </div>
         </section>
 
-        <section class="bg-white py-4 sticky top-20 z-40 shadow-sm border-b border-gray-100">
+        <section class="bg-white py-6 sticky top-20 z-40 shadow-sm border-b border-gray-100">
             <div class="max-w-7xl mx-auto px-4">
-                <div class="flex flex-wrap gap-3 justify-center" id="category-filters">
-                    <button class="category-badge px-6 py-2 rounded-full bg-blue-600 text-white font-semibold shadow-sm" data-category="all">
-                        All Products (<span id="count-all">0</span>)
-                    </button>
+                
+                <div class="max-w-md mx-auto mb-6 relative">
+                    <input type="text" id="product-search" 
+                           placeholder="Search products (e.g. 'Suture', 'Syringe')..." 
+                           class="w-full pl-12 pr-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition shadow-sm"
+                           oninput="handleSearch(this.value)">
+                    <i class="fas fa-search absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+
+                <div class="flex flex-wrap gap-2 justify-center" id="category-filters">
+                    <div class="animate-pulse flex gap-2">
+                        <div class="h-10 w-24 bg-gray-200 rounded-full"></div>
+                        <div class="h-10 w-24 bg-gray-200 rounded-full"></div>
+                        <div class="h-10 w-24 bg-gray-200 rounded-full"></div>
                     </div>
+                </div>
             </div>
         </section>
 
-        <div id="loading" class="text-center py-20">
-            <div class="loading-spinner mx-auto mb-4"></div>
-            <p class="text-gray-600">Loading catalog...</p>
+        <div id="loading" class="text-center py-24">
+            <div class="loader-spinner mx-auto mb-6 border-blue-600 border-t-transparent"></div>
+            <p class="text-gray-600 font-medium">Loading catalog data...</p>
         </div>
-        <div id="error" class="hidden text-center py-20">
-            <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
-            <h2 class="text-2xl font-bold mb-2">Unable to Load Products</h2>
-            <button onclick="retryLoading()" class="text-blue-600 hover:underline">Retry</button>
+
+        <div id="error" class="hidden text-center py-24">
+            <i class="fas fa-exclamation-triangle text-red-500 text-5xl mb-4"></i>
+            <h2 class="text-2xl font-bold mb-2 text-gray-800">Unable to Load Products</h2>
+            <p class="text-gray-500 mb-6">Please check your internet connection.</p>
+            <button onclick="window.location.reload()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                Retry
+            </button>
         </div>
 
         <section class="max-w-7xl mx-auto px-4 py-12">
-            <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+            <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                </div>
+            
             <div id="no-results" class="hidden text-center py-20">
-                <p class="text-gray-500 text-xl">No products found in this category.</p>
-                <button onclick="resetFilters()" class="mt-4 text-blue-600 font-semibold">View All</button>
+                <div class="text-gray-300 text-6xl mb-4"><i class="fas fa-search"></i></div>
+                <p class="text-gray-500 text-xl font-medium">No products found.</p>
+                <p class="text-gray-400 text-sm mt-2">Try adjusting your search or category filter.</p>
+                <button onclick="resetFilters()" class="mt-6 text-blue-600 font-semibold hover:underline">Clear Filters</button>
             </div>
         </section>
     </main>
 
     <div id="v5-footer"></div>
 
-    <script src="js/layout.js"></script>
+    <script src="js/config.js?v=2.0"></script>
+    <script src="js/layout.js?v=2.1"></script>
     
-    <script src="js/complete-products.js"></script>
-    <script src="js/product-loader.js"></script>
+    <script src="js/complete-products.js?v=3.2.0"></script>
+    <script src="js/product-loader.js?v=2.0"></script>
 
     <script>
-        // 变量定义
-        let currentCategory = 'all';
+        // State
         let allProducts = [];
+        let currentCategory = 'all';
+        let searchQuery = '';
         let categoryCounts = {};
 
-        function initLoader() {
-            if (!window.productLoader) {
-                if (typeof ProductLoader === 'undefined') {
-                    console.error('ProductLoader class not found.'); return;
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Ensure loader exists
+                if (!window.productLoader) {
+                    throw new Error('ProductLoader not initialized');
                 }
-                window.productLoader = new ProductLoader();
-                window.addEventListener('productLoadError', handleLoadError);
+
+                // Load Data
+                const db = await window.productLoader.loadProducts();
+                
+                // Process Data
+                allProducts = db.products || [];
+                
+                if (allProducts.length === 0) {
+                    // Fallback to array if object structure differs
+                    if (Array.isArray(db)) allProducts = db;
+                    else if (db.byId) allProducts = Object.values(db.byId);
+                }
+
+                if (!allProducts.length) throw new Error('Product list is empty');
+
+                console.log(`[Catalog] Loaded ${allProducts.length} products`);
+
+                // Initial Render
+                initCategories(db.categories);
+                applyFilters(); // Renders products based on default state
+                
+                // Hide Loader
+                document.getElementById('loading').classList.add('hidden');
+
+                // Handle URL Hash (e.g. #surgical-sutures)
+                const hash = window.location.hash.substring(1);
+                if (hash) filterByCategory(hash);
+
+            } catch (err) {
+                console.error('[Catalog] Init error:', err);
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('error').classList.remove('hidden');
             }
-        }
+        });
 
-        function initializeCatalog() {
-            initLoader();
-            if (window.productLoader) {
-                window.productLoader.loadProducts()
-                    .then(handleProductsLoaded)
-                    .catch(handleLoadError);
-            }
-        }
+        // Generate Category Buttons
+        function initCategories(categoriesMap) {
+            const container = document.getElementById('category-filters');
+            if (!container) return;
 
-        function handleProductsLoaded(database) {
-            allProducts = database.products || Object.values(database.byId) || [];
-            if (!allProducts.length) throw new Error('No products found');
-            
-            generateCategoryFilters();
-            renderProducts(allProducts);
-            document.getElementById('loading').classList.add('hidden');
-            handleUrlHash();
-        }
-
-        function generateCategoryFilters() {
-            const filterContainer = document.getElementById('category-filters');
-            if (!filterContainer) return;
-
+            // Calculate counts
             categoryCounts = { 'all': allProducts.length };
             allProducts.forEach(p => {
                 const c = p.category || 'uncategorized';
                 categoryCounts[c] = (categoryCounts[c] || 0) + 1;
             });
 
-            const categories = window.completeProductDatabase?.categories || {};
-            filterContainer.innerHTML = '';
+            container.innerHTML = '';
             
-            // All Button
-            const allBtn = createFilterBtn('All Products', 'all', categoryCounts['all'], true);
-            filterContainer.appendChild(allBtn);
+            // "All" Button
+            container.appendChild(createBtn('All Products', 'all', categoryCounts['all']));
 
-            // Category Buttons
-            Object.keys(categories).forEach(cat => {
-                if (!categoryCounts[cat]) return;
-                filterContainer.appendChild(createFilterBtn(categories[cat], cat, categoryCounts[cat], false));
+            // Category Buttons (Only if they have products)
+            const sortedCats = Object.keys(categoriesMap || {}).sort();
+            sortedCats.forEach(catKey => {
+                if (categoryCounts[catKey] > 0) {
+                    container.appendChild(createBtn(categoriesMap[catKey], catKey, categoryCounts[catKey]));
+                }
             });
         }
 
-        function createFilterBtn(label, cat, count, isActive) {
+        function createBtn(label, value, count) {
             const btn = document.createElement('button');
-            btn.className = isActive 
-                ? 'category-badge px-6 py-2 rounded-full bg-blue-600 text-white font-semibold shadow-md transition-all'
-                : 'category-badge px-6 py-2 rounded-full bg-white text-gray-700 font-semibold shadow-sm hover:bg-gray-50 border border-gray-200 transition-all';
-            btn.dataset.category = cat;
-            btn.innerHTML = `${label} <span class="text-xs opacity-80 ml-1">(${count})</span>`;
-            btn.onclick = () => filterByCategory(cat);
+            // Base classes
+            btn.className = `category-btn px-5 py-2 rounded-full font-medium text-sm transition-all duration-200 border whitespace-nowrap
+                ${value === 'all' ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'}`;
+            
+            btn.dataset.category = value;
+            btn.innerHTML = `${label} <span class="ml-1 opacity-70 text-xs bg-black/10 px-1.5 py-0.5 rounded-full">${count}</span>`;
+            
+            btn.onclick = () => filterByCategory(value);
             return btn;
         }
 
-        function filterByCategory(category) {
-            currentCategory = category;
-            
-            // Update buttons
-            document.querySelectorAll('.category-badge').forEach(btn => {
-                const isTarget = btn.dataset.category === category;
-                btn.className = isTarget
-                    ? 'category-badge px-6 py-2 rounded-full bg-blue-600 text-white font-semibold shadow-md transform scale-105 transition-all'
-                    : 'category-badge px-6 py-2 rounded-full bg-white text-gray-700 font-semibold shadow-sm hover:bg-gray-50 border border-gray-200 transition-all';
-            });
-
-            const filtered = category === 'all' ? allProducts : allProducts.filter(p => p.category === category);
-            renderProducts(filtered);
-            
-            if(history.pushState) history.pushState(null, null, '#' + category);
-        }
-
-        function renderProducts(products) {
+        // Core Filter Logic
+        function applyFilters() {
             const grid = document.getElementById('products-grid');
             const noResults = document.getElementById('no-results');
             
-            if (products.length === 0) {
+            // Filter by Category AND Search Query
+            const filtered = allProducts.filter(p => {
+                const matchesCategory = currentCategory === 'all' || p.category === currentCategory;
+                const matchesSearch = !searchQuery || 
+                    p.name.toLowerCase().includes(searchQuery) || 
+                    (p.short && p.short.toLowerCase().includes(searchQuery));
+                
+                return matchesCategory && matchesSearch;
+            });
+
+            // Update UI
+            if (filtered.length === 0) {
                 grid.innerHTML = '';
                 noResults.classList.remove('hidden');
-                return;
+            } else {
+                noResults.classList.add('hidden');
+                grid.innerHTML = filtered.map(renderCard).join('');
             }
-            
-            noResults.classList.add('hidden');
-            grid.innerHTML = products.map(product => {
-                const img = product.images?.[0] || 'images/products/default-product.jpg';
-                return `
-                <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full group">
-                    <div class="h-56 overflow-hidden relative bg-gray-100">
-                        <img src="${img}" onerror="this.src='images/products/default-product.jpg'" 
-                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="${product.name}">
-                        <div class="absolute top-3 left-3">
-                            <span class="text-xs font-bold text-blue-800 uppercase bg-white/90 px-2 py-1 rounded backdrop-blur-sm shadow-sm">
-                                ${formatCategory(product.category)}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="p-5 flex flex-col flex-grow">
-                        <h3 class="font-bold text-lg mb-2 text-gray-900 line-clamp-2 hover:text-blue-700">
-                            <a href="product-detail.html?id=${product.id}">${product.name}</a>
-                        </h3>
-                        <p class="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow">${product.short || product.description?.substring(0,80) || ''}...</p>
-                        <div class="pt-4 border-t border-gray-100 flex justify-between items-center mt-auto">
-                            <a href="product-detail.html?id=${product.id}" class="text-blue-600 font-semibold text-sm hover:underline">View Details</a>
-                            <a href="https://wa.me/447895047944" target="_blank" class="bg-green-500 text-white px-3 py-1.5 rounded text-sm hover:bg-green-600 transition">
-                                <i class="fab fa-whatsapp"></i> Inquire
-                            </a>
-                        </div>
-                    </div>
-                </div>`;
-            }).join('');
         }
 
-        function formatCategory(cat) {
+        // Filter Actions
+        function filterByCategory(category) {
+            currentCategory = category;
+            
+            // Update Active State
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                const isActive = btn.dataset.category === category;
+                if (isActive) {
+                    btn.className = 'category-btn px-5 py-2 rounded-full font-medium text-sm transition-all duration-200 border whitespace-nowrap bg-blue-600 text-white border-blue-600 shadow-md transform scale-105';
+                } else {
+                    btn.className = 'category-btn px-5 py-2 rounded-full font-medium text-sm transition-all duration-200 border whitespace-nowrap bg-white text-gray-600 border-gray-200 hover:bg-gray-50 hover:border-blue-300';
+                }
+            });
+
+            applyFilters();
+            
+            // Update URL
+            if(history.pushState) {
+                history.pushState(null, null, category === 'all' ? ' ' : '#' + category);
+            }
+        }
+
+        function handleSearch(query) {
+            searchQuery = query.toLowerCase().trim();
+            applyFilters();
+        }
+
+        function resetFilters() {
+            document.getElementById('product-search').value = '';
+            searchQuery = '';
+            filterByCategory('all');
+        }
+
+        // HTML Generators
+        function renderCard(product) {
+            const imgPath = product.images?.[0] || 'images/products/default-product.jpg';
+            const catName = formatCatName(product.category);
+            
+            return `
+            <div class="product-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full group hover:shadow-lg transition-all duration-300">
+                <div class="h-56 overflow-hidden relative bg-gray-50">
+                    <img src="${imgPath}" 
+                         onerror="this.src='images/products/default-product.jpg'" 
+                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                         alt="${product.name}" 
+                         loading="lazy">
+                    <div class="absolute top-3 left-3">
+                        <span class="text-[10px] font-bold text-blue-800 uppercase bg-blue-50/90 px-2 py-1 rounded backdrop-blur-sm border border-blue-100">
+                            ${catName}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="p-5 flex flex-col flex-grow">
+                    <h3 class="font-bold text-lg mb-2 text-gray-900 line-clamp-2 hover:text-blue-700 transition-colors">
+                        <a href="product-detail.html?id=${product.id}">${product.name}</a>
+                    </h3>
+                    
+                    <p class="text-gray-500 text-sm mb-4 line-clamp-2 flex-grow">
+                        ${product.short || product.description?.substring(0, 60) + '...'}
+                    </p>
+                    
+                    <div class="pt-4 border-t border-gray-50 flex justify-between items-center mt-auto">
+                        <a href="product-detail.html?id=${product.id}" class="text-blue-600 font-semibold text-sm hover:underline">
+                            View Specs
+                        </a>
+                        <a href="https://wa.me/447895047944?text=Inquiry about ${encodeURIComponent(product.name)}" 
+                           target="_blank" 
+                           class="bg-gray-900 text-white px-3 py-1.5 rounded-md text-xs font-bold hover:bg-blue-600 transition flex items-center gap-1">
+                            <i class="fab fa-whatsapp"></i> Quote
+                        </a>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function formatCatName(cat) {
             if (!cat) return '';
             return cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
         }
-
-        function handleLoadError(error) {
-            console.error(error);
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('error').classList.remove('hidden');
-        }
-
-        function retryLoading() {
-            document.getElementById('error').classList.add('hidden');
-            document.getElementById('loading').classList.remove('hidden');
-            initializeCatalog();
-        }
-
-        function resetFilters() { filterByCategory('all'); }
-        
-        function handleUrlHash() {
-            const hash = window.location.hash.substring(1);
-            if (hash && categoryCounts[hash]) filterByCategory(hash);
-        }
-
-        document.addEventListener('DOMContentLoaded', initializeCatalog);
     </script>
 </body>
 </html>
