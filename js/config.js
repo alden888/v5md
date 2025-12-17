@@ -1,6 +1,6 @@
 /**
  * V5 Medical Website Configuration
- * @version 2.5.0
+ * @version 2.6.0
  * @updated 2024-12-16
  */
 
@@ -12,17 +12,17 @@ const V5Config = (() => {
     return {
         ENV: { IS_PRODUCTION: isProduction, IS_LOCAL: isLocal },
         
-        // 关键：生产环境 BASE_URL 留空，让浏览器自动处理相对路径
-        BASE_URL: isProduction ? '' : '', 
+        // 关键：留空让浏览器自动处理相对路径
+        BASE_URL: '', 
         
         PATHS: { IMAGES: 'images', PRODUCTS: 'images/products' },
         
         IMAGES: {
             PLACEHOLDER: 'images/products/default-product.jpg',
-            // 核心修复：CDN 绝对路径
-            LOGO: 'https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png', 
-            // 本地回退
+            LOGO: 'https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png',
             LOGO_LOCAL: 'images/v5logo.png',
+            
+            // 关键：指向您的 GitHub 仓库的 Raw 地址，用于图片回退
             FALLBACK_BASE: 'https://raw.githubusercontent.com/alden888/v5md/main/'
         },
         
