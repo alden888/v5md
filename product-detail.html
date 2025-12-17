@@ -59,7 +59,7 @@
         
         <div id="loading-state" class="max-w-7xl mx-auto text-center py-32">
             <div class="loader-spinner border-blue-600 border-t-transparent mx-auto mb-4"></div>
-            <p class="text-gray-500 font-medium">Loading product details...</p>
+            <p class="text-gray-500 font-medium">Retrieving product information...</p>
         </div>
 
         <div id="error-state" class="hidden max-w-lg mx-auto text-center py-32 px-4">
@@ -221,10 +221,10 @@
         <button class="absolute top-6 right-6 text-white text-4xl hover:text-gray-300 transition">&times;</button>
     </div>
 
-    <script src="js/config.js?v=2.5.0"></script>
+    <script src="js/config.js?v=2.6.0"></script>
     <script src="js/layout.js?v=3.1.0"></script>
-    <script src="js/seo-utils.js?v=2.0.0"></script>
-    <script src="js/complete-products.js?v=3.2.0"></script>
+    <script src="js/image-utils.js?v=2.2.0"></script> <script src="js/seo-utils.js?v=2.0.0"></script>
+    <script src="js/complete-products.js?v=3.3.0"></script>
     <script src="js/product-loader.js?v=2.0.0"></script>
     <script src="js/main.js?v=2.1.0"></script>
 
@@ -285,11 +285,18 @@
             const catName = formatCategory(product.category);
             setText('product-category-badge', catName);
             
-            // Image
+            // Image Logic (Key Fix)
             const imgEl = document.getElementById('product-image');
-            const imgSrc = product.images?.[0] || 'images/products/default-product.jpg';
-            imgEl.src = imgSrc;
-            imgEl.onerror = () => { imgEl.src = 'images/products/default-product.jpg'; };
+            const imgSrc = product.images?.[0]; // Get the path from data
+            
+            // Use ImageUtils to resolve the correct path (handle base/fallback)
+            if (window.imageUtils) {
+                imgEl.src = window.imageUtils.getImageUrl(imgSrc);
+                // Bind robust error handler
+                imgEl.onerror = function() { window.imageUtils.handleError(this); };
+            } else {
+                imgEl.src = imgSrc || 'images/products/default-product.jpg';
+            }
 
             // Specs
             const specsTable = document.getElementById('specs-table');
@@ -328,16 +335,22 @@
                 return;
             }
 
-            container.innerHTML = related.map(p => `
+            container.innerHTML = related.map(p => {
+                // Use imageUtils for related products too
+                const pImg = p.images?.[0];
+                const resolvedImg = window.imageUtils ? window.imageUtils.getImageUrl(pImg) : pImg;
+                
+                return `
                 <a href="product-detail.html?id=${p.id}" class="group block">
                     <div class="bg-gray-50 rounded-xl overflow-hidden aspect-square border border-gray-100 mb-3">
-                        <img src="${p.images?.[0] || 'images/products/default-product.jpg'}" 
+                        <img src="${resolvedImg}" 
+                             onerror="window.imageUtils && window.imageUtils.handleError(this)"
                              class="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
                              alt="${p.name}" loading="lazy">
                     </div>
                     <h4 class="font-bold text-gray-900 text-sm line-clamp-2 group-hover:text-blue-600 transition">${p.name}</h4>
                 </a>
-            `).join('');
+            `}).join('');
         }
 
         // --- Tabs ---
@@ -382,6 +395,3 @@
     <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
 </body>
 </html>
-
-
-
