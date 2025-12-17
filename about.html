@@ -3,363 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <meta name="description" content="Learn about V5 Medical LTD - A global leader in medical consumables manufacturing. ISO 13485 certified, 20+ years experience serving 40+ countries.">
-    <meta name="keywords" content="V5 Medical profile, medical manufacturer china, surgical supply factory, ISO 13485 certified company, medical device exporter">
-    <meta name="author" content="V5 Medical LTD">
-    <meta name="robots" content="index, follow">
-
-    <meta property="og:title" content="About Us | V5 Medical LTD">
-    <meta property="og:description" content="Professional Global Medical Consumables Supplier. Factory Direct. ISO/CE/FDA Certified.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://v5md.com/about.html">
-    <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png">
-    
-    <title>About Us | V5 Medical LTD - Professional Medical Manufacturer</title>
-    
-    <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: { colors: { primary: '#1e40af', secondary: '#3b82f6', accent: '#2563eb' } }
+    <title>VS Medical - Driving Excellence in Healthcare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* 英雄区样式 */
+        .hero-section {
+            background: linear-gradient(rgba(13, 70, 128, 0.85), rgba(13, 70, 128, 0.9)), 
+                        url('https://images.unsplash.com/photo-1586773860418-dc22f8b874bc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 60px 20px;
+            min-height: 380px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .breadcrumb {
+            font-size: 14px;
+            margin-bottom: 25px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .breadcrumb a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .breadcrumb a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .breadcrumb span {
+            color: #4db8ff;
+        }
+        
+        .hero-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero-subtitle {
+            font-size: 22px;
+            font-weight: 500;
+            margin-bottom: 25px;
+            color: #e6f2ff;
+            max-width: 800px;
+        }
+        
+        .hero-description {
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 750px;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.95);
+        }
+        
+        .hero-stats {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #4db8ff;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* 内容区域样式 */
+        .content-section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            color: #0d4680;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #4db8ff;
+            display: inline-block;
+        }
+        
+        .history-content {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .history-title {
+            font-size: 28px;
+            color: #0d4680;
+            margin-bottom: 20px;
+        }
+        
+        .history-text {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #444;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 40px 15px;
+                min-height: 320px;
+            }
+            
+            .hero-title {
+                font-size: 34px;
+            }
+            
+            .hero-subtitle {
+                font-size: 19px;
+            }
+            
+            .hero-description {
+                font-size: 16px;
+            }
+            
+            .stat-value {
+                font-size: 30px;
+            }
+            
+            .hero-stats {
+                gap: 25px;
+            }
+            
+            .history-content {
+                padding: 25px;
             }
         }
-    </script>
-
-    <style>
-        /* 英雄区背景 - 与index.html相同风格 */
-        .hero-bg-image {
-            filter: brightness(0.85) contrast(1.1);
-            transform: scale(1.05);
-        }
         
-        /* 四周自然过渡到白色的遮罩 */
-        .hero-vignette-overlay {
-            background: radial-gradient(
-                circle at center,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.1) 30%,
-                rgba(255, 255, 255, 0.4) 60%,
-                rgba(255, 255, 255, 0.7) 80%,
-                rgba(255, 255, 255, 0.9) 100%
-            );
-        }
-        
-        /* 暗色叠加层，增强文字可读性 */
-        .hero-dark-overlay {
-            background: linear-gradient(
-                to bottom,
-                rgba(0, 0, 0, 0.15) 0%,
-                rgba(0, 0, 0, 0.1) 30%,
-                rgba(0, 0, 0, 0.05) 60%,
-                rgba(0, 0, 0, 0.1) 85%,
-                rgba(0, 0, 0, 0.15) 100%
-            );
-            mix-blend-mode: multiply;
-        }
-        
-        /* 增强文字可读性 */
-        .hero-text-shadow {
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4),
-                        0 1px 3px rgba(0, 0, 0, 0.3);
-        }
-        
-        .hero-subtitle-shadow {
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3),
-                        0 1px 2px rgba(0, 0, 0, 0.2);
-        }
-        
-        .hero-desc-shadow {
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4),
-                        0 1px 1px rgba(0, 0, 0, 0.2);
-        }
-        
-        /* 内容区域轻微背景增强 */
-        .hero-content-bg {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(8px);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* 面包屑导航样式 */
-        .breadcrumb-nav {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            transition: all 0.3s ease;
-        }
-        
-        .breadcrumb-nav:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
-        @media (max-width: 768px) {
-            .hero-content-bg {
-                background: rgba(255, 255, 255, 0.15);
-                margin: 0 0.5rem;
-                padding: 1.5rem 1rem;
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 28px;
+            }
+            
+            .hero-subtitle {
+                font-size: 18px;
+            }
+            
+            .stat-value {
+                font-size: 26px;
+            }
+            
+            .stat-label {
+                font-size: 14px;
+            }
+            
+            .section-title {
+                font-size: 26px;
             }
         }
     </style>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "AboutPage",
-      "mainEntity": {
-        "@type": "Organization",
-        "name": "V5 Medical LTD",
-        "foundingDate": "2005",
-        "description": "Professional Global Medical Consumables Supplier",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Kunshan",
-          "addressRegion": "Jiangsu",
-          "addressCountry": "CN"
-        }
-      }
-    }
-    </script>
 </head>
-
-<body class="smooth-scroll font-sans text-gray-800 flex flex-col min-h-screen">
-
-    <div id="loader" class="page-loader">
-        <div class="loader-spinner"></div>
-    </div>
-    <script>
-        setTimeout(function() {
-            var loader = document.getElementById('loader');
-            if(loader) { loader.style.opacity = '0'; setTimeout(function(){ loader.style.display = 'none'; }, 500); }
-        }, 3000);
-    </script>
-
-    <div id="v5-header"></div>
-
-    <main class="flex-grow pt-20">
-        
-        <!-- 优化英雄区 - 与index.html相同风格 -->
-        <div class="relative min-h-[500px] md:min-h-[550px] flex items-center justify-center px-4 overflow-hidden bg-white">
-            <!-- 背景图片 -->
-            <div class="absolute inset-0 z-0">
-                <img src="images/hero-bg.jpg" 
-                     onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920&q=85&auto=format&fit=crop&crop=center'"
-                     class="w-full h-full object-cover object-center hero-bg-image" 
-                     alt="V5 Medical Manufacturing Facility"
-                     fetchpriority="high">
-                
-                <!-- 暗色叠加层，增强文字可读性 -->
-                <div class="absolute inset-0 hero-dark-overlay"></div>
-                
-                <!-- 关键：四周自然过渡到白色的遮罩 -->
-                <div class="absolute inset-0 hero-vignette-overlay"></div>
+<body>
+    <!-- 英雄区 -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="breadcrumb">
+                <a href="#">Home</a> / <span>About Us</span>
             </div>
-
-            <!-- 内容区域 -->
-            <div class="relative z-10 max-w-5xl mx-auto text-center px-4 py-6 hero-content-bg">
-                <!-- 主标题 -->
-                <h1 class="text-3xl md:text-5xl font-bold mb-4 text-gray-900 hero-text-shadow leading-tight tracking-tight">
-                    Driving Excellence in Healthcare<br>
-                    <span class="text-2xl md:text-4xl text-blue-800 mt-3 block font-semibold hero-subtitle-shadow">
-                        20+ Years of Medical Manufacturing Experience
-                    </span>
-                </h1>
-                
-                <!-- 描述文字 -->
-                <p class="text-lg md:text-xl mb-8 text-gray-800 font-medium max-w-2xl mx-auto leading-relaxed hero-desc-shadow px-4">
-                    For over 20 years, V5 Medical has been dedicated to manufacturing high-quality, affordable medical consumables for the global market.
-                </p>
-                
-                <!-- 面包屑导航 -->
-                <nav class="inline-flex px-5 py-2 rounded-full breadcrumb-nav text-sm text-gray-700">
-                    <ol class="flex items-center space-x-2">
-                        <li><a href="index.html" class="hover:text-blue-800 transition font-medium">Home</a></li>
-                        <li><span class="opacity-50">/</span></li>
-                        <li class="text-blue-800 font-semibold">About Us</li>
-                    </ol>
-                </nav>
+            <h1 class="hero-title">Driving Excellence in Healthcare</h1>
+            <h2 class="hero-subtitle">20+ Years of Medical Manufacturing Experience</h2>
+            <p class="hero-description">
+                For over 20 years, VS Medical has been dedicated to manufacturing high-quality, affordable medical consumables for the global market.
+            </p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-value">20+</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">500+</div>
+                    <div class="stat-label">Products</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">50+</div>
+                    <div class="stat-label">Countries Served</div>
+                </div>
             </div>
         </div>
-
-        <!-- 其余部分保持不变 -->
-        <section class="py-20 px-4">
-            <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-                <div class="relative group">
-                    <div class="absolute -top-4 -left-4 w-24 h-24 bg-blue-100 rounded-full opacity-50 z-0 group-hover:scale-110 transition-transform"></div>
-                    <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-green-50 rounded-full opacity-50 z-0 group-hover:scale-110 transition-transform"></div>
-                    
-                    <img src="images/about/Alden-Cheng.png" 
-                         onerror="this.src='https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800'"
-                         class="relative z-10 rounded-2xl shadow-xl w-full object-cover h-[500px] transition duration-500 transform group-hover:scale-[1.01]" 
-                         alt="Our Team">
-                         
-                    <div class="absolute bottom-8 left-8 right-8 bg-white/95 backdrop-blur p-6 rounded-xl shadow-lg z-20 border-l-4 border-blue-600">
-                        <p class="text-gray-700 italic text-sm leading-relaxed">"Our mission is simple: To eliminate inefficiencies in the medical supply chain and make quality healthcare accessible globally."</p>
-                        <p class="text-gray-900 font-bold mt-3 text-sm flex items-center gap-2">
-                            <span class="w-8 h-px bg-gray-400"></span> Alden Cheng, CEO
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="space-y-8">
-                    <div>
-                        <span class="inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide mb-3">Our History</span>
-                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">20 Years of Medical Innovation</h2>
-                        <p class="text-gray-600 leading-relaxed mb-4">
-                            Founded in 2005, V5 Medical started with a vision to bridge the gap between high-quality medical manufacturing and global healthcare needs. What began as a small suture production line has grown into a comprehensive medical supply powerhouse.
-                        </p>
-                        <p class="text-gray-600 leading-relaxed">
-                            Today, we operate strategic manufacturing bases in Shandong, Suqian, and Shenzhen, specializing in surgical sutures, sterile packs, and injection systems for hospitals in over 40 countries.
-                        </p>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-6 pt-2">
-                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-blue-200 transition">
-                            <div class="text-3xl font-bold text-blue-600 mb-1">2005</div>
-                            <div class="text-sm text-gray-500 font-medium">Established</div>
-                        </div>
-                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-green-200 transition">
-                            <div class="text-3xl font-bold text-green-600 mb-1">40+</div>
-                            <div class="text-sm text-gray-500 font-medium">Countries Served</div>
-                        </div>
-                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-purple-200 transition">
-                            <div class="text-3xl font-bold text-purple-600 mb-1">100%</div>
-                            <div class="text-sm text-gray-500 font-medium">Factory Direct</div>
-                        </div>
-                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-orange-200 transition">
-                            <div class="text-3xl font-bold text-orange-600 mb-1">ISO</div>
-                            <div class="text-sm text-gray-500 font-medium">13485 Certified</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-20 bg-blue-900 text-white relative overflow-hidden">
-            <div class="absolute inset-0 bg-pattern opacity-5"></div>
-            <div class="max-w-7xl mx-auto px-4 relative z-10">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl font-bold mb-4">Our Core Values</h2>
-                    <p class="text-blue-200">The principles that guide every product we manufacture.</p>
-                </div>
-                
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10 hover:bg-white/10 transition duration-300">
-                        <div class="w-14 h-14 bg-blue-500 rounded-xl flex items-center justify-center text-white text-2xl mb-6 shadow-lg">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3">Safety First</h3>
-                        <p class="text-blue-100 text-sm leading-relaxed">
-                            Patient safety is non-negotiable. We adhere strictly to ISO 13485 standards and ensure every product undergoes rigorous sterilization and quality checks.
-                        </p>
-                    </div>
-
-                    <div class="bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10 hover:bg-white/10 transition duration-300">
-                        <div class="w-14 h-14 bg-green-500 rounded-xl flex items-center justify-center text-white text-2xl mb-6 shadow-lg">
-                            <i class="fas fa-hand-holding-usd"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3">Cost Efficiency</h3>
-                        <p class="text-blue-100 text-sm leading-relaxed">
-                            By operating as a factory-direct supplier, we cut out unnecessary middlemen, passing the savings directly to our partners to maximize their margins.
-                        </p>
-                    </div>
-
-                    <div class="bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10 hover:bg-white/10 transition duration-300">
-                        <div class="w-14 h-14 bg-purple-500 rounded-xl flex items-center justify-center text-white text-2xl mb-6 shadow-lg">
-                            <i class="fas fa-handshake"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3">Long-term Partnership</h3>
-                        <p class="text-blue-100 text-sm leading-relaxed">
-                            We don't just sell products; we build relationships. We support our distributors with marketing materials, flexible MOQs, and consistent supply.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-24 px-4 bg-gray-50">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Manufacturing Excellence</h2>
-                    <p class="text-gray-600 max-w-2xl mx-auto">State-of-the-art facilities ensuring precision and sterility.</p>
-                </div>
-
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="group relative overflow-hidden rounded-2xl h-72 shadow-md">
-                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600" 
-                             class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Production Line">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
-                            <div>
-                                <h3 class="text-white font-bold text-lg mb-1">Automated Assembly</h3>
-                                <p class="text-gray-300 text-xs opacity-0 group-hover:opacity-100 transition duration-300">High-precision machinery for consistent quality.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="group relative overflow-hidden rounded-2xl h-72 shadow-md">
-                        <img src="https://images.unsplash.com/photo-1579684385183-1908d5c96b00?w=600" 
-                             class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Clean Room">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
-                            <div>
-                                <h3 class="text-white font-bold text-lg mb-1">Class 100k Clean Room</h3>
-                                <p class="text-gray-300 text-xs opacity-0 group-hover:opacity-100 transition duration-300">Sterile environment for packing and assembly.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="group relative overflow-hidden rounded-2xl h-72 shadow-md">
-                        <img src="https://images.unsplash.com/photo-1581093458791-9f302e683c9c?w=600" 
-                             class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Quality Control">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
-                            <div>
-                                <h3 class="text-white font-bold text-lg mb-1">Strict QC Testing</h3>
-                                <p class="text-gray-300 text-xs opacity-0 group-hover:opacity-100 transition duration-300">Every batch is tested before shipment.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="group relative overflow-hidden rounded-2xl h-72 shadow-md">
-                        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600" 
-                             class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Logistics">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
-                            <div>
-                                <h3 class="text-white font-bold text-lg mb-1">Global Logistics</h3>
-                                <p class="text-gray-300 text-xs opacity-0 group-hover:opacity-100 transition duration-300">Fast and secure shipping worldwide.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-24 px-4 text-center">
-            <div class="max-w-3xl mx-auto">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Ready to Work with a Reliable Manufacturer?</h2>
-                <p class="text-lg text-gray-600 mb-10">Let's discuss how we can support your medical supply chain needs.</p>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <a href="contact.html" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg hover:shadow-xl transition transform hover:-translate-y-1">
-                        Contact Us
-                    </a>
-                    <a href="catalog.html" class="bg-white text-blue-900 border-2 border-blue-100 hover:border-blue-600 px-8 py-4 rounded-full text-lg font-bold shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
-                        View Products
-                    </a>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <div id="v5-footer"></div>
-
-    <script src="js/config.js?v=2.5.0"></script>
-    <script src="js/layout.js?v=3.1.0"></script>
-    <script src="js/main.js?v=2.1.0"></script>
+    </section>
     
-    <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
-
+    <!-- 内容区域 -->
+    <section class="content-section">
+        <h2 class="section-title">OUR HISTORY</h2>
+        <div class="history-content">
+            <h3 class="history-title">20 Years of Medical Innovation</h3>
+            <p class="history-text">
+                Founded in 2005, VS Medical started with a vision to bridge the gap between high-quality medical manufacturing and global healthcare needs. What began as a small future production line has grown into a comprehensive medical supply powerhouse.
+            </p>
+            <p class="history-text" style="margin-top: 20px;">
+                Today, we serve healthcare providers in over 50 countries with a portfolio of more than 500 medical products. Our commitment to innovation, quality control, and affordable pricing has established us as a trusted partner in the global healthcare community.
+            </p>
+        </div>
+    </section>
 </body>
 </html>
