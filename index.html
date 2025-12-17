@@ -40,67 +40,89 @@
     </script>
     
     <style>
-        /* 优化英雄区背景 - 适度淡化，医疗器械元素清晰可见 */
+        /* 英雄区背景图片 - 优化显示医疗器械元素 */
         .hero-bg-image {
-            filter: brightness(0.75) contrast(1.1);
+            filter: brightness(0.85) contrast(1.1);
             transform: scale(1.05);
         }
         
-        /* 暗色渐变叠加，增强文字可读性 */
-        .hero-gradient-overlay {
+        /* 新增：背景图片四周自然过渡到白色的遮罩 */
+        .hero-vignette-overlay {
+            background: radial-gradient(
+                circle at center,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.1) 30%,
+                rgba(255, 255, 255, 0.4) 60%,
+                rgba(255, 255, 255, 0.7) 80%,
+                rgba(255, 255, 255, 0.9) 100%
+            );
+        }
+        
+        /* 暗色叠加层，增强文字可读性 */
+        .hero-dark-overlay {
             background: linear-gradient(
                 to bottom,
-                rgba(0, 0, 0, 0.25) 0%,
-                rgba(0, 0, 0, 0.15) 30%,
-                rgba(0, 0, 0, 0.1) 60%,
-                rgba(0, 0, 0, 0.15) 85%,
-                rgba(0, 0, 0, 0.25) 100%
+                rgba(0, 0, 0, 0.15) 0%,
+                rgba(0, 0, 0, 0.1) 30%,
+                rgba(0, 0, 0, 0.05) 60%,
+                rgba(0, 0, 0, 0.1) 85%,
+                rgba(0, 0, 0, 0.15) 100%
             );
+            mix-blend-mode: multiply;
         }
         
         /* 增强文字可读性 */
         .hero-text-shadow {
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4),
-                        0 1px 2px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4),
+                        0 1px 3px rgba(0, 0, 0, 0.3);
         }
         
         .hero-subtitle-shadow {
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3),
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3),
                         0 1px 2px rgba(0, 0, 0, 0.2);
         }
         
         .hero-desc-shadow {
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4),
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4),
                         0 1px 1px rgba(0, 0, 0, 0.2);
         }
         
         /* 按钮增强效果 */
         .hero-button-shadow {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3),
-                       0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25),
+                       0 2px 5px rgba(0, 0, 0, 0.15);
         }
         
         .hero-button-shadow:hover {
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4),
-                       0 3px 8px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35),
+                       0 3px 8px rgba(0, 0, 0, 0.2);
         }
         
         /* PDF链接样式 */
         .pdf-link {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             transition: all 0.3s ease;
         }
         
         .pdf-link:hover {
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
+        }
+        
+        /* 内容区域轻微背景增强 */
+        .hero-content-bg {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
         
         /* 统计卡片优化 */
         .stats-card {
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(8px);
             border-radius: 16px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -108,9 +130,17 @@
         }
         
         .stats-card:hover {
-            background: rgba(255, 255, 255, 0.98);
+            background: rgba(255, 255, 255, 1);
             transform: translateY(-3px);
             box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content-bg {
+                background: rgba(255, 255, 255, 0.15);
+                margin: 0 0.5rem;
+                padding: 1.5rem 1rem;
+            }
         }
     </style>
 
@@ -166,8 +196,8 @@
 
     <main class="flex-grow pt-20"> 
         
-        <!-- 调整英雄区高度和字体大小 -->
-        <div class="relative min-h-[500px] md:min-h-[550px] flex items-center justify-center px-4 overflow-hidden">
+        <!-- 优化英雄区 - 背景图四周自然过渡到白色 -->
+        <div class="relative min-h-[500px] md:min-h-[550px] flex items-center justify-center px-4 overflow-hidden bg-white">
             <!-- 背景图片 -->
             <div class="absolute inset-0 z-0">
                 <img src="images/hero-bg.jpg" 
@@ -176,32 +206,36 @@
                      alt="Medical Manufacturing Factory with surgical instruments and medical devices"
                      fetchpriority="high"
                      decoding="async">
-                <!-- 暗色渐变叠加 -->
-                <div class="absolute inset-0 hero-gradient-overlay"></div>
+                
+                <!-- 暗色叠加层，增强文字可读性 -->
+                <div class="absolute inset-0 hero-dark-overlay"></div>
+                
+                <!-- 关键：四周自然过渡到白色的遮罩 -->
+                <div class="absolute inset-0 hero-vignette-overlay"></div>
             </div>
 
             <!-- 内容区域 -->
-            <div class="relative z-10 max-w-5xl mx-auto text-center px-4 py-8">
-                <!-- Logo - 稍微缩小 -->
+            <div class="relative z-10 max-w-5xl mx-auto text-center px-4 py-6 hero-content-bg">
+                <!-- Logo -->
                 <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" 
                      onerror="this.style.display='none'" 
                      class="h-24 md:h-32 mx-auto mb-6 drop-shadow-2xl transform hover:scale-105 transition-transform duration-500" 
                      alt="V5 Medical Logo">
                 
-                <!-- 主标题 - 调整字体大小 -->
-                <h1 class="text-3xl md:text-5xl font-bold mb-4 text-white hero-text-shadow leading-tight tracking-tight">
+                <!-- 主标题 -->
+                <h1 class="text-3xl md:text-5xl font-bold mb-4 text-gray-900 hero-text-shadow leading-tight tracking-tight">
                     Factory Direct Medical Consumables<br>
-                    <span class="text-2xl md:text-4xl text-blue-100 mt-3 block font-semibold hero-subtitle-shadow">
+                    <span class="text-2xl md:text-4xl text-blue-800 mt-3 block font-semibold hero-subtitle-shadow">
                         ISO 13485, CE & FDA Certified
                     </span>
                 </h1>
                 
-                <!-- 描述文字 - 调整字体大小 -->
-                <p class="text-lg md:text-xl mb-8 text-gray-100 font-medium max-w-2xl mx-auto leading-relaxed hero-desc-shadow px-4">
+                <!-- 描述文字 -->
+                <p class="text-lg md:text-xl mb-8 text-gray-800 font-medium max-w-2xl mx-auto leading-relaxed hero-desc-shadow px-4">
                     Stop paying middleman fees. Partner directly with a premier manufacturer with 20+ years of experience exporting to 40+ countries.
                 </p>
                 
-                <!-- 按钮 - 调整大小和间距 -->
+                <!-- 按钮 -->
                 <div class="flex flex-wrap justify-center gap-4 mb-8">
                     <a href="https://wa.me/447895047944?text=I'm interested in your medical products" 
                        target="_blank" rel="noopener noreferrer"
@@ -213,32 +247,32 @@
                     
                     <a href="pdf/Catalog.pdf" target="_blank" 
                        class="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white px-7 py-3 md:px-8 md:py-4 rounded-full text-base md:text-lg font-semibold hero-button-shadow transition-all duration-300 hover:scale-105 flex items-center gap-2 group"
-                       onclick="window.trackPDFDownload && window.trackPDFDownload('Catalog')">
+                       onclick="window.trackWhatsAppClick && window.trackWhatsAppClick()">
                         <i class="fas fa-download text-lg group-hover:translate-y-1 transition-transform"></i> 
                         <span>Download Catalog</span>
                     </a>
                 </div>
 
-                <!-- PDF链接 - 调整大小 -->
+                <!-- PDF链接 -->
                 <div class="flex flex-wrap justify-center gap-4">
                     <a href="pdf/Quotations for dental products.pdf" target="_blank" 
-                       class="pdf-link text-white flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm" 
+                       class="pdf-link text-gray-800 flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm" 
                        onclick="window.trackPDFDownload && window.trackPDFDownload('Dental Kit')">
-                        <i class="fas fa-file-pdf text-red-300 text-base"></i> 
+                        <i class="fas fa-file-pdf text-red-500 text-base"></i> 
                         <span>Dental Kit PDF</span>
                     </a>
                     
                     <a href="pdf/price list.pdf" target="_blank" 
-                       class="pdf-link text-white flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm" 
+                       class="pdf-link text-gray-800 flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm" 
                        onclick="window.trackPDFDownload && window.trackPDFDownload('Price List')">
-                        <i class="fas fa-file-pdf text-red-300 text-base"></i> 
+                        <i class="fas fa-file-pdf text-red-500 text-base"></i> 
                         <span>Price List PDF</span>
                     </a>
                 </div>
             </div>
         </div>
 
-        <!-- 统计卡片区域 - 调整上边距 -->
+        <!-- 统计卡片区域 -->
         <section class="py-8 relative z-20 -mt-4 mx-4 md:mx-auto max-w-4xl">
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
                 <div class="stats-card p-4">
