@@ -1,19 +1,17 @@
 /**
  * Complete V5 Medical Product Database
- * Optimized Version: Auto-generated IDs, Smart Image Paths, Full Category Coverage
- * @version 3.2.0
+ * Precise Image Mapping Version
+ * @version 3.3.0
  * @updated 2024-12-16
  */
 
 const completeProductDatabase = {
-    // Metadata
     metadata: {
-        version: '3.2.0',
+        version: '3.3.0',
         lastUpdated: '2024-12-16',
         totalProducts: 51
     },
     
-    // Categories mapping (7 Categories)
     categories: {
         'surgical-sutures': 'Surgical Sutures',
         'surgical-instruments': 'Surgical Instruments', 
@@ -24,117 +22,106 @@ const completeProductDatabase = {
         'dental-products': 'Dental Products'
     },
     
-    // Storage
     products: [],
     byId: {}
 };
 
 // ==========================================
-// 1. Raw Product List (Easy to Maintain)
+// 1. Precise Image Mapping (Based on your GitHub files)
 // ==========================================
-const rawProductList = [
-    // --- Surgical Sutures ---
-    { name: "PGA Absorbable Suture", category: "surgical-sutures" },
-    { name: "PGLA Absorbable Suture", category: "surgical-sutures" },
-    { name: "Chromic Catgut", category: "surgical-sutures" },
-    { name: "Plain Catgut", category: "surgical-sutures" },
-    { name: "Silk Suture", category: "surgical-sutures" },
-    { name: "Nylon Suture", category: "surgical-sutures" },
-    { name: "Polypropylene Suture", category: "surgical-sutures" },
-    { name: "Polyester Suture", category: "surgical-sutures" },
-    { name: "PDO Suture", category: "surgical-sutures" },
+const productData = [
+    // --- 1. Surgical Sutures ---
+    { name: "PGA Absorbable Suture", id: "pga-absorbable-suture", category: "surgical-sutures", img: "images/products/surgical-sutures/pga-absorbable-suture.jpg" },
+    { name: "PGLA Absorbable Suture", id: "pgla-absorbable-suture", category: "surgical-sutures", img: "images/products/surgical-sutures/pgla-absorbable-suture.jpg" },
+    { name: "Chromic Catgut", id: "chromic-catgut", category: "surgical-sutures", img: "images/products/surgical-sutures/chromic-catgut.jpg" },
+    { name: "Plain Catgut", id: "plain-catgut", category: "surgical-sutures", img: "images/products/surgical-sutures/plain-catgut.jpg" },
+    { name: "Silk Suture", id: "silk-suture", category: "surgical-sutures", img: "images/products/surgical-sutures/silk-suture.jpg" },
+    { name: "Nylon Suture", id: "nylon-suture", category: "surgical-sutures", img: "images/products/surgical-sutures/nylon-suture.jpg" },
+    { name: "Polypropylene Suture", id: "polypropylene-suture", category: "surgical-sutures", img: "images/products/surgical-sutures/polypropylene-suture.jpg" },
+    { name: "Polyester Suture", id: "polyester-suture", category: "surgical-sutures", img: "images/products/surgical-sutures/polyester-suture.jpg" },
+    { name: "PDO Suture", id: "pdo-suture", category: "surgical-sutures", img: "images/products/surgical-sutures/pdo-suture.jpg" },
 
-    // --- Surgical Instruments ---
-    { name: "Surgical Blades", category: "surgical-instruments" },
-    { name: "Scalpels", category: "surgical-instruments" },
-    { name: "Lancets", category: "surgical-instruments" },
-    { name: "Surgical Scissors", category: "surgical-instruments" },
-    { name: "Forceps", category: "surgical-instruments" },
-    { name: "Needle Holders", category: "surgical-instruments" },
+    // --- 2. Surgical Instruments ---
+    { name: "Surgical Blades", id: "surgical-blades", category: "surgical-instruments", img: "images/products/surgical-instruments/surgical-blades.jpg" },
+    { name: "Scalpels", id: "scalpels", category: "surgical-instruments", img: "images/products/surgical-instruments/scalpels.jpg" },
+    { name: "Lancets", id: "lancets", category: "surgical-instruments", img: "images/products/surgical-instruments/lancets.jpg" },
+    { name: "Surgical Scissors", id: "surgical-scissors", category: "surgical-instruments", img: "images/products/surgical-instruments/surgical-scissors.jpg" },
+    { name: "Forceps", id: "forceps", category: "surgical-instruments", img: "images/products/surgical-instruments/forceps.jpg" },
+    { name: "Needle Holders", id: "needle-holders", category: "surgical-instruments", img: "images/products/surgical-instruments/needle-holders.jpg" },
 
-    // --- Gauze & Dressings ---
-    { name: "Gauze Swabs", category: "gauze-dressings" },
-    { name: "Gauze Rolls", category: "gauze-dressings" },
-    { name: "Gauze Balls", category: "gauze-dressings" },
-    { name: "Abdominal Pads", category: "gauze-dressings" },
-    { name: "Cotton Rolls", category: "gauze-dressings" },
-    { name: "Cotton Balls", category: "gauze-dressings" },
-    { name: "Non-woven Sponges", category: "gauze-dressings" },
+    // --- 3. Gauze & Dressings ---
+    { name: "Gauze Swabs", id: "gauze-swabs", category: "gauze-dressings", img: "images/products/gauze-dressings/gauze-swabs.jpg" },
+    { name: "Gauze Rolls", id: "gauze-rolls", category: "gauze-dressings", img: "images/products/gauze-dressings/gauze-rolls.jpg" },
+    { name: "Gauze Balls", id: "gauze-balls", category: "gauze-dressings", img: "images/products/gauze-dressings/gauze-balls.jpg" },
+    { name: "Abdominal Pads", id: "abdominal-pads", category: "gauze-dressings", img: "images/products/gauze-dressings/abdominal-pads.jpg" },
+    // Missing exact match images fallback to default or category general
+    { name: "Cotton Rolls", id: "cotton-rolls", category: "gauze-dressings", img: "images/products/default-product.jpg" },
+    { name: "Cotton Balls", id: "cotton-balls", category: "gauze-dressings", img: "images/products/default-product.jpg" },
+    { name: "Non-woven Sponges", id: "non-woven-sponges", category: "gauze-dressings", img: "images/products/default-product.jpg" },
 
-    // --- Protective Equipment ---
-    { name: "Surgical Face Masks", category: "protective-equipment" },
-    { name: "N95 / FFP2 Masks", category: "protective-equipment" },
-    { name: "Disposable Caps", category: "protective-equipment" },
-    { name: "Surgical Gowns", category: "protective-equipment" },
-    { name: "Isolation Gowns", category: "protective-equipment" },
-    { name: "Shoe Covers", category: "protective-equipment" },
+    // --- 4. Protective Equipment ---
+    { name: "Surgical Face Masks", id: "surgical-face-masks", category: "protective-equipment", img: "images/products/protective-equipment/surgical-face-masks.jpg" },
+    { name: "N95 / FFP2 Masks", id: "n95-ffp2-masks", category: "protective-equipment", img: "images/products/protective-equipment/n95-ffp2-masks.jpg" },
+    { name: "Surgical Gowns", id: "surgical-gowns", category: "protective-equipment", img: "images/products/protective-equipment/surgical-gowns.jpg" },
+    { name: "Protective Coveralls", id: "protective-coveralls", category: "protective-equipment", img: "images/products/protective-equipment/protective-coveralls.jpg" },
+    { name: "Disposable Caps", id: "disposable-caps", category: "protective-equipment", img: "images/products/default-product.jpg" },
+    { name: "Shoe Covers", id: "shoe-covers", category: "protective-equipment", img: "images/products/default-product.jpg" },
 
-    // --- Injection & Infusion ---
-    { name: "Disposable Syringes", category: "injection-infusion" },
-    { name: "Insulin Syringes", category: "injection-infusion" },
-    { name: "Hypodermic Needles", category: "injection-infusion" },
-    { name: "IV Cannula", category: "injection-infusion" },
-    { name: "Infusion Sets", category: "injection-infusion" },
-    { name: "Blood Transfusion Sets", category: "injection-infusion" },
+    // --- 5. Injection & Infusion ---
+    { name: "Disposable Syringes", id: "disposable-syringes", category: "injection-infusion", img: "images/products/injection-infusion/disposable-syringes.jpg" },
+    { name: "Insulin Syringes", id: "insulin-syringes", category: "injection-infusion", img: "images/products/injection-infusion/insulin-syringes.jpg" },
+    { name: "Hypodermic Needles", id: "hypodermic-needles", category: "injection-infusion", img: "images/products/default-product.jpg" },
+    { name: "IV Cannula", id: "iv-cannula", category: "injection-infusion", img: "images/products/default-product.jpg" },
+    { name: "Infusion Sets", id: "infusion-sets", category: "injection-infusion", img: "images/products/default-product.jpg" },
+    { name: "Blood Transfusion Sets", id: "blood-transfusion-sets", category: "injection-infusion", img: "images/products/default-product.jpg" },
 
-    // --- Dental Products ---
-    { name: "Dental Examination Kits", category: "dental-products" },
-    { name: "Oral Care Kits", category: "dental-products" },
-    { name: "Saliva Ejectors", category: "dental-products" },
-    { name: "Dental Bibs", category: "dental-products" },
-    { name: "Impression Trays", category: "dental-products" },
-    { name: "Polishing Cups", category: "dental-products" },
-    { name: "Polishing Brushes", category: "dental-products" },
+    // --- 6. Dental Products ---
+    { name: "Dental Examination Kits", id: "dental-examination-kits", category: "dental-products", img: "images/products/dental-products/dental-examination-kits.jpg" },
+    { name: "Oral Care Kits", id: "oral-care-kits", category: "dental-products", img: "images/products/default-product.jpg" },
+    { name: "Saliva Ejectors", id: "saliva-ejectors", category: "dental-products", img: "images/products/default-product.jpg" },
+    { name: "Dental Bibs", id: "dental-bibs", category: "dental-products", img: "images/products/default-product.jpg" },
+    { name: "Impression Trays", id: "impression-trays", category: "dental-products", img: "images/products/default-product.jpg" },
 
-    // --- Surgical Packs (High Value Kits) ---
-    { name: "Umbilical Cord Protection Kit", category: "surgical-packs" },
-    { name: "Gynecological Examination Kit", category: "surgical-packs" },
-    { name: "HPV Screening Kit", category: "surgical-packs" },
-    { name: "ENT Examination Kit", category: "surgical-packs" },
-    { name: "Disposable Suture Set", category: "surgical-packs" },
-    { name: "Wound Dressing Kit", category: "surgical-packs" },
-    { name: "Debridement Kit", category: "surgical-packs" },
-    { name: "Perineal Care Kit", category: "surgical-packs" },
-    { name: "Disposable Shaving Kit", category: "surgical-packs" },
-    { name: "Sterile Dialysis Care Kit", category: "surgical-packs" },
-    { name: "Uterine Suction Curettage Set", category: "surgical-packs" }
+    // --- 7. Surgical Packs (Main Image as fallback for sub-items) ---
+    // Note: You have one main image 'images/products/surgical-packs/surgical-packs.jpg'
+    { name: "Surgical Packs (General)", id: "surgical-packs-general", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
+    { name: "Umbilical Cord Protection Kit", id: "umbilical-cord-protection-kit", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
+    { name: "Gynecological Examination Kit", id: "gynecological-examination-kit", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
+    { name: "HPV Screening Kit", id: "hpv-screening-kit", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
+    { name: "ENT Examination Kit", id: "ent-examination-kit", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
+    { name: "Disposable Suture Set", id: "disposable-suture-set", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
+    { name: "Wound Dressing Kit", id: "wound-dressing-kit", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
+    { name: "Debridement Kit", id: "debridement-kit", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
+    { name: "Perineal Care Kit", id: "perineal-care-kit", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
+    { name: "Disposable Shaving Kit", id: "disposable-shaving-kit", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
+    { name: "Sterile Dialysis Care Kit", id: "sterile-dialysis-care-kit", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
+    { name: "Uterine Suction Curettage Set", id: "uterine-suction-curettage-set", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" }
 ];
 
 // ==========================================
-// 2. Logic: ID Generator & Data Builder
+// 2. Data Builder
 // ==========================================
 
-function generateId(name) {
-    return name.toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-') // Replace spaces/special chars with hyphens
-        .replace(/(^-|-$)/g, '');    // Trim leading/trailing hyphens
-}
-
-// Transform raw list into full product objects
-const completeProductData = rawProductList.map(item => {
-    const id = generateId(item.name);
-    // Path convention: images/products/[category]/[id].jpg
-    const imagePath = `images/products/${item.category}/${id}.jpg`;
-    
+const completeProductData = productData.map(item => {
     return {
-        id: id,
+        id: item.id,
         name: item.name,
         category: item.category,
-        short: `Premium quality ${item.name} for professional medical use.`,
-        description: `V5 Medical supplies premium ${item.name} manufactured under strict ISO 13485 standards. CE and FDA compliant. Available in various specifications to meet clinical requirements. Custom branding and packaging available upon request.`,
+        short: `High-quality ${item.name} for professional medical use. ISO 13485 certified.`,
+        description: `V5 Medical supplies premium ${item.name} manufactured under strict standards. Features excellent biocompatibility, sterility, and reliability. Available in various specifications to meet clinical requirements. Custom branding (OEM) available.`,
         price: "Contact for Price",
         availability: "In Stock",
         stockLevel: "High",
         certifications: ["ISO 13485", "CE", "FDA"],
         images: [
-            imagePath, // Main image
-            "images/products/default-product.jpg" // Fallback handled by UI
+            item.img, // Primary mapped image
+            "images/products/default-product.jpg" // Fallback
         ],
         specifications: {
             "Material": "Medical Grade",
             "Sterility": "Sterile (EO Gas)",
             "Quality Standard": "ISO 13485 / CE",
-            "Packaging": "Individual Sterile Peel-Pack",
+            "Packaging": "Individual Sterile Pack",
             "Origin": "China"
         }
     };
@@ -158,14 +145,12 @@ function initializeCompleteDatabase() {
     return completeProductDatabase;
 }
 
-// Auto-initialize in browser environment
 if (typeof window !== 'undefined') {
     initializeCompleteDatabase();
     window.completeProductDatabase = completeProductDatabase;
     window.completeProductData = completeProductData;
 }
 
-// Export for Node.js (if used in build scripts)
 if (typeof module !== 'undefined') {
     module.exports = { completeProductDatabase, completeProductData };
 }
