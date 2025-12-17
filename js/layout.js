@@ -59,7 +59,7 @@ const V5Layout = (() => {
 
             container.innerHTML = `
                 <nav id="navbar" class="fixed w-full z-50 shadow-lg transition-all duration-300 bg-white">
-                    <div class="absolute inset-0 bg-gradient-to-r from-white via-white via-30% to-blue-900 to-50%"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-100 via-blue-100 via-30% to-blue-900 to-50%"></div>
                     
                     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div class="flex justify-between items-center h-20">
@@ -228,6 +228,7 @@ const V5Layout = (() => {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 else V5Layout.init();
+
 
 
 
