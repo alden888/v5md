@@ -55,9 +55,9 @@ const productData = [
     { name: "Gauze Balls", id: "gauze-balls", category: "gauze-dressings", img: "images/products/gauze-dressings/gauze-balls.jpg" },
     { name: "Abdominal Pads", id: "abdominal-pads", category: "gauze-dressings", img: "images/products/gauze-dressings/abdominal-pads.jpg" },
     // Missing exact match images fallback to default or category general
-    { name: "Cotton Rolls", id: "cotton-rolls", category: "gauze-dressings", img: "images/products/default-product.jpg" },
-    { name: "Cotton Balls", id: "cotton-balls", category: "gauze-dressings", img: "images/products/default-product.jpg" },
-    { name: "Non-woven Sponges", id: "non-woven-sponges", category: "gauze-dressings", img: "images/products/default-product.jpg" },
+    { name: "Cotton Rolls", id: "cotton-rolls", category: "gauze-dressings", img: "images/products/gauze-dressings/cotton-rolls.jpg" },
+    { name: "Cotton Balls", id: "cotton-balls", category: "gauze-dressings", img: "images/products/gauze-dressings/cotton-balls.jpg" },
+    { name: "Non-woven Sponges", id: "non-woven-sponges", category: "gauze-dressings", img: "images/products/gauze-dressings/non-woven-sponges.jpg" },
 
     // --- 4. Protective Equipment ---
     { name: "Surgical Face Masks", id: "surgical-face-masks", category: "protective-equipment", img: "images/products/protective-equipment/surgical-face-masks.jpg" },
@@ -154,3 +154,4 @@ if (typeof window !== 'undefined') {
 if (typeof module !== 'undefined') {
     module.exports = { completeProductDatabase, completeProductData };
 }
+
