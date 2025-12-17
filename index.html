@@ -40,67 +40,65 @@
     </script>
     
     <style>
-        /* 优化英雄区背景 - 更自然的医疗器械背景显示 */
-        .hero-gradient-overlay {
-            background: linear-gradient(105deg, 
-                rgba(255, 255, 255, 0.85) 0%, 
-                rgba(248, 250, 252, 0.80) 30%, 
-                rgba(241, 245, 249, 0.70) 60%, 
-                rgba(255, 255, 255, 0.90) 100%
-            );
-        }
-        
-        /* 增强文字可读性 */
-        .hero-text-shadow {
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(30, 64, 175, 0.12);
-        }
-        
-        /* 背景图片优化 - 减少淡化 */
+        /* 完全移除文字上的白色背景，直接在背景图上显示文字 */
+        /* 只适度淡化背景图 */
         .hero-bg-image {
-            filter: brightness(0.9) contrast(1.1);
+            filter: brightness(0.7) contrast(1.1);
             transform: scale(1.05);
         }
         
-        /* 容器样式 - 更好的对比度 */
-        .hero-content-wrapper {
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.95) 0%, 
-                rgba(255, 255, 255, 0.92) 100%);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 3rem 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12),
-                        0 4px 20px rgba(30, 64, 175, 0.08);
+        /* 暗色渐变叠加，增强文字可读性但不完全覆盖背景 */
+        .hero-gradient-overlay {
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.2) 0%,
+                rgba(0, 0, 0, 0.15) 20%,
+                rgba(0, 0, 0, 0.1) 50%,
+                rgba(0, 0, 0, 0.15) 80%,
+                rgba(0, 0, 0, 0.2) 100%
+            );
         }
         
-        /* 深色覆盖层，让背景图片更突出 */
-        .hero-dark-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.15);
-            mix-blend-mode: multiply;
-            z-index: 1;
+        /* 增强文字可读性 - 使用白色和深色文字 */
+        .hero-text-shadow {
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4),
+                        0 1px 3px rgba(0, 0, 0, 0.3);
         }
         
-        /* 标题特效 */
-        .hero-title {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 900;
+        /* 子标题文字阴影 - 略轻 */
+        .hero-subtitle-shadow {
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3),
+                        0 1px 2px rgba(0, 0, 0, 0.2);
         }
         
-        @media (max-width: 768px) {
-            .hero-content-wrapper {
-                padding: 2rem 1.5rem;
-                margin: 0 1rem;
-            }
-            
-            .hero-bg-image {
-                transform: scale(1.1);
-            }
+        /* 描述文字阴影 */
+        .hero-desc-shadow {
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4),
+                        0 1px 1px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 按钮增强效果 */
+        .hero-button-shadow {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+                       0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hero-button-shadow:hover {
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4),
+                       0 3px 12px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* PDF链接样式 */
+        .pdf-link {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .pdf-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
         }
     </style>
 
@@ -156,103 +154,106 @@
 
     <main class="flex-grow pt-20"> 
         
-        <!-- 进一步优化英雄区 - 更好的背景可见性和文字对比度 -->
-        <div class="relative min-h-[580px] flex items-center justify-center px-4 overflow-hidden">
-            <!-- 背景图片 - 进一步减少淡化 -->
+        <!-- 完全重新设计的英雄区 - 文字直接显示在背景图上 -->
+        <div class="relative min-h-[600px] md:min-h-[700px] flex items-center justify-center px-4 overflow-hidden">
+            <!-- 背景图片 - 适度淡化，医疗器械元素清晰可见 -->
             <div class="absolute inset-0 z-0">
                 <img src="images/hero-bg.jpg" 
-                     onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920&q=90&auto=format&fit=crop&crop=center'" 
+                     onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920&q=85&auto=format&fit=crop&crop=center'" 
                      class="w-full h-full object-cover object-center hero-bg-image" 
                      alt="Medical Manufacturing Factory with surgical instruments and medical devices"
                      fetchpriority="high"
                      decoding="async">
-                <!-- 深色叠加层，增强背景对比度 -->
-                <div class="hero-dark-overlay"></div>
-                <!-- 优化遮罩 - 更少白色，更多透明度 -->
-                <div class="absolute inset-0 hero-gradient-overlay z-2"></div>
+                <!-- 暗色渐变叠加，增强文字可读性 -->
+                <div class="absolute inset-0 hero-gradient-overlay"></div>
             </div>
 
-            <!-- 内容区域 - 增强对比度和视觉层次 -->
-            <div class="relative z-10 max-w-5xl mx-auto fade-in-up hero-content-wrapper">
-                <div class="text-center">
-                    <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" 
-                         onerror="this.style.display='none'" 
-                         class="h-28 md:h-32 mx-auto mb-8 drop-shadow-2xl transform hover:scale-105 transition-transform duration-500" 
-                         alt="V5 Medical Logo">
+            <!-- 内容区域 - 没有白色背景，直接在背景图上 -->
+            <div class="relative z-10 max-w-6xl mx-auto text-center px-4">
+                <!-- Logo - 增加阴影使其可见 -->
+                <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" 
+                     onerror="this.style.display='none'" 
+                     class="h-32 md:h-40 mx-auto mb-10 drop-shadow-2xl transform hover:scale-105 transition-transform duration-500" 
+                     alt="V5 Medical Logo">
+                
+                <!-- 主标题 - 使用白色和阴影确保可见 -->
+                <h1 class="text-4xl md:text-7xl font-black mb-6 text-white hero-text-shadow leading-tight tracking-tight">
+                    Factory Direct Medical Consumables<br>
+                    <span class="text-3xl md:text-5xl text-blue-100 mt-4 block font-black hero-subtitle-shadow">
+                        ISO 13485, CE & FDA Certified
+                    </span>
+                </h1>
+                
+                <!-- 描述文字 - 使用浅色文字 -->
+                <p class="text-xl md:text-3xl mb-12 text-gray-100 font-medium max-w-3xl mx-auto leading-relaxed hero-desc-shadow px-4">
+                    Stop paying middleman fees. Partner directly with a premier manufacturer with 20+ years of experience exporting to 40+ countries.
+                </p>
+                
+                <!-- 按钮 - 增加阴影和透明度 -->
+                <div class="flex flex-wrap justify-center gap-5 mb-10">
+                    <a href="https://wa.me/447895047944?text=I'm interested in your medical products" 
+                       target="_blank" rel="noopener noreferrer"
+                       class="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-9 py-5 rounded-full text-xl font-bold hero-button-shadow transition-all duration-300 hover:scale-105 flex items-center gap-3 animate-pulse-slow group"
+                       onclick="window.trackWhatsAppClick && window.trackWhatsAppClick()">
+                        <i class="fas fa-comments text-2xl group-hover:rotate-12 transition-transform"></i> 
+                        <span class="text-lg md:text-xl">Chat Now</span>
+                    </a>
                     
-                    <h1 class="text-4xl md:text-6xl font-black mb-5 hero-title leading-tight tracking-tight">
-                        Factory Direct Medical Consumables<br>
-                        <span class="text-3xl md:text-5xl text-blue-700 mt-4 block font-black">ISO 13485, CE & FDA Certified</span>
-                    </h1>
-                    
-                    <p class="text-xl md:text-2xl mb-10 text-slate-800 font-bold max-w-3xl mx-auto leading-relaxed px-4 py-3 bg-white/80 rounded-xl">
-                        Stop paying middleman fees. Partner directly with a premier manufacturer with 20+ years of experience exporting to 40+ countries.
-                    </p>
-                    
-                    <div class="flex flex-wrap justify-center gap-5 mb-8">
-                        <a href="https://wa.me/447895047944?text=I'm interested in your medical products" 
-                           target="_blank" rel="noopener noreferrer"
-                           class="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-full text-lg font-black shadow-2xl shadow-green-500/30 transition-all duration-300 hover:scale-105 hover:shadow-green-600/40 flex items-center gap-3 animate-pulse-slow group"
-                           onclick="window.trackWhatsAppClick && window.trackWhatsAppClick()">
-                            <i class="fas fa-comments text-xl group-hover:rotate-12 transition-transform"></i> 
-                            <span class="text-lg">Chat Now</span>
-                        </a>
-                        
-                        <a href="pdf/Catalog.pdf" target="_blank" 
-                           class="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white px-8 py-4 rounded-full text-lg font-black shadow-2xl shadow-blue-500/30 transition-all duration-300 hover:scale-105 hover:shadow-blue-600/40 flex items-center gap-3 group"
-                           onclick="window.trackPDFDownload && window.trackPDFDownload('Catalog')">
-                            <i class="fas fa-download text-xl group-hover:translate-y-1 transition-transform"></i> 
-                            <span class="text-lg">Download Catalog</span>
-                        </a>
-                    </div>
+                    <a href="pdf/Catalog.pdf" target="_blank" 
+                       class="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white px-9 py-5 rounded-full text-xl font-bold hero-button-shadow transition-all duration-300 hover:scale-105 flex items-center gap-3 group"
+                       onclick="window.trackPDFDownload && window.trackPDFDownload('Catalog')">
+                        <i class="fas fa-download text-2xl group-hover:translate-y-1 transition-transform"></i> 
+                        <span class="text-lg md:text-xl">Download Catalog</span>
+                    </a>
+                </div>
 
-                    <div class="flex flex-wrap justify-center gap-5 text-sm font-bold">
-                        <a href="pdf/Quotations for dental products.pdf" target="_blank" 
-                           class="hover:text-blue-800 flex items-center gap-2 transition-all px-4 py-3 rounded-xl hover:bg-blue-50 border-2 border-blue-200 bg-white/90 shadow-md" 
-                           onclick="window.trackPDFDownload && window.trackPDFDownload('Dental Kit')">
-                            <i class="fas fa-file-pdf text-red-500 text-lg"></i> 
-                            <span class="font-black">Dental Kit PDF</span>
-                        </a>
-                        
-                        <a href="pdf/price list.pdf" target="_blank" 
-                           class="hover:text-blue-800 flex items-center gap-2 transition-all px-4 py-3 rounded-xl hover:bg-blue-50 border-2 border-blue-200 bg-white/90 shadow-md" 
-                           onclick="window.trackPDFDownload && window.trackPDFDownload('Price List')">
-                            <i class="fas fa-file-pdf text-red-500 text-lg"></i> 
-                            <span class="font-black">Price List PDF</span>
-                        </a>
-                    </div>
+                <!-- PDF链接 - 半透明背景 -->
+                <div class="flex flex-wrap justify-center gap-5">
+                    <a href="pdf/Quotations for dental products.pdf" target="_blank" 
+                       class="pdf-link text-white flex items-center gap-2 px-5 py-3 rounded-xl font-semibold" 
+                       onclick="window.trackPDFDownload && window.trackPDFDownload('Dental Kit')">
+                        <i class="fas fa-file-pdf text-red-300 text-xl"></i> 
+                        <span class="text-base md:text-lg">Dental Kit PDF</span>
+                    </a>
+                    
+                    <a href="pdf/price list.pdf" target="_blank" 
+                       class="pdf-link text-white flex items-center gap-2 px-5 py-3 rounded-xl font-semibold" 
+                       onclick="window.trackPDFDownload && window.trackPDFDownload('Price List')">
+                        <i class="fas fa-file-pdf text-red-300 text-xl"></i> 
+                        <span class="text-base md:text-lg">Price List PDF</span>
+                    </a>
                 </div>
             </div>
         </div>
 
-        <!-- 统计卡片区域 - 优化设计 -->
-        <section class="py-10 bg-white border-b border-gray-100 shadow-lg relative z-20 -mt-6 mx-4 md:mx-auto max-w-5xl rounded-2xl">
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-8 text-center px-6 py-4">
-                <div class="space-y-2 group cursor-default">
-                    <div class="text-3xl md:text-4xl font-black text-blue-600 group-hover:scale-110 transition-transform">40+</div>
-                    <div class="text-xs text-gray-600 font-black uppercase tracking-wider">Countries</div>
+        <!-- 统计卡片区域 - 使用半透明卡片 -->
+        <section class="py-12 relative z-20 -mt-8 mx-4 md:mx-auto max-w-5xl">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-6 text-center px-4">
+                <div class="space-y-2 group cursor-default bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl transition-all duration-300 hover:bg-white hover:scale-105">
+                    <div class="text-3xl md:text-4xl font-black text-blue-600">40+</div>
+                    <div class="text-xs text-gray-700 font-bold uppercase tracking-wider">Countries</div>
                 </div>
-                <div class="space-y-2 group cursor-default">
-                    <div class="text-3xl md:text-4xl font-black text-green-600 group-hover:scale-110 transition-transform">20+</div>
-                    <div class="text-xs text-gray-600 font-black uppercase tracking-wider">Years Exp.</div>
+                <div class="space-y-2 group cursor-default bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl transition-all duration-300 hover:bg-white hover:scale-105">
+                    <div class="text-3xl md:text-4xl font-black text-green-600">20+</div>
+                    <div class="text-xs text-gray-700 font-bold uppercase tracking-wider">Years Exp.</div>
                 </div>
-                <div class="space-y-2 group cursor-default">
-                    <div class="text-3xl md:text-4xl font-black text-purple-600 group-hover:scale-110 transition-transform">ISO/CE</div>
-                    <div class="text-xs text-gray-600 font-black uppercase tracking-wider">Certified</div>
+                <div class="space-y-2 group cursor-default bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl transition-all duration-300 hover:bg-white hover:scale-105">
+                    <div class="text-3xl md:text-4xl font-black text-purple-600">ISO/CE</div>
+                    <div class="text-xs text-gray-700 font-bold uppercase tracking-wider">Certified</div>
                 </div>
-                <div class="space-y-2 group cursor-default">
-                    <div class="text-3xl md:text-4xl font-black text-orange-600 group-hover:scale-110 transition-transform">10K+</div>
-                    <div class="text-xs text-gray-600 font-black uppercase tracking-wider">Clients</div>
+                <div class="space-y-2 group cursor-default bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl transition-all duration-300 hover:bg-white hover:scale-105">
+                    <div class="text-3xl md:text-4xl font-black text-orange-600">10K+</div>
+                    <div class="text-xs text-gray-700 font-bold uppercase tracking-wider">Clients</div>
                 </div>
-                <div class="space-y-2 group cursor-default">
-                    <div class="text-3xl md:text-4xl font-black text-red-600 group-hover:scale-110 transition-transform">500+</div>
-                    <div class="text-xs text-gray-600 font-black uppercase tracking-wider">Products</div>
+                <div class="space-y-2 group cursor-default bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl transition-all duration-300 hover:bg-white hover:scale-105">
+                    <div class="text-3xl md:text-4xl font-black text-red-600">500+</div>
+                    <div class="text-xs text-gray-700 font-bold uppercase tracking-wider">Products</div>
                 </div>
             </div>
         </section>
 
         <!-- 其余部分保持不变 -->
-        <section class="py-24 px-4">
+        <section class="py-24 px-4 bg-white">
             <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
                 <div class="space-y-8">
                     <h2 class="text-3xl md:text-4xl font-black text-gray-900 border-l-4 border-blue-600 pl-4">Why Choose V5 Medical?</h2>
