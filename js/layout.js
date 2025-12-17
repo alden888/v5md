@@ -2,7 +2,7 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 3.2.0 (Fixed: Added Gmail to Footer)
+ * @version 3.4.0 (Fixed: Added Gmail to Footer)
  * @updated 2024-12-16
  */
 
@@ -98,7 +98,7 @@ const V5Layout = (() => {
             `;
         }
 
-        // --- 2. Footer Rendering (包含 Gmail) ---
+        // --- 2. Footer Rendering ---
         renderFooter() {
             const container = document.getElementById('v5-footer');
             if (!container) return;
@@ -228,5 +228,6 @@ const V5Layout = (() => {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 else V5Layout.init();
+
 
 
