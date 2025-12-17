@@ -2,7 +2,7 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 3.2.0 (Fixed: Added Gmail to Footer)
+ * @version 3.3.0 (Fixed: Added Gmail to Footer)
  * @updated 2024-12-16
  */
 
@@ -28,7 +28,7 @@ const V5Layout = (() => {
             console.log('[Layout] Initialized v3.1.0');
         }
 
-        // --- 1. Header Rendering (优化版) ---
+        // --- 1. Header Rendering (修复版) ---
 renderHeader() {
     const container = document.getElementById('v5-header');
     if (!container) return;
@@ -49,7 +49,7 @@ renderHeader() {
         <a href="${item.href}" 
            class="nav-link px-4 py-2 rounded-lg transition-all duration-300 font-medium
                   ${this.currentPage === item.id ? 
-                    'text-white font-bold border-b-2 border-blue-300 bg-blue-900/20' : 
+                    'text-white font-bold border-b-2 border-blue-300' : 
                     'text-blue-100 hover:text-white hover:bg-blue-800/30'
                   }">
            ${item.txt}
@@ -70,14 +70,11 @@ renderHeader() {
 
     container.innerHTML = `
         <nav id="navbar" class="fixed w-full z-50 transition-all duration-300">
-            <!-- 优化：渐变背景 - 淡蓝到深蓝 -->
-            <div class="absolute inset-0 bg-gradient-to-r from-blue-100 via-blue-100 via-30% to-blue-900 to-50%"></div>
-            
-            <!-- 优化：蓝色调阴影 -->
-            <div class="shadow-xl shadow-blue-900/20 relative">
+            <!-- 修复：将渐变背景直接应用到nav上，确保完全覆盖 -->
+            <div class="bg-gradient-to-r from-blue-50 via-blue-100 via-40% to-blue-900 to-50% shadow-xl shadow-blue-900/20">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <!-- 优化：导航栏高度 h-20 改为 h-21 -->
-                    <div class="flex justify-between items-center h-21">
+                    <!-- 修复：恢复原来的高度 h-20 -->
+                    <div class="flex justify-between items-center h-20">
                         
                         <!-- Logo 区域 -->
                         <a href="index.html" class="flex items-center gap-3 group relative z-10 pr-8">
@@ -109,7 +106,7 @@ renderHeader() {
 
                         <!-- 移动端菜单按钮 -->
                         <button id="mobile-menu-btn" 
-                                class="md:hidden text-blue-900 p-3 hover:bg-blue-50 rounded-xl transition-all duration-300 z-20 group">
+                                class="md:hidden text-blue-900 p-3 hover:bg-blue-50/50 rounded-xl transition-all duration-300 z-20 group">
                             <div class="space-y-1.5">
                                 <span class="block w-6 h-0.5 bg-blue-900 transition-all group-hover:bg-blue-700"></span>
                                 <span class="block w-6 h-0.5 bg-blue-900 transition-all group-hover:bg-blue-700"></span>
@@ -142,6 +139,9 @@ renderHeader() {
                 </div>
             </div>
         </nav>
+        
+        <!-- 修复：添加一个与导航栏高度相同的占位符，防止页面内容被遮挡 -->
+        <div class="h-20"></div>
     `;
 
     // 初始化移动菜单交互
@@ -364,5 +364,6 @@ _initMobileMenu() {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 else V5Layout.init();
+
 
 
