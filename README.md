@@ -303,5 +303,3 @@ For technical support or questions about the website:
 * **Website**: [v5md.com](https://v5md.com)
 
 Last updated: December 2025
-
-> （注：文档部分内容可能由 AI 生成）
