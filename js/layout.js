@@ -28,75 +28,213 @@ const V5Layout = (() => {
             console.log('[Layout] Initialized v3.1.0');
         }
 
-        // --- 1. Header Rendering (渐变蓝 + 原色Logo) ---
-        renderHeader() {
-            const container = document.getElementById('v5-header');
-            if (!container) return;
+        // --- 1. Header Rendering (优化版) ---
+renderHeader() {
+    const container = document.getElementById('v5-header');
+    if (!container) return;
 
-            const logoSrc = this.config.IMAGES.LOGO;
-            const logoFallback = this.config.IMAGES.LOGO_LOCAL;
+    const logoSrc = this.config.IMAGES.LOGO;
+    const logoFallback = this.config.IMAGES.LOGO_LOCAL;
 
-            const navItems = [
-                { id: 'home', href: 'index.html', txt: 'Home' },
-                { id: 'about', href: 'about.html', txt: 'About Us' },
-                { id: 'catalog', href: 'catalog.html', txt: 'Products' },
-                { id: 'blog', href: 'blog.html', txt: 'Blog' },
-                { id: 'contact', href: 'contact.html', txt: 'Contact' }
-            ];
+    const navItems = [
+        { id: 'home', href: 'index.html', txt: 'Home' },
+        { id: 'about', href: 'about.html', txt: 'About Us' },
+        { id: 'catalog', href: 'catalog.html', txt: 'Products' },
+        { id: 'blog', href: 'blog.html', txt: 'Blog' },
+        { id: 'contact', href: 'contact.html', txt: 'Contact' }
+    ];
 
-            // 桌面菜单文字：白色（因为右侧背景是深蓝）
-            const navHtml = navItems.map(item => `
-                <a href="${item.href}" class="nav-link font-medium transition duration-200 ${this.currentPage === item.id ? 'text-white border-b-2 border-blue-400' : 'text-blue-100 hover:text-white'}">
-                    ${item.txt}
-                </a>
-            `).join('');
+    // 桌面菜单 - 当前页面白色粗体，非当前页面淡蓝色，悬停白色
+    const navHtml = navItems.map(item => `
+        <a href="${item.href}" 
+           class="nav-link px-4 py-2 rounded-lg transition-all duration-300 font-medium
+                  ${this.currentPage === item.id ? 
+                    'text-white font-bold border-b-2 border-blue-300 bg-blue-900/20' : 
+                    'text-blue-100 hover:text-white hover:bg-blue-800/30'
+                  }">
+           ${item.txt}
+        </a>
+    `).join('');
 
-            const mobileHtml = navItems.map(item => `
-                <a href="${item.href}" class="block px-4 py-3 rounded-lg font-medium transition ${this.currentPage === item.id ? 'text-blue-700 bg-blue-50' : 'text-gray-600 hover:bg-gray-50'}">
-                    ${item.txt}
-                </a>
-            `).join('');
+    // 移动端菜单项
+    const mobileHtml = navItems.map(item => `
+        <a href="${item.href}" 
+           class="block px-4 py-3 rounded-lg font-medium transition-all duration-300
+                  ${this.currentPage === item.id ? 
+                    'text-blue-700 bg-blue-50 border-l-4 border-blue-500' : 
+                    'text-gray-600 hover:bg-gray-50 hover:text-blue-600'
+                  }">
+           ${item.txt}
+        </a>
+    `).join('');
 
-            container.innerHTML = `
-                <nav id="navbar" class="fixed w-full z-50 shadow-lg transition-all duration-300 bg-white">
-                    <div class="absolute inset-0 bg-gradient-to-r from-white via-white via-30% to-blue-900 to-50%"></div>
-                    
-                    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="flex justify-between items-center h-20">
-                            
-                            <a href="index.html" class="flex items-center gap-3 group relative z-10 pr-8 bg-white/0">
-                                <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-12 w-auto transition-transform group-hover:scale-105" alt="${this.config.SEO.SITE_NAME}">
-                                <div class="hidden sm:block">
-                                    <div class="font-bold text-xl text-blue-900 leading-none">V5 Medical LTD</div>
-                                    <div class="text-[10px] text-blue-600 font-medium tracking-wider uppercase mt-0.5">Global Medical Supply Chain</div>
+    container.innerHTML = `
+        <nav id="navbar" class="fixed w-full z-50 transition-all duration-300">
+            <!-- 优化：渐变背景 - 淡蓝到深蓝 -->
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-100 via-blue-100 via-30% to-blue-900 to-50%"></div>
+            
+            <!-- 优化：蓝色调阴影 -->
+            <div class="shadow-xl shadow-blue-900/20 relative">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- 优化：导航栏高度 h-20 改为 h-21 -->
+                    <div class="flex justify-between items-center h-21">
+                        
+                        <!-- Logo 区域 -->
+                        <a href="index.html" class="flex items-center gap-3 group relative z-10 pr-8">
+                            <img src="${logoSrc}" 
+                                 onerror="this.onerror=null; this.src='${logoFallback}';" 
+                                 class="h-12 w-auto transition-transform group-hover:scale-105" 
+                                 alt="${this.config.SEO.SITE_NAME}">
+                            <div class="hidden sm:block">
+                                <div class="font-bold text-xl text-blue-900 leading-none">V5 Medical LTD</div>
+                                <div class="text-[10px] text-blue-600 font-medium tracking-wider uppercase mt-0.5">
+                                    Global Medical Supply Chain
                                 </div>
+                            </div>
+                        </a>
+
+                        <!-- 桌面导航 -->
+                        <div class="hidden md:flex gap-6 items-center pl-8">
+                            ${navHtml}
+                            
+                            <!-- 优化：WhatsApp按钮 - 淡绿到深绿渐变 -->
+                            <a href="${this.config.CONTACT.WHATSAPP.API_URL}" 
+                               target="_blank" 
+                               class="whatsapp-btn bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white px-5 py-2.5 rounded-full font-semibold shadow-lg flex items-center gap-2 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl group">
+                                <i class="fab fa-whatsapp text-lg group-hover:scale-110 transition-transform"></i>
+                                <span>Quick Chat</span>
                             </a>
+                            <div class="w-24"></div>
+                        </div>
 
-                            <div class="hidden md:flex gap-6 items-center pl-8">
-                                ${navHtml}
-                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold shadow-md flex items-center gap-2 transition hover:-translate-y-0.5 text-sm">
-                                    <i class="fab fa-whatsapp text-lg"></i><span>Quick Chat</span>
-                                </a>
-                                <div class="w-24"></div>
+                        <!-- 移动端菜单按钮 -->
+                        <button id="mobile-menu-btn" 
+                                class="md:hidden text-blue-900 p-3 hover:bg-blue-50 rounded-xl transition-all duration-300 z-20 group">
+                            <div class="space-y-1.5">
+                                <span class="block w-6 h-0.5 bg-blue-900 transition-all group-hover:bg-blue-700"></span>
+                                <span class="block w-6 h-0.5 bg-blue-900 transition-all group-hover:bg-blue-700"></span>
+                                <span class="block w-4 h-0.5 bg-blue-900 ml-auto transition-all group-hover:w-6 group-hover:bg-blue-700"></span>
                             </div>
+                        </button>
+                    </div>
+                </div>
 
-                            <button id="mobile-menu-btn" class="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition z-20"><i class="fas fa-bars text-2xl"></i></button>
+                <!-- 移动端菜单 - 优化：平滑下拉动画 -->
+                <div id="mobile-menu" 
+                     class="mobile-menu hidden md:hidden bg-white/95 backdrop-blur-sm rounded-b-2xl shadow-2xl border-t border-blue-100 absolute w-full z-50 overflow-hidden transform -translate-y-full opacity-0 transition-all duration-300 ease-in-out">
+                    
+                    <!-- 装饰性顶部线条 -->
+                    <div class="h-1 bg-gradient-to-r from-blue-400 via-green-400 to-blue-600"></div>
+                    
+                    <div class="px-4 py-6 space-y-1">
+                        ${mobileHtml}
+                        <div class="pt-6 mt-4 border-t border-gray-100">
+                            <!-- 移动端WhatsApp按钮 - 同样使用渐变 -->
+                            <a href="${this.config.CONTACT.WHATSAPP.API_URL}" 
+                               target="_blank" 
+                               class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white px-4 py-3.5 rounded-lg font-bold shadow-md transition-all duration-300 hover:shadow-lg">
+                                <i class="fab fa-whatsapp"></i> 
+                                <span>WhatsApp Contact</span>
+                                <span class="text-xs opacity-80">(24/7)</span>
+                            </a>
                         </div>
                     </div>
+                </div>
+            </div>
+        </nav>
+    `;
 
-                    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl z-50">
-                        <div class="px-4 py-4 space-y-2">
-                            ${mobileHtml}
-                            <div class="pt-4 mt-2 border-t border-gray-100">
-                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="flex items-center justify-center gap-2 w-full bg-green-500 text-white px-4 py-3 rounded-lg font-bold">
-                                    <i class="fab fa-whatsapp"></i> WhatsApp Contact
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            `;
+    // 初始化移动菜单交互
+    this._initMobileMenu();
+}
+
+// 移动菜单初始化
+_initMobileMenu() {
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (!menuBtn || !mobileMenu) return;
+    
+    let isOpen = false;
+    
+    menuBtn.addEventListener('click', () => {
+        isOpen = !isOpen;
+        
+        if (isOpen) {
+            // 显示菜单 - 平滑动画
+            mobileMenu.classList.remove('hidden');
+            // 触发重绘
+            void mobileMenu.offsetWidth;
+            mobileMenu.classList.remove('-translate-y-full', 'opacity-0');
+            mobileMenu.classList.add('translate-y-0', 'opacity-100');
+            
+            // 更新按钮图标为"X"
+            const spans = menuBtn.querySelectorAll('span');
+            spans[0].style.transform = 'rotate(45deg) translate(4px, 4px)';
+            spans[1].style.opacity = '0';
+            spans[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
+            spans[2].style.width = '24px'; // w-6
+        } else {
+            // 隐藏菜单 - 平滑动画
+            mobileMenu.classList.remove('translate-y-0', 'opacity-100');
+            mobileMenu.classList.add('-translate-y-full', 'opacity-0');
+            
+            // 延迟隐藏元素
+            setTimeout(() => {
+                if (!isOpen) {
+                    mobileMenu.classList.add('hidden');
+                }
+            }, 300); // 与CSS过渡时间匹配
+            
+            // 重置按钮图标
+            const spans = menuBtn.querySelectorAll('span');
+            spans[0].style.transform = '';
+            spans[1].style.opacity = '';
+            spans[2].style.transform = '';
+            spans[2].style.width = '';
         }
+    });
+    
+    // 点击菜单项关闭菜单
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            isOpen = false;
+            mobileMenu.classList.remove('translate-y-0', 'opacity-100');
+            mobileMenu.classList.add('-translate-y-full', 'opacity-0');
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+                
+                // 重置按钮图标
+                const spans = menuBtn.querySelectorAll('span');
+                spans[0].style.transform = '';
+                spans[1].style.opacity = '';
+                spans[2].style.transform = '';
+                spans[2].style.width = '';
+            }, 300);
+        });
+    });
+    
+    // 点击外部关闭菜单
+    document.addEventListener('click', (e) => {
+        if (isOpen && 
+            !mobileMenu.contains(e.target) && 
+            !menuBtn.contains(e.target)) {
+            isOpen = false;
+            mobileMenu.classList.remove('translate-y-0', 'opacity-100');
+            mobileMenu.classList.add('-translate-y-full', 'opacity-0');
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+                
+                // 重置按钮图标
+                const spans = menuBtn.querySelectorAll('span');
+                spans[0].style.transform = '';
+                spans[1].style.opacity = '';
+                spans[2].style.transform = '';
+                spans[2].style.width = '';
+            }, 300);
+        }
+    });
+}
 
         // --- 2. Footer Rendering (包含 Gmail) ---
         renderFooter() {
@@ -226,3 +364,4 @@ const V5Layout = (() => {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 else V5Layout.init();
+
