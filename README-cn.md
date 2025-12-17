@@ -1,281 +1,209 @@
-V5 Medical LTD - 官方网站
-https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png
-专业全球医疗耗材供应商 | 工厂直供 · 品质认证
-Factory Direct | ISO 13485 | CE | FDA Certified
-本仓库包含 V5 Medical LTD 官方网站（v5md.com）的完整源代码。网站采用高性能静态架构，基于JavaScript动态布局引擎，专为SEO优化、极速加载和便捷维护而设计。
-￼
-🚀 核心特性
-1. 🏗️ 动态布局引擎
-• 统一渲染：通过 js/layout.js 动态生成全站导航栏、页脚和浮动元素
-• 一键维护：只需修改一次配置文件，全站布局同步更新
-• 响应式设计：完美适配桌面、平板和移动设备
-2. ⚙️ 集中式配置管理
-• 环境感知：自动识别开发/生产环境，智能切换资源路径
-• 数据统一：联系信息、API配置、CDN路径等全局设置集中管理 (js/config.js)
-• 灵活扩展：支持多语言、多区域配置
-3. 🖼️ 智能图片加载系统
-• 四级回退机制：
-1. 首选：Cloudflare R2 CDN (极速全球分发)
-2. 备选：本地资源 (开发环境备用)
-3. 应急：GitHub Raw (网络故障恢复)
-4. 兜底：默认占位图 (用户体验保障)
-• 按需加载：自动识别关键图片优先加载，非关键图片延迟加载
-4. 🛍️ 动态产品数据库
-• 零后端依赖：基于静态JSON的产品管理系统 (js/complete-products.js)
-• 高级筛选：支持分类、标签、参数多维筛选
-• 实时搜索：防抖优化，毫秒级响应
-• 动态详情页：URL参数驱动 (product-detail.html?id=产品ID)
-5. 🔍 SEO与性能优化
-• 动态元标签：每页独立标题、描述和结构化数据
-• 核心Web指标：LCP、FID、CLS全面优化
-• 缓存策略：智能资源版本控制，长期缓存 + 即时更新
-• 移动优先：PWA就绪，渐进式增强
-￼
-📂 项目结构
-text
-￼
-复制
-￼
-￼
-下载
-￼
+# V5 Medical LTD - 官方网站
+
+<div align="center">
+  <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" alt="V5 Medical Logo" width="200"/>
+  
+  <h3>专业全球医疗耗材供应商 | 工厂直供・品质认证</h3>
+  <p>Factory Direct | ISO 13485 | CE | FDA Certified</p>
+
+  [![Website Status](https://img.shields.io/website?url=https%3A%2F%2Fv5md.com&label=v5md.com&style=flat-square)](https://v5md.com)
+  [![Deploy Status](https://img.shields.io/badge/Deployed%20on-Cloudflare%20Pages-orange?style=flat-square&logo=cloudflare)](https://pages.cloudflare.com/)
+  [![License](https://img.shields.io/badge/License-Proprietary-blue?style=flat-square)](LICENSE)
+</div>
+
+---
+
+本仓库包含 **V5 Medical LTD** 官方网站（[v5md.com](https://v5md.com)）的完整源代码。网站采用高性能静态架构，基于 JavaScript 动态布局引擎，专为 **SEO 优化**、**极速加载**和**便捷维护**而设计。
+
+## 🚀 核心特性
+
+### 1. 🏗️ 动态布局引擎
+* **统一渲染**：通过 `js/layout.js` 动态生成全站导航栏、页脚和浮动元素，告别重复代码。
+* **一键维护**：只需修改一次配置文件，全站布局同步更新。
+* **响应式设计**：完美适配桌面、平板和移动设备。
+
+### 2. ⚙️ 集中式配置管理
+* **环境感知**：自动识别开发 / 生产环境，智能切换资源路径（本地 vs CDN）。
+* **数据统一**：联系信息、API 配置、CDN 路径等全局设置集中在 `js/config.js` 管理。
+* **灵活扩展**：支持多语言、多区域配置扩展。
+
+### 3. 🖼️ 智能图片加载系统
+采用 `js/image-utils.js` 实现四级回退机制，确保图片 100% 可用：
+1.  **首选**：Cloudflare R2 CDN (极速全球分发)
+2.  **备选**：本地资源 (开发环境备用)
+3.  **应急**：GitHub Raw (网络故障恢复)
+4.  **兜底**：默认占位图 (用户体验保障)
+
+### 4. 🛍️ 动态产品数据库
+* **零后端依赖**：基于静态 JSON 的产品管理系统 (`js/complete-products.js`)。
+* **高级筛选**：支持分类、标签、参数多维筛选。
+* **实时搜索**：集成防抖 (Debounce) 优化，毫秒级响应。
+* **动态详情页**：URL 参数驱动渲染 (`product-detail.html?id=产品ID`)。
+
+### 5. 🔍 SEO 与性能优化
+* **动态元标签**：`js/seo-utils.js` 自动管理每页的标题、描述和 JSON-LD 结构化数据。
+* **核心 Web 指标**：针对 LCP、FID、CLS 进行全面优化。
+* **缓存策略**：智能资源版本控制 (`?v=x.x.x`)，兼顾长期缓存与即时更新。
+
+---
+
+## 📂 项目结构
+
+```text
 v5md/
-├── index.html                 # 首页（核心入口）
-├── about.html                 # 关于我们（公司介绍与历程）
-├── catalog.html              # 产品目录（搜索与筛选）
-├── product-detail.html       # 产品详情（动态模板）
-├── contact.html              # 联系页面（表单与支付）
-├── blog.html                 # 博客动态（新闻与物流）
+├── index.html              # 首页（核心入口）
+├── about.html              # 关于我们（公司介绍与历程）
+├── catalog.html            # 产品目录（搜索与筛选）
+├── product-detail.html     # 产品详情（动态模板）
+├── contact.html            # 联系页面（表单与支付）
+├── blog.html               # 博客动态（新闻与物流）
+├── privacy.html            # 隐私政策
 │
-├── js/                       # 核心逻辑层
-│   ├── config.js             # 【关键】全局配置中心
-│   ├── layout.js             # 【关键】布局渲染引擎
-│   ├── main.js               # 通用UI交互逻辑
-│   ├── complete-products.js  # 产品数据库（JSON结构）
-│   ├── image-utils.js        # 智能图片加载器
-│   └── seo-utils.js          # SEO动态管理器
+├── js/                     # 核心逻辑层
+│   ├── config.js           # 【配置】全局配置中心
+│   ├── layout.js           # 【布局】Header/Footer 渲染引擎
+│   ├── main.js             # 【交互】通用 UI 交互逻辑
+│   ├── complete-products.js# 【数据】产品数据库（JSON）
+│   ├── product-loader.js   # 【逻辑】产品数据加载与解析
+│   ├── image-utils.js      # 【工具】智能图片加载器
+│   ├── seo-utils.js        # 【工具】SEO 动态管理器
+│   └── performance-monitor.js # 【工具】性能监控
 │
 ├── css/
-│   └── style.css             # Tailwind自定义样式覆盖
+│   └── style.css           # Tailwind 自定义样式覆盖
 │
-├── images/                   # 本地图片资源（CDN回退）
-│   ├── products/             # 产品图片
-│   ├── quality/              # 认证证书
-│   └── icons/                # 图标资源
+├── images/                 # 图片资源
+│   ├── products/           # 产品高清图
+│   ├── quality/            # 认证证书
+│   └── ...
 │
-├── pdf/                      # 可下载文档
-│   ├── Catalog.pdf           # 产品目录
-│   ├── Quotations for dental products.pdf
-│   └── price list.pdf
+├── pdf/                    # 可下载文档 (Catalog, Price List)
 │
-├── _headers                  # Cloudflare Pages头部配置
-├── _redirects                # Cloudflare重定向规则
-└── README.md                 # 项目说明文档
-￼
-￼
-￼
-🛠️ 维护指南
-1. 更新联系信息
-编辑 js/config.js 中的 CONTACT 配置段：
-javascript
-￼
-复制
-￼
-￼
-下载
-￼
+├── _headers                # Cloudflare Pages 头部配置 (CSP, Cache)
+├── _redirects              # Cloudflare 重定向规则
+└── README.md               # 项目说明文档
+
+```
+
+---
+
+## 🛠️ 维护指南
+
+### 1. 更新联系信息
+
+编辑 `js/config.js` 中的 `CONTACT` 对象：
+
+```javascript
 CONTACT: {
     WHATSAPP: {
         DISPLAY: '+44 078 9504 7944',
-        API_URL: 'https://wa.me/447895047944'
+        API_URL: '[https://wa.me/447895047944](https://wa.me/447895047944)'
     },
     EMAIL: {
         SALES: 'sales@v5md.com'
     },
-    ADDRESS: 'No. 168, Luying Road, Kunshan...'
+    // ...
 }
-￼
-￼
-2. 添加新产品
-在 js/complete-products.js 的 completeProductData 数组中新增产品对象：
-javascript
-￼
-复制
-￼
-￼
-下载
-￼
+
+```
+
+### 2. 添加新产品
+
+在 `js/complete-products.js` 的 `completeProductData` 数组中新增对象：
+
+```javascript
 {
-    id: "新产品ID",
+    id: "new-product-id",
     name: "产品名称",
     category: "产品类别",
-    images: ["图片路径"],
-    specifications: { ... },
+    images: ["images/products/category/new-product.jpg"],
+    specifications: { "Material": "...", "Size": "..." },
     certifications: ["ISO 13485", "CE"]
 }
-￼
-￼
-3. 修改页面布局
-编辑 js/layout.js 中的相应渲染函数：
-• renderHeader() - 修改导航栏
-• renderFooter() - 修改页脚
-• renderFloatingElements() - 修改悬浮按钮
-4. 编辑页面内容
-直接编辑对应HTML文件的 <main> 标签内部内容。注意：不要手动添加导航栏或页脚，它们由布局引擎自动注入。
-￼
-💻 开发与部署
-本地开发环境
-bash
-￼
-复制
-￼
-￼
-下载
-￼
-# 克隆仓库
-git
- clone https://github.com/alden888/v5md.git
-cd
- v5md
 
-# 使用Live Server启动（VS Code扩展）
-# 或使用Python简易服务器
-python3 
--m http.server 8000
-￼
-￼
-生产部署
-Cloudflare Pages（推荐）
-1. 连接GitHub仓库至Cloudflare Pages
-2. 构建命令：留空（纯静态站点）
-3. 输出目录：/（根目录）
-4. 环境变量：无需额外配置
-GitHub Pages
-1. 仓库设置 → Pages → Source: main分支根目录
-2. 自定义域名：v5md.com（需配置DNS）
-环境配置
-• 开发环境：自动使用本地资源
-• 生产环境：自动切换至CDN加速资源
-• 路径策略：相对路径 + BASE_URL动态适配
-￼
-⚡ 性能优化策略
-核心Web指标
-￼
-￼
-指标
-优化策略
-目标值
-LCP
-关键图片预加载、CDN加速
-<2.5s
-FID
-JavaScript分块加载、交互优化
-<100ms
-CLS
-图片尺寸预设、布局稳定性
-<0.1
-缓存策略
-• 静态资源：Cache-Control: max-age=31536000（1年）
-• HTML页面：Cache-Control: max-age=3600（1小时）
-• 版本控制：?v=版本号 参数避免缓存冲突
-图片优化
-• 格式选择：优先WebP，JPEG/PNG备选
-• 尺寸适配：响应式图片，按设备加载
-• 懒加载：非首屏图片延迟加载
-￼
-🔒 安全配置
-内容安全策略 (CSP)
-通过 _headers 文件实施：
-text
-￼
-复制
-￼
-￼
-下载
-￼
-/*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://translate.google.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https: http:; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self'
-  X-Frame-Options: DENY
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-￼
-￼
-HTTPS强制
-• 全站HTTPS加密
-• HSTS预加载列表
-• 安全证书自动续期
-表单保护
-• CSRF令牌验证
-• 输入数据清理
-• 提交频率限制
-￼
-📊 分析与监控
-集成分析
-• Google Analytics：GA4测量ID G-JE15YSMC2W
-• 自定义事件：追踪产品查看、PDF下载、WhatsApp咨询
-• 性能监控：Core Web Vitals实时监控
-数据收集
-• 页面浏览量
-• 用户交互行为
-• 转化漏斗分析
-• 设备与地域分布
-￼
-🌐 国际化支持
-多语言功能
-• 谷歌翻译：集成官方翻译API
-• 语言检测：自动识别用户偏好
-• 界面适配：布局支持RTL/LTR双向文本
-区域适配
-• 联系信息分区域显示
-• 价格货币本地化
-• 时区智能转换
-￼
-🤝 贡献指南
-开发流程
-1. Fork本仓库
-2. 创建功能分支：git checkout -b feature/新功能
-3. 提交更改：git commit -m '添加新功能描述'
-4. 推送到分支：git push origin feature/新功能
-5. 提交Pull Request
-代码规范
-• HTML：语义化标签，W3C标准验证
-• CSS：Tailwind优先，自定义样式补充
-• JavaScript：ES6+语法，模块化组织
-• 提交信息：清晰描述，英文优先
-测试要求
-• 跨浏览器测试（Chrome, Firefox, Safari, Edge）
-• 移动设备适配测试
-• 性能基准测试
-• SEO结构验证
-￼
-📄 许可证与版权
-版权声明
-© 2025 V5 Medical LTD。保留所有权利。
-使用限制
-未经V5 Medical LTD书面许可，禁止：
-• 商业性复制、分发或修改
-• 移除版权标识或水印
-• 用于竞争性商业活动
-• 反编译或逆向工程
-开源组件
-• Tailwind CSS - MIT License
-• Font Awesome - SIL OFL 1.1 License
-• Google Translate API - Terms of Service
-￼
-📞 技术支持
-技术问题
-• GitHub Issues：提交问题报告
-• 技术邮箱：tech@v5md.com
-• 响应时间：24小时内（工作日）
-业务咨询
-• 销售邮箱：sales@v5md.com
-• WhatsApp：+44-078-9504-7944
-• 官方网站：v5md.com
-紧急联系
-• 电话：+44-078-9504-7944（英国）
-• 电话：+86-180-1266-9897（中国）
-• 服务时间：周一至周五 9:00-18:00（GMT+8）
-￼
-最后更新：2025年12月
-当前版本：v2.3.0
-维护状态：🟢 活跃维护中
+```
+
+### 3. 修改页面布局
+
+* **导航栏**：编辑 `js/layout.js` 中的 `renderHeader()` 函数。
+* **页脚**：编辑 `js/layout.js` 中的 `renderFooter()` 函数。
+* **悬浮按钮**：编辑 `js/layout.js` 中的 `renderFloatingElements()` 函数。
+
+### 4. 编辑页面内容
+
+直接编辑对应 HTML 文件的 `<main>` 标签内部内容。
+
+> **注意**：不要手动在 HTML 中添加 `<nav>` 或 `<footer>` 标签，它们由布局引擎自动注入。
+
+---
+
+## 💻 开发与部署
+
+### 本地开发
+
+1. **克隆仓库**
+```bash
+git clone [https://github.com/alden888/v5md.git](https://github.com/alden888/v5md.git)
+cd v5md
+
+```
+
+
+2. **启动服务**
+建议使用 VS Code 的 **Live Server** 插件，或者 Python：
+```bash
+python3 -m http.server 8000
+
+```
+
+
+
+### 生产部署 (Cloudflare Pages)
+
+1. 连接 GitHub 仓库至 Cloudflare Pages。
+2. **构建配置**：
+* 构建命令：(留空)
+* 输出目录：`/` (根目录)
+
+
+3. **自定义域名**：绑定 `v5md.com`。
+
+---
+
+## 🔒 安全配置
+
+### 内容安全策略 (CSP)
+
+项目通过 `_headers` 文件实施严格的 CSP 策略：
+
+* **脚本源**：仅允许本站、Google Translate、Google Analytics。
+* **样式源**：仅允许本站、FontAwesome CDN、Google Fonts。
+* **防点击劫持**：`X-Frame-Options: DENY`。
+
+---
+
+## 📊 分析与监控
+
+* **Google Analytics 4**：ID `G-JE15YSMC2W`。
+* **事件追踪**：自动追踪产品查看、PDF 下载、WhatsApp 点击、表单提交。
+* **性能监控**：集成 Core Web Vitals 监控。
+
+---
+
+## 📄 版权说明
+
+© 2025 **V5 Medical LTD**. All Rights Reserved.
+
+未经书面许可，禁止复制、分发或用于商业竞争用途。
+
+---
+
+## 📞 联系方式
+
+* **业务咨询**: sales@v5md.com
+* **WhatsApp**: +44 78 9504 7944
+* **官方网站**: [v5md.com](https://v5md.com)
+
+```
+
+```
