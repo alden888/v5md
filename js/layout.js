@@ -121,6 +121,7 @@ const V5Layout = (() => {
                                 <p class="text-gray-400 text-sm mb-4">Professional Global Medical Consumables Supplier</p>
                                 <p class="text-gray-400 text-sm mb-4">Factory Direct Medical Consumables Manufacturer</p> 
                                 <p class="text-gray-400 text-sm italic">20+ Years Exporting Experience</p>
+                                <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
                             </div>
                             
                             <div class="hidden md:block md:col-span-1"></div>
@@ -133,6 +134,7 @@ const V5Layout = (() => {
                                     <li><a href="catalog.html" class="hover:text-white transition">Products</a></li>
                                     <li><a href="blog.html" class="hover:text-white transition">Blog</a></li>
                                     <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+                                    <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
                                 </ul>
                             </div>
                             
@@ -226,3 +228,4 @@ const V5Layout = (() => {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 else V5Layout.init();
+
