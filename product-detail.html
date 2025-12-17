@@ -260,6 +260,7 @@
             }
         });
 
+        // 在 product-detail.html 的 script 标签中替换此函数
         function renderProductPage(product) {
             // SEO
             if (window.seoUtils) {
@@ -285,18 +286,21 @@
             const catName = formatCategory(product.category);
             setText('product-category-badge', catName);
             
-            // Image Logic (Key Fix)
+            // --- 关键修改：图片加载逻辑 ---
             const imgEl = document.getElementById('product-image');
-            const imgSrc = product.images?.[0]; // Get the path from data
+            const imgSrc = product.images?.[0]; 
             
-            // Use ImageUtils to resolve the correct path (handle base/fallback)
             if (window.imageUtils) {
+                // 1. 获取基础路径
                 imgEl.src = window.imageUtils.getImageUrl(imgSrc);
-                // Bind robust error handler
-                imgEl.onerror = function() { window.imageUtils.handleError(this); };
+                // 2. 绑定错误处理：如果本地加载失败，自动去 GitHub 找
+                imgEl.onerror = function() { 
+                    window.imageUtils.handleError(this); 
+                };
             } else {
                 imgEl.src = imgSrc || 'images/products/default-product.jpg';
             }
+            // ---------------------------
 
             // Specs
             const specsTable = document.getElementById('specs-table');
@@ -320,8 +324,8 @@
             // WhatsApp
             const phone = window.V5Config?.CONTACT?.WHATSAPP?.NUMBER || '447895047944';
             document.getElementById('whatsapp-btn').href = `https://wa.me/${phone}?text=Hi, I am interested in *${encodeURIComponent(product.name)}* (ID: ${product.id}). Quote please?`;
-        }
-
+             }
+        
         function renderRelatedProducts(currentProduct, allProducts) {
             const container = document.getElementById('related-products');
             if (!allProducts || !container) return;
@@ -395,3 +399,4 @@
     <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
 </body>
 </html>
+
