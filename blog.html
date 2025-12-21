@@ -35,17 +35,19 @@
     </script>
     
     <style>
-        .blog-card { transition: all 0.3s ease; }
+        /* Card Hover Effects */
+        .blog-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .blog-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         
+        /* Badge Hover */
         .category-badge { transition: all 0.2s ease; cursor: pointer; }
         .category-badge:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
         
-        /* Lightbox & Modal Transitions */
+        /* Modal Transitions */
         .lightbox, #blog-post-modal { transition: opacity 0.3s ease; }
         .lightbox.active { opacity: 1; pointer-events: auto; }
         
-        /* Custom Scrollbar for Modal */
+        /* Scrollbar for Modal */
         #blog-post-modal .overflow-y-auto::-webkit-scrollbar { width: 8px; }
         #blog-post-modal .overflow-y-auto::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
     </style>
@@ -266,7 +268,7 @@
                 <h2 class="text-3xl font-bold text-center mb-12 text-gray-900">Featured Gallery</h2>
                 
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="gallery-item rounded-xl overflow-hidden shadow-sm group relative h-64" onclick="openLightbox('images/blog/Shipment Preparation.jpg')">
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-sm group relative h-64 cursor-zoom-in" onclick="openLightbox('images/blog/Shipment Preparation.jpg')">
                         <img src="images/blog/Shipment Preparation.jpg" 
                              onerror="this.src='https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800'"
                              alt="Shipment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
@@ -276,7 +278,7 @@
                         </div>
                     </div>
                     
-                    <div class="gallery-item rounded-xl overflow-hidden shadow-sm group relative h-64" onclick="openLightbox('images/blog/Warehouse Inventory.jpg')">
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-sm group relative h-64 cursor-zoom-in" onclick="openLightbox('images/blog/Warehouse Inventory.jpg')">
                         <img src="images/blog/Warehouse Inventory.jpg" 
                              onerror="this.src='https://images.unsplash.com/photo-1553413077-190dd305871c?w=800'"
                              alt="Inventory" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
@@ -286,7 +288,7 @@
                         </div>
                     </div>
                     
-                    <div class="gallery-item rounded-xl overflow-hidden shadow-sm group relative h-64" onclick="openLightbox('images/blog/Quality Inspection.jpg')">
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-sm group relative h-64 cursor-zoom-in" onclick="openLightbox('images/blog/Quality Inspection.jpg')">
                         <img src="images/blog/Quality Inspection.jpg" 
                              onerror="this.src='https://images.unsplash.com/photo-1581093458791-9f302e683c9c?w=800'"
                              alt="Quality" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
@@ -296,7 +298,7 @@
                         </div>
                     </div>
                     
-                    <div class="gallery-item rounded-xl overflow-hidden shadow-sm group relative h-64" onclick="openLightbox('images/blog/Hospital Delivery.jpg')">
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-sm group relative h-64 cursor-zoom-in" onclick="openLightbox('images/blog/Hospital Delivery.jpg')">
                         <img src="images/blog/Hospital Delivery.jpg" 
                              onerror="this.src='https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=800'"
                              alt="Delivery" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
@@ -328,13 +330,15 @@
 
     <div class="lightbox fixed inset-0 z-[9999] hidden" id="lightbox">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-sm"></div>
-        <span class="lightbox-close z-50" onclick="closeLightbox()">&times;</span>
-        <img id="lightbox-image" src="" alt="Enlarged" class="relative z-10 shadow-2xl">
+        <span class="lightbox-close z-50 absolute top-6 right-6 text-white text-5xl cursor-pointer hover:text-gray-300 transition" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-image" src="" alt="Enlarged" class="relative z-10 shadow-2xl max-h-[90vh] max-w-[90vw] object-contain">
     </div>
 
     <div id="blog-post-modal" class="fixed inset-0 bg-black/80 z-[6000] hidden flex items-center justify-center p-4 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[85vh] overflow-y-auto transform scale-95 transition-transform duration-300 relative">
-            <div class="sticky top-0 bg-white/95 backdrop-blur border-b px-6 py-4 flex justify-between items-center z-10">
+        <div class="absolute inset-0" onclick="closeBlogPost()"></div>
+        
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[85vh] overflow-y-auto transform scale-95 transition-transform duration-300 relative z-10">
+            <div class="sticky top-0 bg-white/95 backdrop-blur border-b px-6 py-4 flex justify-between items-center z-20">
                 <h3 id="modal-title" class="text-xl font-bold text-gray-900 line-clamp-1"></h3>
                 <button onclick="closeBlogPost()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-red-50 hover:text-red-500 transition">
                     <i class="fas fa-times"></i>
@@ -347,7 +351,8 @@
 
     <script src="js/config.js?v=2.6.0"></script>
     <script src="js/layout.js?v=4.2.0"></script>
-    <script src="js/seo-utils.js?v=2.0.0"></script>
+    <script src="js/image-utils.js?v=2.3.0"></script>
+    <script src="js/security-utils.js?v=1.0.0"></script> <script src="js/seo-utils.js?v=2.0.0"></script>
     <script src="js/main.js?v=2.1.0"></script>
 
     <script>
@@ -360,8 +365,8 @@
             btns.forEach(btn => {
                 const isActive = btn.dataset.category === category;
                 btn.className = isActive 
-                    ? 'category-filter-btn active px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium transition shadow-md'
-                    : 'category-filter-btn px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 text-sm font-medium transition';
+                    ? 'category-filter-btn active px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium transition shadow-md whitespace-nowrap'
+                    : 'category-filter-btn px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 text-sm font-medium transition whitespace-nowrap';
             });
             
             // Filter cards
@@ -370,6 +375,7 @@
                     post.parentElement.classList.remove('hidden'); 
                     post.style.display = 'flex'; 
                 } else {
+                    post.parentElement.classList.add('hidden'); // Hide wrapper div if grid
                     post.style.display = 'none';
                 }
             });
@@ -380,6 +386,9 @@
         const lightboxImg = document.getElementById('lightbox-image');
 
         function openLightbox(src) {
+            // Safe image handling using ImageUtils if available
+            if(window.imageUtils) src = window.imageUtils.getImageUrl(src);
+            
             lightboxImg.src = src;
             lightbox.classList.remove('hidden');
             // Trigger reflow for transition
@@ -397,18 +406,18 @@
         }
 
         lightbox.addEventListener('click', (e) => {
-            if(e.target === lightbox || e.target.classList.contains('lightbox-close')) closeLightbox();
+            if(e.target === lightbox) closeLightbox();
         });
 
         // --- Blog Modal Logic ---
         const modal = document.getElementById('blog-post-modal');
-        const modalContent = modal.querySelector('div');
+        const modalContent = modal.querySelector('div.bg-white'); // The inner card
 
         function openBlogPost(postId) {
             const titleEl = document.getElementById('modal-title');
             const contentEl = document.getElementById('modal-content');
             
-            // Sample Data (Replace with real JSON fetch if needed)
+            // Data Store
             const postData = {
                 'london-hospital-shipment': {
                     title: 'Successful Delivery to London Hospital',
@@ -463,21 +472,32 @@
             const data = postData[postId] || { title: 'Post Not Found', content: 'Content unavailable.' };
             
             titleEl.textContent = data.title;
-            contentEl.innerHTML = data.content;
+            
+            // [Security] Use SecurityUtils if available
+            if (window.SecurityUtils) {
+                window.SecurityUtils.safeSetHTML(contentEl, data.content);
+            } else {
+                contentEl.innerHTML = data.content;
+            }
             
             modal.classList.remove('hidden');
             // Trigger reflow
             void modal.offsetWidth;
             modal.classList.remove('opacity-0', 'pointer-events-none');
-            modalContent.classList.remove('scale-95');
-            modalContent.classList.add('scale-100');
+            
+            // Animation for inner card
+            modal.querySelector('div.bg-white').classList.remove('scale-95');
+            modal.querySelector('div.bg-white').classList.add('scale-100');
+            
             document.body.style.overflow = 'hidden';
         }
 
         function closeBlogPost() {
             modal.classList.add('opacity-0', 'pointer-events-none');
-            modalContent.classList.remove('scale-100');
-            modalContent.classList.add('scale-95');
+            // Animation for inner card
+            modal.querySelector('div.bg-white').classList.remove('scale-100');
+            modal.querySelector('div.bg-white').classList.add('scale-95');
+            
             setTimeout(() => {
                 modal.classList.add('hidden');
                 document.body.style.overflow = 'auto';
