@@ -2,14 +2,14 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 4.0.0 (Gradient Header & Mobile Optimization)
+ * @version 4.1.0 (Fixed: Mobile Menu Click & Logo Text Visibility)
  * @updated 2024-12-16
  */
 
 const V5Layout = (() => {
     const config = window.V5Config;
     if (!config) {
-        console.error('[Layout] V5Config not found. Ensure config.js is loaded before layout.js.');
+        console.error('[Layout] V5Config not found.');
         return { init: () => {} };
     }
 
@@ -20,22 +20,21 @@ const V5Layout = (() => {
         }
 
         init() {
-            this.injectStyles(); 
+            this.injectStyles();
             this.renderHeader();
             this.renderFooter();
             this.renderFloatingElements();
             window.dispatchEvent(new Event('v5-layout-ready'));
-            console.log('[Layout] Initialized v4.0.0');
+            console.log('[Layout] Initialized v4.1.0');
         }
 
         /**
-         * [CSS 注入] 
-         * 包含谷歌翻译位置修复 + 移动端菜单动画
+         * [CSS 注入] 样式修复
          */
         injectStyles() {
             const style = document.createElement('style');
             style.innerHTML = `
-                /* 谷歌翻译固定定位 */
+                /* 谷歌翻译位置固定 */
                 #google_translate_element { position: fixed !important; z-index: 60 !important; }
                 
                 /* 桌面端 */
@@ -43,32 +42,32 @@ const V5Layout = (() => {
                     #google_translate_element { top: 22px !important; right: 20px !important; }
                 }
 
-                /* 移动端：避开汉堡菜单 */
+                /* 移动端：向左避让汉堡菜单 */
                 @media (max-width: 768px) {
                     #google_translate_element { 
                         top: 20px !important; 
                         right: 60px !important; 
                     }
                     .goog-te-gadget-simple {
-                        max-width: 130px !important;
-                        padding: 4px 6px !important;
-                        font-size: 12px !important;
+                        max-width: 120px !important;
+                        padding: 4px !important;
+                        font-size: 11px !important;
                     }
                 }
 
-                /* 移动端菜单淡入动画 */
-                @keyframes slideDown {
+                /* 移动端菜单动画 */
+                @keyframes menuSlide {
                     from { opacity: 0; transform: translateY(-10px); }
                     to { opacity: 1; transform: translateY(0); }
                 }
-                .mobile-menu-active {
-                    animation: slideDown 0.3s ease-out forwards;
+                .mobile-menu-enter {
+                    animation: menuSlide 0.2s ease-out forwards;
                 }
             `;
             document.head.appendChild(style);
         }
 
-        // --- 1. Header Rendering (淡蓝 -> 深蓝 渐变) ---
+        // --- 1. Header Rendering (修复重点) ---
         renderHeader() {
             const container = document.getElementById('v5-header');
             if (!container) return;
@@ -84,16 +83,14 @@ const V5Layout = (() => {
                 { id: 'contact', href: 'contact.html', txt: 'Contact' }
             ];
 
-            // 桌面菜单：白色文字（背景深蓝）
             const desktopNav = navItems.map(item => `
                 <a href="${item.href}" class="font-medium transition duration-200 text-sm lg:text-base ${this.currentPage === item.id ? 'text-white border-b-2 border-blue-300 pb-1' : 'text-blue-100 hover:text-white'}">
                     ${item.txt}
                 </a>
             `).join('');
 
-            // 移动端菜单：优化触控体验
             const mobileNav = navItems.map(item => `
-                <a href="${item.href}" class="block px-5 py-4 border-b border-gray-50 text-base font-medium transition active:bg-blue-50 ${this.currentPage === item.id ? 'text-blue-700 bg-blue-50/50' : 'text-gray-700'}">
+                <a href="${item.href}" class="block px-6 py-4 border-b border-gray-100 text-base font-medium transition active:bg-blue-50 ${this.currentPage === item.id ? 'text-blue-700 bg-blue-50/50' : 'text-gray-700'}">
                     <div class="flex justify-between items-center">
                         <span>${item.txt}</span>
                         ${this.currentPage === item.id ? '<i class="fas fa-chevron-right text-xs text-blue-400"></i>' : ''}
@@ -108,11 +105,11 @@ const V5Layout = (() => {
                     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
                         <div class="flex justify-between items-center h-full">
                             
-                            <a href="index.html" class="flex items-center gap-3 group relative z-10 pr-4">
-                                <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-10 md:h-12 w-auto transition-transform group-hover:scale-105" alt="${this.config.SEO.SITE_NAME}">
-                                <div class="hidden sm:block">
-                                    <div class="font-bold text-xl text-blue-900 leading-none tracking-tight">V5 Medical LTD</div>
-                                    <div class="text-[10px] text-blue-700 font-bold tracking-wider uppercase mt-0.5">Global Medical Supply Chain</div>
+                            <a href="index.html" class="flex items-center gap-2 sm:gap-3 group relative z-10 pr-2">
+                                <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-8 sm:h-10 md:h-12 w-auto" alt="Logo">
+                                <div class="flex flex-col">
+                                    <div class="font-bold text-lg sm:text-xl text-blue-900 leading-none tracking-tight">V5 Medical</div>
+                                    <div class="text-[9px] sm:text-[10px] text-blue-700 font-bold tracking-wider uppercase mt-0.5 whitespace-nowrap">Global Medical Supply Chain</div>
                                 </div>
                             </a>
 
@@ -123,18 +120,18 @@ const V5Layout = (() => {
                                 </a>
                                 <div class="w-20"></div> </div>
 
-                            <button id="mobile-menu-btn" class="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition z-50 relative focus:outline-none">
+                            <button id="mobile-menu-btn" class="md:hidden text-white p-3 -mr-2 hover:bg-white/10 rounded-full transition z-50 relative focus:outline-none touch-manipulation">
                                 <i class="fas fa-bars text-2xl"></i>
                             </button>
                         </div>
                     </div>
 
-                    <div id="mobile-menu" class="hidden md:hidden bg-white absolute w-full shadow-2xl top-20 left-0 z-40 mobile-menu-active rounded-b-2xl overflow-hidden">
+                    <div id="mobile-menu" class="hidden md:hidden bg-white absolute w-full shadow-2xl top-20 left-0 z-40 rounded-b-2xl overflow-hidden border-t border-blue-100">
                         <div class="py-2">
                             ${mobileNav}
-                            <div class="p-4 bg-gray-50 mt-1">
-                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="flex items-center justify-center gap-2 w-full bg-green-600 text-white px-4 py-3.5 rounded-xl font-bold shadow-sm active:scale-95 transition-transform">
-                                    <i class="fab fa-whatsapp text-xl"></i> WhatsApp Us
+                            <div class="p-5 bg-gray-50 mt-1">
+                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="flex items-center justify-center gap-2 w-full bg-green-600 text-white px-4 py-4 rounded-xl font-bold shadow-sm active:scale-95 transition-transform">
+                                    <i class="fab fa-whatsapp text-xl"></i> Chat on WhatsApp
                                 </a>
                             </div>
                         </div>
@@ -142,40 +139,54 @@ const V5Layout = (() => {
                 </nav>
             `;
             
-            // 绑定移动端菜单切换逻辑
-            setTimeout(() => {
-                const btn = document.getElementById('mobile-menu-btn');
-                const menu = document.getElementById('mobile-menu');
-                const icon = btn?.querySelector('i');
-                
-                if (btn && menu) {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const isHidden = menu.classList.contains('hidden');
-                        if (isHidden) {
-                            menu.classList.remove('hidden');
-                            icon.classList.remove('fa-bars');
-                            icon.classList.add('fa-times');
-                        } else {
-                            menu.classList.add('hidden');
-                            icon.classList.remove('fa-times');
-                            icon.classList.add('fa-bars');
-                        }
-                    });
-                    
-                    // 点击外部关闭
-                    document.addEventListener('click', (e) => {
-                        if (!menu.classList.contains('hidden') && !menu.contains(e.target) && !btn.contains(e.target)) {
-                            menu.classList.add('hidden');
-                            icon.classList.remove('fa-times');
-                            icon.classList.add('fa-bars');
-                        }
-                    });
-                }
-            }, 100);
+            // [核心修复] 立即绑定事件，确保点击生效
+            this.bindMobileMenu();
         }
 
-        // --- 2. Footer Rendering (保持完美状态) ---
+        /**
+         * 独立的绑定函数，确保 DOM 存在后执行
+         */
+        bindMobileMenu() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            
+            if (!btn || !menu) return;
+
+            // 清除旧事件（防止重复）
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+            
+            const icon = newBtn.querySelector('i');
+
+            newBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // 防止冒泡
+                const isHidden = menu.classList.contains('hidden');
+                
+                if (isHidden) {
+                    menu.classList.remove('hidden');
+                    menu.classList.add('mobile-menu-enter'); // 添加动画
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                    // 菜单打开时，body 禁止滚动（可选，视体验而定）
+                } else {
+                    menu.classList.add('hidden');
+                    menu.classList.remove('mobile-menu-enter');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // 点击菜单外部关闭
+            document.addEventListener('click', (e) => {
+                if (!menu.classList.contains('hidden') && !newBtn.contains(e.target) && !menu.contains(e.target)) {
+                    menu.classList.add('hidden');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+
+        // --- 2. Footer Rendering ---
         renderFooter() {
             const container = document.getElementById('v5-footer');
             if (!container) return;
@@ -189,7 +200,6 @@ const V5Layout = (() => {
                 <footer class="bg-gray-900 text-white py-12 px-4 border-t border-gray-800">
                     <div class="max-w-7xl mx-auto">
                         <div class="grid md:grid-cols-12 gap-8 mb-12">
-                            
                             <div class="md:col-span-3">
                                 <div class="flex items-center gap-2 mb-4">
                                     <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-10 w-auto" alt="V5 Medical Logo">
@@ -200,9 +210,7 @@ const V5Layout = (() => {
                                 <p class="text-gray-400 text-sm italic mb-2">20+ Years Exporting Experience</p>
                                 <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
                             </div>
-                            
                             <div class="hidden md:block md:col-span-1"></div>
-
                             <div class="md:col-span-2">
                                 <h4 class="font-bold mb-4 text-lg text-white">Quick Links</h4>
                                 <ul class="space-y-2 text-sm text-gray-400">
@@ -214,36 +222,28 @@ const V5Layout = (() => {
                                     <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
                                 </ul>
                             </div>
-                            
                             <div class="md:col-span-3 pl-0 md:pl-4">
                                 <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
                                 <div class="space-y-3 text-sm text-gray-400">
                                     <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${CONTACT.WHATSAPP.DISPLAY} (UK)</p>
                                     <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${CONTACT.WHATSAPP_CN.DISPLAY} (Backup)</p>
-                                    <p class="flex items-center gap-2">
-                                        <i class="fas fa-envelope text-blue-400 w-5"></i> 
-                                        <a href="mailto:${CONTACT.EMAIL.SALES}" class="hover:text-white transition">${CONTACT.EMAIL.SALES}</a>
-                                    </p>
-                                    <p class="flex items-center gap-2">
-                                        <i class="fab fa-google text-red-400 w-5"></i> 
-                                        <a href="mailto:v5md.com@gmail.com" class="hover:text-white transition">v5md.com@gmail.com</a>
-                                    </p>
+                                    <p class="flex items-center gap-2"><i class="fas fa-envelope text-blue-400 w-5"></i> ${CONTACT.EMAIL.SALES}</p>
+                                    <p class="flex items-center gap-2"><i class="fab fa-google text-red-400 w-5"></i> v5md.com@gmail.com</p>
                                     <p class="flex items-start gap-2"><i class="fas fa-map-marker-alt mt-1 w-5"></i> ${CONTACT.ADDRESS}</p>
                                 </div>
                             </div>
-                            
                             <div class="md:col-span-3 pl-0 md:pl-4">
                                 <h4 class="font-bold mb-4 text-lg text-white">Downloads</h4>
                                 <div class="space-y-2 mb-8 text-sm">
-                                    <a href="pdf/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Catalog</a>
+                                    <a href="pdf/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Product Catalog</a>
                                     <a href="pdf/Quotations for dental products.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Dental Kit</a>
                                     <a href="pdf/price list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Price List</a>
                                 </div>
                                 <h4 class="font-bold mb-4 text-lg text-white">Follow Us</h4>
                                 <div class="flex gap-3 flex-wrap">
                                     <a href="https://linkedin.com/company/v5med" target="_blank" class="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 transition text-white"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="https://www.youtube.com/@v5med" target="_blank" class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition text-white"><i class="fab fa-youtube"></i></a>
-                                    <a href="https://www.facebook.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition text-white"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://www.facebook.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 text-white"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://www.youtube.com/@v5med" target="_blank" class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 text-white"><i class="fab fa-youtube"></i></a>
                                     <a href="https://www.instagram.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 flex items-center justify-center transition text-white"><i class="fab fa-instagram"></i></a>
                                     <a href="https://www.tiktok.com/@v5med" target="_blank" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-black transition text-white"><i class="fab fa-tiktok"></i></a>
                                     <a href="https://x.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition text-white"><i class="fab fa-twitter"></i></a>
@@ -283,9 +283,10 @@ const V5Layout = (() => {
             if (path.includes('blog')) return 'blog';
             return 'home';
         }
-        
+
         _getActiveClass(id) { return this.currentPage === id ? 'text-white border-b-2 border-blue-400' : 'text-blue-100 hover:text-white'; }
         _getMobileActiveClass(id) { return this.currentPage === id ? 'text-blue-700 bg-blue-50 font-bold' : 'text-gray-600 hover:bg-gray-50'; }
+        
         _getImgPath(path) {
             if (!path) return '';
             if (path.startsWith('http')) return path;
