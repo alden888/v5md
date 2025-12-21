@@ -2,7 +2,7 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 4.4.0 (Update: Footer Copyright & Disclaimer Layout)
+ * @version 4.5.0 (Optimization: Semantic HTML & SEO Keywords in Footer)
  * @updated 2024-12-16
  */
 
@@ -25,49 +25,25 @@ const V5Layout = (() => {
             this.renderFooter();
             this.renderFloatingElements();
             window.dispatchEvent(new Event('v5-layout-ready'));
-            console.log('[Layout] Initialized v4.4.0');
+            console.log('[Layout] Initialized v4.5.0');
         }
 
-        /**
-         * [CSS 注入] 
-         */
         injectStyles() {
             const style = document.createElement('style');
             style.innerHTML = `
-                /* 谷歌翻译位置固定 */
                 #google_translate_element { position: fixed !important; z-index: 60 !important; }
-                
-                /* 桌面端 */
-                @media (min-width: 769px) {
-                    #google_translate_element { top: 22px !important; right: 20px !important; }
+                @media (min-width: 769px) { #google_translate_element { top: 22px !important; right: 20px !important; } }
+                @media (max-width: 768px) { 
+                    #google_translate_element { top: 20px !important; right: 60px !important; }
+                    .goog-te-gadget-simple { max-width: 120px !important; padding: 4px !important; font-size: 11px !important; }
                 }
-
-                /* 移动端 */
-                @media (max-width: 768px) {
-                    #google_translate_element { 
-                        top: 20px !important; 
-                        right: 60px !important; 
-                    }
-                    .goog-te-gadget-simple {
-                        max-width: 130px !important;
-                        padding: 4px 6px !important;
-                        font-size: 12px !important;
-                    }
-                }
-
-                /* 移动端菜单动画 */
-                @keyframes menuSlide {
-                    from { opacity: 0; transform: translateY(-10px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                .mobile-menu-enter {
-                    animation: menuSlide 0.2s ease-out forwards;
-                }
+                @keyframes menuSlide { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+                .mobile-menu-enter { animation: menuSlide 0.2s ease-out forwards; }
             `;
             document.head.appendChild(style);
         }
 
-        // --- 1. Header Rendering ---
+        // --- 1. Header Rendering (优化：增加语义化标签 ul/li) ---
         renderHeader() {
             const container = document.getElementById('v5-header');
             if (!container) return;
@@ -83,12 +59,20 @@ const V5Layout = (() => {
                 { id: 'contact', href: 'contact.html', txt: 'Contact' }
             ];
 
-            const desktopNav = navItems.map(item => `
-                <a href="${item.href}" class="font-medium transition duration-200 text-sm lg:text-base ${this.currentPage === item.id ? 'text-white border-b-2 border-blue-300 pb-1' : 'text-blue-100 hover:text-white'}">
-                    ${item.txt}
-                </a>
-            `).join('');
+            // 桌面菜单：使用 ul > li 结构，对 SEO 更友好
+            const desktopNav = `
+                <ul class="flex gap-6 items-center">
+                    ${navItems.map(item => `
+                        <li>
+                            <a href="${item.href}" class="font-medium transition duration-200 text-sm lg:text-base ${this.currentPage === item.id ? 'text-white border-b-2 border-blue-300 pb-1' : 'text-blue-100 hover:text-white'}">
+                                ${item.txt}
+                            </a>
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
 
+            // 移动端菜单
             const mobileNav = navItems.map(item => `
                 <a href="${item.href}" class="block px-6 py-4 border-b border-gray-100 text-base font-medium transition active:bg-blue-50 ${this.currentPage === item.id ? 'text-blue-700 bg-blue-50/50' : 'text-gray-700'}">
                     <div class="flex justify-between items-center">
@@ -99,14 +83,14 @@ const V5Layout = (() => {
             `).join('');
 
             container.innerHTML = `
-                <nav id="navbar" class="fixed w-full z-50 shadow-lg transition-all duration-300 h-20">
+                <nav id="navbar" class="fixed w-full z-50 shadow-lg transition-all duration-300 h-20" aria-label="Main Navigation">
                     <div class="absolute inset-0 bg-gradient-to-r from-blue-50 via-blue-600 to-blue-900"></div>
                     
                     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
                         <div class="flex justify-between items-center h-full">
                             
                             <a href="index.html" class="flex items-center gap-2 sm:gap-3 group relative z-10 pr-2">
-                                <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-8 sm:h-10 md:h-12 w-auto" alt="Logo">
+                                <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-8 sm:h-10 md:h-12 w-auto" alt="V5 Medical Logo">
                                 <div class="flex flex-col">
                                     <div class="font-bold text-lg sm:text-xl text-blue-900 leading-none tracking-tight">V5 Medical LTD</div>
                                     <div class="text-[9px] sm:text-[10px] text-blue-700 font-bold tracking-wider uppercase mt-0.5 whitespace-nowrap">Global Medical Supply Chain</div>
@@ -121,7 +105,7 @@ const V5Layout = (() => {
                                 <div class="w-20"></div> 
                             </div>
 
-                            <button id="mobile-menu-btn" class="md:hidden text-white p-3 -mr-2 hover:bg-white/10 rounded-full transition z-50 relative focus:outline-none touch-manipulation">
+                            <button id="mobile-menu-btn" class="md:hidden text-white p-3 -mr-2 hover:bg-white/10 rounded-full transition z-50 relative focus:outline-none touch-manipulation" aria-label="Toggle menu">
                                 <i class="fas fa-bars text-2xl"></i>
                             </button>
                         </div>
@@ -146,7 +130,6 @@ const V5Layout = (() => {
         bindMobileMenu() {
             const btn = document.getElementById('mobile-menu-btn');
             const menu = document.getElementById('mobile-menu');
-            
             if (!btn || !menu) return;
 
             const newBtn = btn.cloneNode(true);
@@ -156,7 +139,6 @@ const V5Layout = (() => {
             newBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const isHidden = menu.classList.contains('hidden');
-                
                 if (isHidden) {
                     menu.classList.remove('hidden');
                     menu.classList.add('mobile-menu-enter');
@@ -179,7 +161,7 @@ const V5Layout = (() => {
             });
         }
 
-        // --- 2. Footer Rendering (Layout Updated) ---
+        // --- 2. Footer Rendering (优化：B2B 实战型文案) ---
         renderFooter() {
             const container = document.getElementById('v5-footer');
             if (!container) return;
@@ -196,13 +178,16 @@ const V5Layout = (() => {
                             
                             <div class="md:col-span-3">
                                 <div class="flex items-center gap-2 mb-4">
-                                    <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-10 w-auto" alt="Logo">
+                                    <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-10 w-auto" alt="V5 Medical Logo">
                                     <span class="text-xl font-bold">V5 Medical LTD</span>
                                 </div>
-                                <p class="text-gray-400 text-sm mb-2">Professional Global Medical Consumables Supplier</p>
-                                <p class="text-gray-400 text-sm mb-2">Factory Direct Medical Consumables Manufacturer</p> 
-                                <p class="text-gray-400 text-sm italic mb-2">20+ Years Exporting Experience</p>
-                                <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
+                                <p class="text-gray-400 text-sm mb-3 font-medium">ISO 13485 Certified Medical Supply Chain Partner</p>
+                                <p class="text-gray-400 text-sm mb-2 leading-relaxed">
+                                    Specializing in surgical sutures, sterile packs, and injection devices. Serving hospitals and distributors in Europe, Middle East, Asia & Africa.
+                                </p>
+                                <p class="text-blue-300 text-sm font-bold mt-2">
+                                    <i class="fas fa-check-circle mr-1"></i> OEM & Private Label Available
+                                </p>
                             </div>
                             
                             <div class="hidden md:block md:col-span-1"></div>
@@ -212,8 +197,8 @@ const V5Layout = (() => {
                                 <ul class="space-y-2 text-sm text-gray-400">
                                     <li><a href="index.html" class="hover:text-white transition">Home</a></li>
                                     <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
-                                    <li><a href="catalog.html" class="hover:text-white transition">Products</a></li>
-                                    <li><a href="blog.html" class="hover:text-white transition">Blog</a></li>
+                                    <li><a href="catalog.html" class="hover:text-white transition">Product Catalog</a></li>
+                                    <li><a href="blog.html" class="hover:text-white transition">News & Updates</a></li>
                                     <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
                                     <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
                                 </ul>
@@ -239,7 +224,7 @@ const V5Layout = (() => {
                             <div class="md:col-span-3 pl-0 md:pl-4">
                                 <h4 class="font-bold mb-4 text-lg text-white">Downloads</h4>
                                 <div class="space-y-2 mb-8 text-sm">
-                                    <a href="pdf/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Catalog</a>
+                                    <a href="pdf/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Product Catalog</a>
                                     <a href="pdf/Quotations for dental products.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Dental Kit</a>
                                     <a href="pdf/price list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Price List</a>
                                 </div>
