@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details | V5 Medical LTD</title>
-    <meta name="description" content="Premium medical products from V5 Medical LTD. ISO 13485 certified manufacturer.">
+    <meta name="description" content="Premium medical products from V5 Medical LTD. ISO 13485 certified supply chain partner.">
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -23,7 +23,7 @@
 <body class="bg-gray-50 flex flex-col min-h-screen font-sans text-gray-800">
 
     <div id="loader" class="page-loader"><div class="loader-spinner"></div></div>
-    <script>setTimeout(() => { const l=document.getElementById('loader'); if(l){l.style.opacity='0';setTimeout(()=>l.style.display='none',500);}}, 2000);</script>
+    <script>setTimeout(() => { const l=document.getElementById('loader'); if(l){l.style.opacity='0';setTimeout(()=>l.style.display='none',500);}}, 1500);</script>
 
     <div id="v5-header"></div>
 
@@ -31,22 +31,25 @@
         
         <div id="loading-state" class="max-w-7xl mx-auto text-center py-20">
             <div class="loader-spinner border-blue-600 border-t-transparent mx-auto mb-4"></div>
-            <p class="text-gray-500 font-medium">Retrieving product information...</p>
+            <p class="text-gray-500 font-medium">Retrieving product data...</p>
         </div>
 
         <div id="error-state" class="hidden max-w-2xl mx-auto text-center py-20">
             <h2 class="text-2xl font-bold text-gray-900 mb-2">Product Not Found</h2>
-            <a href="catalog.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-lg">Return to Catalog</a>
+            <p class="text-gray-500 mb-6">This item may have been removed or the link is incorrect.</p>
+            <a href="catalog.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition">
+                Return to Catalog
+            </a>
         </div>
 
         <div id="product-content" class="hidden max-w-7xl mx-auto animate-fade-in">
-            <nav class="flex mb-8 text-sm text-gray-500">
-                <ol class="flex items-center space-x-2 flex-wrap">
-                    <li><a href="index.html" class="hover:text-blue-600">Home</a></li>
-                    <li>/</li>
-                    <li><a href="catalog.html" class="hover:text-blue-600">Products</a></li>
-                    <li>/</li>
-                    <li class="font-semibold text-gray-900" id="crumb-name">Product</li>
+            <nav class="flex mb-8 text-sm text-gray-500 overflow-x-auto whitespace-nowrap pb-2">
+                <ol class="flex items-center space-x-2">
+                    <li><a href="index.html" class="hover:text-blue-600 transition">Home</a></li>
+                    <li><i class="fas fa-chevron-right text-xs text-gray-300"></i></li>
+                    <li><a href="catalog.html" class="hover:text-blue-600 transition">Products</a></li>
+                    <li><i class="fas fa-chevron-right text-xs text-gray-300"></i></li>
+                    <li class="font-semibold text-gray-900" id="crumb-name">...</li>
                 </ol>
             </nav>
 
@@ -69,26 +72,44 @@
                     
                     <div class="flex flex-wrap gap-2 mb-6" id="cert-tags"></div>
 
+                    <div class="grid grid-cols-2 gap-4 text-sm bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6">
+                        <div>
+                            <span class="text-gray-500 block text-xs uppercase tracking-wide font-semibold">MOQ</span>
+                            <span class="font-bold text-gray-900">Flexible (Contact Us)</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-500 block text-xs uppercase tracking-wide font-semibold">Lead Time</span>
+                            <span class="font-bold text-gray-900">15-30 Days</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-500 block text-xs uppercase tracking-wide font-semibold">OEM / ODM</span>
+                            <span class="font-bold text-green-600">Available</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-500 block text-xs uppercase tracking-wide font-semibold">Export Markets</span>
+                            <span class="font-bold text-gray-900">Global (EU/US/Asia)</span>
+                        </div>
+                    </div>
+
                     <div class="prose prose-blue text-gray-600 mb-8 leading-relaxed">
                         <p id="product-desc">Loading description...</p>
                     </div>
 
-                    <div class="bg-gray-50 rounded-xl p-6 mb-8 border border-gray-100">
-                        <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                            <i class="fas fa-check-circle text-green-500"></i> Why Choose This Product?
-                        </h3>
-                        <ul class="space-y-2 text-sm text-gray-700">
-                            <li class="flex items-start gap-2"><i class="fas fa-check text-blue-500 mt-1"></i> ISO 13485 / CE / FDA Certified</li>
-                            <li class="flex items-start gap-2"><i class="fas fa-check text-blue-500 mt-1"></i> Factory Direct Pricing</li>
+                    <div class="mb-8">
+                        <h4 class="font-bold text-gray-900 mb-2 text-sm">Why Source This from V5?</h4>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle text-blue-500 mt-0.5"></i> Produced by ISO 13485 audited partner factory</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle text-blue-500 mt-0.5"></i> CE documentation available for registration support</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle text-blue-500 mt-0.5"></i> Custom labeling & packaging supported</li>
                         </ul>
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-4 pt-2">
-                        <a id="whatsapp-btn" href="#" target="_blank" class="flex-1 bg-green-500 hover:bg-green-600 text-white text-center px-6 py-3.5 rounded-xl font-bold shadow-lg transition transform hover:-translate-y-0.5">
-                            Get Best Quote
+                        <a id="whatsapp-btn" href="#" target="_blank" class="flex-1 bg-green-600 hover:bg-green-700 text-white text-center px-6 py-4 rounded-xl font-bold shadow-lg transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                            <i class="fab fa-whatsapp text-xl"></i> Get Best Quote
                         </a>
-                        <a href="contact.html" class="flex-1 bg-white border-2 border-gray-200 hover:border-blue-600 text-gray-700 text-center px-6 py-3.5 rounded-xl font-bold transition">
-                            Email Inquiry
+                        <a href="contact.html" class="flex-1 bg-white border-2 border-gray-200 hover:border-blue-600 text-gray-700 text-center px-6 py-4 rounded-xl font-bold transition flex items-center justify-center gap-2">
+                            <i class="fas fa-envelope text-lg"></i> Email Inquiry
                         </a>
                     </div>
                 </div>
@@ -96,8 +117,9 @@
 
             <div class="mt-20">
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
                         <h2 class="text-lg font-bold text-gray-900">Technical Specifications</h2>
+                        <span class="text-xs text-gray-400">Data Sheet</span>
                     </div>
                     <div class="p-6">
                         <table class="w-full text-sm text-left spec-table" id="specs-table"></table>
@@ -105,7 +127,7 @@
                 </div>
             </div>
             
-            <div class="mt-16">
+            <div class="mt-16 border-t border-gray-100 pt-12">
                  <h2 class="text-2xl font-bold text-gray-900 mb-6">Related Products</h2>
                  <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="related-products"></div>
             </div>
@@ -126,11 +148,19 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             const productId = params.get('id');
+            
             if (!productId) { showError(); return; }
 
             try {
+                if (!window.productLoader) throw new Error('Loader missing');
                 const db = await window.productLoader.loadProducts();
-                let product = db.byId ? db.byId[productId] : db.products.find(p => p.id === productId);
+                
+                // Find Product
+                let product = db.byId ? db.byId[productId] : null;
+                if (!product && Array.isArray(db.products)) {
+                    product = db.products.find(p => p.id === productId);
+                }
+
                 if (product) {
                     renderProductPage(product);
                     renderRelatedProducts(product, db.products);
@@ -144,28 +174,34 @@
         });
 
         function renderProductPage(product) {
+            // 1. Dynamic SEO Update (SEO 优化)
             if (window.seoUtils) {
                 window.seoUtils.updatePage({
-                    title: `${product.name} - V5 Medical`,
-                    description: product.short,
-                    image: product.images[0]
+                    title: `${product.name} | ${formatCategory(product.category)} Manufacturer in China`,
+                    description: product.short || `${product.name} supplied by ISO 13485 certified partner factories. OEM available.`,
+                    image: product.images[0],
+                    product: product,
+                    breadcrumb: [
+                        { name: 'Home', url: 'index.html' },
+                        { name: 'Products', url: 'catalog.html' },
+                        { name: product.name, url: window.location.href }
+                    ]
                 });
             }
 
             document.getElementById('loading-state').classList.add('hidden');
             document.getElementById('product-content').classList.remove('hidden');
 
+            // 2. Content Injection
             setText('product-name', product.name);
             setText('crumb-name', product.name);
-            setText('product-category', product.category);
-            document.getElementById('product-desc').textContent = product.description;
+            setText('product-category', formatCategory(product.category));
+            document.getElementById('product-desc').innerHTML = `<p>${product.description}</p>`;
             
-            // [CRITICAL FIX] Set Image with data-original-src
+            // 3. Robust Image Loading
             const imgEl = document.getElementById('product-image');
             const imgSrc = product.images?.[0] || 'images/products/default-product.jpg';
-            
             imgEl.setAttribute('data-original-src', imgSrc);
-            
             if (window.imageUtils) {
                 imgEl.src = window.imageUtils.getImageUrl(imgSrc);
                 imgEl.onerror = function() { window.imageUtils.handleError(this); };
@@ -173,40 +209,65 @@
                 imgEl.src = imgSrc;
             }
 
+            // 4. Specs Table
             const specsTable = document.getElementById('specs-table');
             if (product.specifications) {
                 specsTable.innerHTML = Object.entries(product.specifications)
-                    .map(([key, value]) => `<tr><td class="p-2 border-b text-gray-500 w-1/3">${key}</td><td class="p-2 border-b font-medium">${value}</td></tr>`)
+                    .map(([key, value]) => `<tr><td class="p-3 border-b text-gray-500 w-1/3 font-medium bg-gray-50/30">${key}</td><td class="p-3 border-b text-gray-900">${value}</td></tr>`)
                     .join('');
             }
 
+            // 5. Cert Tags
             const certTags = document.getElementById('cert-tags');
-            certTags.innerHTML = (product.certifications || ['ISO 13485']).map(c => 
-                `<span class="px-2 py-1 rounded bg-green-100 text-green-800 text-xs font-bold border border-green-200">${c}</span>`
+            certTags.innerHTML = (product.certifications || ['ISO 13485', 'CE']).map(c => 
+                `<span class="px-2.5 py-1 rounded bg-green-100 text-green-800 text-xs font-bold border border-green-200 flex items-center gap-1"><i class="fas fa-certificate text-[10px]"></i> ${c}</span>`
             ).join('');
 
+            // 6. Professional WhatsApp Inquiry Logic (成交型询盘)
             const phone = window.V5Config?.CONTACT?.WHATSAPP?.NUMBER || '447895047944';
-            document.getElementById('whatsapp-btn').href = `https://wa.me/${phone}?text=Quote for ${encodeURIComponent(product.name)}`;
+            const waText = encodeURIComponent(
+`Hello V5 Medical,
+
+I am interested in:
+• Product: ${product.name}
+• ID: ${product.id}
+
+Please advise:
+• MOQ
+• Certifications (CE / ISO)
+• FOB Price
+• Lead Time
+
+Thank you.`
+            );
+            document.getElementById('whatsapp-btn').href = `https://wa.me/${phone}?text=${waText}`;
         }
         
         function renderRelatedProducts(current, all) {
             const related = all.filter(p => p.category === current.category && p.id !== current.id).slice(0, 4);
             const container = document.getElementById('related-products');
-            if(!related.length) return;
+            
+            if(!related.length) {
+                container.parentElement.style.display = 'none';
+                return;
+            }
             
             container.innerHTML = related.map(p => {
                 const pImg = p.images?.[0] || 'images/products/default-product.jpg';
                 const resolved = window.imageUtils ? window.imageUtils.getImageUrl(pImg) : pImg;
                 return `
-                <a href="product-detail.html?id=${p.id}" class="group block">
-                    <div class="bg-gray-50 rounded-xl overflow-hidden aspect-square border border-gray-100 mb-3">
+                <a href="product-detail.html?id=${p.id}" class="group block bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition">
+                    <div class="bg-gray-50 aspect-square overflow-hidden relative">
                         <img src="${resolved}" 
                              data-original-src="${pImg}"
                              onerror="window.imageUtils && window.imageUtils.handleError(this)"
                              class="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
                              alt="${p.name}" loading="lazy">
+                        <span class="absolute bottom-0 left-0 right-0 bg-white/90 text-[10px] text-center py-1 text-gray-500 opacity-0 group-hover:opacity-100 transition">Same Category</span>
                     </div>
-                    <h4 class="font-bold text-gray-900 text-sm line-clamp-2 group-hover:text-blue-600 transition">${p.name}</h4>
+                    <div class="p-3">
+                        <h4 class="font-bold text-gray-900 text-sm line-clamp-2 group-hover:text-blue-600 transition">${p.name}</h4>
+                    </div>
                 </a>
             `}).join('');
         }
@@ -219,11 +280,11 @@
             const el = document.getElementById(id);
             if (el) el.textContent = text || '';
         }
+        function formatCategory(cat) {
+            if (!cat) return 'Medical Product';
+            return cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        }
     </script>
     <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
 </body>
 </html>
-
-
-
-
