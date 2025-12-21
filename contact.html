@@ -1,326 +1,275 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <meta name="description" content="Contact V5 Medical LTD - Get a competitive quote for surgical sutures, medical packs, and devices. Global shipping, ISO 13485 certified. Response within 24h.">
-    <meta name="keywords" content="contact V5 Medical, medical supplier inquiry, surgical sutures quote, medical device distributor, hospital procurement, factory direct medical">
-    <meta name="author" content="V5 Medical LTD">
-    <meta name="robots" content="index, follow">
+/**
+ * V5 Medical Layout Engine
+ * (Unified Layout Manager)
+ * Dynamically renders Header, Footer, and Floating elements.
+ * @version 3.8.0 (Fixed: Restored Full Footer Content & Privacy Link)
+ * @updated 2024-12-16
+ */
 
-    <meta property="og:title" content="Contact Us | V5 Medical LTD">
-    <meta property="og:description" content="Get in touch for professional medical supply solutions. Factory direct pricing & ISO certified quality.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://v5md.com/contact.html">
-    <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png">
-    
-    <title>Contact Us | V5 Medical LTD - Global Medical Supplier</title>
-    
-    <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { primary: '#1e40af', secondary: '#3b82f6', accent: '#2563eb' },
-                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+const V5Layout = (() => {
+    // 依赖检查
+    const config = window.V5Config;
+    if (!config) {
+        console.error('[Layout] V5Config not found. Ensure config.js is loaded before layout.js.');
+        return { init: () => {} };
+    }
+
+    class LayoutManager {
+        constructor() {
+            this.config = config;
+            this.currentPage = this._detectPage();
+        }
+
+        init() {
+            this.injectStyles(); // 注入样式 (修复谷歌翻译遮挡)
+            this.renderHeader();
+            this.renderFooter();
+            this.renderFloatingElements();
+            window.dispatchEvent(new Event('v5-layout-ready'));
+            console.log('[Layout] Initialized v3.8.0');
+        }
+
+        /**
+         * [样式注入] 
+         * 解决谷歌翻译按钮位置和层级问题
+         */
+        injectStyles() {
+            const style = document.createElement('style');
+            style.innerHTML = `
+                /* 强制提升谷歌翻译层级，确保在导航栏(z-50)之上 */
+                #google_translate_element {
+                    position: fixed !important;
+                    z-index: 60 !important; 
                 }
+
+                /* 桌面端位置：右上角 */
+                @media (min-width: 769px) {
+                    #google_translate_element {
+                        top: 22px !important;
+                        right: 20px !important;
+                    }
+                }
+
+                /* 移动端位置：避开右侧汉堡菜单 */
+                @media (max-width: 768px) {
+                    #google_translate_element {
+                        top: 20px !important;
+                        right: 60px !important; 
+                    }
+                    .goog-te-gadget-simple {
+                        max-width: 140px !important;
+                        overflow: hidden !important;
+                        text-overflow: ellipsis !important;
+                        white-space: nowrap !important;
+                        padding: 4px 8px !important;
+                    }
+                }
+
+                /* 导航栏文字颜色适配 */
+                .nav-link-white { color: rgba(255,255,255,0.9); }
+                .nav-link-white:hover { color: #ffffff; }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // --- 1. Header Rendering ---
+        renderHeader() {
+            const container = document.getElementById('v5-header');
+            if (!container) return;
+
+            const logoSrc = this.config.IMAGES.LOGO;
+            const logoFallback = this.config.IMAGES.LOGO_LOCAL;
+
+            const navItems = [
+                { id: 'home', href: 'index.html', txt: 'Home' },
+                { id: 'about', href: 'about.html', txt: 'About Us' },
+                { id: 'catalog', href: 'catalog.html', txt: 'Products' },
+                { id: 'blog', href: 'blog.html', txt: 'Blog' },
+                { id: 'contact', href: 'contact.html', txt: 'Contact' }
+            ];
+
+            const navHtml = navItems.map(item => `
+                <a href="${item.href}" class="nav-link font-medium transition duration-200 text-sm lg:text-base ${this.currentPage === item.id ? 'text-white border-b-2 border-blue-400 font-bold' : 'text-blue-100 hover:text-white'}">
+                    ${item.txt}
+                </a>
+            `).join('');
+
+            const mobileHtml = navItems.map(item => `
+                <a href="${item.href}" class="block px-4 py-3 rounded-lg font-medium transition ${this.currentPage === item.id ? 'text-blue-700 bg-blue-50' : 'text-gray-600 hover:bg-gray-50'}">
+                    ${item.txt}
+                </a>
+            `).join('');
+
+            container.innerHTML = `
+                <nav id="navbar" class="fixed w-full z-50 shadow-lg transition-all duration-300 bg-white h-20">
+                    <div class="absolute inset-0 bg-gradient-to-r from-white via-white via-20% to-blue-900 to-50%"></div>
+                    
+                    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+                        <div class="flex justify-between items-center h-full">
+                            
+                            <a href="index.html" class="flex items-center gap-3 group relative z-10 pr-4 bg-white/0">
+                                <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-10 md:h-12 w-auto transition-transform group-hover:scale-105" alt="${this.config.SEO.SITE_NAME}">
+                                <div class="hidden sm:block">
+                                    <div class="font-bold text-xl text-blue-900 leading-none">V5 Medical LTD</div>
+                                    <div class="text-[10px] text-blue-600 font-medium tracking-wider uppercase mt-0.5">Global Medical Supply Chain</div>
+                                </div>
+                            </a>
+
+                            <div class="hidden md:flex gap-4 lg:gap-6 items-center pl-4">
+                                ${navHtml}
+                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold shadow-md flex items-center gap-2 transition hover:-translate-y-0.5 text-sm">
+                                    <i class="fab fa-whatsapp text-lg"></i><span>Chat</span>
+                                </a>
+                                <div class="w-24"></div> 
+                            </div>
+
+                            <button id="mobile-menu-btn" class="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition z-50 relative">
+                                <i class="fas fa-bars text-2xl"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl top-20 left-0 z-40">
+                        <div class="px-4 py-4 space-y-2">
+                            ${mobileHtml}
+                            <div class="pt-4 mt-2 border-t border-gray-100">
+                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="flex items-center justify-center gap-2 w-full bg-green-500 text-white px-4 py-3 rounded-lg font-bold">
+                                    <i class="fab fa-whatsapp"></i> WhatsApp Contact
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            `;
+        }
+
+        // --- 2. Footer Rendering (已修复：补全所有文字和链接) ---
+        renderFooter() {
+            const container = document.getElementById('v5-footer');
+            if (!container) return;
+
+            const year = new Date().getFullYear();
+            const { CONTACT, IMAGES } = this.config;
+            const logoSrc = IMAGES.LOGO;
+            const logoFallback = IMAGES.LOGO_LOCAL;
+
+            container.innerHTML = `
+                <footer class="bg-gray-900 text-white py-12 px-4 border-t border-gray-800">
+                    <div class="max-w-7xl mx-auto">
+                        <div class="grid md:grid-cols-12 gap-8 mb-12">
+                            
+                            <div class="md:col-span-3">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-10 w-auto" alt="V5 Medical Logo">
+                                    <span class="text-xl font-bold">V5 Medical LTD</span>
+                                </div>
+                                <p class="text-gray-400 text-sm mb-2">Professional Global Medical Consumables Supplier</p>
+                                <p class="text-gray-400 text-sm mb-2">Factory Direct Medical Consumables Manufacturer</p> 
+                                <p class="text-gray-400 text-sm italic mb-2">20+ Years Exporting Experience</p>
+                                <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
+                            </div>
+                            
+                            <div class="hidden md:block md:col-span-1"></div>
+
+                            <div class="md:col-span-2">
+                                <h4 class="font-bold mb-4 text-lg text-white">Quick Links</h4>
+                                <ul class="space-y-2 text-sm text-gray-400">
+                                    <li><a href="index.html" class="hover:text-white transition">Home</a></li>
+                                    <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
+                                    <li><a href="catalog.html" class="hover:text-white transition">Products</a></li>
+                                    <li><a href="blog.html" class="hover:text-white transition">Blog</a></li>
+                                    <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
+                                    <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="md:col-span-3 pl-0 md:pl-4">
+                                <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
+                                <div class="space-y-3 text-sm text-gray-400">
+                                    <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${CONTACT.WHATSAPP.DISPLAY} (UK)</p>
+                                    <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${CONTACT.WHATSAPP_CN.DISPLAY} (Backup)</p>
+                                    <p class="flex items-center gap-2">
+                                        <i class="fas fa-envelope text-blue-400 w-5"></i> 
+                                        <a href="mailto:${CONTACT.EMAIL.SALES}" class="hover:text-white transition">${CONTACT.EMAIL.SALES}</a>
+                                    </p>
+                                    <p class="flex items-center gap-2">
+                                        <i class="fab fa-google text-red-400 w-5"></i> 
+                                        <a href="mailto:v5md.com@gmail.com" class="hover:text-white transition">v5md.com@gmail.com</a>
+                                    </p>
+                                    <p class="flex items-start gap-2"><i class="fas fa-map-marker-alt mt-1 w-5"></i> ${CONTACT.ADDRESS}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="md:col-span-3 pl-0 md:pl-4">
+                                <h4 class="font-bold mb-4 text-lg text-white">Downloads</h4>
+                                <div class="space-y-2 mb-8 text-sm">
+                                    <a href="pdf/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Catalog</a>
+                                    <a href="pdf/Quotations for dental products.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Dental Kit</a>
+                                    <a href="pdf/price list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Price List</a>
+                                </div>
+                                <h4 class="font-bold mb-4 text-lg text-white">Follow Us</h4>
+                                <div class="flex gap-3 flex-wrap">
+                                    <a href="https://linkedin.com/company/v5med" target="_blank" class="w-9 h-9 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 transition text-white"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="https://www.youtube.com/@v5med" target="_blank" class="w-9 h-9 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition text-white"><i class="fab fa-youtube"></i></a>
+                                    <a href="https://www.facebook.com/v5med" target="_blank" class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition text-white"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://www.instagram.com/v5med" target="_blank" class="w-9 h-9 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 flex items-center justify-center transition text-white"><i class="fab fa-instagram"></i></a>
+                                    <a href="https://www.tiktok.com/@v5med" target="_blank" class="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center hover:bg-black transition text-white"><i class="fab fa-tiktok"></i></a>
+                                    <a href="https://x.com/v5med" target="_blank" class="w-9 h-9 rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition text-white"><i class="fab fa-twitter"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-8 text-sm text-gray-500 border-t border-gray-800 pt-8">
+                            <p>&copy; ${year} V5 Medical LTD. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            `;
+        }
+
+        // --- 3. Floating Elements ---
+        renderFloatingElements() {
+            if (!document.getElementById('whatsapp-float')) {
+                const waDiv = document.createElement('div');
+                waDiv.innerHTML = `
+                    <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 group">
+                        <i class="fab fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i>
+                    </a>`;
+                document.body.appendChild(waDiv.firstElementChild);
+            }
+            if (!document.getElementById('back-to-top')) {
+                const topBtn = document.createElement('button');
+                topBtn.id = 'back-to-top';
+                topBtn.className = 'fixed bottom-24 right-6 bg-blue-900 hover:bg-blue-900 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-40 opacity-0 invisible translate-y-10';
+                topBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+                topBtn.setAttribute('aria-label', 'Back to top');
+                document.body.appendChild(topBtn);
             }
         }
-    </script>
 
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ContactPage",
-      "mainEntity": {
-        "@type": "MedicalOrganization",
-        "name": "V5 Medical LTD",
-        "contactPoint": [
-          { "@type": "ContactPoint", "telephone": "+44-078-9504-7944", "contactType": "customer service", "areaServed": "Global" }
-        ],
-        "email": "info@v5md.com"
-      }
-    }
-    </script>
-</head>
-
-<body class="smooth-scroll font-sans text-gray-800 flex flex-col min-h-screen">
-
-    <div id="loader" class="page-loader">
-        <div class="loader-spinner"></div>
-    </div>
-    <script>
-        setTimeout(function() {
-            var loader = document.getElementById('loader');
-            if(loader) { loader.style.opacity = '0'; setTimeout(function(){ loader.style.display = 'none'; }, 500); }
-        }, 3000);
-    </script>
-
-    <div id="v5-header"></div>
-
-    <main class="flex-grow pt-20"> 
+        // Helpers
+        _detectPage() {
+            const path = window.location.pathname;
+            if (path.includes('catalog')) return 'catalog';
+            if (path.includes('about')) return 'about';
+            if (path.includes('contact')) return 'contact';
+            if (path.includes('blog')) return 'blog';
+            return 'home';
+        }
         
-        <section class="bg-gradient-to-r from-blue-900 to-blue-800 text-white py-24 text-center relative overflow-hidden">
-            <div class="absolute inset-0 bg-white opacity-5" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
-            
-            <div class="relative z-10 px-4 fade-in-up">
-                <h1 class="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">Get in Touch</h1>
-                <p class="text-xl text-blue-100 max-w-2xl mx-auto font-light">
-                    Ready to optimize your supply chain? Our team aims to respond to all inquiries within 24 hours.
-                </p>
-            </div>
-        </section>
+        _getActiveClass(id) { return this.currentPage === id ? 'text-white border-b-2 border-blue-400' : 'text-blue-100 hover:text-white'; }
+        _getMobileActiveClass(id) { return this.currentPage === id ? 'text-blue-700 bg-blue-50 font-bold' : 'text-gray-600 hover:bg-gray-50'; }
+        
+        _getImgPath(path) {
+            if (!path) return '';
+            if (path.startsWith('http')) return path;
+            const baseUrl = this.config.BASE_URL.replace(/\/$/, '');
+            const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+            return baseUrl ? `${baseUrl}/${cleanPath}` : cleanPath;
+        }
+    }
+    return new LayoutManager();
+})();
 
-        <section class="py-16 px-4">
-            <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16">
-                
-                <div class="space-y-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6 border-l-4 border-blue-600 pl-4">Contact Information</h2>
-                    
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-5 hover:shadow-md transition group">
-                        <div class="bg-green-100 p-4 rounded-full text-green-600 flex-shrink-0 group-hover:scale-110 transition">
-                            <i class="fab fa-whatsapp text-2xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg text-gray-900">Instant Chat</h3>
-                            <p class="text-gray-500 text-sm mb-2">Fastest response for quotes & support</p>
-                            <div class="space-y-2">
-                                <a href="https://wa.me/447895047944" target="_blank" class="flex items-center gap-2 font-medium text-blue-600 hover:text-blue-800 transition">
-                                    <img src="https://flagcdn.com/w20/gb.png" alt="UK" class="w-5 rounded-sm"> +44 078 9504 7944 (Global)
-                                </a>
-                                <a href="https://wa.me/8618012669897" target="_blank" class="flex items-center gap-2 font-medium text-gray-600 hover:text-blue-800 transition">
-                                    <img src="https://flagcdn.com/w20/cn.png" alt="CN" class="w-5 rounded-sm"> +86 180 1266 9897 (Backup)
-                                </a>
-                            </div>
-                            <p class="text-xs text-gray-400 mt-2 border-t border-gray-100 pt-2">
-                                Business communication only. No medical consultation provided.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-5 hover:shadow-md transition group">
-                        <div class="bg-blue-100 p-4 rounded-full text-blue-600 flex-shrink-0 group-hover:scale-110 transition">
-                            <i class="fas fa-envelope text-2xl"></i>
-                        </div>
-                        <div class="w-full">
-                            <h3 class="font-bold text-lg text-gray-900">Department Emails</h3>
-                            <p class="text-gray-500 text-sm mb-4">All inquiries are centrally received and routed to the appropriate team.</p>
-                            
-                            <div class="grid grid-cols-1 gap-y-3 text-sm">
-                                <a href="mailto:sales@v5md.com" class="flex items-center p-2 rounded hover:bg-gray-50 transition group/link">
-                                    <span class="flex-shrink-0 bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded w-24 text-center mr-3">Sales</span> 
-                                    <span class="text-gray-700 font-medium group-hover/link:text-blue-600">sales@v5md.com</span>
-                                </a>
-                                <a href="mailto:order@v5md.com" class="flex items-center p-2 rounded hover:bg-gray-50 transition group/link">
-                                    <span class="flex-shrink-0 bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded w-24 text-center mr-3">Orders</span> 
-                                    <span class="text-gray-700 font-medium group-hover/link:text-blue-600">order@v5md.com</span>
-                                </a>
-                                <a href="mailto:procurement@v5md.com" class="flex items-center p-2 rounded hover:bg-gray-50 transition group/link">
-                                    <span class="flex-shrink-0 bg-teal-100 text-teal-700 text-xs font-bold px-3 py-1 rounded w-24 text-center mr-3">Buying</span> 
-                                    <span class="text-gray-700 font-medium group-hover/link:text-blue-600">procurement@v5md.com</span>
-                                </a>
-                                <a href="mailto:vendor@v5md.com" class="flex items-center p-2 rounded hover:bg-gray-50 transition group/link">
-                                    <span class="flex-shrink-0 bg-teal-100 text-teal-700 text-xs font-bold px-3 py-1 rounded w-24 text-center mr-3">Vendor</span> 
-                                    <span class="text-gray-700 font-medium group-hover/link:text-blue-600">vendor@v5md.com</span>
-                                </a>
-                                <a href="mailto:qa@v5md.com" class="flex items-center p-2 rounded hover:bg-gray-50 transition group/link">
-                                    <span class="flex-shrink-0 bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded w-24 text-center mr-3">QA / Docs</span> 
-                                    <span class="text-gray-700 font-medium group-hover/link:text-blue-600">qa@v5md.com</span>
-                                </a>
-                                <a href="mailto:logistics@v5md.com" class="flex items-center p-2 rounded hover:bg-gray-50 transition group/link">
-                                    <span class="flex-shrink-0 bg-orange-100 text-orange-700 text-xs font-bold px-3 py-1 rounded w-24 text-center mr-3">Logistics</span> 
-                                    <span class="text-gray-700 font-medium group-hover/link:text-blue-600">logistics@v5md.com</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start gap-5 hover:shadow-md transition group">
-                        <div class="bg-purple-100 p-4 rounded-full text-purple-600 flex-shrink-0 group-hover:scale-110 transition">
-                            <i class="fas fa-building text-2xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg text-gray-900">Factory & Office</h3>
-                            <p class="text-gray-600 mt-1 mb-2 font-mono text-sm">+86-0512 8781 1988</p>
-                            <p class="text-gray-600 text-sm leading-relaxed">
-                                No. 168, Luying Road, Kunshan Development Zone,<br>
-                                Jiangsu Province, China 215300
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-10"></div>
-                    
-                    <h3 class="text-3xl font-bold mb-8 text-center text-gray-900">Online Inquiry Form</h3>
-                    
-                    <form id="inquiry-form" action="https://formspree.io/f/xdkqlygg" method="POST" class="space-y-6">
-                        <input type="hidden" name="source" value="Website Contact Page">
-                        <input type="hidden" name="lead_type" value="General Inquiry">
-
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-semibold mb-2 text-gray-700">Company Name *</label>
-                                <input type="text" name="company" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-gray-50 focus:bg-white" placeholder="Your Company">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold mb-2 text-gray-700">Contact Person *</label>
-                                <input type="text" name="name" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-gray-50 focus:bg-white" placeholder="Your Name">
-                            </div>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-semibold mb-2 text-gray-700">Email Address *</label>
-                                <input type="email" name="email" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-gray-50 focus:bg-white" placeholder="name@example.com">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold mb-2 text-gray-700">Phone / WhatsApp</label>
-                                <input type="text" name="phone" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-gray-50 focus:bg-white" placeholder="+1 234 567 890">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold mb-2 text-gray-700">Product Interest</label>
-                            <select name="product" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 focus:bg-white transition cursor-pointer">
-                                <option value="">Select Category...</option>
-                                <option value="Surgical Sutures">Surgical Sutures</option>
-                                <option value="Surgical Packs">Surgical Packs</option>
-                                <option value="Injection & Infusion">Injection & Infusion</option>
-                                <option value="Dental Consumables">Dental Consumables</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold mb-2 text-gray-700">Message / Requirements *</label>
-                            <textarea name="message" rows="4" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-gray-50 focus:bg-white" placeholder="Please specify product types, quantities, and destination..."></textarea>
-                        </div>
-
-                        <input type="text" name="_gotcha" style="display:none">
-
-                        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded-lg hover:bg-blue-700 transition transform hover:-translate-y-1 shadow-lg flex justify-center items-center gap-2 group">
-                            <span>Send Message</span>
-                            <i class="fas fa-paper-plane group-hover:translate-x-1 transition-transform"></i>
-                        </button>
-
-                        <div class="space-y-3 mt-6">
-                            <p class="text-xs text-gray-400 text-center flex items-center justify-center gap-1">
-                                <i class="fas fa-lock"></i> Your information is strictly confidential.
-                            </p>
-                            
-                            <div class="bg-red-50 border border-red-100 rounded-lg p-3 text-center">
-                                <p class="text-xs text-red-600 font-medium leading-relaxed">
-                                    <i class="fas fa-shield-alt mr-1"></i> 
-                                    <strong>Security Notice:</strong> For security reasons, V5 Medical will only respond using official 
-                                    <span class="bg-red-100 px-1 rounded text-red-700 font-bold">@v5md.com</span> email addresses.
-                                </p>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-16 px-4 bg-gray-50 border-t border-gray-200">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Secure Global Payments</h2>
-                    <p class="text-gray-600 max-w-2xl mx-auto">
-                        To minimize transaction costs for our partners, we accept local bank transfers in multiple currencies.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center hover:border-blue-400 transition group">
-                        <div class="text-3xl font-bold text-green-600 mb-1 group-hover:scale-110 transition-transform">$</div>
-                        <div class="font-bold text-gray-800">USD</div>
-                        <div class="text-xs text-gray-500">ACH / Wire</div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center hover:border-blue-400 transition group">
-                        <div class="text-3xl font-bold text-blue-600 mb-1 group-hover:scale-110 transition-transform">€</div>
-                        <div class="font-bold text-gray-800">EUR</div>
-                        <div class="text-xs text-gray-500">SEPA</div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center hover:border-blue-400 transition group">
-                        <div class="text-3xl font-bold text-red-600 mb-1 group-hover:scale-110 transition-transform">£</div>
-                        <div class="font-bold text-gray-800">GBP</div>
-                        <div class="text-xs text-gray-500">Local Transfer</div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center hover:border-blue-400 transition group">
-                        <div class="text-3xl font-bold text-yellow-600 mb-1 group-hover:scale-110 transition-transform">₺</div>
-                        <div class="font-bold text-gray-800">TRY</div>
-                        <div class="text-xs text-gray-500">Local Transfer</div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center hover:border-blue-400 transition group">
-                        <div class="text-3xl font-bold text-purple-600 mb-1 group-hover:scale-110 transition-transform">HK$</div>
-                        <div class="font-bold text-gray-800">HKD</div>
-                        <div class="text-xs text-gray-500">Local Transfer</div>
-                    </div>
-                </div>
-                
-                <div class="bg-yellow-50 border border-yellow-100 rounded-lg p-4 flex items-start gap-3 max-w-3xl mx-auto">
-                    <i class="fas fa-shield-alt text-yellow-600 mt-1 text-xl"></i>
-                    <div>
-                        <h4 class="font-bold text-yellow-800 text-sm mb-1">Security Notice</h4>
-                        <p class="text-yellow-700 text-sm leading-relaxed">Please only make payments to bank accounts listed on our official Proforma Invoice (PI). We do not publish sensitive banking details online to prevent fraud.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-16 bg-white border-t border-gray-100">
-            <div class="max-w-7xl mx-auto px-4">
-                <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Cooperation Process</h2>
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-8 text-center relative">
-                    <div class="hidden md:block absolute top-8 left-0 w-full h-0.5 bg-gray-100 -z-10 transform scale-x-90"></div>
-                    
-                    <div class="relative group">
-                        <div class="w-16 h-16 bg-white border-2 border-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 shadow-sm group-hover:border-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all">1</div>
-                        <h3 class="font-bold text-gray-900">Inquiry</h3>
-                        <p class="text-xs text-gray-500 mt-1">Submit requirements</p>
-                    </div>
-                    <div class="relative group">
-                        <div class="w-16 h-16 bg-white border-2 border-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 shadow-sm group-hover:border-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all">2</div>
-                        <h3 class="font-bold text-gray-900">Quote</h3>
-                        <p class="text-xs text-gray-500 mt-1">Price & terms</p>
-                    </div>
-                    <div class="relative group">
-                        <div class="w-16 h-16 bg-white border-2 border-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 shadow-sm group-hover:border-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all">3</div>
-                        <h3 class="font-bold text-gray-900">Sample & Doc</h3>
-                        <p class="text-xs text-gray-500 mt-1">Quality & compliance</p>
-                    </div>
-                    <div class="relative group">
-                        <div class="w-16 h-16 bg-white border-2 border-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 shadow-sm group-hover:border-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all">4</div>
-                        <h3 class="font-bold text-gray-900">Order</h3>
-                        <p class="text-xs text-gray-500 mt-1">Contract & production</p>
-                    </div>
-                    <div class="relative group">
-                        <div class="w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 shadow-lg transform group-hover:scale-110 transition-transform">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <h3 class="font-bold text-gray-900">Delivery</h3>
-                        <p class="text-xs text-gray-500 mt-1">QC & Shipping</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <div id="v5-footer"></div>
-
-    <script src="js/config.js?v=2.6.0"></script>
-    <script src="js/layout.js?v=3.6.0"></script>
-    <script src="js/main.js?v=2.1.0"></script>
-    
-    <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
-
-</body>
-</html>
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
+else V5Layout.init();
