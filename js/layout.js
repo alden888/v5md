@@ -2,7 +2,7 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 4.2.0 (Fixed: Unified Company Name to "V5 Medical LTD")
+ * @version 4.3.0 (Refactor: Removed Translate Styles)
  * @updated 2024-12-16
  */
 
@@ -20,42 +20,22 @@ const V5Layout = (() => {
         }
 
         init() {
-            this.injectStyles();
+            this.injectStyles(); // 仅注入菜单动画样式
             this.renderHeader();
             this.renderFooter();
             this.renderFloatingElements();
             window.dispatchEvent(new Event('v5-layout-ready'));
-            console.log('[Layout] Initialized v4.2.0');
+            console.log('[Layout] Initialized v4.3.0');
         }
 
         /**
-         * [CSS 注入] 样式修复
+         * [CSS 注入] 仅保留移动端菜单动画
+         * 谷歌翻译样式已移至 main.js 统一管理
          */
         injectStyles() {
             const style = document.createElement('style');
             style.innerHTML = `
-                /* 谷歌翻译位置固定 */
-                #google_translate_element { position: fixed !important; z-index: 60 !important; }
-                
-                /* 桌面端 */
-                @media (min-width: 769px) {
-                    #google_translate_element { top: 22px !important; right: 20px !important; }
-                }
-
-                /* 移动端：向左避让汉堡菜单 */
-                @media (max-width: 768px) {
-                    #google_translate_element { 
-                        top: 20px !important; 
-                        right: 60px !important; 
-                    }
-                    .goog-te-gadget-simple {
-                        max-width: 120px !important;
-                        padding: 4px !important;
-                        font-size: 11px !important;
-                    }
-                }
-
-                /* 移动端菜单动画 */
+                /* 移动端菜单下拉动画 */
                 @keyframes menuSlide {
                     from { opacity: 0; transform: translateY(-10px); }
                     to { opacity: 1; transform: translateY(0); }
@@ -67,7 +47,7 @@ const V5Layout = (() => {
             document.head.appendChild(style);
         }
 
-        // --- 1. Header Rendering (统一使用 V5 Medical LTD) ---
+        // --- 1. Header Rendering ---
         renderHeader() {
             const container = document.getElementById('v5-header');
             if (!container) return;
@@ -139,13 +119,9 @@ const V5Layout = (() => {
                 </nav>
             `;
             
-            // 绑定移动端菜单事件
             this.bindMobileMenu();
         }
 
-        /**
-         * 移动端菜单绑定
-         */
         bindMobileMenu() {
             const btn = document.getElementById('mobile-menu-btn');
             const menu = document.getElementById('mobile-menu');
@@ -154,7 +130,6 @@ const V5Layout = (() => {
 
             const newBtn = btn.cloneNode(true);
             btn.parentNode.replaceChild(newBtn, btn);
-            
             const icon = newBtn.querySelector('i');
 
             newBtn.addEventListener('click', (e) => {
@@ -183,7 +158,7 @@ const V5Layout = (() => {
             });
         }
 
-        // --- 2. Footer Rendering (统一使用 V5 Medical LTD) ---
+        // --- 2. Footer Rendering ---
         renderFooter() {
             const container = document.getElementById('v5-footer');
             if (!container) return;
@@ -197,7 +172,6 @@ const V5Layout = (() => {
                 <footer class="bg-gray-900 text-white py-12 px-4 border-t border-gray-800">
                     <div class="max-w-7xl mx-auto">
                         <div class="grid md:grid-cols-12 gap-8 mb-12">
-                            
                             <div class="md:col-span-3">
                                 <div class="flex items-center gap-2 mb-4">
                                     <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-10 w-auto" alt="V5 Medical Logo">
@@ -208,9 +182,7 @@ const V5Layout = (() => {
                                 <p class="text-gray-400 text-sm italic mb-2">20+ Years Exporting Experience</p>
                                 <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
                             </div>
-                            
                             <div class="hidden md:block md:col-span-1"></div>
-
                             <div class="md:col-span-2">
                                 <h4 class="font-bold mb-4 text-lg text-white">Quick Links</h4>
                                 <ul class="space-y-2 text-sm text-gray-400">
@@ -222,28 +194,20 @@ const V5Layout = (() => {
                                     <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
                                 </ul>
                             </div>
-                            
                             <div class="md:col-span-3 pl-0 md:pl-4">
                                 <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
                                 <div class="space-y-3 text-sm text-gray-400">
                                     <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${CONTACT.WHATSAPP.DISPLAY} (UK)</p>
                                     <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${CONTACT.WHATSAPP_CN.DISPLAY} (Backup)</p>
-                                    <p class="flex items-center gap-2">
-                                        <i class="fas fa-envelope text-blue-400 w-5"></i> 
-                                        <a href="mailto:${CONTACT.EMAIL.SALES}" class="hover:text-white transition">${CONTACT.EMAIL.SALES}</a>
-                                    </p>
-                                    <p class="flex items-center gap-2">
-                                        <i class="fab fa-google text-red-400 w-5"></i> 
-                                        <a href="mailto:v5md.com@gmail.com" class="hover:text-white transition">v5md.com@gmail.com</a>
-                                    </p>
+                                    <p class="flex items-center gap-2"><i class="fas fa-envelope text-blue-400 w-5"></i> ${CONTACT.EMAIL.SALES}</p>
+                                    <p class="flex items-center gap-2"><i class="fab fa-google text-red-400 w-5"></i> v5md.com@gmail.com</p>
                                     <p class="flex items-start gap-2"><i class="fas fa-map-marker-alt mt-1 w-5"></i> ${CONTACT.ADDRESS}</p>
                                 </div>
                             </div>
-                            
                             <div class="md:col-span-3 pl-0 md:pl-4">
                                 <h4 class="font-bold mb-4 text-lg text-white">Downloads</h4>
                                 <div class="space-y-2 mb-8 text-sm">
-                                    <a href="pdf/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Catalog</a>
+                                    <a href="pdf/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Product Catalog</a>
                                     <a href="pdf/Quotations for dental products.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Dental Kit</a>
                                     <a href="pdf/price list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Price List</a>
                                 </div>
@@ -290,17 +254,6 @@ const V5Layout = (() => {
             if (path.includes('contact')) return 'contact';
             if (path.includes('blog')) return 'blog';
             return 'home';
-        }
-        
-        _getActiveClass(id) { return this.currentPage === id ? 'text-white border-b-2 border-blue-400' : 'text-blue-100 hover:text-white'; }
-        _getMobileActiveClass(id) { return this.currentPage === id ? 'text-blue-700 bg-blue-50 font-bold' : 'text-gray-600 hover:bg-gray-50'; }
-        
-        _getImgPath(path) {
-            if (!path) return '';
-            if (path.startsWith('http')) return path;
-            const baseUrl = this.config.BASE_URL.replace(/\/$/, '');
-            const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-            return baseUrl ? `${baseUrl}/${cleanPath}` : cleanPath;
         }
     }
     return new LayoutManager();
