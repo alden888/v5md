@@ -2,7 +2,7 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 4.3.0 (Refactor: Removed Translate Styles)
+ * @version 4.4.0 (Update: Footer Copyright & Disclaimer Layout)
  * @updated 2024-12-16
  */
 
@@ -20,22 +20,42 @@ const V5Layout = (() => {
         }
 
         init() {
-            this.injectStyles(); // 仅注入菜单动画样式
+            this.injectStyles();
             this.renderHeader();
             this.renderFooter();
             this.renderFloatingElements();
             window.dispatchEvent(new Event('v5-layout-ready'));
-            console.log('[Layout] Initialized v4.3.0');
+            console.log('[Layout] Initialized v4.4.0');
         }
 
         /**
-         * [CSS 注入] 仅保留移动端菜单动画
-         * 谷歌翻译样式已移至 main.js 统一管理
+         * [CSS 注入] 
          */
         injectStyles() {
             const style = document.createElement('style');
             style.innerHTML = `
-                /* 移动端菜单下拉动画 */
+                /* 谷歌翻译位置固定 */
+                #google_translate_element { position: fixed !important; z-index: 60 !important; }
+                
+                /* 桌面端 */
+                @media (min-width: 769px) {
+                    #google_translate_element { top: 22px !important; right: 20px !important; }
+                }
+
+                /* 移动端 */
+                @media (max-width: 768px) {
+                    #google_translate_element { 
+                        top: 20px !important; 
+                        right: 60px !important; 
+                    }
+                    .goog-te-gadget-simple {
+                        max-width: 130px !important;
+                        padding: 4px 6px !important;
+                        font-size: 12px !important;
+                    }
+                }
+
+                /* 移动端菜单动画 */
                 @keyframes menuSlide {
                     from { opacity: 0; transform: translateY(-10px); }
                     to { opacity: 1; transform: translateY(0); }
@@ -98,7 +118,8 @@ const V5Layout = (() => {
                                 <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="bg-green-500 hover:bg-green-400 text-white px-5 py-2 rounded-full font-bold shadow-md flex items-center gap-2 transition transform hover:-translate-y-0.5 text-sm border border-green-400/30">
                                     <i class="fab fa-whatsapp text-lg"></i><span>Chat</span>
                                 </a>
-                                <div class="w-20"></div> </div>
+                                <div class="w-20"></div> 
+                            </div>
 
                             <button id="mobile-menu-btn" class="md:hidden text-white p-3 -mr-2 hover:bg-white/10 rounded-full transition z-50 relative focus:outline-none touch-manipulation">
                                 <i class="fas fa-bars text-2xl"></i>
@@ -158,7 +179,7 @@ const V5Layout = (() => {
             });
         }
 
-        // --- 2. Footer Rendering ---
+        // --- 2. Footer Rendering (Layout Updated) ---
         renderFooter() {
             const container = document.getElementById('v5-footer');
             if (!container) return;
@@ -172,9 +193,10 @@ const V5Layout = (() => {
                 <footer class="bg-gray-900 text-white py-12 px-4 border-t border-gray-800">
                     <div class="max-w-7xl mx-auto">
                         <div class="grid md:grid-cols-12 gap-8 mb-12">
+                            
                             <div class="md:col-span-3">
                                 <div class="flex items-center gap-2 mb-4">
-                                    <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-10 w-auto" alt="V5 Medical Logo">
+                                    <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-10 w-auto" alt="Logo">
                                     <span class="text-xl font-bold">V5 Medical LTD</span>
                                 </div>
                                 <p class="text-gray-400 text-sm mb-2">Professional Global Medical Consumables Supplier</p>
@@ -182,7 +204,9 @@ const V5Layout = (() => {
                                 <p class="text-gray-400 text-sm italic mb-2">20+ Years Exporting Experience</p>
                                 <p class="text-gray-400 text-sm italic">More Sophisticated, More Professional, More Secure</p>
                             </div>
+                            
                             <div class="hidden md:block md:col-span-1"></div>
+
                             <div class="md:col-span-2">
                                 <h4 class="font-bold mb-4 text-lg text-white">Quick Links</h4>
                                 <ul class="space-y-2 text-sm text-gray-400">
@@ -194,20 +218,28 @@ const V5Layout = (() => {
                                     <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
                                 </ul>
                             </div>
+                            
                             <div class="md:col-span-3 pl-0 md:pl-4">
                                 <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
                                 <div class="space-y-3 text-sm text-gray-400">
                                     <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${CONTACT.WHATSAPP.DISPLAY} (UK)</p>
                                     <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${CONTACT.WHATSAPP_CN.DISPLAY} (Backup)</p>
-                                    <p class="flex items-center gap-2"><i class="fas fa-envelope text-blue-400 w-5"></i> ${CONTACT.EMAIL.SALES}</p>
-                                    <p class="flex items-center gap-2"><i class="fab fa-google text-red-400 w-5"></i> v5md.com@gmail.com</p>
+                                    <p class="flex items-center gap-2">
+                                        <i class="fas fa-envelope text-blue-400 w-5"></i> 
+                                        <a href="mailto:${CONTACT.EMAIL.SALES}" class="hover:text-white transition">${CONTACT.EMAIL.SALES}</a>
+                                    </p>
+                                    <p class="flex items-center gap-2">
+                                        <i class="fab fa-google text-red-400 w-5"></i> 
+                                        <a href="mailto:v5md.com@gmail.com" class="hover:text-white transition">v5md.com@gmail.com</a>
+                                    </p>
                                     <p class="flex items-start gap-2"><i class="fas fa-map-marker-alt mt-1 w-5"></i> ${CONTACT.ADDRESS}</p>
                                 </div>
                             </div>
+                            
                             <div class="md:col-span-3 pl-0 md:pl-4">
                                 <h4 class="font-bold mb-4 text-lg text-white">Downloads</h4>
                                 <div class="space-y-2 mb-8 text-sm">
-                                    <a href="pdf/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Product Catalog</a>
+                                    <a href="pdf/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Catalog</a>
                                     <a href="pdf/Quotations for dental products.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Dental Kit</a>
                                     <a href="pdf/price list.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition"><i class="fas fa-file-pdf text-red-400"></i> Price List</a>
                                 </div>
@@ -222,8 +254,10 @@ const V5Layout = (() => {
                                 </div>
                             </div>
                         </div>
-                        <div class="text-center mt-8 text-sm text-gray-500 border-t border-gray-800 pt-8">
-                            <p>&copy; ${year} V5 Medical LTD. All rights reserved.</p>
+                        
+                        <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                            <p class="mb-2 md:mb-0">&copy; ${year} V5 Medical LTD. All rights reserved.</p>
+                            <p>Disclaimer: Some images on this website are used for illustrative purposes only.</p>
                         </div>
                     </div>
                 </footer>
