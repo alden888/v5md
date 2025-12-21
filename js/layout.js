@@ -2,12 +2,11 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 3.8.5 (Fixed: Restored Full Footer Content & Privacy Link)
+ * @version 4.0.0 (Gradient Header & Mobile Optimization)
  * @updated 2024-12-16
  */
 
 const V5Layout = (() => {
-    // 依赖检查
     const config = window.V5Config;
     if (!config) {
         console.error('[Layout] V5Config not found. Ensure config.js is loaded before layout.js.');
@@ -21,58 +20,55 @@ const V5Layout = (() => {
         }
 
         init() {
-            this.injectStyles(); // 注入样式 (修复谷歌翻译遮挡)
+            this.injectStyles(); 
             this.renderHeader();
             this.renderFooter();
             this.renderFloatingElements();
             window.dispatchEvent(new Event('v5-layout-ready'));
-            console.log('[Layout] Initialized v3.8.0');
+            console.log('[Layout] Initialized v4.0.0');
         }
 
         /**
-         * [样式注入] 
-         * 解决谷歌翻译按钮位置和层级问题
+         * [CSS 注入] 
+         * 包含谷歌翻译位置修复 + 移动端菜单动画
          */
         injectStyles() {
             const style = document.createElement('style');
             style.innerHTML = `
-                /* 强制提升谷歌翻译层级，确保在导航栏(z-50)之上 */
-                #google_translate_element {
-                    position: fixed !important;
-                    z-index: 60 !important; 
-                }
-
-                /* 桌面端位置：右上角 */
+                /* 谷歌翻译固定定位 */
+                #google_translate_element { position: fixed !important; z-index: 60 !important; }
+                
+                /* 桌面端 */
                 @media (min-width: 769px) {
-                    #google_translate_element {
-                        top: 22px !important;
-                        right: 20px !important;
-                    }
+                    #google_translate_element { top: 22px !important; right: 20px !important; }
                 }
 
-                /* 移动端位置：避开右侧汉堡菜单 */
+                /* 移动端：避开汉堡菜单 */
                 @media (max-width: 768px) {
-                    #google_translate_element {
-                        top: 20px !important;
+                    #google_translate_element { 
+                        top: 20px !important; 
                         right: 60px !important; 
                     }
                     .goog-te-gadget-simple {
-                        max-width: 140px !important;
-                        overflow: hidden !important;
-                        text-overflow: ellipsis !important;
-                        white-space: nowrap !important;
-                        padding: 4px 8px !important;
+                        max-width: 130px !important;
+                        padding: 4px 6px !important;
+                        font-size: 12px !important;
                     }
                 }
 
-                /* 导航栏文字颜色适配 */
-                .nav-link-white { color: rgba(255,255,255,0.9); }
-                .nav-link-white:hover { color: #ffffff; }
+                /* 移动端菜单淡入动画 */
+                @keyframes slideDown {
+                    from { opacity: 0; transform: translateY(-10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .mobile-menu-active {
+                    animation: slideDown 0.3s ease-out forwards;
+                }
             `;
             document.head.appendChild(style);
         }
 
-        // --- 1. Header Rendering ---
+        // --- 1. Header Rendering (淡蓝 -> 深蓝 渐变) ---
         renderHeader() {
             const container = document.getElementById('v5-header');
             if (!container) return;
@@ -88,62 +84,98 @@ const V5Layout = (() => {
                 { id: 'contact', href: 'contact.html', txt: 'Contact' }
             ];
 
-            const navHtml = navItems.map(item => `
-                <a href="${item.href}" class="nav-link font-medium transition duration-200 text-sm lg:text-base ${this.currentPage === item.id ? 'text-white border-b-2 border-blue-400 font-bold' : 'text-blue-100 hover:text-white'}">
+            // 桌面菜单：白色文字（背景深蓝）
+            const desktopNav = navItems.map(item => `
+                <a href="${item.href}" class="font-medium transition duration-200 text-sm lg:text-base ${this.currentPage === item.id ? 'text-white border-b-2 border-blue-300 pb-1' : 'text-blue-100 hover:text-white'}">
                     ${item.txt}
                 </a>
             `).join('');
 
-            const mobileHtml = navItems.map(item => `
-                <a href="${item.href}" class="block px-4 py-3 rounded-lg font-medium transition ${this.currentPage === item.id ? 'text-blue-700 bg-blue-50' : 'text-gray-600 hover:bg-gray-50'}">
-                    ${item.txt}
+            // 移动端菜单：优化触控体验
+            const mobileNav = navItems.map(item => `
+                <a href="${item.href}" class="block px-5 py-4 border-b border-gray-50 text-base font-medium transition active:bg-blue-50 ${this.currentPage === item.id ? 'text-blue-700 bg-blue-50/50' : 'text-gray-700'}">
+                    <div class="flex justify-between items-center">
+                        <span>${item.txt}</span>
+                        ${this.currentPage === item.id ? '<i class="fas fa-chevron-right text-xs text-blue-400"></i>' : ''}
+                    </div>
                 </a>
             `).join('');
 
             container.innerHTML = `
-                <nav id="navbar" class="fixed w-full z-50 shadow-lg transition-all duration-300 bg-white h-20">
-                    <div class="absolute inset-0 bg-gradient-to-r from-white via-white via-20% to-blue-900 to-50%"></div>
+                <nav id="navbar" class="fixed w-full z-50 shadow-lg transition-all duration-300 h-20">
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-50 via-blue-600 to-blue-900"></div>
                     
                     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
                         <div class="flex justify-between items-center h-full">
                             
-                            <a href="index.html" class="flex items-center gap-3 group relative z-10 pr-4 bg-white/0">
+                            <a href="index.html" class="flex items-center gap-3 group relative z-10 pr-4">
                                 <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-10 md:h-12 w-auto transition-transform group-hover:scale-105" alt="${this.config.SEO.SITE_NAME}">
                                 <div class="hidden sm:block">
-                                    <div class="font-bold text-xl text-blue-900 leading-none">V5 Medical LTD</div>
-                                    <div class="text-[10px] text-blue-600 font-medium tracking-wider uppercase mt-0.5">Global Medical Supply Chain</div>
+                                    <div class="font-bold text-xl text-blue-900 leading-none tracking-tight">V5 Medical LTD</div>
+                                    <div class="text-[10px] text-blue-700 font-bold tracking-wider uppercase mt-0.5">Global Medical Supply Chain</div>
                                 </div>
                             </a>
 
-                            <div class="hidden md:flex gap-4 lg:gap-6 items-center pl-4">
-                                ${navHtml}
-                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold shadow-md flex items-center gap-2 transition hover:-translate-y-0.5 text-sm">
+                            <div class="hidden md:flex gap-6 items-center pl-8">
+                                ${desktopNav}
+                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="bg-green-500 hover:bg-green-400 text-white px-5 py-2 rounded-full font-bold shadow-md flex items-center gap-2 transition transform hover:-translate-y-0.5 text-sm border border-green-400/30">
                                     <i class="fab fa-whatsapp text-lg"></i><span>Chat</span>
                                 </a>
-                                <div class="w-24"></div> 
-                            </div>
+                                <div class="w-20"></div> </div>
 
-                            <button id="mobile-menu-btn" class="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition z-50 relative">
+                            <button id="mobile-menu-btn" class="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition z-50 relative focus:outline-none">
                                 <i class="fas fa-bars text-2xl"></i>
                             </button>
                         </div>
                     </div>
 
-                    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl top-20 left-0 z-40">
-                        <div class="px-4 py-4 space-y-2">
-                            ${mobileHtml}
-                            <div class="pt-4 mt-2 border-t border-gray-100">
-                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="flex items-center justify-center gap-2 w-full bg-green-500 text-white px-4 py-3 rounded-lg font-bold">
-                                    <i class="fab fa-whatsapp"></i> WhatsApp Contact
+                    <div id="mobile-menu" class="hidden md:hidden bg-white absolute w-full shadow-2xl top-20 left-0 z-40 mobile-menu-active rounded-b-2xl overflow-hidden">
+                        <div class="py-2">
+                            ${mobileNav}
+                            <div class="p-4 bg-gray-50 mt-1">
+                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="flex items-center justify-center gap-2 w-full bg-green-600 text-white px-4 py-3.5 rounded-xl font-bold shadow-sm active:scale-95 transition-transform">
+                                    <i class="fab fa-whatsapp text-xl"></i> WhatsApp Us
                                 </a>
                             </div>
                         </div>
                     </div>
                 </nav>
             `;
+            
+            // 绑定移动端菜单切换逻辑
+            setTimeout(() => {
+                const btn = document.getElementById('mobile-menu-btn');
+                const menu = document.getElementById('mobile-menu');
+                const icon = btn?.querySelector('i');
+                
+                if (btn && menu) {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const isHidden = menu.classList.contains('hidden');
+                        if (isHidden) {
+                            menu.classList.remove('hidden');
+                            icon.classList.remove('fa-bars');
+                            icon.classList.add('fa-times');
+                        } else {
+                            menu.classList.add('hidden');
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
+                    });
+                    
+                    // 点击外部关闭
+                    document.addEventListener('click', (e) => {
+                        if (!menu.classList.contains('hidden') && !menu.contains(e.target) && !btn.contains(e.target)) {
+                            menu.classList.add('hidden');
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
+                    });
+                }
+            }, 100);
         }
 
-        // --- 2. Footer Rendering (已修复：补全所有文字和链接) ---
+        // --- 2. Footer Rendering (保持完美状态) ---
         renderFooter() {
             const container = document.getElementById('v5-footer');
             if (!container) return;
@@ -209,16 +241,15 @@ const V5Layout = (() => {
                                 </div>
                                 <h4 class="font-bold mb-4 text-lg text-white">Follow Us</h4>
                                 <div class="flex gap-3 flex-wrap">
-                                    <a href="https://linkedin.com/company/v5med" target="_blank" class="w-9 h-9 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 transition text-white"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="https://www.youtube.com/@v5med" target="_blank" class="w-9 h-9 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition text-white"><i class="fab fa-youtube"></i></a>
-                                    <a href="https://www.facebook.com/v5med" target="_blank" class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition text-white"><i class="fab fa-facebook-f"></i></a>
-                                    <a href="https://www.instagram.com/v5med" target="_blank" class="w-9 h-9 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 flex items-center justify-center transition text-white"><i class="fab fa-instagram"></i></a>
-                                    <a href="https://www.tiktok.com/@v5med" target="_blank" class="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center hover:bg-black transition text-white"><i class="fab fa-tiktok"></i></a>
-                                    <a href="https://x.com/v5med" target="_blank" class="w-9 h-9 rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition text-white"><i class="fab fa-twitter"></i></a>
+                                    <a href="https://linkedin.com/company/v5med" target="_blank" class="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-800 transition text-white"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="https://www.youtube.com/@v5med" target="_blank" class="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center hover:bg-red-700 transition text-white"><i class="fab fa-youtube"></i></a>
+                                    <a href="https://www.facebook.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition text-white"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://www.instagram.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 flex items-center justify-center transition text-white"><i class="fab fa-instagram"></i></a>
+                                    <a href="https://www.tiktok.com/@v5med" target="_blank" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-black transition text-white"><i class="fab fa-tiktok"></i></a>
+                                    <a href="https://x.com/v5med" target="_blank" class="w-8 h-8 rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition text-white"><i class="fab fa-twitter"></i></a>
                                 </div>
                             </div>
                         </div>
-                        
                         <div class="text-center mt-8 text-sm text-gray-500 border-t border-gray-800 pt-8">
                             <p>&copy; ${year} V5 Medical LTD. All rights reserved.</p>
                         </div>
@@ -230,12 +261,9 @@ const V5Layout = (() => {
         // --- 3. Floating Elements ---
         renderFloatingElements() {
             if (!document.getElementById('whatsapp-float')) {
-                const waDiv = document.createElement('div');
-                waDiv.innerHTML = `
-                    <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 group">
-                        <i class="fab fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i>
-                    </a>`;
-                document.body.appendChild(waDiv.firstElementChild);
+                const div = document.createElement('div');
+                div.innerHTML = `<a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 group"><i class="fab fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i></a>`;
+                document.body.appendChild(div.firstElementChild);
             }
             if (!document.getElementById('back-to-top')) {
                 const topBtn = document.createElement('button');
@@ -247,7 +275,6 @@ const V5Layout = (() => {
             }
         }
 
-        // Helpers
         _detectPage() {
             const path = window.location.pathname;
             if (path.includes('catalog')) return 'catalog';
@@ -259,7 +286,6 @@ const V5Layout = (() => {
         
         _getActiveClass(id) { return this.currentPage === id ? 'text-white border-b-2 border-blue-400' : 'text-blue-100 hover:text-white'; }
         _getMobileActiveClass(id) { return this.currentPage === id ? 'text-blue-700 bg-blue-50 font-bold' : 'text-gray-600 hover:bg-gray-50'; }
-        
         _getImgPath(path) {
             if (!path) return '';
             if (path.startsWith('http')) return path;
@@ -273,4 +299,3 @@ const V5Layout = (() => {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 else V5Layout.init();
-
