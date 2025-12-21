@@ -2,7 +2,7 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 3.8.0 (Fixed: Restored Full Footer Content & Privacy Link)
+ * @version 3.8.5 (Fixed: Restored Full Footer Content & Privacy Link)
  * @updated 2024-12-16
  */
 
@@ -273,3 +273,4 @@ const V5Layout = (() => {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 else V5Layout.init();
+
