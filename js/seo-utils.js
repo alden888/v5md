@@ -1,165 +1,202 @@
 /**
- * V5 Medical SEO Utilities
- * Handles dynamic meta tag updates and structured data injection (JSON-LD)
- * @version 2.0.0
+ * V5 Medical Enhanced SEO Utilities
+ * Generates dynamic JSON-LD structured data for Google Rich Snippets.
+ * @version 3.0.0
  * @updated 2024-12-16
  */
 
-class SEOUtils {
+class EnhancedSEOUtils {
     constructor() {
         this.config = window.V5Config?.SEO || {};
         this.baseUrl = window.V5Config?.BASE_URL || window.location.origin;
-        this.schemaId = 'v5-dynamic-schema';
     }
 
     /**
-     * Main entry point to update all SEO elements for a page
-     * @param {Object} data - { title, description, image, type, keywords, product }
+     * 1. 基础页面 SEO 更新 (Title & Meta)
      */
-    updatePage(data = {}) {
-        const title = data.title || this.config.DEFAULT_TITLE;
-        const description = data.description || this.config.DEFAULT_DESC;
-        const image = this._resolveUrl(data.image || this.config.DEFAULT_IMAGE);
-        const url = window.location.href;
-
-        // 1. Update Document Title
-        document.title = title;
-
-        // 2. Update Standard Meta Tags
-        this._setMeta('name', 'description', description);
-        this._setMeta('name', 'keywords', data.keywords || '');
-        this._setLink('rel', 'canonical', url);
-
-        // 3. Update Open Graph (Facebook/LinkedIn/WhatsApp)
-        this._setMeta('property', 'og:title', title);
-        this._setMeta('property', 'og:description', description);
-        this._setMeta('property', 'og:image', image);
-        this._setMeta('property', 'og:url', url);
-        this._setMeta('property', 'og:type', data.type || 'website');
-        this._setMeta('property', 'og:site_name', this.config.SITE_NAME);
-
-        // 4. Update Twitter Card
-        this._setMeta('name', 'twitter:card', 'summary_large_image');
-        this._setMeta('name', 'twitter:title', title);
-        this._setMeta('name', 'twitter:description', description);
-        this._setMeta('name', 'twitter:image', image);
-
-        // 5. Inject Structured Data (JSON-LD)
-        this._injectSchema(data);
+    updatePage(data) {
+        if (data.title) document.title = data.title;
+        if (data.description) {
+            document.querySelector('meta[name="description"]')?.setAttribute('content', data.description);
+            document.querySelector('meta[property="og:description"]')?.setAttribute('content', data.description);
+        }
+        if (data.image) {
+            document.querySelector('meta[property="og:image"]')?.setAttribute('content', this._resolveUrl(data.image));
+        }
         
-        // 6. Track Update
-        console.log(`[SEO] Updated meta tags for: ${title}`);
+        // 自动注入 Schema
+        this.injectAllSchemas(data);
     }
 
     /**
-     * Helper: Set <meta> tag content. Creates tag if missing.
-     * @param {string} attrName - 'name' or 'property'
-     * @param {string} attrValue - e.g., 'description' or 'og:title'
-     * @param {string} content - The content value
+     * 2. 生成产品结构化数据 (Product Schema)
      */
-    _setMeta(attrName, attrValue, content) {
-        if (!content) return;
-        let element = document.querySelector(`meta[${attrName}="${attrValue}"]`);
-        if (!element) {
-            element = document.createElement('meta');
-            element.setAttribute(attrName, attrValue);
-            document.head.appendChild(element);
+    generateProductSchema(product) {
+        // 防御性检查：确保 images 是数组
+        const images = Array.isArray(product.images) ? product.images : [product.images || ''];
+
+        const schema = {
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": product.name,
+            "description": product.short || product.description,
+            "sku": product.id,
+            "mpn": product.id.toUpperCase(),
+            "image": images.map(img => this._resolveUrl(img)),
+            "brand": {
+                "@type": "Brand",
+                "name": "V5 Medical",
+                "logo": "https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png"
+            },
+            "manufacturer": {
+                "@type": "Organization",
+                "name": "V5 Medical LTD",
+                "url": "https://v5md.com"
+            },
+            "offers": {
+                "@type": "Offer",
+                "url": window.location.href,
+                "priceCurrency": "USD",
+                "price": "0", // Contact for price (Google requires a price, 0 acts as placeholder)
+                "priceValidUntil": this._getNextYearDate(),
+                "availability": "https://schema.org/InStock",
+                "itemCondition": "https://schema.org/NewCondition",
+                "seller": { "@type": "Organization", "name": "V5 Medical LTD" }
+            }
+        };
+        return schema;
+    }
+
+    /**
+     * 3. 生成 FAQ 结构化数据
+     */
+    generateFAQSchema() {
+        return {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "What certifications does V5 Medical hold?",
+                    "acceptedAnswer": { "@type": "Answer", "text": "V5 Medical LTD holds ISO 13485, CE Mark, and FDA registrations for medical device manufacturing." }
+                },
+                {
+                    "@type": "Question",
+                    "name": "What is the minimum order quantity (MOQ)?",
+                    "acceptedAnswer": { "@type": "Answer", "text": "MOQ varies by product category. We support flexible MOQs for trial orders. Contact our sales team for details." }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Do you offer OEM/ODM services?",
+                    "acceptedAnswer": { "@type": "Answer", "text": "Yes, we provide comprehensive custom branding (OEM) and product development (ODM) services for global partners." }
+                }
+            ]
+        };
+    }
+
+    /**
+     * 4. 生成面包屑导航
+     */
+    generateBreadcrumbSchema(items) {
+        if (!items || items.length === 0) return null;
+        return {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": items.map((item, index) => ({
+                "@type": "ListItem",
+                "position": index + 1,
+                "name": item.name,
+                "item": this._resolveUrl(item.url)
+            }))
+        };
+    }
+
+    /**
+     * 5. 生成本地商家信息 (用于 Contact 页)
+     */
+    generateLocalBusinessSchema() {
+        return {
+            "@context": "https://schema.org",
+            "@type": "MedicalBusiness",
+            "name": "V5 Medical LTD",
+            "image": "https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "No. 168, Luying Road, Kunshan Development Zone",
+                "addressLocality": "Kunshan",
+                "addressRegion": "Jiangsu",
+                "postalCode": "215300",
+                "addressCountry": "CN"
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "31.3884",
+                "longitude": "120.9820"
+            },
+            "telephone": "+86-0512-8781-1988",
+            "priceRange": "$$",
+            "openingHoursSpecification": [
+                {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                    "opens": "08:30",
+                    "closes": "17:30"
+                }
+            ]
+        };
+    }
+
+    /**
+     * 💉 核心：注入所有 Schema
+     */
+    injectAllSchemas(data) {
+        const schemas = [];
+
+        // Product
+        if (data.product) schemas.push(this.generateProductSchema(data.product));
+        
+        // Breadcrumb
+        if (data.breadcrumb) {
+            const breadcrumbSchema = this.generateBreadcrumbSchema(data.breadcrumb);
+            if (breadcrumbSchema) schemas.push(breadcrumbSchema);
         }
-        element.setAttribute('content', content);
-    }
 
-    /**
-     * Helper: Set <link> tag href. Creates tag if missing.
-     */
-    _setLink(attrName, attrValue, href) {
-        let element = document.querySelector(`link[${attrName}="${attrValue}"]`);
-        if (!element) {
-            element = document.createElement('link');
-            element.setAttribute(attrName, attrValue);
-            document.head.appendChild(element);
+        // FAQ (手动开启)
+        if (data.includeFAQ) schemas.push(this.generateFAQSchema());
+
+        // Local Business (手动开启)
+        if (data.includeLocalBusiness) schemas.push(this.generateLocalBusinessSchema());
+
+        // 移除旧的 Script
+        const oldScript = document.getElementById('v5-dynamic-schema');
+        if (oldScript) oldScript.remove();
+
+        // 注入新的 Script
+        if (schemas.length > 0) {
+            const script = document.createElement('script');
+            script.id = 'v5-dynamic-schema';
+            script.type = 'application/ld+json';
+            script.textContent = JSON.stringify(schemas);
+            document.head.appendChild(script);
+            console.log(`[SEO] Injected ${schemas.length} schema(s)`);
         }
-        element.setAttribute('href', href);
     }
 
-    /**
-     * Helper: Resolve absolute URL for images (required for OG tags)
-     */
+    // Helpers
     _resolveUrl(path) {
         if (!path) return '';
         if (path.startsWith('http')) return path;
-        // Clean up path and join with base URL
-        const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-        return `${this.baseUrl}/${cleanPath}`;
+        // 使用 window.imageUtils 的逻辑（如果有）或简单拼接
+        if (window.imageUtils) return window.imageUtils.getImageUrl(path);
+        return `${this.baseUrl}/${path.replace(/^\/+/, '')}`;
     }
 
-    /**
-     * Inject JSON-LD Schema based on page type
-     */
-    _injectSchema(data) {
-        const schemas = [];
-
-        // 1. Organization Schema (Always included)
-        schemas.push({
-            "@context": "https://schema.org",
-            "@type": "MedicalOrganization",
-            "name": "V5 Medical LTD",
-            "url": this.baseUrl,
-            "logo": this._resolveUrl(this.config.DEFAULT_IMAGE),
-            "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": window.V5Config?.CONTACT?.WHATSAPP?.DISPLAY || "+44 7895 047944",
-                "contactType": "customer service"
-            }
-        });
-
-        // 2. Product Schema (If product data exists)
-        if (data.product) {
-            schemas.push({
-                "@context": "https://schema.org/",
-                "@type": "Product",
-                "name": data.product.name,
-                "image": data.product.images ? data.product.images.map(img => this._resolveUrl(img)) : [],
-                "description": data.product.short || data.product.description,
-                "sku": data.product.id,
-                "brand": { "@type": "Brand", "name": "V5 Medical" },
-                "offers": {
-                    "@type": "Offer",
-                    "url": window.location.href,
-                    "priceCurrency": "USD",
-                    "price": "0", // 0 indicates contact for price in B2B often, or omit
-                    "availability": "https://schema.org/InStock",
-                    "itemCondition": "https://schema.org/NewCondition"
-                }
-            });
-        }
-
-        // 3. Breadcrumb Schema
-        schemas.push({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Home", "item": this.baseUrl },
-                { "@type": "ListItem", "position": 2, "name": data.title || "Page", "item": window.location.href }
-            ]
-        });
-
-        // Remove old dynamic schema
-        const oldScript = document.getElementById(this.schemaId);
-        if (oldScript) oldScript.remove();
-
-        // Inject new schema
-        const script = document.createElement('script');
-        script.id = this.schemaId;
-        script.type = 'application/ld+json';
-        script.text = JSON.stringify(schemas);
-        document.head.appendChild(script);
+    _getNextYearDate() {
+        const date = new Date();
+        date.setFullYear(date.getFullYear() + 1);
+        return date.toISOString().split('T')[0];
     }
 }
 
-// Initialize and Expose
-window.seoUtils = new SEOUtils();
-
-// Export for module usage
-if (typeof module !== 'undefined') {
-    module.exports = window.seoUtils;
-}
+// 初始化
+window.seoUtils = new EnhancedSEOUtils();
