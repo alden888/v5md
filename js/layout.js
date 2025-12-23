@@ -2,7 +2,7 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 4.5.0 (Optimization: Semantic HTML & SEO Keywords in Footer)
+ * @version 4.6.0 (Optimization: Semantic HTML & SEO Keywords in Footer)
  * @updated 2024-12-16
  */
 
@@ -208,7 +208,7 @@ const V5Layout = (() => {
                                 <h4 class="font-bold mb-4 text-lg text-white">Contact Info</h4>
                                 <div class="space-y-3 text-sm text-gray-400">
                                     <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${CONTACT.WHATSAPP.DISPLAY} (UK)</p>
-                                    <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${CONTACT.WHATSAPP_CN.DISPLAY} (Backup)</p>
+                                    <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-green-500 w-5"></i> ${CONTACT.WHATSAPP_CN.DISPLAY} (China)</p>
                                     <p class="flex items-center gap-2">
                                         <i class="fas fa-envelope text-blue-400 w-5"></i> 
                                         <a href="mailto:${CONTACT.EMAIL.SALES}" class="hover:text-white transition">${CONTACT.EMAIL.SALES}</a>
@@ -280,3 +280,4 @@ const V5Layout = (() => {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 else V5Layout.init();
+
