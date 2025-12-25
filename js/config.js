@@ -1,6 +1,6 @@
 /**
  * V5 Medical Website Configuration
- * @version 2.6.0
+ * @version 2.7.0
  * @updated 2024-12-16
  */
 
