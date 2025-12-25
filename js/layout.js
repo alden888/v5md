@@ -2,7 +2,7 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 4.7.1 (Optimization: Legal Wording & Professional Tone)
+ * @version 4.7.2 (Final Golden Master: Security Hardening & Accessibility)
  * @updated 2024-12-25
  */
 
@@ -25,7 +25,7 @@ const V5Layout = (() => {
             this.renderFooter();
             this.renderFloatingElements();
             window.dispatchEvent(new Event('v5-layout-ready'));
-            console.log('[Layout] Initialized v4.7.1 with Compliance Wording');
+            console.log('[Layout] Initialized v4.7.2 (Secure Mode)');
         }
 
         injectStyles() {
@@ -100,7 +100,7 @@ const V5Layout = (() => {
 
                             <div class="hidden md:flex gap-6 items-center pl-8">
                                 ${desktopNav}
-                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="bg-green-500 hover:bg-green-400 text-white px-5 py-2 rounded-full font-bold shadow-md flex items-center gap-2 transition transform hover:-translate-y-0.5 text-sm border border-green-400/30">
+                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" rel="noopener noreferrer" class="bg-green-500 hover:bg-green-400 text-white px-5 py-2 rounded-full font-bold shadow-md flex items-center gap-2 transition transform hover:-translate-y-0.5 text-sm border border-green-400/30">
                                     <i class="fab fa-whatsapp text-lg"></i><span>Contact</span>
                                 </a>
                                 <div class="w-20"></div> 
@@ -116,7 +116,7 @@ const V5Layout = (() => {
                         <div class="py-2">
                             ${mobileNav}
                             <div class="p-5 bg-gray-50 mt-1">
-                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" class="flex items-center justify-center gap-2 w-full bg-green-600 text-white px-4 py-4 rounded-xl font-bold shadow-sm active:scale-95 transition-transform">
+                                <a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 w-full bg-green-600 text-white px-4 py-4 rounded-xl font-bold shadow-sm active:scale-95 transition-transform">
                                     <i class="fab fa-whatsapp text-xl"></i> Contact via WhatsApp
                                 </a>
                             </div>
@@ -162,7 +162,7 @@ const V5Layout = (() => {
             });
         }
 
-        // --- 2. Footer Rendering (Strategic Upgrade: Legal Safety) ---
+        // --- 2. Footer Rendering ---
         renderFooter() {
             const container = document.getElementById('v5-footer');
             if (!container) return;
@@ -243,9 +243,13 @@ const V5Layout = (() => {
                             <div class="md:col-span-3">
                                 <h4 class="font-bold mb-5 text-white">Downloads & Social</h4>
                                 <div class="space-y-3 mb-8 text-sm">
-                                    <a href="pdf/Catalog.pdf" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-white transition group">
+                                    <a href="pdf/Catalog.pdf" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-gray-400 hover:text-white transition group">
                                         <i class="fas fa-file-pdf text-red-500 group-hover:scale-110 transition-transform"></i> 
                                         <span>Product Catalog (PDF)</span>
+                                    </a>
+                                    <a href="pdf/V5_Medical_Capability_Statement.pdf" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-gray-400 hover:text-white transition group">
+                                        <i class="fas fa-file-shield text-blue-500 group-hover:scale-110 transition-transform"></i> 
+                                        <span>Capability Statement (PDF)</span>
                                     </a>
                                     <a href="mailto:qa@v5md.com?subject=Request ISO Certificate" class="flex items-center gap-2 text-gray-400 hover:text-purple-300 transition group">
                                         <i class="fas fa-lock text-purple-500 group-hover:scale-110 transition-transform"></i> 
@@ -253,10 +257,10 @@ const V5Layout = (() => {
                                     </a>
                                 </div>
                                 <div class="flex gap-3 flex-wrap">
-                                    <a href="https://linkedin.com/company/v5med" target="_blank" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center hover:bg-blue-700 text-white transition"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="https://www.facebook.com/v5med" target="_blank" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center hover:bg-blue-600 text-white transition"><i class="fab fa-facebook-f"></i></a>
-                                    <a href="https://www.instagram.com/v5med" target="_blank" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center hover:bg-pink-600 text-white transition"><i class="fab fa-instagram"></i></a>
-                                    <a href="https://x.com/v5med" target="_blank" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center hover:bg-black text-white transition"><i class="fab fa-twitter"></i></a>
+                                    <a href="https://linkedin.com/company/v5med" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center hover:bg-blue-700 text-white transition"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="https://www.facebook.com/v5med" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center hover:bg-blue-600 text-white transition"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://www.instagram.com/v5med" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center hover:bg-pink-600 text-white transition"><i class="fab fa-instagram"></i></a>
+                                    <a href="https://x.com/v5med" target="_blank" rel="noopener noreferrer" aria-label="Twitter/X" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center hover:bg-black text-white transition"><i class="fab fa-twitter"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -280,8 +284,7 @@ const V5Layout = (() => {
         renderFloatingElements() {
             if (!document.getElementById('whatsapp-float')) {
                 const div = document.createElement('div');
-                // OPTIMIZATION: Added data-source for analytics
-                div.innerHTML = `<a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" data-source="float" class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 group" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i></a>`;
+                div.innerHTML = `<a href="${this.config.CONTACT.WHATSAPP.API_URL}" target="_blank" rel="noopener noreferrer" data-source="float" class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 group" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i></a>`;
                 document.body.appendChild(div.firstElementChild);
             }
             if (!document.getElementById('back-to-top')) {
