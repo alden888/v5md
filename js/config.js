@@ -32,7 +32,7 @@ const V5Config = (() => {
         },
         
         CONTACT: {
-            WHATSAPP: { DISPLAY: '+44 078 9504 7944', NUMBER: '447895047944', API_URL: 'https://wa.me/447895047944' },
+            WHATSAPP: { DISPLAY: '078 9504 7944', NUMBER: '447895047944', API_URL: 'https://wa.me/447895047944' },
             WHATSAPP_CN: { DISPLAY: '+86 180 1266 9897', NUMBER: '8618012669897', API_URL: 'https://wa.me/8618012669897' },
             EMAIL: { SALES: 'sales@v5md.com' },
             ADDRESS: 'No. 168, Luying Road, Kunshan, Jiangsu, China'
