@@ -20,24 +20,24 @@
   
   <style>
     /* =========================================
-       1. 全局重置与变量 (匹配主站)
+       1. 全局配置
        ========================================= */
     :root { 
       --theme-color: #1e40af; 
       --theme-hover: #1e3a8a;
       --text-color: #334155;
-      --header-height: 80px; /* 主站通常是 80px */
+      --header-height: 72px; /* 调整为更精致的高度 */
     }
     
     body { 
       font-family: 'Inter', system-ui, -apple-system, sans-serif; 
       color: var(--text-color);
-      padding-top: var(--header-height); /* 给固定页眉留空间 */
-      background-color: #f8fafc; /* 与主站背景协调 */
+      padding-top: var(--header-height);
+      background-color: #f8fafc;
     }
 
     /* =========================================
-       2. 复刻主站 Header (1:1 还原)
+       2. 导航栏 (V5 Header) - 修正版
        ========================================= */
     #v5-header {
       position: fixed;
@@ -46,91 +46,92 @@
       width: 100%;
       height: var(--header-height);
       z-index: 1000;
-    }
-
-    #navbar {
-      position: fixed;
-      width: 100%;
-      z-index: 50;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-      transition: all 0.3s;
-      height: 80px;
-    }
-
-    #navbar .bg-gradient-to-r {
-      background: linear-gradient(to right, #eff6ff, #2563eb, #1e3a8a);
+      background: #ffffff; /* 修正：改为白底，更专业 */
+      border-bottom: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
     }
 
     .header-container {
       width: 100%;
-      max-width: 1280px; /* 匹配 Tailwind max-w-7xl */
+      max-width: 1280px;
       padding: 0 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       height: 100%;
       margin: 0 auto;
-      position: relative;
     }
 
-    /* Logo 区域 - 匹配主站样式 */
+    /* Logo 区域 - 尺寸修正 */
     .header-logo {
       display: flex;
       align-items: center;
-      gap: 24px; /* 优化：增加logo和文字之间的间距，从12px改为24px，与主站保持一致 */
+      gap: 12px; /* 修正：从 24px 改回标准的 12px */
       text-decoration: none;
-      position: relative;
-      z-index: 10;
-      padding-right: 8px;
     }
+    
     .header-logo img { 
-      height: 48px; 
+      height: 40px; /* 修正：从 48px 改为 40px，更精致 */
       width: auto; 
     }
+    
     .logo-text { 
       display: flex; 
       flex-direction: column; 
     }
+    
     .brand-name { 
-      font-size: 1.25rem; 
+      font-size: 1.15rem; /* 微调字体大小 */
       font-weight: 800; 
-      color: #1e3a8a; 
+      color: #1e3a8a; /* 深蓝文字在白底上很清晰 */
       line-height: 1; 
-      letter-spacing: -0.025em; 
+      letter-spacing: -0.02em; 
     }
+    
     .brand-tag { 
       font-size: 0.65rem; 
-      color: #1d4ed8; 
-      font-weight: 700; 
+      color: #64748b; /* 灰色副标题 */
+      font-weight: 600; 
       text-transform: uppercase; 
       letter-spacing: 0.05em; 
       margin-top: 2px; 
     }
 
-    /* 导航菜单 - 匹配主站样式 */
+    /* 导航菜单 - 颜色修正 */
     .header-nav { 
       display: flex; 
-      gap: 24px; 
+      gap: 32px; 
       margin-left: 40px; 
-      position: relative;
-      z-index: 10;
     }
+    
     .nav-link {
       text-decoration: none;
-      color: #dbeafe; /* 主站蓝色背景下的文本颜色 */
+      color: #475569; /* 修正：深灰色文字 */
       font-weight: 500;
       font-size: 0.95rem;
       transition: color 0.2s;
       position: relative;
-      padding-bottom: 1px;
+      padding: 4px 0;
     }
+    
     .nav-link:hover { 
-      color: white; 
+      color: var(--theme-color); 
     }
+    
     .nav-link.active { 
-      color: white; 
+      color: var(--theme-color); 
       font-weight: 700; 
-      border-bottom: 2px solid #93c5fd;
+    }
+    /* 激活态下划线 */
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--theme-color);
+      border-radius: 2px;
     }
 
     /* 右侧按钮区 */
@@ -138,48 +139,45 @@
       display: flex; 
       align-items: center; 
       gap: 16px; 
-      position: relative;
-      z-index: 10;
     }
     
-    /* WhatsApp 按钮 (复刻主站风格) */
+    /* WhatsApp 按钮 */
     .btn-whatsapp {
       display: flex;
       align-items: center;
       gap: 8px;
-      background-color: #22c55e; /* Tailwind green-500 */
+      background-color: #22c55e;
       color: white;
       padding: 8px 20px;
       border-radius: 9999px;
       font-weight: 600;
       font-size: 0.9rem;
       text-decoration: none;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 4px rgba(34, 197, 94, 0.2);
       transition: all 0.2s;
-      border: 1px solid rgba(74, 222, 128, 0.3);
     }
     .btn-whatsapp:hover {
-      background-color: #16a34a; /* Tailwind green-600 */
+      background-color: #16a34a;
       transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(34, 197, 94, 0.3);
     }
 
     /* 移动端菜单按钮 */
     .mobile-menu-btn {
       display: none;
-      color: white;
-      padding: 8px;
-      border-radius: 50%;
+      color: #334155; /* 深色图标 */
+      padding: 4px;
       background: transparent;
       border: none;
       cursor: pointer;
       font-size: 1.5rem;
     }
 
-    /* 移动端菜单 */
+    /* 移动端菜单面板 */
     .mobile-menu {
       display: none;
       position: fixed;
-      top: 80px;
+      top: var(--header-height);
       left: 0;
       width: 100%;
       background: white;
@@ -187,158 +185,132 @@
       z-index: 999;
       border-top: 1px solid #e2e8f0;
     }
-
+    .mobile-menu.active { display: block; }
+    
     .mobile-menu .nav-link {
       display: block;
-      color: #475569;
-      padding: 12px 24px;
+      padding: 14px 24px;
       border-bottom: 1px solid #f1f5f9;
+      color: #334155;
     }
-
     .mobile-menu .nav-link.active {
-      color: #1e40af;
+      color: var(--theme-color);
       background: #eff6ff;
-      border-bottom: 1px solid #dbeafe;
     }
 
-    /* 谷歌翻译样式调整 */
-    #google_translate_element {
-      position: fixed !important;
-      z-index: 60 !important;
-    }
-
-    @media (min-width: 769px) {
-      #google_translate_element { 
-        top: 22px !important; 
-        right: 20px !important; 
-      }
-    }
-
-    @media (max-width: 768px) { 
-      #google_translate_element { 
-        top: 20px !important; 
-        right: 60px !important; 
-      }
-      .goog-te-gadget-simple { 
-        max-width: 120px !important; 
-        padding: 4px !important; 
-        font-size: 11px !important; 
-      }
+    /* 谷歌翻译 */
+    #google_translate_element { margin-right: 10px; }
+    .goog-te-gadget-simple {
+      background-color: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      padding: 6px 10px !important;
+      border-radius: 6px !important;
     }
 
     /* =========================================
        3. Docsify 布局适配
        ========================================= */
     .sidebar {
-      top: var(--header-height) !important; /* 避开 Header */
+      top: var(--header-height) !important;
       padding-top: 20px !important;
       background-color: #fff;
-      border-right: 1px solid #f1f5f9;
+      border-right: 1px solid #e2e8f0;
       z-index: 900;
     }
     
-    .content { padding-top: 20px; }
-    
-    /* 侧边栏开关按钮位置调整 */
     .sidebar-toggle {
-      top: 95px !important; 
+      top: 85px !important; 
       left: 20px !important;
       background: transparent !important;
       color: var(--theme-color) !important;
     }
 
-    /* 移动端适配 */
+    /* =========================================
+       4. 响应式适配
+       ========================================= */
     @media (max-width: 768px) {
-      .header-nav { display: none; } /* 手机端隐藏顶部导航 */
-      .mobile-menu-btn { display: block; } /* 显示移动端菜单按钮 */
-      .mobile-menu.active { display: block; } /* 激活时显示移动端菜单 */
-      .btn-whatsapp span { display: none; } /* 手机端只显示图标 */
-      .btn-whatsapp { padding: 8px; }
+      .header-nav { display: none; }
+      .mobile-menu-btn { display: block; }
+      .btn-whatsapp span { display: none; }
+      .btn-whatsapp { padding: 8px; border-radius: 50%; width: 36px; height: 36px; justify-content: center; }
       .brand-tag { display: none; }
-      .header-logo { gap: 16px; } /* 移动端适当减小间距 */
+      #google_translate_element { display: none; }
+      .header-logo { gap: 10px; }
+      .header-logo img { height: 32px; }
+      .brand-name { font-size: 1rem; }
     }
 
     /* =========================================
-       4. 文章样式微调 (保持之前的优化)
+       5. 内容区样式 (美化)
        ========================================= */
     .markdown-section { 
       max-width: 960px; 
       margin: 0 auto; 
       padding: 40px 40px 100px; 
       background: #fff;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1); /* 给文章加个卡片阴影，更像主站 */
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
       border-radius: 8px;
       min-height: calc(100vh - 120px);
     }
-    /* ... 保留之前的 CTA 和 Footer 样式 ... */
+    
+    /* 其他组件样式保持不变... */
     .v5-cta-box { margin: 60px 0; padding: 40px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; text-align: center; }
-    .v5-btn { display: inline-block; background: #1e40af; color: white !important; padding: 12px 30px; border-radius: 50px; font-weight: 600; text-decoration: none; margin: 5px; }
-    .v5-btn:hover { background: #1e3a8a; }
-    .v5-btn-secondary { background: white; color: #1e40af !important; border: 1px solid #1e40af; }
-
-    /* 移动端优化 */
+    .v5-cta-box h3 { font-size: 1.6rem; color: var(--theme-color); margin-bottom: 15px; }
+    .v5-btn { display: inline-block; background: #1e40af; color: white !important; padding: 12px 30px; border-radius: 50px; font-weight: 600; text-decoration: none; margin: 5px; transition: all 0.2s; }
+    .v5-btn:hover { background: #1e3a8a; transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .v5-btn-secondary { background: white; color: #1e40af !important; border: 2px solid #1e40af; }
+    #progress-bar { position: fixed; top: var(--header-height); left: 0; height: 3px; background: var(--theme-color); z-index: 100000; transition: width 0.2s; }
+    
     @media (max-width: 768px) {
-      .markdown-section {
-        padding: 20px 20px 80px;
-        border-radius: 0;
-        box-shadow: none;
-      }
+      .markdown-section { padding: 25px 20px 80px; box-shadow: none; }
+      .v5-btn { display: block; width: 100%; }
     }
   </style>
 </head>
 
 <body>
   <div id="v5-header">
-    <nav id="navbar" class="fixed w-full z-50 shadow-lg transition-all duration-300 h-20">
-      <div class="absolute inset-0 bg-gradient-to-r from-blue-50 via-blue-600 to-blue-900"></div>
-      
-      <div class="header-container">
-        <a href="https://v5md.com/" class="header-logo">
-          <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png" alt="V5 Medical LTD">
-          <div class="logo-text">
-            <span class="brand-name">V5 Medical LTD</span>
-            <span class="brand-tag">Global Medical Supply Chain</span>
-          </div>
-        </a>
-
-        <nav class="header-nav">
-          <a href="https://v5md.com/" class="nav-link">Home</a>
-          <a href="https://v5md.com/about.html" class="nav-link">About Us</a>
-          <a href="https://v5md.com/catalog.html" class="nav-link">Products</a>
-          <a href="#/" class="nav-link active">Blog</a>
-          <a href="https://v5md.com/contact.html" class="nav-link">Contact</a>
-        </nav>
-
-        <div class="header-actions">
-          <div id="google_translate_element"></div>
-          
-          <a href="https://wa.me/447895047944" target="_blank" class="btn-whatsapp">
-            <i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i>
-            <span>Contact</span>
-          </a>
-          
-          <button class="mobile-menu-btn" id="mobile-menu-btn">
-            <i class="fas fa-bars"></i>
-          </button>
+    <div class="header-container">
+      <a href="https://v5md.com/" class="header-logo">
+        <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" alt="V5 Medical">
+        <div class="logo-text">
+          <span class="brand-name">V5 Medical LTD</span>
+          <span class="brand-tag">Global Supply Chain</span>
         </div>
-      </div>
-    </nav>
+      </a>
 
-    <!-- 移动端菜单 -->
+      <nav class="header-nav">
+        <a href="https://v5md.com/" class="nav-link">Home</a>
+        <a href="https://v5md.com/about.html" class="nav-link">About Us</a>
+        <a href="https://v5md.com/catalog.html" class="nav-link">Products</a>
+        <a href="#/" class="nav-link active">Blog</a>
+        <a href="https://v5md.com/contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <div id="google_translate_element"></div>
+        
+        <a href="https://wa.me/447895047944" target="_blank" class="btn-whatsapp">
+          <i class="fab fa-whatsapp" style="font-size: 1.1rem;"></i>
+          <span>Contact</span>
+        </a>
+        
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
     <div class="mobile-menu" id="mobile-menu">
       <a href="https://v5md.com/" class="nav-link">Home</a>
       <a href="https://v5md.com/about.html" class="nav-link">About Us</a>
       <a href="https://v5md.com/catalog.html" class="nav-link">Products</a>
       <a href="#/" class="nav-link active">Blog</a>
       <a href="https://v5md.com/contact.html" class="nav-link">Contact</a>
-      <div class="p-4 bg-gray-50">
-        <a href="https://wa.me/447895047944" target="_blank" class="btn-whatsapp" style="display: block; text-align: center; margin: 0 auto;">
-          <i class="fab fa-whatsapp"></i> Contact via WhatsApp
-        </a>
-      </div>
     </div>
   </div>
 
+  <div id="progress-bar"></div>
   <div id="app">🚀 Loading Knowledge Hub...</div>
 
   <script type="text/javascript">
@@ -355,7 +327,7 @@
       nameLink: 'https://v5md.com',
       homepage: 'README.md',
       loadSidebar: true,
-      loadNavbar: false, // 关掉原生导航，用我们手写的 Header
+      loadNavbar: false,
       subMaxLevel: 3,
       auto2top: true,
       coverpage: false, 
@@ -368,7 +340,6 @@
       },
       plugins: [
         function(hook) {
-          // 渲染前过滤
           hook.beforeEach(function(content, url) {
             if (url && url.endsWith('.md')) {
               return content
@@ -381,7 +352,6 @@
             return content;
           });
           
-          // 渲染后加 CTA
           hook.afterEach(function(html) {
             return html + `
               <div class="v5-cta-box">
@@ -401,7 +371,6 @@
   </script>
 
   <script>
-    // 移动端菜单功能
     document.addEventListener('DOMContentLoaded', function() {
       const menuBtn = document.getElementById('mobile-menu-btn');
       const mobileMenu = document.getElementById('mobile-menu');
@@ -419,13 +388,10 @@
           }
         });
         
-        // 点击菜单外区域关闭菜单
         document.addEventListener('click', function(e) {
           if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target) && mobileMenu.classList.contains('active')) {
             mobileMenu.classList.remove('active');
-            const icon = menuBtn.querySelector('i');
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
+            menuBtn.querySelector('i').classList.replace('fa-times', 'fa-bars');
           }
         });
       }
@@ -436,7 +402,9 @@
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
 </body>
 </html>
