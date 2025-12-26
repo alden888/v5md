@@ -62,6 +62,7 @@
   <script>
     window.$docsify = {
       basePath: '/blog/',  // 基础路径配置
+      encoding: 'utf-8',   // 强制UTF-8编码，避免乱码
       name: '<img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" style="height:40px;vertical-align:middle;margin-right:8px;">V5 Medical',
       nameLink: 'https://v5md.com',
       repo: 'https://github.com/alden888/v5md',
@@ -75,12 +76,19 @@
       onlyCover: false,
       routerMode: 'hash',
       
-      // 搜索配置
+      // 搜索配置（修复id/name警告）
       search: {
         maxAge: 86400000,
         paths: 'auto',
         placeholder: 'Search insights...',
         depth: 6,
+        // 自定义搜索框模板，添加id/name消除控制台警告
+        template: `
+          <div class="search">
+            <input type="search" id="docsify-search-input" name="docsify-search" placeholder="{placeholder}" autocomplete="off">
+            <ul class="search-result"></ul>
+          </div>
+        `
       },
       
       // 分页配置
@@ -96,14 +104,30 @@
         successText: '✓ Copied'
       },
       
-      // 插件与钩子
+      // 核心插件：过滤乱码 + CTA + 进度条
       plugins: [
-        // 添加 CTA 和页脚
+        // 1. 过滤Cloudflare注入的代码，解决乱码
         function(hook) {
+          // 加载.md文件前拦截，过滤所有非Markdown内容
+          hook.beforeEach(function(content, url) {
+            if (url.endsWith('.md')) {
+              return content
+                .replace(/<script[\s\S]*?<\/script>/gi, '') // 删除所有script标签
+                .replace(/<style[\s\S]*?<\/style>/gi, '')   // 删除所有style标签
+                .replace(/tailwind\.config[\s\S]*?}/gi, '') // 删除tailwind配置
+                .replace(/\{[\s\S]*?"context"[\s\S]*?\}/gi, '') // 删除JSON片段
+                .replace(/[\u0000-\u001F\u007F]/g, ''); // 删除不可见控制字符
+            }
+            return content;
+          });
+
+          // 渲染后二次过滤 + 添加CTA/页脚
           hook.afterEach(function(html) {
-            // 过滤非法字符，避免乱码
-            const cleanHtml = html.replace(/[\u0000-\u001F\u007F]/g, '');
-            
+            const cleanHtml = html
+              .replace(/<[^>]+>/gi, '') // 兜底删除残留HTML标签
+              .replace(/[\u0000-\u001F\u007F]/g, '');
+          
+            // CTA模块
             const cta = `
               <div class="v5-cta-box">
                 <h3>🎯 Ready to Optimize Your Supply Chain?</h3>
@@ -117,6 +141,7 @@
               </div>
             `;
             
+            // 页脚模块
             const footer = `
               <hr style="margin-top: 60px; border: none; border-top: 2px solid #e5e7eb;"/>
               <footer style="text-align: center; padding: 30px 0; color: #64748b; font-size: 0.85rem;">
@@ -128,7 +153,7 @@
           });
         },
         
-        // 进度条逻辑
+        // 2. 进度条逻辑（修复滚动监听重复绑定）
         function(hook) {
           let scrollHandler;
           
@@ -167,7 +192,7 @@
     }
   </script>
 
-  <!-- Docsify 核心与插件 -->
+  <!-- Docsify 核心与插件（添加crossorigin消除跨域警告） -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4" crossorigin="anonymous"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js" crossorigin="anonymous"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js" crossorigin="anonymous"></script>
