@@ -9,7 +9,7 @@
   <link rel="canonical" href="https://v5md.com/blog/">
   <meta property="og:title" content="V5 Medical Knowledge Hub">
   <meta property="og:url" content="https://v5md.com/blog/">
-  <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png">
+  <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,45 +23,36 @@
        1. 全局配置
        ========================================= */
     :root { 
-      --theme-primary: #1e40af;      /* 主色调 - 深蓝色 */
-      --theme-secondary: #2563eb;    /* 辅助色 - 中蓝色 */
-      --theme-accent: #3b82f6;       /* 强调色 - 浅蓝色 */
-      --theme-success: #22c55e;      /* 成功色 - 绿色 */
-      --text-primary: #1e3a8a;       /* 主要文本色 */
-      --text-secondary: #475569;     /* 次要文本色 */
-      --text-light: #f8fafc;         /* 浅色文本 */
-      --bg-primary: #f8fafc;         /* 主要背景色 */
-      --bg-secondary: #ffffff;       /* 次要背景色 */
-      --border-color: #e2e8f0;       /* 边框颜色 */
-      --header-height: 80px;         /* 页眉高度 */
-      --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
-      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+      --theme-color: #1e40af; 
+      --text-color: #334155;
+      --header-height: 80px; 
     }
     
     body { 
       font-family: 'Inter', system-ui, -apple-system, sans-serif; 
-      color: var(--text-primary);
+      color: var(--text-color);
       padding-top: var(--header-height);
-      background-color: var(--bg-primary);
-      margin: 0;
-      line-height: 1.5;
+      background-color: #f8fafc;
     }
 
     /* =========================================
-       2. 页眉布局 (优化版 - 固定布局)
+       2. 页眉布局 (导航修正版)
        ========================================= */
     #v5-header {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
+      top: 0; left: 0; width: 100%;
       height: var(--header-height);
       z-index: 1000;
-      box-shadow: var(--shadow-md);
-      background: linear-gradient(to right, #eff6ff, var(--theme-secondary), var(--theme-primary));
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
     }
 
+    .header-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, #eff6ff, #2563eb, #1e3a8a);
+    }
+
+    /* 容器布局：三段式 Flex */
     .header-container {
       position: relative;
       width: 100%;
@@ -69,10 +60,9 @@
       padding: 0 30px;
       display: flex;
       align-items: center; 
-      justify-content: space-between;
+      justify-content: space-between; 
       height: 100%;
       margin: 0 auto;
-      box-sizing: border-box;
     }
 
     /* Logo 区域 */
@@ -80,42 +70,23 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      text-decoration: none;
+      text-decoration: none !important;
       z-index: 10;
-      flex-shrink: 0;
-      transition: transform 0.2s ease;
+      flex-shrink: 0; 
     }
-    .header-logo:hover {
-      transform: scale(1.02);
-    }
-    .header-logo img { 
-      height: 40px; 
-      width: auto; 
-      border-radius: 4px;
-      box-shadow: var(--shadow-sm);
-    }
-    .logo-text { 
-      display: flex; 
-      flex-direction: column; 
-      white-space: nowrap;
-    }
+    .header-logo img { height: 40px; width: auto; }
+    .logo-text { display: flex; flex-direction: column; }
+    
     .brand-name { 
-      font-size: 1.25rem; 
-      font-weight: 800; 
-      color: white !important; 
-      line-height: 1; 
-      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      font-size: 1.25rem; font-weight: 800; color: #ffffff !important; 
+      line-height: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     .brand-tag { 
-      font-size: 0.65rem; 
-      color: #bfdbfe !important; 
-      font-weight: 700; 
-      text-transform: uppercase; 
-      margin-top: 2px; 
-      letter-spacing: 0.5px;
+      font-size: 0.65rem; color: #bfdbfe !important; font-weight: 700; 
+      text-transform: uppercase; margin-top: 2px; 
     }
 
-    /* 导航菜单 (桌面端居中) */
+    /* 导航菜单 (绝对居中) */
     .header-nav { 
       position: absolute;
       left: 50%;
@@ -130,35 +101,15 @@
       color: #e2e8f0 !important;
       font-weight: 500;
       font-size: 0.95rem;
-      transition: all 0.2s ease;
+      transition: all 0.2s;
       position: relative;
-      padding: 8px 0;
-      white-space: nowrap;
+      padding-bottom: 4px;
+      white-space: nowrap; 
     }
-    .nav-link:hover { 
-      color: white !important; 
-      text-shadow: 0 0 8px rgba(255,255,255,0.4);
-    }
+    .nav-link:hover { color: #ffffff !important; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
     .nav-link.active { 
-      color: white !important; 
-      font-weight: 700; 
-      border-bottom: 2px solid #93c5fd;
-    }
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background-color: #93c5fd;
-      transition: width 0.3s ease;
-    }
-    .nav-link:hover::after {
-      width: 100%;
-    }
-    .nav-link.active::after {
-      width: 100%;
+      color: #ffffff !important; font-weight: 700; 
+      border-bottom: 2px solid #ffffff !important; 
     }
 
     /* 右侧按钮区 */
@@ -170,290 +121,108 @@
       flex-shrink: 0;
     }
     
-    /* WhatsApp 按钮 */
     .btn-whatsapp {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background-color: var(--theme-success);
-      color: white !important;
-      padding: 8px 24px;
-      border-radius: 9999px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      text-decoration: none !important;
-      box-shadow: var(--shadow-sm);
-      transition: all 0.2s ease;
-      border: 1px solid rgba(255,255,255,0.2);
-      white-space: nowrap;
+      display: flex; align-items: center; gap: 8px;
+      background-color: #22c55e; color: white !important;
+      padding: 8px 24px; border-radius: 9999px;
+      font-weight: 600; font-size: 0.9rem; text-decoration: none !important;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: all 0.2s;
+      border: 1px solid rgba(255,255,255,0.3); white-space: nowrap;
     }
-    .btn-whatsapp:hover { 
-      background-color: #16a34a; 
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
+    .btn-whatsapp:hover { background-color: #16a34a; transform: translateY(-1px); }
 
-    /* =========================================
-       翻译功能样式 - 多种保障机制
-       ========================================= */
-    /* 主翻译按钮 - 始终可见 */
-    .translate-main-button {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 998;
-      background: white;
-      color: #333;
-      border: 1px solid #ddd;
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-size: 12px;
-      cursor: pointer;
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.2s ease;
-    }
-    .translate-main-button:hover {
-      background: #f5f5f5;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-    .translate-main-button i {
-      font-size: 14px;
-    }
-
-    /* Google翻译组件容器 */
+    /* 🔧 Google 翻译 (关键修复) */
     #google_translate_element {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 999;
+      position: fixed !important; 
+      top: 22px !important; 
+      right: 20px !important; 
+      z-index: 9999 !important; /* 最高层级 */
       display: block !important;
       visibility: visible !important;
     }
+    .goog-te-banner-frame { display: none !important; }
+    body { top: 0px !important; } 
 
-    /* 语言选择下拉菜单 */
-    .language-dropdown {
-      position: fixed;
-      top: 50px;
-      right: 20px;
-      z-index: 997;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      box-shadow: var(--shadow-md);
-      padding: 8px 0;
-      width: 150px;
-      display: none;
-    }
-    .language-dropdown.active {
-      display: block;
-    }
-    .language-option {
-      padding: 8px 15px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-    .language-option:hover {
-      background: #f5f5f5;
-    }
-    .language-option.active {
-      background: #e8f0fe;
-      color: #1967d2;
-      font-weight: 500;
+    /* 移动端菜单按钮 */
+    .mobile-menu-btn {
+      display: none; color: white !important; background: transparent;
+      border: none; font-size: 1.5rem; cursor: pointer; z-index: 10;
     }
 
     /* 移动端适配 */
     @media (max-width: 1100px) {
-      .header-nav { display: none !important; }
+      .header-nav { display: none !important; } 
       .mobile-menu-btn { display: block; }
       
-      .header-container {
-        justify-content: space-between;
-      }
-      
-      .translate-main-button {
-        right: 60px;
-        z-index: 997;
-      }
-      #google_translate_element {
-        right: 60px;
-        z-index: 998;
-      }
+      /* 移动端调整 Google 翻译位置，避免挡住汉堡菜单 */
+      #google_translate_element { top: 24px !important; right: 60px !important; }
+      .goog-te-gadget-simple { max-width: 40px !important; overflow: hidden; }
     }
     
     @media (max-width: 640px) {
       .btn-whatsapp span { display: none; }
-      .btn-whatsapp { 
-        padding: 8px; 
-        width: 36px; 
-        height: 36px; 
-        justify-content: center; 
-        border-radius: 50%; 
-      }
+      .btn-whatsapp { padding: 8px; width: 36px; height: 36px; justify-content: center; border-radius: 50%; }
       .header-container { padding: 0 15px; }
-    }
-
-    /* 移动端菜单按钮 */
-    .mobile-menu-btn {
-      display: none;
-      color: white !important;
-      background: transparent;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      z-index: 10;
-      transition: transform 0.2s ease;
-    }
-    .mobile-menu-btn:hover {
-      transform: scale(1.1);
     }
 
     /* 移动端下拉菜单 */
     .mobile-menu {
-      display: none;
-      position: fixed;
-      top: 80px; 
-      left: 0; 
-      width: 100%;
-      background: white;
-      box-shadow: var(--shadow-md);
-      z-index: 999;
-      border-top: 1px solid var(--border-color);
-      transform: translateY(-10px);
-      opacity: 0;
-      transition: all 0.3s ease;
+      display: none; position: fixed; top: 80px; left: 0; width: 100%;
+      background: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      z-index: 999; border-top: 1px solid #e2e8f0;
     }
-    .mobile-menu.active { 
-      display: block; 
-      transform: translateY(0);
-      opacity: 1;
-    }
+    .mobile-menu.active { display: block; }
     .mobile-menu .nav-link {
-      display: block;
-      color: var(--text-primary) !important;
-      padding: 12px 24px;
-      border-bottom: 1px solid var(--border-color);
-      font-weight: 500;
+      display: block; color: #334155 !important; padding: 12px 24px;
+      border-bottom: 1px solid #f1f5f9 !important;
     }
-    .mobile-menu .nav-link.active { 
-      color: var(--theme-primary) !important; 
-      background: #eff6ff;
-      font-weight: 600;
-    }
-    .mobile-menu .nav-link:hover {
-      background: #f1f5f9;
-    }
+    .mobile-menu .nav-link.active { color: #1e40af !important; background: #eff6ff; }
 
     /* =========================================
-       3. Docsify 布局适配
+       3. Docsify 布局与内容区
        ========================================= */
     .sidebar {
-      top: var(--header-height) !important;
-      padding-top: 20px !important;
-      background-color: var(--bg-secondary);
-      border-right: 1px solid var(--border-color);
-      z-index: 900;
+      top: var(--header-height) !important; padding-top: 20px !important;
+      background-color: #fff; border-right: 1px solid #f1f5f9; z-index: 900;
     }
-    .sidebar-toggle { 
-      top: 95px !important; 
-      left: 20px !important; 
-      background: transparent !important; 
-      color: var(--theme-primary) !important; 
-    }
+    .sidebar-toggle { top: 95px !important; left: 20px !important; background: transparent !important; color: #1e40af !important; }
 
-    /* =========================================
-       4. 内容区样式
-       ========================================= */
     .markdown-section { 
-      max-width: 960px; 
-      margin: 0 auto; 
-      padding: 40px 40px 100px; 
-      background: var(--bg-secondary);
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-      border-radius: 8px;
-      min-height: calc(100vh - 120px);
+      max-width: 960px; margin: 0 auto; padding: 40px 40px 100px; 
+      background: #fff; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+      border-radius: 8px; min-height: calc(100vh - 120px);
     }
-    .v5-cta-box { 
-      margin: 60px 0; 
-      padding: 40px; 
-      background: #f8fafc; 
-      border: 1px solid var(--border-color); 
-      border-radius: 12px; 
-      text-align: center; 
-      box-shadow: var(--shadow-sm);
-    }
-    .v5-btn { 
-      display: inline-block; 
-      background: var(--theme-primary); 
-      color: white !important; 
-      padding: 12px 30px; 
-      border-radius: 50px; 
-      font-weight: 600; 
-      text-decoration: none; 
-      margin: 5px;
-      transition: all 0.2s ease;
-      border: 1px solid transparent;
-    }
-    .v5-btn:hover {
-      background: #1d4ed8;
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-    .v5-btn-secondary { 
-      background: white; 
-      color: var(--theme-primary) !important; 
-      border: 1px solid var(--theme-primary); 
-    }
-    .v5-btn-secondary:hover {
-      background: #f8fafc;
-      border-color: #1d4ed8;
-    }
+    .v5-cta-box { margin: 60px 0; padding: 40px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; text-align: center; }
+    .v5-btn { display: inline-block; background: #1e40af; color: white !important; padding: 12px 30px; border-radius: 50px; font-weight: 600; text-decoration: none; margin: 5px; }
+    .v5-btn-secondary { background: white; color: #1e40af !important; border: 1px solid #1e40af; }
     
     @media (max-width: 768px) {
-      .markdown-section { 
-        padding: 25px 20px 80px; 
-        box-shadow: none; 
-        border-radius: 0;
-      }
-      .v5-btn { 
-        display: block; 
-        width: 100%;
-        margin: 5px 0;
-      }
-    }
-
-    /* =========================================
-       5. 滚动效果
-       ========================================= */
-    .scroll-smooth {
-      scroll-behavior: smooth;
+      .markdown-section { padding: 25px 20px 80px; box-shadow: none; }
+      .v5-btn { display: block; width: 100%; }
     }
     
-    /* 滚动时的页眉效果 */
-    #v5-header.scroll-effect {
-      background: linear-gradient(to right, #dbeafe, var(--theme-secondary), var(--theme-primary));
-      box-shadow: var(--shadow-lg);
-    }
+    /* Front Matter 头部样式 */
+    .article-header { margin-bottom: 40px; text-align: center; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+    .article-title { font-size: 2.2rem !important; color: #1e3a8a !important; margin-bottom: 15px !important; font-weight: 800 !important; border: none !important; }
+    .article-meta { display: flex; justify-content: center; gap: 20px; color: #64748b; font-size: 0.9rem; flex-wrap: wrap; }
+    .meta-item { display: flex; align-items: center; gap: 6px; }
+    .meta-category { color: #2563eb; background: #eff6ff; padding: 2px 10px; border-radius: 12px; font-weight: 600; font-size: 0.8rem; }
+    .article-description { font-size: 1.1rem !important; color: #475569 !important; max-width: 800px; margin: 20px auto 0 !important; line-height: 1.6 !important; font-style: italic; }
   </style>
 </head>
 
-<body class="scroll-smooth">
+<body>
   <div id="v5-header">
-    
+    <div class="header-bg"></div>
     <div class="header-container">
-      <!-- Logo -->
       <a href="https://v5md.com/" class="header-logo">
-        <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png" alt="V5 Medical LTD">
+        <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" alt="V5 Medical">
         <div class="logo-text">
           <span class="brand-name">V5 Medical LTD</span>
-          <span class="brand-tag">Global Medical Supply Chain</span>
+          <span class="brand-tag">Global Supply Chain</span>
         </div>
       </a>
 
-      <!-- 导航菜单 -->
       <nav class="header-nav">
         <a href="https://v5md.com/" class="nav-link">Home</a>
         <a href="https://v5md.com/about.html" class="nav-link">About Us</a>
@@ -462,7 +231,6 @@
         <a href="https://v5md.com/contact.html" class="nav-link">Contact</a>
       </nav>
 
-      <!-- 右侧按钮区 -->
       <div class="header-actions">
         <a href="https://wa.me/447895047944" target="_blank" class="btn-whatsapp">
           <i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i>
@@ -474,7 +242,6 @@
       </div>
     </div>
 
-    <!-- 移动端菜单 -->
     <div class="mobile-menu" id="mobile-menu">
       <a href="https://v5md.com/" class="nav-link">Home</a>
       <a href="https://v5md.com/about.html" class="nav-link">About Us</a>
@@ -484,306 +251,23 @@
     </div>
   </div>
 
-  <!-- =========================================
-       翻译功能 - 多重保障机制
-       ========================================= -->
-  <!-- 主翻译按钮 - 始终可见 -->
-  <button class="translate-main-button" id="translateMainButton">
-    <i class="fas fa-language"></i>
-    <span>Translate</span>
-  </button>
-
-  <!-- Google翻译组件 -->
   <div id="google_translate_element"></div>
-
-  <!-- 备用语言选择下拉菜单 -->
-  <div class="language-dropdown" id="languageDropdown">
-    <div class="language-option active" data-lang="en">English</div>
-    <div class="language-option" data-lang="es">Español</div>
-    <div class="language-option" data-lang="fr">Français</div>
-    <div class="language-option" data-lang="de">Deutsch</div>
-    <div class="language-option" data-lang="zh-CN">中文</div>
-    <div class="language-option" data-lang="ja">日本語</div>
-    <div class="language-option" data-lang="ko">한국어</div>
-  </div>
 
   <div id="app">🚀 Loading Knowledge Hub...</div>
 
-  <script>
-    // =========================================
-    // 翻译功能 - 多重保障实现
-    // =========================================
-    document.addEventListener('DOMContentLoaded', function() {
-      // 语言映射
-      const languageNames = {
-        'en': 'English',
-        'es': 'Español',
-        'fr': 'Français',
-        'de': 'Deutsch',
-        'zh-CN': '中文',
-        'ja': '日本語',
-        'ko': '한국어'
-      };
-
-      // DOM元素
-      const translateMainButton = document.getElementById('translateMainButton');
-      const languageDropdown = document.getElementById('languageDropdown');
-      const languageOptions = document.querySelectorAll('.language-option');
-      const googleTranslateElement = document.getElementById('google_translate_element');
-
-      // 当前选中的语言
-      let currentLanguage = 'en';
-      let googleTranslateAvailable = false;
-
-      // 初始化函数
-      function initTranslation() {
-        // 确保翻译元素可见
-        if (googleTranslateElement) {
-          googleTranslateElement.style.display = 'block';
-          googleTranslateElement.style.visibility = 'visible';
-        }
-
-        // 检查Google翻译是否可用
-        checkGoogleTranslateAvailability();
-
-        // 设置按钮点击事件
-        translateMainButton.addEventListener('click', toggleLanguageDropdown);
-
-        // 设置语言选项点击事件
-        languageOptions.forEach(option => {
-          option.addEventListener('click', function() {
-            const lang = this.getAttribute('data-lang');
-            if (lang !== currentLanguage) {
-              changeLanguage(lang);
-            }
-            languageDropdown.classList.remove('active');
-          });
-        });
-
-        // 点击其他区域关闭下拉菜单
-        document.addEventListener('click', function(e) {
-          if (!translateMainButton.contains(e.target) && !languageDropdown.contains(e.target)) {
-            languageDropdown.classList.remove('active');
-          }
-        });
-
-        // 定期检查Google翻译状态
-        startGoogleTranslateCheck();
-      }
-
-      // 切换语言下拉菜单
-      function toggleLanguageDropdown() {
-        languageDropdown.classList.toggle('active');
-      }
-
-      // 检查Google翻译是否可用
-      function checkGoogleTranslateAvailability() {
-        if (typeof google !== 'undefined' && typeof google.translate !== 'undefined') {
-          googleTranslateAvailable = true;
-          console.log('Google Translate is available');
-          
-          // 如果Google翻译可用，尝试隐藏主按钮
-          // translateMainButton.style.display = 'none';
-        } else {
-          googleTranslateAvailable = false;
-          console.log('Google Translate not available, using fallback');
-        }
-      }
-
-      // 定期检查Google翻译状态
-      function startGoogleTranslateCheck() {
-        let checkCount = 0;
-        const checkInterval = setInterval(function() {
-          checkCount++;
-          checkGoogleTranslateAvailability();
-          
-          if (googleTranslateAvailable || checkCount > 10) {
-            clearInterval(checkInterval);
-          }
-        }, 500);
-      }
-
-      // 更改语言
-      function changeLanguage(targetLang) {
-        console.log('Changing language to:', targetLang);
-        
-        // 更新当前语言
-        currentLanguage = targetLang;
-        
-        // 更新按钮显示
-        translateMainButton.querySelector('span').textContent = languageNames[targetLang] || 'Translate';
-        
-        // 更新选中状态
-        languageOptions.forEach(option => {
-          option.classList.remove('active');
-          if (option.getAttribute('data-lang') === targetLang) {
-            option.classList.add('active');
-          }
-        });
-
-        // 尝试使用Google翻译
-        if (googleTranslateAvailable) {
-          try {
-            useGoogleTranslate(targetLang);
-          } catch (error) {
-            console.error('Google Translate failed:', error);
-            useFallbackTranslation(targetLang);
-          }
-        } else {
-          useFallbackTranslation(targetLang);
-        }
-      }
-
-      // 使用Google翻译
-      function useGoogleTranslate(targetLang) {
-        console.log('Using Google Translate for:', targetLang);
-        
-        // 尝试找到Google翻译的选择器
-        const selectElement = googleTranslateElement.querySelector('select');
-        if (selectElement) {
-          selectElement.value = targetLang;
-          selectElement.dispatchEvent(new Event('change'));
-          return;
-        }
-
-        // 如果找不到选择器，尝试直接调用翻译方法
-        try {
-          const translateElement = new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: Object.keys(languageNames).join(','),
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay: true
-          }, 'google_translate_element');
-          
-          // 延迟设置语言
-          setTimeout(function() {
-            const select = googleTranslateElement.querySelector('select');
-            if (select) {
-              select.value = targetLang;
-              select.dispatchEvent(new Event('change'));
-            }
-          }, 500);
-          
-        } catch (error) {
-          console.error('Failed to use Google Translate:', error);
-          useFallbackTranslation(targetLang);
-        }
-      }
-
-      // 使用备用翻译方法
-      function useFallbackTranslation(targetLang) {
-        console.log('Using fallback translation for:', targetLang);
-        
-        // 获取当前页面URL
-        const currentUrl = window.location.href;
-        
-        // 构建Google翻译URL
-        const translatedUrl = `https://translate.google.com/translate?sl=en&tl=${targetLang}&u=${encodeURIComponent(currentUrl)}`;
-        
-        // 询问用户是否在新窗口中打开
-        if (confirm(`Would you like to view this page in ${languageNames[targetLang]}?`)) {
-          window.open(translatedUrl, '_blank');
-        }
-      }
-
-      // 初始化翻译功能
-      initTranslation();
-
-      // =========================================
-      // 移动端菜单功能
-      // =========================================
-      const menuBtn = document.getElementById('mobile-menu-btn');
-      const mobileMenu = document.getElementById('mobile-menu');
-      const header = document.getElementById('v5-header');
-      
-      if (menuBtn && mobileMenu) {
-        const newBtn = menuBtn.cloneNode(true);
-        menuBtn.parentNode.replaceChild(newBtn, menuBtn);
-        const icon = newBtn.querySelector('i');
-
-        newBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          mobileMenu.classList.toggle('active');
-          const isActive = mobileMenu.classList.contains('active');
-          
-          if (isActive) {
-            icon.classList.remove('fa-bars');
-            icon.classList.add('fa-times');
-          } else {
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
-          }
-        });
-
-        document.addEventListener('click', (e) => {
-          if (mobileMenu.classList.contains('active') && 
-              !newBtn.contains(e.target) && 
-              !mobileMenu.contains(e.target)) {
-            mobileMenu.classList.remove('active');
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
-          }
-        });
-      }
-
-      // =========================================
-      // 滚动效果
-      // =========================================
-      window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-          header.classList.add('scroll-effect');
-        } else {
-          header.classList.remove('scroll-effect');
-        }
-      });
-
-      // =========================================
-      // 平滑滚动
-      // =========================================
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-          e.preventDefault();
-          const target = document.querySelector(this.getAttribute('href'));
-          if (target) {
-            target.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
-          }
-        });
-      });
-    });
-  </script>
-
-  <!-- Google翻译API -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
-      console.log('Google Translate element initialized');
-      try {
+      // 检查是否已存在
+      if (window.google && window.google.translate) {
         new google.translate.TranslateElement({
-          pageLanguage: 'en',
-          includedLanguages: 'en,es,fr,de,zh-CN,ja,ko',
-          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: true
+          pageLanguage: 'en', 
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE
         }, 'google_translate_element');
-        
-        // 确保翻译元素可见
-        setTimeout(function() {
-          const translateElement = document.getElementById('google_translate_element');
-          if (translateElement) {
-            translateElement.style.display = 'block';
-            translateElement.style.visibility = 'visible';
-          }
-        }, 500);
-        
-      } catch (error) {
-        console.error('Error initializing Google Translate:', error);
       }
     }
   </script>
   <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-  <!-- Docsify配置 -->
   <script>
     window.$docsify = {
       basePath: 'https://raw.githubusercontent.com/alden888/v5md/main/blog/',
@@ -805,15 +289,47 @@
       plugins: [
         function(hook) {
           hook.beforeEach(function(content, url) {
+            const yamlMatch = content.match(/^---\n([\s\S]+?)\n---/);
+            let headerHtml = '';
+            let cleanContent = content;
+
+            if (yamlMatch) {
+              const yamlStr = yamlMatch[1];
+              const frontMatter = {};
+              yamlStr.split('\n').forEach(line => {
+                const parts = line.split(':');
+                if (parts.length >= 2) {
+                  const key = parts[0].trim();
+                  let value = parts.slice(1).join(':').trim();
+                  value = value.replace(/^['"](.*)['"]$/, '$1'); 
+                  frontMatter[key] = value;
+                }
+              });
+
+              headerHtml = `
+                <div class="article-header">
+                  <h1 class="article-title">${frontMatter.title || 'Untitled'}</h1>
+                  <div class="article-meta">
+                    ${frontMatter.author ? `<span class="meta-item"><i class="fas fa-user-circle"></i> ${frontMatter.author}</span>` : ''}
+                    ${frontMatter.date ? `<span class="meta-item"><i class="far fa-calendar-alt"></i> ${frontMatter.date}</span>` : ''}
+                    ${frontMatter.category ? `<span class="meta-item meta-category"><i class="fas fa-folder-open"></i> ${frontMatter.category}</span>` : ''}
+                  </div>
+                  ${frontMatter.description ? `<p class="article-description">${frontMatter.description}</p>` : ''}
+                </div>
+                <hr style="margin: 30px 0; border:none; border-top:1px solid #e2e8f0;">
+              `;
+              cleanContent = content.replace(/^---\n[\s\S]+?\n---/, '');
+            }
+
             if (url && url.endsWith('.md')) {
-              return content
+              cleanContent = cleanContent
                 .replace(/<script[\s\S]*?<\/script>/gi, '') 
                 .replace(/<style[\s\S]*?<\/style>/gi, '')   
                 .replace(/[\u0000-\u001F\u007F]/g, '')
                 .replace(/^\*\*|^\#+/gm, '') 
                 .replace(/^\-\-\-/gm, '');
             }
-            return content;
+            return headerHtml + cleanContent;
           });
           
           hook.afterEach(function(html) {
@@ -841,6 +357,39 @@
         }
       ]
     }
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (menuBtn && mobileMenu) {
+        const newBtn = menuBtn.cloneNode(true);
+        menuBtn.parentNode.replaceChild(newBtn, menuBtn);
+        const icon = newBtn.querySelector('i');
+
+        newBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          mobileMenu.classList.toggle('active');
+          const isActive = mobileMenu.classList.contains('active');
+          if (isActive) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+          } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          }
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!mobileMenu.contains(e.target) && !newBtn.contains(e.target) && mobileMenu.classList.contains('active')) {
+            mobileMenu.classList.remove('active');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          }
+        });
+      }
+    });
   </script>
 
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
