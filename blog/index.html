@@ -36,7 +36,7 @@
     }
 
     /* =========================================
-       2. 页眉布局 (优化版 - 修复导航漂移问题)
+       2. 页眉布局 (高对比度美化版)
        ========================================= */
     #v5-header {
       position: fixed;
@@ -45,15 +45,17 @@
       width: 100%;
       height: var(--header-height);
       z-index: 1000;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15); /* 加深阴影 */
     }
 
+    /* 渐变背景 */
     .header-bg {
       position: absolute;
       inset: 0;
       background: linear-gradient(to right, #eff6ff, #2563eb, #1e3a8a);
     }
 
+    /* 容器布局 */
     .header-container {
       position: relative;
       width: 100%;
@@ -61,7 +63,7 @@
       padding: 0 30px;
       display: flex;
       align-items: center; 
-      justify-content: space-between; /* 🔧 关键修复：改为 space-between */
+      justify-content: space-between; 
       height: 100%;
       margin: 0 auto;
     }
@@ -77,44 +79,58 @@
     }
     .header-logo img { height: 40px; width: auto; }
     .logo-text { display: flex; flex-direction: column; }
-    .brand-name { font-size: 1.25rem; font-weight: 800; color: #1e3a8a; line-height: 1; }
-    .brand-tag { font-size: 0.65rem; color: #1d4ed8; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+    
+    /* 🎨 Logo 文字改为白色，适配深蓝背景 */
+    .brand-name { 
+      font-size: 1.25rem; 
+      font-weight: 800; 
+      color: #ffffff; /* 纯白 */
+      line-height: 1; 
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .brand-tag { 
+      font-size: 0.65rem; 
+      color: #bfdbfe; /* 浅蓝白 */
+      font-weight: 700; 
+      text-transform: uppercase; 
+      margin-top: 2px; 
+    }
 
-    /* 🎯 导航菜单 (桌面端居中，移动端隐藏)
-       🔧 关键修复：使用绝对定位居中，不影响右侧按钮
-    */
+    /* 导航菜单 */
     .header-nav { 
-      position: absolute; /* 🔧 改为绝对定位 */
-      left: 50%; /* 🔧 水平居中 */
-      transform: translateX(-50%); /* 🔧 精确居中 */
+      position: absolute; 
+      left: 50%; 
+      transform: translateX(-50%); 
       display: flex; 
       gap: 32px; 
       z-index: 10;
     }
     
+    /* 🎨 导航链接改为白色体系 */
     .nav-link {
       text-decoration: none;
-      color: #dbeafe;
+      color: #e2e8f0; /* 默认灰白 */
       font-weight: 500;
       font-size: 0.95rem;
-      transition: color 0.2s;
+      transition: all 0.2s;
       position: relative;
-      padding-bottom: 2px;
+      padding-bottom: 4px;
       white-space: nowrap; 
     }
-    .nav-link:hover { color: #ffffff; }
-    .nav-link.active { color: #ffffff; font-weight: 700; border-bottom: 2px solid #93c5fd; }
+    .nav-link:hover { color: #ffffff; text-shadow: 0 0 5px rgba(255,255,255,0.3); }
+    .nav-link.active { 
+      color: #ffffff; 
+      font-weight: 700; 
+      border-bottom: 2px solid #ffffff; /* 下划线也改为白色 */
+    }
 
-    /* 🎯 右侧按钮区 (永远靠右，不受导航影响)
-       🔧 关键修复：移除 margin-left: auto，因为父容器已用 space-between
-    */
+    /* 右侧按钮区 */
     .header-actions { 
       display: flex; 
       align-items: center; 
       gap: 16px; 
       z-index: 10;
       flex-shrink: 0;
-      /* 🔧 移除 margin-left: auto，因为父容器 justify-content: space-between 已自动推到右侧 */
     }
     
     /* WhatsApp 按钮 */
@@ -129,12 +145,16 @@
       font-weight: 600;
       font-size: 0.9rem;
       text-decoration: none;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* 加深阴影 */
       transition: all 0.2s;
-      border: 1px solid rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
       white-space: nowrap;
     }
-    .btn-whatsapp:hover { background-color: #16a34a; transform: translateY(-1px); }
+    .btn-whatsapp:hover { 
+      background-color: #16a34a; 
+      transform: translateY(-1px); 
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
 
     /* Google 翻译 */
     #google_translate_element {
@@ -149,7 +169,7 @@
     /* 移动端菜单按钮 */
     .mobile-menu-btn {
       display: none;
-      color: white;
+      color: white; /* 保持白色 */
       background: transparent;
       border: none;
       font-size: 1.5rem;
@@ -157,19 +177,11 @@
       z-index: 10;
     }
 
-    /* 🎯 移动端适配 (隐藏导航，按钮保持右侧)
-       🔧 关键修复：导航隐藏不影响布局
-    */
+    /* 移动端适配 */
     @media (max-width: 1100px) {
-      .header-nav { display: none !important; } /* 🔧 屏幕窄时隐藏导航 */
+      .header-nav { display: none !important; }
       .mobile-menu-btn { display: block; }
-      
-      /* 🔧 确保 header-container 仍然是 space-between */
-      .header-container {
-        justify-content: space-between; /* 🔧 显式声明，确保 Logo 左、Actions 右 */
-      }
-      
-      /* 移动端调整 Google 翻译位置 */
+      .header-container { justify-content: space-between; }
       #google_translate_element { top: 24px !important; right: 60px !important; }
       .goog-te-gadget-simple { max-width: 40px !important; overflow: hidden; }
     }
@@ -180,7 +192,7 @@
       .header-container { padding: 0 15px; }
     }
 
-    /* 移动端下拉菜单 */
+    /* 移动端下拉菜单 (保持白底深字，因为是在白色面板上) */
     .mobile-menu {
       display: none;
       position: fixed;
@@ -193,11 +205,11 @@
     .mobile-menu.active { display: block; }
     .mobile-menu .nav-link {
       display: block;
-      color: #334155;
+      color: #334155; /* 这里保持深色 */
       padding: 12px 24px;
       border-bottom: 1px solid #f1f5f9;
     }
-    .mobile-menu .nav-link.active { color: #1e40af; background: #eff6ff; }
+    .mobile-menu .nav-link.active { color: #1e40af; background: #eff6ff; border-bottom: 1px solid #dbeafe; }
 
     /* =========================================
        3. Docsify 布局适配
@@ -239,7 +251,6 @@
     <div class="header-bg"></div>
     
     <div class="header-container">
-      <!-- 🔧 Logo (Flex 起点) -->
       <a href="https://v5md.com/" class="header-logo">
         <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" alt="V5 Medical">
         <div class="logo-text">
@@ -248,7 +259,6 @@
         </div>
       </a>
 
-      <!-- 🔧 导航菜单 (绝对定位居中，不占据 Flex 空间) -->
       <nav class="header-nav">
         <a href="https://v5md.com/" class="nav-link">Home</a>
         <a href="https://v5md.com/about.html" class="nav-link">About Us</a>
@@ -257,7 +267,6 @@
         <a href="https://v5md.com/contact.html" class="nav-link">Contact</a>
       </nav>
 
-      <!-- 🔧 右侧按钮区 (Flex 终点，space-between 自动推到右侧) -->
       <div class="header-actions">
         <a href="https://wa.me/447895047944" target="_blank" class="btn-whatsapp">
           <i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i>
@@ -269,7 +278,6 @@
       </div>
     </div>
 
-    <!-- 移动端菜单 -->
     <div class="mobile-menu" id="mobile-menu">
       <a href="https://v5md.com/" class="nav-link">Home</a>
       <a href="https://v5md.com/about.html" class="nav-link">About Us</a>
@@ -352,35 +360,35 @@
     document.addEventListener('DOMContentLoaded', function() {
       const menuBtn = document.getElementById('mobile-menu-btn');
       const mobileMenu = document.getElementById('mobile-menu');
-      if (!menuBtn || !mobileMenu) return;
+      if (menuBtn && mobileMenu) {
+        const newBtn = menuBtn.cloneNode(true);
+        menuBtn.parentNode.replaceChild(newBtn, menuBtn);
+        const icon = newBtn.querySelector('i');
 
-      const newBtn = menuBtn.cloneNode(true);
-      menuBtn.parentNode.replaceChild(newBtn, menuBtn);
-      const icon = newBtn.querySelector('i');
+        newBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isHidden = mobileMenu.classList.contains('hidden');
+          // 注意：您原来的逻辑是根据 hidden 类判断，但我这里的 CSS 是根据 active 类控制显示
+          // 修正逻辑：
+          mobileMenu.classList.toggle('active');
+          const isActive = mobileMenu.classList.contains('active');
+          if (isActive) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+          } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          }
+        });
 
-      newBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isHidden = mobileMenu.classList.contains('hidden');
-        if (isHidden) {
-          mobileMenu.classList.remove('hidden');
-          mobileMenu.classList.add('mobile-menu-enter');
-          icon.classList.remove('fa-bars');
-          icon.classList.add('fa-times');
-        } else {
-          mobileMenu.classList.add('hidden');
-          mobileMenu.classList.remove('mobile-menu-enter');
-          icon.classList.remove('fa-times');
-          icon.classList.add('fa-bars');
-        }
-      });
-
-      document.addEventListener('click', (e) => {
-        if (!mobileMenu.classList.contains('hidden') && !newBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
-          mobileMenu.classList.add('hidden');
-          icon.classList.remove('fa-times');
-          icon.classList.add('fa-bars');
-        }
-      });
+        document.addEventListener('click', (e) => {
+          if (!mobileMenu.contains(e.target) && !newBtn.contains(e.target) && mobileMenu.classList.contains('active')) {
+            mobileMenu.classList.remove('active');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          }
+        });
+      }
     });
   </script>
 
