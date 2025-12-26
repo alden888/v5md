@@ -64,7 +64,18 @@ Crawl-delay: 1
 User-agent: DuckDuckBot
 Crawl-delay: 1
 
+User-agent: *
+Allow: /
+
+# 禁止爬取 PDF 文件夹（防止直接下载 PDF 而不看网页）
+Disallow: /pdf/
+
+# 引导爬虫去新的博客地图
+Sitemap: https://v5md.com/sitemap.xml
+Sitemap: https://v5md.com/blog/sitemap.xml
+
 # ------------------------------
 # SITEMAP INFORMATION
 # ------------------------------
 Sitemap: https://v5md.com/sitemap.xml
+
