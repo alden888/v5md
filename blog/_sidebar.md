@@ -59,6 +59,10 @@
       <i class="fas fa-layer-group sidebar-icon"></i> 
       <a href="#/posts/suture-material-comparison.md">PGA vs PGLA vs PDO Guide</a>
     </li>
+    <li>
+      <i class="fas fa-microscope sidebar-icon"></i> 
+      <a href="#/posts/surgical-pack-sterilization.md">Sterilization Standards Guide</a>
+    </li>
   </ul>
 </div>
 
