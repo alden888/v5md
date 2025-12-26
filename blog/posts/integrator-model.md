@@ -34,11 +34,9 @@ For a hospital tender needing 15 SKUs, this forces you to:
 
 ### 2. Logistics Nightmare: 10 Orders = 10 Shipments
 A typical hospital tender with 15 SKUs means:  
-| Traditional Direct Sourcing | Cost Impact |
-|------------------------------|-------------|
-| 10+ separate inland shipments | $5,000+ in extra trucking fees |
-| 10 customs declarations      | 20+ hours of administrative work |
-| 10 separate Bills of Lading  | $3,000+ in LCL (Less-than-Container-Load) charges |
+- 10+ separate inland shipments → $5,000+ in extra trucking fees  
+- 10 customs declarations → 20+ hours of administrative work  
+- 10 separate Bills of Lading → $3,000+ in LCL (Less-than-Container-Load) charges  
 
 **End Result:** Your "factory price savings" vanish in logistics overhead.
 
@@ -68,12 +66,14 @@ Fragmented sourcing means inconsistent quality—Factory A meets ISO 13485; Fact
 - **Failure Contingency**: Pre-validated backup factories for all critical SKUs (no supply chain gaps if a partner fails an audit)  
 
 #### 2. Consolidated Logistics: The "Virtual Warehouse" Effect
-The financial impact here is immediate and measurable:  
-**Scenario**: You need Sutures ($10k), Syringes ($15k), Surgical Packs ($20k)  
-| Model | Shipments | Documentation | Cost Savings |
-|-------|-----------|---------------|--------------|
-| Traditional Direct | 3 separate LCL | 3 Invoices / 3 BLs | $0 (baseline) |
-| V5 Integrator | 1 consolidated FCL | 1 Invoice / 1 BL | 66% lower import admin + $4,500 in logistics fees |
+The financial impact here is immediate and measurable. Let’s use a real example:  
+**Scenario**: You need to source Sutures ($10k), Syringes ($15k), and Surgical Packs ($20k)  
+
+| **Comparison** | Traditional Direct Sourcing | V5 Integrator Model |
+|----------------|------------------------------|---------------------|
+| Shipments      | 3 separate LCL shipments     | 1 consolidated FCL  |
+| Documentation  | 3 Invoices / 3 Bills of Lading | 1 Invoice / 1 Bill of Lading |
+| Cost Savings   | $0 (baseline) | 66% lower import admin + $4,500 in logistics fees |
 
 **Key Optimization**: We mix heavy goods (IV fluids) with light goods (gauze) to maximize container utilization—cutting ocean freight costs by 18% on average.
 
@@ -89,8 +89,9 @@ Sourcing from China involves complex regulatory risks that fragment models ignor
 
 A mid-sized European medical distributor switched from direct factory sourcing to V5’s Integrator Model for a regional hospital tender (18 SKUs, €450k order value):  
 
-| Metric | Direct Factory Sourcing | V5 Integrator Model | Improvement |
-|--------|-------------------------|---------------------|-------------|
+### Before vs. After: Measurable Improvements
+| **Metric** | Direct Factory Sourcing | V5 Integrator Model | Improvement |
+|------------|-------------------------|---------------------|-------------|
 | Supplier Contact Points | 8 factory managers | 1 V5 project team | 87% reduction in coordination |
 | Total Landed Cost | €450k + €67.5k (15% overhead) | €450k + €38.25k (8.5% overhead) | 15% net cost reduction |
 | QA Compliance Audit Time | 40 hours | 8 hours | 80% time savings |
