@@ -129,3 +129,25 @@
   X-Company-Name: V5 Medical LTD
   X-Platform: B2B Medical Supply
   X-Support-Email: support@v5md.com
+
+# ------------------------------
+# BLOG MARKDOWN FILES (Critical for Docsify)
+# ------------------------------
+/blog/*.md
+  Content-Type: text/markdown; charset=utf-8
+  Cache-Control: public, max-age=3600, must-revalidate
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+
+/blog/posts/*.md
+  Content-Type: text/markdown; charset=utf-8
+  Cache-Control: public, max-age=3600, must-revalidate
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+
+/blog/_*.md
+  Content-Type: text/markdown; charset=utf-8
+  Cache-Control: public, max-age=3600, must-revalidate
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+
