@@ -740,6 +740,32 @@
       background: var(--neutral-500);
     }
   </style>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JE15YSMC2W"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-JE15YSMC2W", {
+    page_path: location.hash.replace("#/", "/blog/")
+  });
+  
+  // 监听路由变化
+  window.$docsify = {
+    plugins: [
+      function(hook) {
+        hook.doneEach(function() {
+          if (typeof gtag !== "undefined") {
+            gtag("config", "G-JE15YSMC2W", {
+              page_path: location.hash.replace("#/", "/blog/")
+            });
+          }
+        });
+      }
+    ]
+  }
+</script>
+
 </head>
 
 <body>
