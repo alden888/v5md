@@ -48,7 +48,7 @@
       font-weight: 400;
     }
     
-    /* 侧边栏样式优化 */
+    /* 侧边栏样式优化 - 集成英文美化版 */
     .sidebar { 
       background: #ffffff; 
       border-right: 1px solid var(--border-color);
@@ -85,6 +85,79 @@
     .sidebar-nav li > a:hover:not(.active) {
       background: #f8fafc !important;
       color: var(--theme-hover) !important;
+    }
+
+    /* 侧边栏分类容器样式 - English Version */
+    .sidebar-category {
+      margin: 20px 0;
+      padding: 0 15px;
+    }
+
+    /* 最后一个分类增加底部间距 */
+    .sidebar-category-last {
+      margin-bottom: 30px;
+    }
+
+    /* 分类标签样式 - English */
+    .category-tag {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+      text-transform: capitalize; /* 英文首字母大写，符合外贸风格 */
+    }
+
+    /* 不同分类的主题色（保持专业蓝调，符合外贸审美） */
+    .tag-home {
+      background: #1e40af; /* Deep Blue - Knowledge Hub */
+    }
+
+    .tag-chain {
+      background: #2563eb; /* Sky Blue - Supply Chain Strategy */
+    }
+
+    .tag-regulatory {
+      background: #3b82f6; /* Light Blue - Regulatory & Compliance */
+    }
+
+    .tag-product {
+      background: #60a5fa; /* Pale Blue - Product Tech Specs */
+    }
+
+    .tag-main {
+      background: #93c5fd; /* Ultra Light Blue - Back to Main Site */
+      color: #1e293b !important; /* 深色文字提升可读性 */
+    }
+
+    /* 侧边栏列表样式 - English */
+    .sidebar-list {
+      list-style: none !important;
+      margin: 0 !important;
+      padding: 0 0 0 8px !important;
+    }
+
+    .sidebar-list li {
+      margin: 8px 0 !important;
+      padding: 0 !important;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    /* 侧边栏图标样式 - English */
+    .sidebar-icon {
+      margin-right: 8px;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-list li:hover .sidebar-icon {
+      color: var(--theme-color);
+      transform: translateX(2px); /* 鼠标悬浮图标右移，增强交互 */
     }
     
     /* 内容区域核心优化（保留原生 Markdown 渲染） */
@@ -286,6 +359,16 @@
       
       .markdown-section h2 {
         font-size: 1.6rem !important;
+      }
+
+      /* 移动端侧边栏标签适配 */
+      .category-tag {
+        padding: 4px 10px;
+        font-size: 0.8rem;
+      }
+      
+      .sidebar-icon {
+        margin-right: 6px;
       }
       
       .v5-btn { 
