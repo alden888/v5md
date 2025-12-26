@@ -7,26 +7,34 @@
 # GLOBAL SECURITY HEADERS (APPLIED TO ALL PAGES)
 # ------------------------------
 /*
+  # Core Security Headers
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), usb=(), accelerometer=(), gyroscope=()
   Feature-Policy: geolocation 'none'; microphone 'none'; camera 'none'; payment 'none'
+  
+  # HSTS (HTTP Strict Transport Security)
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  
+  # Content Security Policy (CRITICAL SECURITY CONTROL)
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; img-src 'self' data: https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self' https://api.whatsapp.com https://formspree.io https://www.google-analytics.com; frame-src https://www.google.com https://www.youtube.com; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io; upgrade-insecure-requests
+  
+  # Additional Security Headers
   X-Permitted-Cross-Domain-Policies: none
   X-Download-Options: noopen
   X-Content-Security-Policy: default-src 'self'
   Expect-CT: max-age=86400, enforce
+  
+  # Performance Headers
   X-UA-Compatible: IE=edge
   Content-Type: text/html; charset=utf-8
+  
+  # Mobile Optimization
   Viewport-Width: device-width
   Mobile-Optimized: width
   HandheldFriendly: true
-  X-Company-Name: V5 Medical LTD
-  X-Platform: B2B Medical Supply
-  X-Support-Email: support@v5md.com
 
 # ------------------------------
 # CACHE CONTROL POLICIES
@@ -113,3 +121,11 @@
   X-Robots-Tag: max-image-preview:large
   X-Robots-Tag: max-snippet:-1
   X-Robots-Tag: max-video-preview:-1
+
+# ------------------------------
+# CUSTOM HEADERS FOR BUSINESS NEEDS
+# ------------------------------
+/*
+  X-Company-Name: V5 Medical LTD
+  X-Platform: B2B Medical Supply
+  X-Support-Email: support@v5md.com
