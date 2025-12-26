@@ -9,7 +9,7 @@
   <link rel="canonical" href="https://v5md.com/blog/">
   <meta property="og:title" content="V5 Medical Knowledge Hub">
   <meta property="og:url" content="https://v5md.com/blog/">
-  <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png">
+  <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -88,7 +88,7 @@
     }
 
     /* =========================================
-       2. 页眉设计 - 现代感与专业度提升
+       2. 页眉设计 - 左侧淡蓝到右侧深蓝渐变
        ========================================= */
     #v5-header {
       position: fixed;
@@ -98,13 +98,26 @@
       height: var(--header-height);
       z-index: 1000;
       box-shadow: var(--shadow-md);
-      background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+      /* 🔧 关键修改：左侧淡蓝到右侧深蓝的自然渐变 */
+      background: linear-gradient(90deg, 
+        var(--primary-100) 0%,    /* 左侧淡蓝色 */
+        var(--primary-200) 20%,   /* 过渡色 */
+        var(--primary-600) 50%,   /* 中间色 */
+        var(--primary-800) 80%,   /* 右侧过渡色 */
+        var(--primary-900) 100%   /* 最右侧深蓝色 */
+      );
       transition: all var(--transition-normal);
     }
 
     /* 滚动效果 */
     #v5-header.scroll-effect {
-      background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-900) 100%);
+      background: linear-gradient(90deg, 
+        var(--primary-200) 0%,    /* 滚动时左侧颜色稍深 */
+        var(--primary-300) 20%,   
+        var(--primary-700) 50%,   
+        var(--primary-900) 80%,   
+        var(--primary-950) 100%   /* 滚动时右侧颜色更深 */
+      );
       box-shadow: var(--shadow-lg);
       height: 76px;
     }
@@ -121,7 +134,7 @@
       margin: 0 auto;
     }
 
-    /* Logo 区域 - 品牌识别强化 */
+    /* Logo 区域 - 与左侧淡蓝背景协调 */
     .header-logo {
       display: flex;
       align-items: center;
@@ -138,7 +151,7 @@
       height: 44px; 
       width: auto; 
       border-radius: var(--radius-sm);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       background: white;
       padding: 4px;
     }
@@ -151,14 +164,14 @@
     .brand-name { 
       font-size: 1.35rem; 
       font-weight: 800; 
-      color: white !important; 
+      color: var(--primary-900) !important; /* 深色文字与淡蓝背景形成对比 */
       line-height: 1.2; 
-      text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+      text-shadow: 0 1px 2px rgba(255,255,255,0.5);
       letter-spacing: -0.5px;
     }
     .brand-tag { 
       font-size: 0.7rem; 
-      color: var(--primary-200) !important; 
+      color: var(--primary-700) !important; /* 稍深的文字颜色 */
       font-weight: 600; 
       text-transform: uppercase; 
       margin-top: 2px; 
@@ -177,7 +190,7 @@
     
     .nav-link {
       text-decoration: none !important;
-      color: var(--primary-200) !important;
+      color: white !important; /* 白色文字在渐变背景中清晰可见 */
       font-weight: 500;
       font-size: 0.975rem;
       transition: all var(--transition-fast);
@@ -185,10 +198,11 @@
       padding: 8px 0;
       white-space: nowrap;
       letter-spacing: -0.3px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     
     .nav-link:hover { 
-      color: white !important; 
+      color: var(--primary-100) !important; /* 悬停时变为淡蓝色 */
       text-shadow: 0 0 12px rgba(255,255,255,0.3);
     }
     
@@ -205,7 +219,7 @@
       left: 0;
       width: 0;
       height: 2px;
-      background-color: var(--primary-300);
+      background-color: white; /* 白色下划线 */
       transition: width var(--transition-normal);
       border-radius: 1px;
     }
@@ -391,6 +405,7 @@
       border-bottom: 1px solid var(--neutral-100) !important;
       font-weight: 500;
       font-size: 1rem;
+      text-shadow: none;
     }
     
     .mobile-menu .nav-link.active { 
@@ -731,10 +746,10 @@
   <div id="v5-header">
     <div class="header-container">
       <a href="https://v5md.com/" class="header-logo">
-        <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5logo.png" alt="V5 Medical LTD">
+        <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" alt="V5 Medical">
         <div class="logo-text">
           <span class="brand-name">V5 Medical LTD</span>
-          <span class="brand-tag">Global Medical Supply Chain</span>
+          <span class="brand-tag">Global Supply Chain</span>
         </div>
       </a>
 
