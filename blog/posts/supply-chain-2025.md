@@ -1,10 +1,10 @@
 ---
-title: Factory vs. Trading Company vs. Supply Chain Integrator: Strategic Sourcing in 2025
+title: "Factory vs. Trading Company vs. Supply Chain Integrator: Strategic Sourcing in 2025"
 author: Alden Cheng, Managing Director
 date: 2025-01-20
 category: Supply Chain Strategy
 keywords: medical device sourcing, factory vs trading company, supply chain integrator, consolidation logistics, V5 Medical, China procurement
-description: Stop choosing between "Low Price" and "Good Service". Discover how the Supply Chain Integrator model offers the best of both worlds for medical device procurement in 2025.
+description: "Stop choosing between 'Low Price' and 'Good Service'. Discover how the Supply Chain Integrator model offers the best of both worlds for medical device procurement in 2025."
 ---
 
 # Factory vs. Trading Company vs. Integrator: The 2025 Sourcing Guide
