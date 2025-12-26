@@ -193,36 +193,107 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
 
-    /* Google 翻译 - 修复显示问题 */
+    /* =========================================
+       翻译功能样式 - 多种保障机制
+       ========================================= */
+    /* 主翻译按钮 - 始终可见 */
+    .translate-main-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 998;
+      background: white;
+      color: #333;
+      border: 1px solid #ddd;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+    .translate-main-button:hover {
+      background: #f5f5f5;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .translate-main-button i {
+      font-size: 14px;
+    }
+
+    /* Google翻译组件容器 */
     #google_translate_element {
-      position: fixed !important;
-      top: 22px !important;
-      right: 20px !important;
-      z-index: 999 !important;
-      background: rgba(255,255,255,0.9) !important;
-      padding: 2px !important;
-      border-radius: 4px !important;
-      box-shadow: var(--shadow-sm) !important;
-      display: block !important; /* 确保显示 */
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 999;
+      display: block !important;
+      visibility: visible !important;
     }
-    .goog-te-banner-frame { display: none !important; }
-    body { top: 0px !important; } 
-    .goog-te-gadget {
-      font-size: 12px !important;
-      color: #333 !important;
+
+    /* 语言选择下拉菜单 */
+    .language-dropdown {
+      position: fixed;
+      top: 50px;
+      right: 20px;
+      z-index: 997;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: var(--shadow-md);
+      padding: 8px 0;
+      width: 150px;
+      display: none;
     }
-    .goog-te-gadget-simple {
-      background-color: #f5f5f5 !important;
-      border: 1px solid #dcdcdc !important;
-      padding: 2px 6px !important;
-      border-radius: 3px !important;
-      font-size: 12px !important;
+    .language-dropdown.active {
+      display: block;
     }
-    .goog-te-gadget-icon {
-      background-image: url('https://www.gstatic.com/images/branding/googlelogo/1x/googlelogo_color_42x16dp.png') !important;
-      background-size: 16px 16px !important;
-      width: 16px !important;
-      height: 16px !important;
+    .language-option {
+      padding: 8px 15px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .language-option:hover {
+      background: #f5f5f5;
+    }
+    .language-option.active {
+      background: #e8f0fe;
+      color: #1967d2;
+      font-weight: 500;
+    }
+
+    /* 移动端适配 */
+    @media (max-width: 1100px) {
+      .header-nav { display: none !important; }
+      .mobile-menu-btn { display: block; }
+      
+      .header-container {
+        justify-content: space-between;
+      }
+      
+      .translate-main-button {
+        right: 60px;
+        z-index: 997;
+      }
+      #google_translate_element {
+        right: 60px;
+        z-index: 998;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .btn-whatsapp span { display: none; }
+      .btn-whatsapp { 
+        padding: 8px; 
+        width: 36px; 
+        height: 36px; 
+        justify-content: center; 
+        border-radius: 50%; 
+      }
+      .header-container { padding: 0 15px; }
     }
 
     /* 移动端菜单按钮 */
@@ -238,38 +309,6 @@
     }
     .mobile-menu-btn:hover {
       transform: scale(1.1);
-    }
-
-    /* 移动端适配 */
-    @media (max-width: 1100px) {
-      .header-nav { display: none !important; }
-      .mobile-menu-btn { display: block; }
-      
-      .header-container {
-        justify-content: space-between;
-      }
-      
-      #google_translate_element { 
-        top: 24px !important; 
-        right: 60px !important; 
-        z-index: 998 !important; /* 低于移动端菜单按钮 */
-      }
-      .goog-te-gadget-simple { 
-        max-width: 40px !important; 
-        overflow: hidden; 
-      }
-    }
-    
-    @media (max-width: 640px) {
-      .btn-whatsapp span { display: none; }
-      .btn-whatsapp { 
-        padding: 8px; 
-        width: 36px; 
-        height: 36px; 
-        justify-content: center; 
-        border-radius: 50%; 
-      }
-      .header-container { padding: 0 15px; }
     }
 
     /* 移动端下拉菜单 */
@@ -445,25 +484,306 @@
     </div>
   </div>
 
-  <!-- Google 翻译组件 -->
+  <!-- =========================================
+       翻译功能 - 多重保障机制
+       ========================================= -->
+  <!-- 主翻译按钮 - 始终可见 -->
+  <button class="translate-main-button" id="translateMainButton">
+    <i class="fas fa-language"></i>
+    <span>Translate</span>
+  </button>
+
+  <!-- Google翻译组件 -->
   <div id="google_translate_element"></div>
+
+  <!-- 备用语言选择下拉菜单 -->
+  <div class="language-dropdown" id="languageDropdown">
+    <div class="language-option active" data-lang="en">English</div>
+    <div class="language-option" data-lang="es">Español</div>
+    <div class="language-option" data-lang="fr">Français</div>
+    <div class="language-option" data-lang="de">Deutsch</div>
+    <div class="language-option" data-lang="zh-CN">中文</div>
+    <div class="language-option" data-lang="ja">日本語</div>
+    <div class="language-option" data-lang="ko">한국어</div>
+  </div>
 
   <div id="app">🚀 Loading Knowledge Hub...</div>
 
+  <script>
+    // =========================================
+    // 翻译功能 - 多重保障实现
+    // =========================================
+    document.addEventListener('DOMContentLoaded', function() {
+      // 语言映射
+      const languageNames = {
+        'en': 'English',
+        'es': 'Español',
+        'fr': 'Français',
+        'de': 'Deutsch',
+        'zh-CN': '中文',
+        'ja': '日本語',
+        'ko': '한국어'
+      };
+
+      // DOM元素
+      const translateMainButton = document.getElementById('translateMainButton');
+      const languageDropdown = document.getElementById('languageDropdown');
+      const languageOptions = document.querySelectorAll('.language-option');
+      const googleTranslateElement = document.getElementById('google_translate_element');
+
+      // 当前选中的语言
+      let currentLanguage = 'en';
+      let googleTranslateAvailable = false;
+
+      // 初始化函数
+      function initTranslation() {
+        // 确保翻译元素可见
+        if (googleTranslateElement) {
+          googleTranslateElement.style.display = 'block';
+          googleTranslateElement.style.visibility = 'visible';
+        }
+
+        // 检查Google翻译是否可用
+        checkGoogleTranslateAvailability();
+
+        // 设置按钮点击事件
+        translateMainButton.addEventListener('click', toggleLanguageDropdown);
+
+        // 设置语言选项点击事件
+        languageOptions.forEach(option => {
+          option.addEventListener('click', function() {
+            const lang = this.getAttribute('data-lang');
+            if (lang !== currentLanguage) {
+              changeLanguage(lang);
+            }
+            languageDropdown.classList.remove('active');
+          });
+        });
+
+        // 点击其他区域关闭下拉菜单
+        document.addEventListener('click', function(e) {
+          if (!translateMainButton.contains(e.target) && !languageDropdown.contains(e.target)) {
+            languageDropdown.classList.remove('active');
+          }
+        });
+
+        // 定期检查Google翻译状态
+        startGoogleTranslateCheck();
+      }
+
+      // 切换语言下拉菜单
+      function toggleLanguageDropdown() {
+        languageDropdown.classList.toggle('active');
+      }
+
+      // 检查Google翻译是否可用
+      function checkGoogleTranslateAvailability() {
+        if (typeof google !== 'undefined' && typeof google.translate !== 'undefined') {
+          googleTranslateAvailable = true;
+          console.log('Google Translate is available');
+          
+          // 如果Google翻译可用，尝试隐藏主按钮
+          // translateMainButton.style.display = 'none';
+        } else {
+          googleTranslateAvailable = false;
+          console.log('Google Translate not available, using fallback');
+        }
+      }
+
+      // 定期检查Google翻译状态
+      function startGoogleTranslateCheck() {
+        let checkCount = 0;
+        const checkInterval = setInterval(function() {
+          checkCount++;
+          checkGoogleTranslateAvailability();
+          
+          if (googleTranslateAvailable || checkCount > 10) {
+            clearInterval(checkInterval);
+          }
+        }, 500);
+      }
+
+      // 更改语言
+      function changeLanguage(targetLang) {
+        console.log('Changing language to:', targetLang);
+        
+        // 更新当前语言
+        currentLanguage = targetLang;
+        
+        // 更新按钮显示
+        translateMainButton.querySelector('span').textContent = languageNames[targetLang] || 'Translate';
+        
+        // 更新选中状态
+        languageOptions.forEach(option => {
+          option.classList.remove('active');
+          if (option.getAttribute('data-lang') === targetLang) {
+            option.classList.add('active');
+          }
+        });
+
+        // 尝试使用Google翻译
+        if (googleTranslateAvailable) {
+          try {
+            useGoogleTranslate(targetLang);
+          } catch (error) {
+            console.error('Google Translate failed:', error);
+            useFallbackTranslation(targetLang);
+          }
+        } else {
+          useFallbackTranslation(targetLang);
+        }
+      }
+
+      // 使用Google翻译
+      function useGoogleTranslate(targetLang) {
+        console.log('Using Google Translate for:', targetLang);
+        
+        // 尝试找到Google翻译的选择器
+        const selectElement = googleTranslateElement.querySelector('select');
+        if (selectElement) {
+          selectElement.value = targetLang;
+          selectElement.dispatchEvent(new Event('change'));
+          return;
+        }
+
+        // 如果找不到选择器，尝试直接调用翻译方法
+        try {
+          const translateElement = new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: Object.keys(languageNames).join(','),
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: true
+          }, 'google_translate_element');
+          
+          // 延迟设置语言
+          setTimeout(function() {
+            const select = googleTranslateElement.querySelector('select');
+            if (select) {
+              select.value = targetLang;
+              select.dispatchEvent(new Event('change'));
+            }
+          }, 500);
+          
+        } catch (error) {
+          console.error('Failed to use Google Translate:', error);
+          useFallbackTranslation(targetLang);
+        }
+      }
+
+      // 使用备用翻译方法
+      function useFallbackTranslation(targetLang) {
+        console.log('Using fallback translation for:', targetLang);
+        
+        // 获取当前页面URL
+        const currentUrl = window.location.href;
+        
+        // 构建Google翻译URL
+        const translatedUrl = `https://translate.google.com/translate?sl=en&tl=${targetLang}&u=${encodeURIComponent(currentUrl)}`;
+        
+        // 询问用户是否在新窗口中打开
+        if (confirm(`Would you like to view this page in ${languageNames[targetLang]}?`)) {
+          window.open(translatedUrl, '_blank');
+        }
+      }
+
+      // 初始化翻译功能
+      initTranslation();
+
+      // =========================================
+      // 移动端菜单功能
+      // =========================================
+      const menuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const header = document.getElementById('v5-header');
+      
+      if (menuBtn && mobileMenu) {
+        const newBtn = menuBtn.cloneNode(true);
+        menuBtn.parentNode.replaceChild(newBtn, menuBtn);
+        const icon = newBtn.querySelector('i');
+
+        newBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          mobileMenu.classList.toggle('active');
+          const isActive = mobileMenu.classList.contains('active');
+          
+          if (isActive) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+          } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          }
+        });
+
+        document.addEventListener('click', (e) => {
+          if (mobileMenu.classList.contains('active') && 
+              !newBtn.contains(e.target) && 
+              !mobileMenu.contains(e.target)) {
+            mobileMenu.classList.remove('active');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          }
+        });
+      }
+
+      // =========================================
+      // 滚动效果
+      // =========================================
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+          header.classList.add('scroll-effect');
+        } else {
+          header.classList.remove('scroll-effect');
+        }
+      });
+
+      // =========================================
+      // 平滑滚动
+      // =========================================
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    });
+  </script>
+
+  <!-- Google翻译API -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en', 
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: true, // 确保自动显示
-        includedLanguages: 'en,es,fr,de,it,pt,ru,zh-CN,ja,ko',
-        gaTrack: true,
-        gaId: 'UA-XXXXXXXX-X'
-      }, 'google_translate_element');
+      console.log('Google Translate element initialized');
+      try {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          includedLanguages: 'en,es,fr,de,zh-CN,ja,ko',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: true
+        }, 'google_translate_element');
+        
+        // 确保翻译元素可见
+        setTimeout(function() {
+          const translateElement = document.getElementById('google_translate_element');
+          if (translateElement) {
+            translateElement.style.display = 'block';
+            translateElement.style.visibility = 'visible';
+          }
+        }, 500);
+        
+      } catch (error) {
+        console.error('Error initializing Google Translate:', error);
+      }
     }
   </script>
   <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
+  <!-- Docsify配置 -->
   <script>
     window.$docsify = {
       basePath: 'https://raw.githubusercontent.com/alden888/v5md/main/blog/',
@@ -521,76 +841,6 @@
         }
       ]
     }
-  </script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const menuBtn = document.getElementById('mobile-menu-btn');
-      const mobileMenu = document.getElementById('mobile-menu');
-      const header = document.getElementById('v5-header');
-      
-      if (!menuBtn || !mobileMenu) return;
-
-      // 移动端菜单功能
-      const newBtn = menuBtn.cloneNode(true);
-      menuBtn.parentNode.replaceChild(newBtn, menuBtn);
-      const icon = newBtn.querySelector('i');
-
-      newBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        mobileMenu.classList.toggle('active');
-        const isActive = mobileMenu.classList.contains('active');
-        
-        if (isActive) {
-          icon.classList.remove('fa-bars');
-          icon.classList.add('fa-times');
-        } else {
-          icon.classList.remove('fa-times');
-          icon.classList.add('fa-bars');
-        }
-      });
-
-      document.addEventListener('click', (e) => {
-        if (mobileMenu.classList.contains('active') && 
-            !newBtn.contains(e.target) && 
-            !mobileMenu.contains(e.target)) {
-          mobileMenu.classList.remove('active');
-          icon.classList.remove('fa-times');
-          icon.classList.add('fa-bars');
-        }
-      });
-
-      // 滚动效果
-      window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-          header.classList.add('scroll-effect');
-        } else {
-          header.classList.remove('scroll-effect');
-        }
-      });
-
-      // 平滑滚动
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-          e.preventDefault();
-          const target = document.querySelector(this.getAttribute('href'));
-          if (target) {
-            target.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
-          }
-        });
-      });
-
-      // 确保Google翻译组件正确显示
-      setTimeout(function() {
-        const translateElement = document.getElementById('google_translate_element');
-        if (translateElement && translateElement.style.display === 'none') {
-          translateElement.style.display = 'block';
-        }
-      }, 1000);
-    });
   </script>
 
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
