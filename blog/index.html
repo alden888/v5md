@@ -2,107 +2,258 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>V5 Medical Blog | Industry Insights & News</title>
+  <title>V5 Medical Industry Insights | Supply Chain Knowledge Base</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Insights on Medical Supply Chain, ISO 13485 Compliance, and Global Sourcing.">
+  <meta name="description" content="Professional insights on medical supply chain management, ISO 13485 compliance, and global sourcing strategies. Built by V5 Medical LTD.">
+  <meta name="keywords" content="medical supply chain, ISO 13485, regulatory compliance, medical device sourcing, China manufacturing">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   
+  <!-- SEO -->
+  <link rel="canonical" href="https://v5md.com/blog/">
+  <meta property="og:title" content="V5 Medical Industry Insights">
+  <meta property="og:description" content="Expert knowledge on medical supply chain and compliance">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://v5md.com/blog/">
+  <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png">
+  
+  <!-- Theme -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   
   <style>
-    /* 主色调匹配 V5 Blue (#1e40af) */
     :root {
       --theme-color: #1e40af;
+      --theme-color-dark: #1e3a8a;
     }
+    
+    /* Logo Styling */
     .app-name-link img {
-      height: 40px; /* Logo size */
+      height: 45px;
+      margin-right: 10px;
     }
-    /* 侧边栏样式微调 */
+    
+    /* Sidebar Enhancement */
     .sidebar {
-      background-color: #f8fafc;
+      background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
       border-right: 1px solid #e2e8f0;
     }
+    
     .sidebar-nav li.active > a {
-      border-right: 2px solid var(--theme-color);
+      border-right: 3px solid var(--theme-color);
       color: var(--theme-color);
-      font-weight: 600;
+      font-weight: 700;
+      background: rgba(30, 64, 175, 0.05);
     }
-    /* 顶部导航样式 */
+    
+    .sidebar-nav a {
+      transition: all 0.2s ease;
+    }
+    
+    .sidebar-nav a:hover {
+      color: var(--theme-color);
+    }
+    
+    /* Top Navigation */
+    .app-nav {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+    }
+    
     .app-nav a {
-      color: #333;
+      color: #1e293b;
       font-weight: 600;
+      transition: color 0.2s;
     }
+    
     .app-nav a:hover {
       color: var(--theme-color);
-      text-decoration: underline;
     }
-    /* 内容区最大宽度，优化阅读体验 */
+    
+    /* Content Area */
     .markdown-section {
       max-width: 900px;
       margin: 0 auto;
+      padding: 30px 15px 40px;
+    }
+    
+    /* Code Blocks */
+    .markdown-section pre {
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    
+    /* Blockquotes */
+    .markdown-section blockquote {
+      border-left: 4px solid var(--theme-color);
+      background: #f1f5f9;
+      padding: 15px 20px;
+      margin: 20px 0;
+    }
+    
+    /* Cover Page Customization */
+    section.cover {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    }
+    
+    section.cover h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Mobile Optimization */
+    @media (max-width: 768px) {
+      .sidebar {
+        background: #ffffff;
+      }
+      
+      .markdown-section {
+        padding: 20px 10px 30px;
+      }
     }
   </style>
 </head>
+
 <body>
-  <div id="app">Loading V5 Insights...</div>
+  <div id="app">Loading V5 Medical Insights...</div>
 
   <script>
     window.$docsify = {
-      // --- 基本设置 ---
-      name: 'V5 Medical', // 左上角显示的名称
-      logo: '/images/icons/favicon.ico', // 或者用你的 Logo 图片路径
-      nameLink: '/', // 点击 Logo 回到博客主页
+      // === BASIC CONFIG ===
+      name: '<img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" alt="V5 Medical" style="height:45px;vertical-align:middle;"> V5 Medical',
+      repo: 'https://github.com/alden888/v5md',
+      homepage: 'README.md',
       
-      // --- 核心功能 ---
-      loadSidebar: true, // 开启侧边栏 (_sidebar.md)
-      loadNavbar: true,  // 开启顶部导航 (_navbar.md)
-      subMaxLevel: 2,    // 侧边栏自动显示 H2 标题
-      auto2top: true,    // 切换页面自动回到顶部
+      // === NAVIGATION ===
+      loadSidebar: true,
+      loadNavbar: true,
+      subMaxLevel: 3,
+      auto2top: true,
       
-      // --- 封面设置 (可选，不需要很花哨的话设为 false) ---
-      coverpage: false, 
-
-      // --- 搜索插件配置 ---
+      // === COVER PAGE ===
+      coverpage: true,
+      onlyCover: false,
+      
+      // === SEARCH (Advanced) ===
       search: {
-        maxAge: 86400000, 
+        maxAge: 86400000,
         paths: 'auto',
         placeholder: 'Search articles...',
         noData: 'No results found.',
-        depth: 4
+        depth: 6,
+        hideOtherSidebarContent: false,
       },
-
-      // --- 复制到剪贴板 ---
+      
+      // === PAGINATION ===
+      pagination: {
+        previousText: '← Previous',
+        nextText: 'Next →',
+        crossChapter: true,
+        crossChapterText: true,
+      },
+      
+      // === COPY CODE ===
       copyCode: {
         buttonText: 'Copy',
         errorText: 'Error',
-        successText: 'Copied'
+        successText: '✓ Copied'
       },
-
-      // --- 底部版权信息 (使用插件插入) ---
+      
+      // === TABS (If using docsify-tabs) ===
+      tabs: {
+        persist: true,
+        sync: true,
+        theme: 'classic',
+        tabComments: true,
+        tabHeadings: true
+      },
+      
+      // === CUSTOM PLUGINS ===
       plugins: [
+        // Footer Plugin
         function(hook) {
           var footer = [
-            '<hr/>',
-            '<footer>',
-            '<span>&copy; 2025 V5 Medical LTD. All rights reserved.</span>',
-            '<span style="float: right;">Structured for Compliance.</span>',
+            '<hr class="mt-8"/>',
+            '<footer style="text-align: center; padding: 30px 0; color: #64748b; font-size: 13px;">',
+            '<p style="margin-bottom: 8px;">&copy; 2025 <strong>V5 Medical LTD</strong>. All rights reserved.</p>',
+            '<p style="font-style: italic; opacity: 0.8;">Structured for Compliance & Reliability</p>',
+            '<p style="margin-top: 12px;">',
+            '<a href="https://v5md.com" style="color: #3b82f6; margin: 0 10px;">Main Website</a>',
+            '<a href="https://v5md.com/contact.html" style="color: #3b82f6; margin: 0 10px;">Contact</a>',
+            '<a href="https://v5md.com/privacy.html" style="color: #3b82f6; margin: 0 10px;">Privacy</a>',
+            '</p>',
             '</footer>'
           ].join('');
 
           hook.afterEach(function(html) {
             return html + footer;
           });
+        },
+        
+        // Edit on GitHub Link
+        function(hook) {
+          hook.beforeEach(function(content) {
+            var editUrl = 'https://github.com/alden888/v5md/edit/main/blog/' + vm.route.file;
+            var editLink = '<div style="text-align: right; margin-bottom: 20px;">' +
+              '<a href="' + editUrl + '" target="_blank" style="color: #64748b; font-size: 13px;">' +
+              '<i class="fa fa-edit"></i> Edit this page on GitHub</a></div>';
+            return editLink + content;
+          });
         }
-      ]
+      ],
+      
+      // === MARKDOWN CONFIG ===
+      markdown: {
+        smartypants: true,
+        renderer: {
+          code: function(code, lang) {
+            if (lang === "mermaid") {
+              return '<div class="mermaid">' + code + '</div>';
+            }
+            return this.origin.code.apply(this, arguments);
+          }
+        }
+      },
+      
+      // === MISC ===
+      notFoundPage: true,
+      executeScript: true,
+      noEmoji: false,
+      mergeNavbar: true,
+      formatUpdated: '{YYYY}-{MM}-{DD}',
+      externalLinkTarget: '_blank',
+      cornerExternalLinkTarget: '_blank',
+      externalLinkRel: 'noopener noreferrer'
     }
   </script>
 
+  <!-- Docsify Core -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   
+  <!-- Search Plugin -->
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  
+  <!-- Image Zoom -->
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+  
+  <!-- Copy Code -->
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  
+  <!-- Pagination -->
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  
+  <!-- Code Highlighting (Prism.js) -->
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+  
+  <!-- Emoji Support -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+  
+  <!-- External Script Execution -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/external-script.min.js"></script>
+  
+  <!-- Font Awesome (for icons) -->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 </body>
 </html>
