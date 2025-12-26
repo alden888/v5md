@@ -19,9 +19,8 @@
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <!-- 调整样式加载顺序：先加载自定义样式，再加载 docsify 原生样式（确保自定义样式优先级更高） -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
-  
   <style>
     /* 全局基础样式 */
     :root { 
@@ -48,92 +47,67 @@
       font-weight: 400;
     }
     
-    /* 侧边栏样式优化 - 集成英文美化版 */
+    /* 侧边栏核心美化样式（提高优先级，覆盖 docsify 原生样式） */
     .sidebar { 
-      background: #ffffff; 
-      border-right: 1px solid var(--border-color);
-      box-shadow: var(--shadow-sm);
+      background: #ffffff !important; 
+      border-right: 1px solid var(--border-color) !important;
+      box-shadow: var(--shadow-sm) !important;
       padding-top: 20px !important;
     }
     
+    /* 隐藏 docsify 原生的 sidebar-nav 样式，改用自定义的 sidebar-category */
     .sidebar-nav {
-      padding: 0 15px !important;
+      display: none !important;
     }
     
-    .sidebar-nav li {
-      margin: 4px 0;
-      border-radius: 6px;
-      transition: all 0.2s ease;
-    }
-    
-    .sidebar-nav li > a {
-      padding: 8px 12px !important;
-      color: var(--text-color) !important;
-      font-weight: 500;
-      border-radius: 6px;
-      transition: all 0.2s ease;
-    }
-    
-    .sidebar-nav li.active > a { 
-      border-right: none !important;
-      background: var(--theme-light) !important;
-      color: var(--theme-color) !important; 
-      font-weight: 600; 
-      box-shadow: var(--shadow-sm);
-    }
-    
-    .sidebar-nav li > a:hover:not(.active) {
-      background: #f8fafc !important;
-      color: var(--theme-hover) !important;
-    }
-
-    /* 侧边栏分类容器样式 - English Version */
+    /* 自定义侧边栏分类容器样式 - English Version */
     .sidebar-category {
-      margin: 20px 0;
-      padding: 0 15px;
+      margin: 20px 0 !important;
+      padding: 0 15px !important;
+      display: block !important;
     }
 
     /* 最后一个分类增加底部间距 */
     .sidebar-category-last {
-      margin-bottom: 30px;
+      margin-bottom: 30px !important;
     }
 
-    /* 分类标签样式 - English */
+    /* 分类标签样式 - English（强制优先级） */
     .category-tag {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: white;
-      margin-bottom: 12px;
-      letter-spacing: 0.5px;
-      text-transform: capitalize; /* 英文首字母大写，符合外贸风格 */
+      display: inline-block !important;
+      padding: 6px 12px !important;
+      border-radius: 8px !important;
+      font-size: 0.9rem !important;
+      font-weight: 600 !important;
+      color: white !important;
+      margin-bottom: 12px !important;
+      letter-spacing: 0.5px !important;
+      text-transform: capitalize !important; /* 英文首字母大写 */
     }
 
-    /* 不同分类的主题色（保持专业蓝调，符合外贸审美） */
+    /* 不同分类的主题色（专业蓝调） */
     .tag-home {
-      background: #1e40af; /* Deep Blue - Knowledge Hub */
+      background: #1e40af !important; /* Deep Blue - Knowledge Hub */
     }
 
     .tag-chain {
-      background: #2563eb; /* Sky Blue - Supply Chain Strategy */
+      background: #2563eb !important; /* Sky Blue - Supply Chain Strategy */
     }
 
     .tag-regulatory {
-      background: #3b82f6; /* Light Blue - Regulatory & Compliance */
+      background: #3b82f6 !important; /* Light Blue - Regulatory & Compliance */
     }
 
     .tag-product {
-      background: #60a5fa; /* Pale Blue - Product Tech Specs */
+      background: #60a5fa !important; /* Pale Blue - Product Tech Specs */
     }
 
     .tag-main {
-      background: #93c5fd; /* Ultra Light Blue - Back to Main Site */
+      background: #93c5fd !important; /* Ultra Light Blue - Back to Main Site */
       color: #1e293b !important; /* 深色文字提升可读性 */
     }
 
-    /* 侧边栏列表样式 - English */
+    /* 自定义侧边栏列表样式 - English */
     .sidebar-list {
       list-style: none !important;
       margin: 0 !important;
@@ -143,83 +117,109 @@
     .sidebar-list li {
       margin: 8px 0 !important;
       padding: 0 !important;
-      border-radius: 6px;
-      transition: all 0.2s ease;
+      border-radius: 6px !important;
+      transition: all 0.2s ease !important;
     }
 
-    /* 侧边栏图标样式 - English */
+    /* 自定义侧边栏链接样式（覆盖原生） */
+    .sidebar-list li a {
+      padding: 8px 12px !important;
+      color: var(--text-color) !important;
+      font-weight: 500 !important;
+      border-radius: 6px !important;
+      text-decoration: none !important;
+      display: inline-block !important;
+      width: 100% !important;
+      transition: all 0.2s ease !important;
+    }
+
+    /* 选中态样式 */
+    .sidebar-list li a.active {
+      background: var(--theme-light) !important;
+      color: var(--theme-color) !important; 
+      font-weight: 600 !important; 
+      box-shadow: var(--shadow-sm) !important;
+    }
+
+    /* hover 样式 */
+    .sidebar-list li a:hover:not(.active) {
+      background: #f8fafc !important;
+      color: var(--theme-hover) !important;
+    }
+
+    /* 侧边栏图标样式 */
     .sidebar-icon {
-      margin-right: 8px;
-      font-size: 0.85rem;
-      color: var(--text-light);
-      transition: all 0.2s ease;
+      margin-right: 8px !important;
+      font-size: 0.85rem !important;
+      color: var(--text-light) !important;
+      transition: all 0.2s ease !important;
     }
 
     .sidebar-list li:hover .sidebar-icon {
-      color: var(--theme-color);
-      transform: translateX(2px); /* 鼠标悬浮图标右移，增强交互 */
+      color: var(--theme-color) !important;
+      transform: translateX(2px) !important;
     }
     
     /* 内容区域核心优化（保留原生 Markdown 渲染） */
     .markdown-section { 
-      max-width: 950px; 
-      margin: 0 auto; 
+      max-width: 950px !important; 
+      margin: 0 auto !important; 
       padding: 40px 30px 100px !important;
-      background: #ffffff;
+      background: #ffffff !important;
     }
     
     /* 标题样式（匹配 Markdown 原生层级） */
     .markdown-section h1 { 
-      color: var(--theme-color); 
-      font-weight: 800;
+      color: var(--theme-color) !important; 
+      font-weight: 800 !important;
       font-size: 2.4rem !important;
       margin: 40px 0 28px !important;
-      line-height: 1.3;
-      border-bottom: 3px solid var(--theme-light);
-      padding-bottom: 16px;
+      line-height: 1.3 !important;
+      border-bottom: 3px solid var(--theme-light) !important;
+      padding-bottom: 16px !important;
     }
     
     .markdown-section h2 { 
-      color: #1e3a8a; 
-      font-weight: 700;
+      color: #1e3a8a !important; 
+      font-weight: 700 !important;
       font-size: 1.9rem !important;
       margin: 40px 0 22px !important;
-      line-height: 1.4;
-      border-bottom: 2px solid var(--theme-light);
-      padding-bottom: 12px;
+      line-height: 1.4 !important;
+      border-bottom: 2px solid var(--theme-light) !important;
+      padding-bottom: 12px !important;
     }
     
     .markdown-section h3 { 
-      font-weight: 700;
+      font-weight: 700 !important;
       font-size: 1.5rem !important;
       margin: 32px 0 18px !important;
-      color: #1e3a8a;
+      color: #1e3a8a !important;
     }
     
     .markdown-section h4 {
-      font-weight: 600;
+      font-weight: 600 !important;
       font-size: 1.25rem !important;
       margin: 28px 0 14px !important;
-      color: var(--text-color);
+      color: var(--text-color) !important;
     }
     
     /* 段落样式（还原原生排版） */
     .markdown-section p {
       margin: 18px 0 !important;
-      font-size: 1.08rem;
-      color: var(--text-color);
-      text-align: left; /* 取消两端对齐，还原 Markdown 原生效果 */
+      font-size: 1.08rem !important;
+      color: var(--text-color) !important;
+      text-align: left !important; /* 取消两端对齐 */
     }
     
     /* 列表样式（还原原生 Markdown 列表） */
     .markdown-section ul, .markdown-section ol {
       margin: 20px 0 20px 35px !important;
-      padding-left: 15px;
+      padding-left: 15px !important;
     }
     
     .markdown-section li {
-      margin: 10px 0;
-      font-size: 1.08rem;
+      margin: 10px 0 !important;
+      font-size: 1.08rem !important;
     }
     
     /* 无序列表圆点样式 */
@@ -234,59 +234,59 @@
     
     /* 链接样式 */
     .markdown-section a {
-      color: var(--theme-color);
-      font-weight: 500;
-      text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s ease;
+      color: var(--theme-color) !important;
+      font-weight: 500 !important;
+      text-decoration: none !important;
+      border-bottom: 2px solid transparent !important;
+      transition: all 0.2s ease !important;
     }
     
     .markdown-section a:hover {
-      color: var(--theme-hover);
-      border-bottom: 2px solid var(--theme-hover);
+      color: var(--theme-hover) !important;
+      border-bottom: 2px solid var(--theme-hover) !important;
     }
     
     /* 强调文本 */
     .markdown-section strong {
-      color: var(--theme-color);
-      font-weight: 600;
+      color: var(--theme-color) !important;
+      font-weight: 600 !important;
     }
     
     /* 引用样式（还原 Markdown 引用块） */
     .markdown-section blockquote {
       margin: 24px 0 !important;
-      padding: 22px;
-      background: var(--theme-light);
-      border-left: 4px solid var(--theme-color);
-      border-radius: 0 8px 8px 0;
-      font-style: italic;
-      color: var(--text-light);
-      font-size: 1.05rem;
+      padding: 22px !important;
+      background: var(--theme-light) !important;
+      border-left: 4px solid var(--theme-color) !important;
+      border-radius: 0 8px 8px 0 !important;
+      font-style: italic !important;
+      color: var(--text-light) !important;
+      font-size: 1.05rem !important;
     }
     
     /* 分隔线样式（还原 Markdown ---） */
     .markdown-section hr {
       margin: 40px 0 !important;
-      border: none;
-      border-top: 2px solid var(--theme-light);
-      height: 2px;
+      border: none !important;
+      border-top: 2px solid var(--theme-light) !important;
+      height: 2px !important;
     }
     
     /* CTA 框样式优化 */
     .v5-cta-box { 
-      margin: 60px 0; 
-      padding: 50px 40px; 
-      background: linear-gradient(135deg, var(--theme-light) 0%, #dbeafe 100%); 
-      border: none;
-      border-radius: 16px; 
-      text-align: center; 
-      box-shadow: var(--shadow-md);
+      margin: 60px 0 !important; 
+      padding: 50px 40px !important; 
+      background: linear-gradient(135deg, var(--theme-light) 0%, #dbeafe 100%) !important; 
+      border: none !important;
+      border-radius: 16px !important; 
+      text-align: center !important; 
+      box-shadow: var(--shadow-md) !important;
     }
     
     .v5-cta-box h3 {
       font-size: 1.6rem !important;
       margin-bottom: 16px !important;
-      color: var(--theme-color);
+      color: var(--theme-color) !important;
     }
     
     .v5-cta-box p {
@@ -296,22 +296,22 @@
     }
     
     .v5-btn { 
-      display: inline-block; 
-      background: linear-gradient(135deg, var(--theme-color) 0%, var(--theme-hover) 100%); 
+      display: inline-block !important; 
+      background: linear-gradient(135deg, var(--theme-color) 0%, var(--theme-hover) 100%) !important; 
       color: white !important; 
-      padding: 14px 36px; 
-      border-radius: 50px; 
+      padding: 14px 36px !important; 
+      border-radius: 50px !important; 
       text-decoration: none !important; 
-      font-weight: 600; 
-      margin: 8px;
-      box-shadow: var(--shadow-sm);
-      transition: all 0.3s ease;
-      border: none;
+      font-weight: 600 !important; 
+      margin: 8px !important;
+      box-shadow: var(--shadow-sm) !important;
+      transition: all 0.3s ease !important;
+      border: none !important;
     }
     
     .v5-btn:hover { 
-      transform: translateY(-3px); 
-      box-shadow: 0 8px 16px rgba(30, 64, 175, 0.2);
+      transform: translateY(-3px) !important; 
+      box-shadow: 0 8px 16px rgba(30, 64, 175, 0.2) !important;
       color: white !important;
       border-bottom: none !important;
     }
@@ -319,32 +319,32 @@
     .v5-btn-secondary { 
       background: white !important; 
       color: var(--theme-color) !important; 
-      border: 2px solid var(--theme-hover);
+      border: 2px solid var(--theme-hover) !important;
     }
     
     .v5-btn-secondary:hover {
       background: #f8fafc !important;
-      border-color: var(--theme-color);
+      border-color: var(--theme-color) !important;
     }
     
     /* 进度条样式 */
     #progress-bar { 
-      position: fixed; 
-      top: 0; 
-      left: 0; 
-      height: 4px; 
-      background: linear-gradient(90deg, var(--theme-color), var(--theme-hover), #60a5fa); 
-      z-index: 9999; 
-      transition: width 0.2s ease; 
-      width: 0;
-      box-shadow: 0 0 4px rgba(30, 64, 175, 0.5);
+      position: fixed !important; 
+      top: 0 !important; 
+      left: 0 !important; 
+      height: 4px !important; 
+      background: linear-gradient(90deg, var(--theme-color), var(--theme-hover), #60a5fa) !important; 
+      z-index: 9999 !important; 
+      transition: width 0.2s ease !important; 
+      width: 0 !important;
+      box-shadow: 0 0 4px rgba(30, 64, 175, 0.5) !important;
     }
     
     /* 页脚样式 */
     footer {
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border-color);
+      margin-top: 20px !important;
+      padding-top: 20px !important;
+      border-top: 1px solid var(--border-color) !important;
     }
     
     /* 响应式优化 */
@@ -363,27 +363,29 @@
 
       /* 移动端侧边栏标签适配 */
       .category-tag {
-        padding: 4px 10px;
-        font-size: 0.8rem;
+        padding: 4px 10px !important;
+        font-size: 0.8rem !important;
       }
       
       .sidebar-icon {
-        margin-right: 6px;
+        margin-right: 6px !important;
       }
       
       .v5-btn { 
-        display: block; 
-        width: 100%; 
-        margin: 8px 0;
-        padding: 12px 20px;
+        display: block !important; 
+        width: 100% !important; 
+        margin: 8px 0 !important;
+        padding: 12px 20px !important;
       } 
 
       .v5-cta-box {
-        padding: 30px 20px;
-        margin: 40px 0;
+        padding: 30px 20px !important;
+        margin: 40px 0 !important;
       }
     }
   </style>
+  <!-- 后加载 docsify 原生样式，确保自定义样式能覆盖 -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
 </head>
 
 <body>
@@ -462,22 +464,21 @@
         
         // 核心修改：只过滤 Cloudflare 注入的垃圾代码，保留正常 HTML 标签
         function(hook) {
-          // 加载 .md 文件前：过滤注入的垃圾代码（只删特定垃圾，不删 Markdown 内容）
+          // 加载 .md 文件前：过滤注入的垃圾代码
           hook.beforeEach(function(content, url) {
             if (url.endsWith('.md')) {
               return content
-                .replace(/<script[\s\S]*?<\/script>/gi, '') // 删注入的 script
-                .replace(/<style[\s\S]*?<\/style>/gi, '')   // 删注入的 style
-                .replace(/tailwind\.config[\s\S]*?}/gi, '') // 删注入的 tailwind 配置
-                .replace(/\{[\s\S]*?"context"[\s\S]*?\}/gi, '') // 删注入的 JSON
-                .replace(/[\u0000-\u001F\u007F]/g, ''); // 删不可见字符
+                .replace(/<script[\s\S]*?<\/script>/gi, '') 
+                .replace(/<style[\s\S]*?<\/style>/gi, '')   
+                .replace(/tailwind\.config[\s\S]*?}/gi, '') 
+                .replace(/\{[\s\S]*?"context"[\s\S]*?\}/gi, '') 
+                .replace(/[\u0000-\u001F\u007F]/g, ''); 
             }
             return content;
           });
 
-          // 渲染后：只加 CTA 和页脚，不删任何正常标签
+          // 渲染后：添加 CTA 和页脚
           hook.afterEach(function(html) {
-            // 保留所有正常渲染的 HTML 标签（标题、列表、引用等）
             const cta = `
               <div class="v5-cta-box">
                 <h3>🎯 Ready to Secure Your Supply Chain?</h3>
@@ -499,8 +500,24 @@
               </footer>
             `;
             
-            // 直接拼接，不删任何原有 HTML
             return html + cta + footer;
+          });
+        },
+        // 新增：给侧边栏当前激活的链接添加 active 类
+        function(hook) {
+          hook.ready(function() {
+            // 监听路由变化，给当前链接加 active 类
+            window.$docsify.router.on('navigate', function(path) {
+              // 移除所有 active 类
+              document.querySelectorAll('.sidebar-list li a').forEach(el => {
+                el.classList.remove('active');
+              });
+              // 给当前链接加 active 类
+              const activeLink = document.querySelector(`.sidebar-list li a[href="${path}"]`);
+              if (activeLink) {
+                activeLink.classList.add('active');
+              }
+            });
           });
         }
       ]
