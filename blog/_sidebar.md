@@ -1,4 +1,4 @@
-<!-- English Sidebar with Enhanced Styling -->
+<!-- 带 HTML 容器的英文美化版侧边栏（确保样式生效） -->
 <div class="sidebar-category">
   <span class="category-tag tag-home">Knowledge Hub</span>
   <ul class="sidebar-list">
