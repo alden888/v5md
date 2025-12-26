@@ -1,19 +1,35 @@
 # V5 Medical LTD Robots.txt
-# Last Updated: 2024-12-15
+# Optimized for SEO & Security
 # Website: https://v5md.com
 
 # ------------------------------
-# GLOBAL SETTINGS
+# 1. GLOBAL SETTINGS (All Bots)
 # ------------------------------
 User-agent: *
 Allow: /
+
+# Resources assets
 Allow: /images/
-Allow: /pdf/
+Allow: /css/
+Allow: /js/
+Allow: /assets/
+
+# [STRATEGY] Block direct PDF access to encourage landing page visits
+Disallow: /pdf/
+Disallow: /*.pdf$
 
 # Block Cloudflare specific paths
 Disallow: /cdn-cgi/
 
-# Block admin and system directories (Security)
+# Block GitHub repository specific files (Clean SEO)
+Disallow: /README.md
+Disallow: /README-cn.md
+Disallow: /_headers
+Disallow: /_redirects
+Disallow: /.nojekyll
+Disallow: /LICENSE
+
+# Block admin and system directories (Security Best Practice)
 Disallow: /admin/
 Disallow: /wp-admin/
 Disallow: /wp-includes/
@@ -25,28 +41,22 @@ Disallow: /*.tmp$
 Disallow: /*.bak$
 Disallow: /*.old$
 Disallow: /*.swp$
-
-# Block specific sensitive files (Optional)
 Disallow: /security.txt
 Disallow: /humans.txt
-Disallow: /README.md
-Disallow: /_headers
-Disallow: /_redirects
 
 # ------------------------------
-# SPECIFIC BOT SETTINGS
+# 2. SPECIFIC BOT SETTINGS
 # ------------------------------
 
 # Googlebot
-# Note: Google ignores Crawl-delay in robots.txt
 User-agent: Googlebot
 Allow: /*.js$
 Allow: /*.css$
 Allow: /*.png$
 Allow: /*.jpg$
-Allow: /*.gif$
 Allow: /*.svg$
-Allow: /*.pdf$
+# Ensure Google respects the PDF blocking strategy
+Disallow: /*.pdf$
 
 # Bingbot (Bing Search)
 User-agent: Bingbot
@@ -64,18 +74,11 @@ Crawl-delay: 1
 User-agent: DuckDuckBot
 Crawl-delay: 1
 
-User-agent: *
-Allow: /
-
-# 禁止爬取 PDF 文件夹（防止直接下载 PDF 而不看网页）
-Disallow: /pdf/
-
-# 引导爬虫去新的博客地图
+# ------------------------------
+# 3. SITEMAP INDEX
+# ------------------------------
+# Main Site Sitemap
 Sitemap: https://v5md.com/sitemap.xml
+
+# Blog Knowledge Hub Sitemap (Docsify)
 Sitemap: https://v5md.com/blog/sitemap.xml
-
-# ------------------------------
-# SITEMAP INFORMATION
-# ------------------------------
-Sitemap: https://v5md.com/sitemap.xml
-
