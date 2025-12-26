@@ -19,12 +19,12 @@
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- 先加载 docsify 原生样式，再加载自定义样式（精准覆盖） -->
+  <!-- 加载顺序：先 docsify 原生，再自定义，最后图标 -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
   
   <style>
-    /* 全局基础样式 */
+    /* 全局变量 */
     :root { 
       --theme-color: #1e40af; 
       --theme-light: #eff6ff;
@@ -49,51 +49,27 @@
       font-weight: 400;
     }
     
-    /* 侧边栏基础样式（保留原生容器，覆盖样式） */
+    /* ========== 侧边栏核心美化（兼容自动加载） ========== */
     .sidebar { 
       background: #ffffff !important; 
       border-right: 1px solid var(--border-color) !important;
       box-shadow: var(--shadow-sm) !important;
       padding-top: 20px !important;
+      width: 280px !important; /* 固定宽度 */
     }
     
+    /* 隐藏 docsify 原生的侧边栏标题 */
+    .sidebar > h1 {
+      display: none !important;
+    }
+    
+    /* 核心：让 md 加载的侧边栏 HTML 正常显示样式 */
     .sidebar-nav {
       padding: 0 15px !important;
-      display: block !important; /* 强制显示，恢复侧边栏 */
+      display: block !important;
     }
     
-    /* 移除 docsify 原生的蓝色背景块（核心修复） */
-    .sidebar-nav li.active {
-      background: transparent !important;
-    }
-    
-    .sidebar-nav li > a {
-      padding: 8px 12px !important;
-      color: var(--text-color) !important;
-      font-weight: 500 !important;
-      border-radius: 6px !important;
-      transition: all 0.2s ease !important;
-      border-left: none !important; /* 移除原生左侧蓝色边框 */
-    }
-    
-    .sidebar-nav li.active > a { 
-      background: var(--theme-light) !important;
-      color: var(--theme-color) !important; 
-      font-weight: 600 !important; 
-      box-shadow: var(--shadow-sm) !important;
-    }
-    
-    .sidebar-nav li > a:hover:not(.active) {
-      background: #f8fafc !important;
-      color: var(--theme-hover) !important;
-    }
-
-    /* 自定义侧边栏分类标签样式（和原生列表兼容） */
-    .sidebar-category {
-      margin: 20px 0 !important;
-      padding: 0 !important;
-    }
-
+    /* 分类标签样式（强制优先级） */
     .category-tag {
       display: inline-block !important;
       padding: 6px 12px !important;
@@ -104,8 +80,10 @@
       margin: 0 0 12px 8px !important;
       letter-spacing: 0.5px !important;
       text-transform: capitalize !important;
+      z-index: 99 !important;
+      position: relative !important;
     }
-
+    
     /* 分类主题色 */
     .tag-home { background: #1e40af !important; }
     .tag-chain { background: #2563eb !important; }
@@ -115,37 +93,68 @@
       background: #93c5fd !important; 
       color: #1e293b !important;
     }
-
-    /* 侧边栏列表+图标样式 */
+    
+    /* 侧边栏列表样式 */
     .sidebar-list {
       list-style: none !important;
-      margin: 0 !important;
+      margin: 0 0 20px 0 !important;
       padding: 0 0 0 16px !important;
     }
-
+    
     .sidebar-list li {
       margin: 8px 0 !important;
       padding: 0 !important;
+      border-radius: 6px !important;
     }
-
+    
+    /* 侧边栏链接样式（覆盖原生） */
+    .sidebar-list li a {
+      padding: 8px 12px !important;
+      color: var(--text-color) !important;
+      font-weight: 500 !important;
+      border-radius: 6px !important;
+      text-decoration: none !important;
+      display: block !important;
+      width: 100% !important;
+      transition: all 0.2s ease !important;
+      border-left: none !important; /* 移除原生蓝色边框 */
+    }
+    
+    /* 激活态样式 */
+    .sidebar-list li a.active,
+    .sidebar-nav li.active > a {
+      background: var(--theme-light) !important;
+      color: var(--theme-color) !important; 
+      font-weight: 600 !important; 
+      box-shadow: var(--shadow-sm) !important;
+    }
+    
+    /* hover 样式 */
+    .sidebar-list li a:hover:not(.active) {
+      background: #f8fafc !important;
+      color: var(--theme-hover) !important;
+    }
+    
+    /* 侧边栏图标 */
     .sidebar-icon {
       margin-right: 8px !important;
       font-size: 0.85rem !important;
       color: var(--text-light) !important;
       transition: all 0.2s ease !important;
     }
-
+    
     .sidebar-list li:hover .sidebar-icon {
       color: var(--theme-color) !important;
       transform: translateX(2px) !important;
     }
     
-    /* 内容区域样式（保留原有） */
+    /* ========== 内容区域样式（美化+正常渲染） ========== */
     .markdown-section { 
       max-width: 950px !important; 
       margin: 0 auto !important; 
       padding: 40px 30px 100px !important;
       background: #ffffff !important;
+      margin-left: 280px !important; /* 匹配侧边栏宽度 */
     }
     
     .markdown-section h1 { 
@@ -318,9 +327,17 @@
       border-top: 1px solid var(--border-color) !important;
     }
     
-    /* 响应式优化 */
+    /* ========== 响应式适配 ========== */
     @media (max-width: 768px) { 
+      .sidebar {
+        width: 100% !important;
+        position: relative !important;
+        border-right: none !important;
+        border-bottom: 1px solid var(--border-color) !important;
+      }
+      
       .markdown-section {
+        margin-left: 0 !important;
         padding: 25px 15px 80px !important;
       }
       
@@ -362,6 +379,7 @@
 
   <script>
     window.$docsify = {
+      // ========== 核心：修复路由+自动加载侧边栏 ==========
       basePath: 'https://raw.githubusercontent.com/alden888/v5md/main/blog/',
       encoding: 'utf-8',
       name: '<img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" style="height:40px;vertical-align:middle;margin-right:8px;">V5 Medical',
@@ -369,14 +387,15 @@
       repo: 'https://github.com/alden888/v5md',
       homepage: 'README.md',
       
+      // 关键：开启自动加载侧边栏，保留可维护性
       loadSidebar: true,
-      loadNavbar: true,
+      loadNavbar: false,
       subMaxLevel: 3,
       auto2top: true,
-      coverpage: true,
-      onlyCover: false,
+      coverpage: false,
       routerMode: 'hash',
       
+      // 搜索配置
       search: {
         maxAge: 86400000,
         paths: 'auto',
@@ -390,17 +409,20 @@
         `
       },
       
+      // 分页配置
       pagination: {
         previousText: '← Previous Strategy',
         nextText: 'Next Strategy →',
         crossChapter: true,
       },
       
+      // 代码复制功能
       copyCode: {
         buttonText: 'Copy',
         successText: '✓ Copied'
       },
       
+      // 插件：修复渲染+激活态+过滤垃圾代码
       plugins: [
         // 进度条逻辑
         function(hook) {
@@ -425,21 +447,28 @@
           });
         },
         
-        // 过滤垃圾代码
+        // 核心：修复 md 渲染（过滤垃圾代码+原始标记）
         function(hook) {
+          // 加载 md 前过滤：避免显示原始代码
           hook.beforeEach(function(content, url) {
-            if (url.endsWith('.md')) {
+            if (url && url.endsWith('.md')) {
               return content
+                // 过滤 Cloudflare 注入的垃圾代码
                 .replace(/<script[\s\S]*?<\/script>/gi, '') 
                 .replace(/<style[\s\S]*?<\/style>/gi, '')   
                 .replace(/tailwind\.config[\s\S]*?}/gi, '') 
                 .replace(/\{[\s\S]*?"context"[\s\S]*?\}/gi, '') 
-                .replace(/[\u0000-\u001F\u007F]/g, ''); 
+                .replace(/[\u0000-\u001F\u007F]/g, '')
+                // 过滤 md 原始标记（避免显示 ##/**/--- 等）
+                .replace(/^\*\*|^\#+/gm, '')
+                .replace(/^\-\-\-/gm, '')
+                .replace(/\*\*(.*?)\*\*/g, '$1') // 移除加粗标记，保留文本
+                .replace(/\*(.*?)\*/g, '$1'); // 移除斜体标记，保留文本
             }
             return content;
           });
 
-          // 添加 CTA 和页脚
+          // 渲染后添加 CTA 和页脚
           hook.afterEach(function(html) {
             const cta = `
               <div class="v5-cta-box">
@@ -464,11 +493,39 @@
             
             return html + cta + footer;
           });
+        },
+        
+        // 修复侧边栏激活态（兼容自动加载的 md 侧边栏）
+        function(hook) {
+          hook.ready(function() {
+            // 监听路由变化，设置激活态
+            window.$docsify.router.on('navigate', function(path) {
+              // 移除所有 active 类
+              document.querySelectorAll('.sidebar-list li a, .sidebar-nav li a').forEach(el => {
+                el.classList.remove('active');
+              });
+              // 给当前链接加 active 类（兼容 #/ 前缀）
+              const activeLink = document.querySelector(`.sidebar-list li a[href="#/${path}"]`) || 
+                                 document.querySelector(`.sidebar-nav li a[href="${path}"]`);
+              if (activeLink) {
+                activeLink.classList.add('active');
+              }
+            });
+            
+            // 初始加载时激活首页
+            setTimeout(() => {
+              const defaultLink = document.querySelector('.sidebar-list li a[href="#/README.md"]');
+              if (defaultLink) {
+                defaultLink.classList.add('active');
+              }
+            }, 500); // 延迟确保侧边栏加载完成
+          });
         }
       ]
     }
   </script>
 
+  <!-- docsify 核心脚本 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4" crossorigin="anonymous"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js" crossorigin="anonymous"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js" crossorigin="anonymous"></script>
@@ -478,4 +535,4 @@
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js" crossorigin="anonymous"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js" crossorigin="anonymous"></script>
 </body>
-</html>    
+</html>
