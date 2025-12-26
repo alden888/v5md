@@ -55,6 +55,10 @@
       <i class="fas fa-box-open sidebar-icon"></i> 
       <a href="#/posts/medical-packaging-supply.md">Tyvek & PETG Supply</a>
     </li>
+    <li>
+      <i class="fas fa-layer-group sidebar-icon"></i> 
+      <a href="#/posts/suture-material-comparison.md">PGA vs PGLA vs PDO Guide</a>
+    </li>
   </ul>
 </div>
 
