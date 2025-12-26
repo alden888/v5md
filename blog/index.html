@@ -37,7 +37,7 @@
     }
 
     /* =========================================
-       2. 页眉布局 (修正版：防止重叠)
+       2. 页眉布局 (Final Fix)
        ========================================= */
     #v5-header {
       position: fixed;
@@ -56,14 +56,15 @@
       background: linear-gradient(to right, #eff6ff, #2563eb, #1e3a8a);
     }
 
-    /* 容器布局：Flexbox */
+    /* 容器布局：标准 Flex 起始对齐 */
     .header-container {
       position: relative;
       width: 100%;
-      max-width: 1320px; /* 稍微加宽，给内容更多空间 */
-      padding: 0 24px;
+      max-width: 1400px; /* 加宽容器，给内容更多呼吸空间 */
+      padding: 0 30px;
       display: flex;
-      align-items: center; /* 垂直居中 */
+      align-items: center; 
+      justify-content: flex-start; /* 关键：强制从左开始排列 */
       height: 100%;
       margin: 0 auto;
     }
@@ -75,20 +76,21 @@
       gap: 12px;
       text-decoration: none;
       z-index: 10;
-      flex-shrink: 0; /* 防止被挤压 */
+      flex-shrink: 0; 
     }
     .header-logo img { height: 40px; width: auto; }
     .logo-text { display: flex; flex-direction: column; }
     .brand-name { font-size: 1.25rem; font-weight: 800; color: #1e3a8a; line-height: 1; }
     .brand-tag { font-size: 0.65rem; color: #1d4ed8; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
 
-    /* 导航菜单 (核心修正：左移) */
+    /* 导航菜单 (核心修正：固定左间距) */
     .header-nav { 
       display: flex; 
       gap: 32px; 
-      margin-left: 60px; /* 修正：给 Logo 留出固定间距，不再靠右 */
+      margin-left: 60px; /* 关键：给 Logo 留出固定间距 */
+      margin-right: 0;   /* 关键：防止被右边推挤 */
       z-index: 10;
-      flex-grow: 1; /* 占据中间空间 */
+      flex-shrink: 0;    /* 关键：禁止被压缩 */
     }
     .nav-link {
       text-decoration: none;
@@ -98,19 +100,19 @@
       transition: color 0.2s;
       position: relative;
       padding-bottom: 2px;
-      white-space: nowrap; /* 防止换行 */
+      white-space: nowrap; 
     }
     .nav-link:hover { color: #ffffff; }
     .nav-link.active { color: #ffffff; font-weight: 700; border-bottom: 2px solid #93c5fd; }
 
-    /* 右侧按钮区 (核心修正：靠右) */
+    /* 右侧按钮区 (核心修正：自动左边距) */
     .header-actions { 
       display: flex; 
       align-items: center; 
       gap: 16px; 
-      margin-left: auto; /* 修正：强制靠最右边 */
+      margin-left: auto; /* 关键：这行代码会把按钮区推到最右边 */
       z-index: 10;
-      flex-shrink: 0; /* 防止被挤压 */
+      flex-shrink: 0;
     }
     
     /* WhatsApp 按钮 */
@@ -120,7 +122,7 @@
       gap: 8px;
       background-color: #22c55e;
       color: white;
-      padding: 8px 20px;
+      padding: 8px 24px;
       border-radius: 9999px;
       font-weight: 600;
       font-size: 0.9rem;
@@ -128,7 +130,7 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       transition: all 0.2s;
       border: 1px solid rgba(255,255,255,0.2);
-      white-space: nowrap; /* 防止换行 */
+      white-space: nowrap;
     }
     .btn-whatsapp:hover { background-color: #16a34a; transform: translateY(-1px); }
 
@@ -153,14 +155,21 @@
       z-index: 10;
     }
 
-    /* 移动端适配 */
-    @media (max-width: 1024px) { /* 平板尺寸就开始隐藏导航，防止拥挤 */
+    /* 移动端适配 (重要修正：提前隐藏导航) */
+    @media (max-width: 1100px) { /* 当宽度小于 1100px 时就隐藏导航，防止重叠 */
       .header-nav { display: none; }
       .mobile-menu-btn { display: block; }
-      .btn-whatsapp span { display: none; } /* 窄屏隐藏文字 */
-      .btn-whatsapp { padding: 8px; width: 36px; height: 36px; justify-content: center; border-radius: 50%; }
+      
+      /* 移动端调整 Google 翻译位置 */
       #google_translate_element { top: 24px !important; right: 60px !important; }
       .goog-te-gadget-simple { max-width: 40px !important; overflow: hidden; }
+    }
+    
+    /* 小屏幕额外调整 */
+    @media (max-width: 640px) {
+      .btn-whatsapp span { display: none; } /* 只留图标 */
+      .btn-whatsapp { padding: 8px; width: 36px; height: 36px; justify-content: center; border-radius: 50%; }
+      .header-container { padding: 0 15px; }
     }
 
     /* 移动端下拉菜单 */
@@ -195,7 +204,7 @@
     .sidebar-toggle { top: 95px !important; left: 20px !important; background: transparent !important; color: #1e40af !important; }
 
     /* =========================================
-       4. 内容区样式 (美化)
+       4. 内容区样式
        ========================================= */
     .markdown-section { 
       max-width: 960px; 
