@@ -14,6 +14,7 @@
 * **📦 Product Tech Specs**
   * [Surgical Sutures: Material Guide](posts/suture-guide.md)
   * [Sterile Packaging Standards](posts/sterile-packaging.md)
+  * [Tyvek & PETG Supply](posts/medical-packaging-supply.md)
 
 * **🔙 Back to Main Site**
   * [Visit V5MD.com](/)
