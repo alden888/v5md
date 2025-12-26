@@ -19,6 +19,10 @@
       <i class="fas fa-balance-scale-right sidebar-icon"></i> 
       <a href="#/posts/supply-chain-2025.md">Factory vs. Trading vs. Integrator</a>
     </li>
+    <li>
+      <i class="fas fa-clipboard-check sidebar-icon"></i> 
+      <a href="#/posts/supplier-verification.md">How to Audit a Chinese Factory</a>
+    </li>
   </ul>
 </div>
 
