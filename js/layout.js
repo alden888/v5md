@@ -2,7 +2,7 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 4.7.2 (Final Golden Master: Security Hardening & Accessibility)
+ * @version 4.7.3 (Milestone: Capability Statement Integration & Docsify Support)
  * @updated 2024-12-25
  */
 
@@ -25,7 +25,7 @@ const V5Layout = (() => {
             this.renderFooter();
             this.renderFloatingElements();
             window.dispatchEvent(new Event('v5-layout-ready'));
-            console.log('[Layout] Initialized v4.7.2 (Secure Mode)');
+            console.log('[Layout] Initialized v4.7.3 (Capability Statement Ready)');
         }
 
         injectStyles() {
@@ -58,7 +58,7 @@ const V5Layout = (() => {
                 { id: 'home', href: 'index.html', txt: 'Home' },
                 { id: 'about', href: 'about.html', txt: 'About Us' },
                 { id: 'catalog', href: 'catalog.html', txt: 'Products' },
-                { id: 'blog', href: 'blog.html', txt: 'Blog' },
+                { id: 'blog', href: '/blog/', txt: 'Blog' }, // Points to Docsify directory
                 { id: 'contact', href: 'contact.html', txt: 'Contact' }
             ];
 
@@ -218,7 +218,7 @@ const V5Layout = (() => {
                                     <li><a href="catalog.html" class="hover:text-white transition block">Product Catalog</a></li>
                                     <li><a href="about.html" class="hover:text-white transition block">Our Structure</a></li>
                                     <li><a href="contact.html" class="hover:text-white transition block">Contact Teams</a></li>
-                                    <li><a href="blog.html" class="hover:text-white transition block">Industry Insights</a></li>
+                                    <li><a href="/blog/" class="hover:text-white transition block">Industry Insights</a></li>
                                 </ul>
                             </div>
                             
