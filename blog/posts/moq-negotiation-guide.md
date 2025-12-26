@@ -553,5 +553,3 @@ By mastering MOQ negotiations, medical device companies can gain a competitive a
 ***
 
 *This article was developed by the V5 Medical Procurement Team, drawing on years of experience in medical device sourcing and supplier management. For more information on our procurement best practices, please contact our supply chain department.*
-
-> （注：文档部分内容可能由 AI 生成）
