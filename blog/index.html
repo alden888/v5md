@@ -77,7 +77,7 @@
     .header-logo {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 24px; /* 优化：增加logo和文字之间的间距，从12px改为24px，与主站保持一致 */
       text-decoration: none;
       position: relative;
       z-index: 10;
@@ -255,6 +255,7 @@
       .btn-whatsapp span { display: none; } /* 手机端只显示图标 */
       .btn-whatsapp { padding: 8px; }
       .brand-tag { display: none; }
+      .header-logo { gap: 16px; } /* 移动端适当减小间距 */
     }
 
     /* =========================================
