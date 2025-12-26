@@ -2,134 +2,289 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>V5 Medical Insights | Supply Chain & Compliance Knowledge Hub</title>
+  <title>V5 Medical Knowledge Hub | Supply Chain Intelligence</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Expert insights on medical supply chain management, ISO 13485 compliance, and global procurement strategies.">
+  <meta name="description" content="Expert insights on medical supply chain management, ISO 13485 compliance, and global sourcing strategies from V5 Medical LTD.">
+  <meta name="keywords" content="medical supply chain, ISO 13485, regulatory compliance, China medical sourcing, B2B medical insights">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  
+  <!-- SEO -->
+  <link rel="canonical" href="https://v5md.com/blog/">
+  <meta property="og:title" content="V5 Medical Knowledge Hub">
+  <meta property="og:description" content="Professional insights for medical buyers and distributors">
+  <meta property="og:url" content="https://v5md.com/blog/">
+  <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png">
   
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   
   <style>
-    /* V5 Brand Colors */
     :root {
-      --theme-color: #1e40af; /* V5 Blue */
+      --theme-color: #1e40af;
       --text-color: #334155;
+      --sidebar-width: 280px;
     }
     
-    body { color: var(--text-color); font-family: 'Segoe UI', Helvetica, Arial, sans-serif; }
+    /* ===== 1. Global Styles ===== */
+    body { 
+      font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif; 
+      color: var(--text-color);
+    }
     
-    /* Sidebar Polish */
-    .sidebar { background-color: #f8fafc; border-right: 1px solid #e2e8f0; }
-    .sidebar-nav li.active > a { border-right: 3px solid var(--theme-color); color: var(--theme-color); font-weight: 700; background: #eff6ff; }
-    .sidebar-nav > ul > li > a { font-weight: 600; color: #1e293b; }
+    /* ===== 2. Sidebar Enhancement ===== */
+    .sidebar { 
+      background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+      border-right: 1px solid #e2e8f0;
+    }
+    .sidebar-nav > ul > li > a { 
+      font-weight: 600; 
+      color: #1e293b;
+      transition: all 0.2s;
+    }
+    .sidebar-nav li.active > a { 
+      border-right: 3px solid var(--theme-color); 
+      color: var(--theme-color); 
+      font-weight: 700; 
+      background: #eff6ff;
+      padding-right: 10px;
+    }
+    .sidebar-nav a:hover {
+      color: var(--theme-color);
+      padding-left: 8px;
+    }
     
-    /* Content Area */
-    .markdown-section { max-width: 900px; margin: 0 auto; padding-bottom: 60px; }
-    .markdown-section h1 { color: #1e3a8a; font-size: 2.2rem; }
-    .markdown-section h2 { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 40px; }
-    .markdown-section blockquote { border-left: 4px solid var(--theme-color); background: #f1f5f9; color: #475569; }
+    /* ===== 3. Content Area ===== */
+    .markdown-section { 
+      max-width: 900px; 
+      margin: 0 auto; 
+      padding: 30px 20px 80px;
+    }
+    .markdown-section h1 { 
+      color: #1e3a8a; 
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .markdown-section h2 { 
+      border-bottom: 2px solid #e5e7eb; 
+      padding-bottom: 12px; 
+      margin-top: 48px;
+      color: #1e40af;
+      font-weight: 700;
+    }
+    .markdown-section blockquote { 
+      border-left: 4px solid var(--theme-color); 
+      background: #f1f5f9; 
+      color: #475569;
+      padding: 15px 20px;
+      margin: 24px 0;
+      font-style: italic;
+    }
     
-    /* Custom CTA Box in Articles */
-    .v5-article-cta {
-      margin-top: 50px;
-      padding: 30px;
-      background: #f0f9ff;
-      border: 1px solid #bae6fd;
-      border-radius: 8px;
+    /* ===== 4. Professional CTA Box ===== */
+    .v5-cta-box {
+      margin: 50px 0;
+      padding: 40px;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border: 2px solid #93c5fd;
+      border-radius: 12px;
       text-align: center;
+      box-shadow: 0 4px 15px rgba(30, 64, 175, 0.1);
+    }
+    .v5-cta-box h3 {
+      color: #1e3a8a;
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .v5-cta-box p {
+      color: #475569;
+      font-size: 1rem;
+      margin-bottom: 24px;
+      line-height: 1.6;
     }
     .v5-btn {
       display: inline-block;
-      background-color: #1e40af;
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
       color: white !important;
-      padding: 10px 25px;
+      padding: 12px 32px;
       border-radius: 50px;
       text-decoration: none !important;
-      font-weight: bold;
-      margin-top: 15px;
-      transition: background 0.3s;
+      font-weight: 700;
+      margin: 8px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+      font-size: 0.95rem;
     }
-    .v5-btn:hover { background-color: #1e3a8a; }
+    .v5-btn:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+    }
+    .v5-btn-secondary {
+      background: white !important;
+      color: #1e40af !important;
+      border: 2px solid #3b82f6;
+    }
+    .v5-btn-secondary:hover {
+      background: #f0f9ff !important;
+    }
+    
+    /* ===== 5. Reading Progress Bar ===== */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #1e40af, #3b82f6, #60a5fa);
+      z-index: 9999;
+      transition: width 0.2s;
+    }
+    
+    /* ===== 6. Mobile Optimization ===== */
+    @media (max-width: 768px) {
+      .markdown-section h1 { font-size: 1.8rem; }
+      .v5-cta-box { padding: 24px; }
+      .v5-btn { 
+        display: block; 
+        margin: 8px 0;
+        width: 100%;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <div id="app">Loading V5 Industry Insights...</div>
+  <!-- Reading Progress Bar -->
+  <div id="progress-bar"></div>
+  
+  <div id="app">🚀 Loading V5 Medical Knowledge Hub...</div>
 
   <script>
     window.$docsify = {
-      name: 'V5 Medical',
-      nameLink: '/', // Click logo to go to main website home
+      // ===== Core Config =====
+      name: '<img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" style="height:40px;vertical-align:middle;margin-right:8px;">V5 Medical',
+      nameLink: 'https://v5md.com',
+      repo: 'https://github.com/alden888/v5md',
+      homepage: 'README.md',
       
-      // --- Navigation ---
+      // ===== Navigation =====
       loadSidebar: true,
       loadNavbar: true,
-      subMaxLevel: 2,
+      subMaxLevel: 3,
       auto2top: true,
       
-      // --- SEO & UX ---
-      // Auto change page title based on header
-      routerMode: 'hash', 
+      // ===== Cover Page =====
+      coverpage: true,
+      onlyCover: false,
       
-      // --- Search ---
+      // ===== Search =====
       search: {
-        maxAge: 86400000, 
+        maxAge: 86400000,
         paths: 'auto',
         placeholder: 'Search insights...',
         noData: 'No results found.',
-        depth: 3
+        depth: 6,
+        hideOtherSidebarContent: false,
       },
-
-      // --- Pagination ---
+      
+      // ===== Pagination =====
       pagination: {
-        previousText: 'Previous Strategy',
-        nextText: 'Next Strategy',
+        previousText: '← Previous Strategy',
+        nextText: 'Next Strategy →',
         crossChapter: true,
         crossChapterText: true,
       },
-
-      // --- Word Count ---
-      count:{
-        countable:true,
-        fontsize:'0.9em',
-        color:'rgb(90,90,90)',
-        language:'english'
+      
+      // ===== Copy Code =====
+      copyCode: {
+        buttonText: 'Copy',
+        errorText: 'Error',
+        successText: '✓ Copied'
       },
-
-      // --- CUSTOM PLUGINS ---
+      
+      // ===== Custom Plugins =====
       plugins: [
-        function(hook, vm) {
-          // 1. Dynamic Footer with CTA on every page
+        // 1. Professional CTA Injection
+        function(hook) {
           hook.afterEach(function(html) {
-            var cta = `
-              <div class="v5-article-cta">
-                <h3>Ready to optimize your medical supply chain?</h3>
-                <p>Contact our strategic sourcing team for a consultation on ISO 13485 compliance and logistics integration.</p>
-                <a href="/contact.html" class="v5-btn">Request a Quote</a>
-                <a href="/pdf/V5_Medical_Capability_Statement.pdf" target="_blank" style="margin-left:15px; color:#1e40af; font-size:0.9em;">Download Capability Statement</a>
+            const cta = `
+              <div class="v5-cta-box">
+                <h3>🎯 Ready to Optimize Your Supply Chain?</h3>
+                <p>Download our <strong>Capability Statement</strong> or speak with our strategic sourcing experts about ISO 13485 compliance and logistics integration.</p>
+                <a href="https://v5md.com/pdf/V5_Medical_Capability_Statement.pdf" target="_blank" class="v5-btn">
+                  <i class="fas fa-file-shield"></i> Download Capability Statement
+                </a>
+                <a href="https://v5md.com/contact.html" class="v5-btn v5-btn-secondary">
+                  <i class="fas fa-comments"></i> Request Consultation
+                </a>
+                <a href="https://wa.me/447895047944?text=I'm interested in V5 Medical's supply chain solutions" target="_blank" class="v5-btn" style="background:linear-gradient(135deg,#10b981,#34d399);">
+                  <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
+                </a>
               </div>
             `;
             
-            var footer = `
-              <hr style="margin-top: 50px;"/>
-              <footer style="text-align: center; color: #64748b; font-size: 0.85rem; margin-top: 20px;">
-                <span>&copy; 2025 V5 Medical LTD. All rights reserved.</span>
-                <br/>
-                <span>Operating under ISO 13485 Quality Framework.</span>
+            const footer = `
+              <hr style="margin-top: 60px; border: none; border-top: 2px solid #e5e7eb;"/>
+              <footer style="text-align: center; padding: 30px 0; color: #64748b; font-size: 0.85rem;">
+                <p style="margin-bottom: 8px;">&copy; 2025 <strong>V5 Medical LTD</strong> | Operating Under ISO 13485 Quality Framework</p>
+                <p style="margin-top: 12px; font-size: 0.8rem; opacity: 0.8;">
+                  <a href="https://v5md.com" style="color: #3b82f6; margin: 0 8px;">Main Website</a> •
+                  <a href="https://v5md.com/contact.html" style="color: #3b82f6; margin: 0 8px;">Contact</a> •
+                  <a href="https://v5md.com/privacy.html" style="color: #3b82f6; margin: 0 8px;">Privacy</a>
+                </p>
               </footer>
             `;
             return html + cta + footer;
           });
+        },
+        
+        // 2. Reading Progress Bar
+        function(hook) {
+          hook.doneEach(function() {
+            const progressBar = document.getElementById('progress-bar');
+            window.addEventListener('scroll', function() {
+              const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+              const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+              const progress = (scrollTop / scrollHeight) * 100;
+              progressBar.style.width = progress + '%';
+            });
+          });
         }
-      ]
+      ],
+      
+      // ===== Markdown Config =====
+      markdown: {
+        smartypants: true,
+      },
+      
+      // ===== Misc =====
+      notFoundPage: true,
+      executeScript: true,
+      noEmoji: false,
+      mergeNavbar: true,
+      formatUpdated: '{YYYY}-{MM}-{DD}',
+      externalLinkTarget: '_blank',
     }
   </script>
 
+  <!-- Docsify Core -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  
+  <!-- Plugins -->
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-count/dist/countable.min.js"></script>
+  
+  <!-- Syntax Highlighting -->
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+  
+  <!-- Emoji Support -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 </body>
 </html>
