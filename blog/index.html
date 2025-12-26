@@ -40,23 +40,20 @@
   window.$docsify = {
     name: '<img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" style="height:36px;vertical-align:middle;margin-right:8px;">V5 Medical',
     nameLink: 'https://v5md.com',
-
     repo: 'https://github.com/alden888/v5md',
 
-    // ✅ 关键：子目录部署只用这个
+    // ✅ 核心修复1：强制指定 UTF-8 编码解析 Markdown 文件
+    encoding: 'utf-8',
+    // ✅ 核心修复2：子目录部署基础路径（保留）
     basePath: '/blog/',
-
-    // ❌ 必须关掉
-    relativePath: false,
+    // ✅ 核心修复3：移除 relativePath 配置（默认值为 true，避免绝对路径冲突）
+    // relativePath: false, 
 
     homepage: 'README.md',
-
     loadSidebar: true,
     loadNavbar: true,
-
     subMaxLevel: 3,
     auto2top: true,
-
     routerMode: 'hash',
 
     search: {
@@ -75,19 +72,28 @@
     copyCode: {
       buttonText: 'Copy',
       successText: '✓ Copied'
+    },
+
+    // ✅ 核心修复4：添加钩子函数，确保渲染内容干净（过滤不可见字符）
+    hooks: {
+      afterEach: function(html) {
+        // 过滤 Markdown 渲染后的不可见控制字符，避免排版错乱
+        const cleanHtml = html.replace(/[\u0000-\u001F\u007F]/g, '');
+        return cleanHtml;
+      }
     }
   }
-</script>
+  </script>
 
-
+  <!-- ✅ 核心修复5：调整插件加载顺序，添加跨域兼容（解决 preload 警告） -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js" crossorigin="anonymous"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js" crossorigin="anonymous"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js" crossorigin="anonymous"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js" crossorigin="anonymous"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js" crossorigin="anonymous"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js" crossorigin="anonymous"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js" crossorigin="anonymous"></script>
 
 </body>
 </html>
