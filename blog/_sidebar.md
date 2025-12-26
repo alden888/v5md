@@ -23,7 +23,11 @@
       <i class="fas fa-clipboard-check sidebar-icon"></i> 
       <a href="#/posts/supplier-verification.md">How to Audit a Chinese Factory</a>
     </li>
-    </ul>
+    <li>
+      <i class="fas fa-handshake sidebar-icon"></i> 
+      <a href="#/posts/moq-negotiation-guide.md">MOQ Negotiation Strategies</a>
+    </li>
+  </ul>
 </div>
 
 <div class="sidebar-category">
