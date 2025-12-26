@@ -36,13 +36,11 @@
     }
 
     /* =========================================
-       2. 页眉布局 (深蓝渐变 + 白字)
+       2. 页眉布局 (Flexbox 稳定版)
        ========================================= */
     #v5-header {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
+      top: 0; left: 0; width: 100%;
       height: var(--header-height);
       z-index: 1000;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
@@ -54,7 +52,7 @@
       background: linear-gradient(to right, #eff6ff, #2563eb, #1e3a8a);
     }
 
-    /* 容器布局 */
+    /* 容器布局：左对齐，不留余地 */
     .header-container {
       position: relative;
       width: 100%;
@@ -62,7 +60,7 @@
       padding: 0 30px;
       display: flex;
       align-items: center; 
-      justify-content: flex-start !important; /* 强制左对齐 */
+      justify-content: flex-start !important; /* 强制从左开始排 */
       height: 100%;
       margin: 0 auto;
     }
@@ -75,40 +73,31 @@
       text-decoration: none !important;
       z-index: 10;
       flex-shrink: 0; 
-      margin-right: 0 !important;
+      margin-right: 50px !important; /* Logo 右侧留出 50px 给导航 */
     }
     .header-logo img { height: 40px; width: auto; }
     .logo-text { display: flex; flex-direction: column; }
     
-    /* 🎨 强制白色文字 */
     .brand-name { 
-      font-size: 1.25rem; 
-      font-weight: 800; 
-      color: #ffffff !important; 
-      line-height: 1; 
-      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      font-size: 1.25rem; font-weight: 800; color: #ffffff !important; 
+      line-height: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     .brand-tag { 
-      font-size: 0.65rem; 
-      color: #bfdbfe !important; 
-      font-weight: 700; 
-      text-transform: uppercase; 
-      margin-top: 2px; 
+      font-size: 0.65rem; color: #bfdbfe !important; font-weight: 700; 
+      text-transform: uppercase; margin-top: 2px; 
     }
 
-    /* 导航菜单 (强制白字) */
+    /* 🎯 导航菜单 (左侧跟随) */
     .header-nav { 
       display: flex; 
       gap: 32px; 
-      margin-left: 50px !important;  /* 距离 Logo 50px */
-      margin-right: auto !important; /* 核心：推开右侧按钮 */
       z-index: 10;
       flex-shrink: 0; 
     }
     
     .nav-link {
       text-decoration: none !important;
-      color: #e2e8f0 !important; /* 默认灰白 */
+      color: #e2e8f0 !important;
       font-weight: 500;
       font-size: 0.95rem;
       transition: all 0.2s;
@@ -116,69 +105,48 @@
       padding-bottom: 4px;
       white-space: nowrap; 
     }
-    .nav-link:hover { 
-      color: #ffffff !important; 
-      text-shadow: 0 0 8px rgba(255,255,255,0.4); 
-    }
+    .nav-link:hover { color: #ffffff !important; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
     .nav-link.active { 
-      color: #ffffff !important; 
-      font-weight: 700; 
+      color: #ffffff !important; font-weight: 700; 
       border-bottom: 2px solid #ffffff !important; 
     }
 
-    /* 右侧按钮区 */
+    /* 🎯 右侧按钮区 (强制推向最右) */
     .header-actions { 
       display: flex; 
       align-items: center; 
       gap: 16px; 
-      margin-left: 0 !important; 
+      margin-left: auto !important; /* 关键：占据剩余空间，推向最右 */
       z-index: 10;
       flex-shrink: 0;
     }
     
-    /* WhatsApp 按钮 */
     .btn-whatsapp {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background-color: #22c55e;
-      color: white !important;
-      padding: 8px 24px;
-      border-radius: 9999px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      text-decoration: none !important;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      transition: all 0.2s;
-      border: 1px solid rgba(255,255,255,0.3);
-      white-space: nowrap;
+      display: flex; align-items: center; gap: 8px;
+      background-color: #22c55e; color: white !important;
+      padding: 8px 24px; border-radius: 9999px;
+      font-weight: 600; font-size: 0.9rem; text-decoration: none !important;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: all 0.2s;
+      border: 1px solid rgba(255,255,255,0.3); white-space: nowrap;
     }
     .btn-whatsapp:hover { background-color: #16a34a; transform: translateY(-1px); }
 
     /* Google 翻译 */
     #google_translate_element {
-      position: fixed !important;
-      top: 22px !important;
-      right: 20px !important;
-      z-index: 2000 !important;
+      position: fixed !important; top: 22px !important; right: 20px !important; z-index: 2000 !important;
     }
     .goog-te-banner-frame { display: none !important; }
     body { top: 0px !important; } 
 
     /* 移动端菜单按钮 */
     .mobile-menu-btn {
-      display: none;
-      color: white !important;
-      background: transparent;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      z-index: 10;
+      display: none; color: white !important; background: transparent;
+      border: none; font-size: 1.5rem; cursor: pointer; z-index: 10;
     }
 
     /* 移动端适配 */
     @media (max-width: 1100px) {
-      .header-nav { display: none !important; }
+      .header-nav { display: none !important; } /* 屏幕窄时隐藏文字导航 */
       .mobile-menu-btn { display: block; }
       #google_translate_element { top: 24px !important; right: 60px !important; }
       .goog-te-gadget-simple { max-width: 40px !important; overflow: hidden; }
@@ -190,48 +158,59 @@
       .header-container { padding: 0 15px; }
     }
 
-    /* 移动端下拉菜单 (保持白底深字) */
+    /* 移动端下拉菜单 */
     .mobile-menu {
-      display: none;
-      position: fixed;
-      top: 80px; left: 0; width: 100%;
-      background: white;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-      z-index: 999;
-      border-top: 1px solid #e2e8f0;
+      display: none; position: fixed; top: 80px; left: 0; width: 100%;
+      background: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      z-index: 999; border-top: 1px solid #e2e8f0;
     }
     .mobile-menu.active { display: block; }
     .mobile-menu .nav-link {
-      display: block;
-      color: #334155 !important; /* 移动端下拉里还是深色好读 */
-      padding: 12px 24px;
+      display: block; color: #334155 !important; padding: 12px 24px;
       border-bottom: 1px solid #f1f5f9 !important;
     }
     .mobile-menu .nav-link.active { color: #1e40af !important; background: #eff6ff; }
 
     /* =========================================
-       3. Docsify 布局适配
+       3. 文章头部美化 (Front Matter)
+       ========================================= */
+    .article-header {
+      margin-bottom: 40px; text-align: center;
+      padding-bottom: 20px; border-bottom: 1px solid #e2e8f0;
+    }
+    .article-title {
+      font-size: 2.2rem !important; color: #1e3a8a !important;
+      margin-bottom: 15px !important; font-weight: 800 !important;
+      border: none !important;
+    }
+    .article-meta {
+      display: flex; justify-content: center; gap: 20px;
+      color: #64748b; font-size: 0.9rem; flex-wrap: wrap;
+    }
+    .meta-item { display: flex; align-items: center; gap: 6px; }
+    .meta-category {
+      color: #2563eb; background: #eff6ff; padding: 2px 10px;
+      border-radius: 12px; font-weight: 600; font-size: 0.8rem;
+    }
+    .article-description {
+      font-size: 1.1rem !important; color: #475569 !important;
+      max-width: 800px; margin: 20px auto 0 !important;
+      line-height: 1.6 !important; font-style: italic;
+    }
+
+    /* =========================================
+       4. Docsify 布局与内容区
        ========================================= */
     .sidebar {
-      top: var(--header-height) !important;
-      padding-top: 20px !important;
-      background-color: #fff;
-      border-right: 1px solid #f1f5f9;
-      z-index: 900;
+      top: var(--header-height) !important; padding-top: 20px !important;
+      background-color: #fff; border-right: 1px solid #f1f5f9; z-index: 900;
     }
     .sidebar-toggle { top: 95px !important; left: 20px !important; background: transparent !important; color: #1e40af !important; }
 
-    /* =========================================
-       4. 内容区样式
-       ========================================= */
     .markdown-section { 
-      max-width: 960px; 
-      margin: 0 auto; 
-      padding: 40px 40px 100px; 
-      background: #fff;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-      border-radius: 8px;
-      min-height: calc(100vh - 120px);
+      max-width: 960px; margin: 0 auto; padding: 40px 40px 100px; 
+      background: #fff; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+      border-radius: 8px; min-height: calc(100vh - 120px);
     }
     .v5-cta-box { margin: 60px 0; padding: 40px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; text-align: center; }
     .v5-btn { display: inline-block; background: #1e40af; color: white !important; padding: 12px 30px; border-radius: 50px; font-weight: 600; text-decoration: none; margin: 5px; }
@@ -314,19 +293,58 @@
         depth: 6,
       },
       plugins: [
+        // 插件1：Front Matter 解析 + 垃圾代码过滤
         function(hook) {
           hook.beforeEach(function(content, url) {
+            // 1. 提取 YAML Front Matter
+            const yamlMatch = content.match(/^---\n([\s\S]+?)\n---/);
+            let headerHtml = '';
+            let cleanContent = content;
+
+            if (yamlMatch) {
+              const yamlStr = yamlMatch[1];
+              const frontMatter = {};
+              yamlStr.split('\n').forEach(line => {
+                const parts = line.split(':');
+                if (parts.length >= 2) {
+                  const key = parts[0].trim();
+                  let value = parts.slice(1).join(':').trim();
+                  value = value.replace(/^['"](.*)['"]$/, '$1'); 
+                  frontMatter[key] = value;
+                }
+              });
+
+              // 生成漂亮的头部
+              headerHtml = `
+                <div class="article-header">
+                  <h1 class="article-title">${frontMatter.title || 'Untitled'}</h1>
+                  <div class="article-meta">
+                    ${frontMatter.author ? `<span class="meta-item"><i class="fas fa-user-circle"></i> ${frontMatter.author}</span>` : ''}
+                    ${frontMatter.date ? `<span class="meta-item"><i class="far fa-calendar-alt"></i> ${frontMatter.date}</span>` : ''}
+                    ${frontMatter.category ? `<span class="meta-item meta-category"><i class="fas fa-folder-open"></i> ${frontMatter.category}</span>` : ''}
+                  </div>
+                  ${frontMatter.description ? `<p class="article-description">${frontMatter.description}</p>` : ''}
+                </div>
+              `;
+              // 移除原始 YAML
+              cleanContent = content.replace(/^---\n[\s\S]+?\n---/, '');
+            }
+
+            // 2. 过滤 Cloudflare 垃圾代码
             if (url && url.endsWith('.md')) {
-              return content
+              cleanContent = cleanContent
                 .replace(/<script[\s\S]*?<\/script>/gi, '') 
                 .replace(/<style[\s\S]*?<\/style>/gi, '')   
                 .replace(/[\u0000-\u001F\u007F]/g, '')
                 .replace(/^\*\*|^\#+/gm, '') 
                 .replace(/^\-\-\-/gm, '');
             }
-            return content;
+            
+            // 将生成的头部插入到内容最前面
+            return headerHtml + cleanContent;
           });
           
+          // 插件2：CTA 注入
           hook.afterEach(function(html) {
             return html + `
               <div class="v5-cta-box">
@@ -341,6 +359,7 @@
             `;
           });
         },
+        // 插件3：侧边栏激活修复
         function(hook) {
           hook.ready(function() {
             window.$docsify.router.on('navigate', function(path) {
@@ -365,7 +384,6 @@
 
         newBtn.addEventListener('click', (e) => {
           e.stopPropagation();
-          const isHidden = mobileMenu.classList.contains('hidden');
           mobileMenu.classList.toggle('active');
           const isActive = mobileMenu.classList.contains('active');
           if (isActive) {
