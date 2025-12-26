@@ -8,8 +8,7 @@ We don't just deliver products — we deliver **clarity** in a complex market.
 
 ## 🎯 What Makes This Different?
 
-Most medical suppliers publish "news" like *"We shipped 3 containers to Lagos!"*  
-V5 Medical publishes **strategic insights** that help you make better sourcing decisions.
+Most medical suppliers publish "news" like *"We shipped 3 containers to Lagos!"* V5 Medical publishes **strategic insights** that help you make better sourcing decisions.
 
 ### 📚 Explore by Topic
 
@@ -32,6 +31,7 @@ Navigate ISO 13485, CE marking, and EU MDR with confidence.
 #### 📦 **Product Technical Specs**
 Deep dives into medical device materials and standards.
 
+- **[Medical Packaging Materials: Tyvek & PETG](posts/medical-packaging-supply.md)** *High-quality bulk supply for sterile packaging lines. Optimized for heat-sealing stability.*
 - [Surgical Sutures: Material Comparison Guide](posts/suture-guide.md)  
   *PGA vs PGLA vs PDO — tensile strength, absorption rates, clinical uses*
 
