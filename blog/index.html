@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>V5 Medical Knowledge Hub | Supply Chain Intelligence</title>
+  <title>V5 Medical Knowledge Hub</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   
@@ -12,23 +12,46 @@
   <meta property="og:url" content="https://v5md.com/blog/">
   <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png">
   
+  <!-- 预加载关键资源 -->
+  <link rel="preconnect" href="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- 引入 Inter 字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+  
+  <!-- 外部资源 -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+  
   <style>
-    /* 保持原有的美化样式 */
     :root { --theme-color: #1e40af; --text-color: #334155; }
     body { font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif; color: var(--text-color); }
+    
+    /* 侧边栏样式 */
     .sidebar { background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%); border-right: 1px solid #e2e8f0; }
     .sidebar-nav li.active > a { border-right: 3px solid var(--theme-color); color: var(--theme-color); font-weight: 700; background: #eff6ff; }
+    
+    /* 内容区域样式 */
     .markdown-section { max-width: 900px; margin: 0 auto; padding: 30px 20px 80px; }
     .markdown-section h1 { color: #1e3a8a; font-weight: 800; }
     .markdown-section h2 { border-bottom: 2px solid #e5e7eb; padding-bottom: 12px; margin-top: 48px; color: #1e40af; }
+    
+    /* CTA 框样式 */
     .v5-cta-box { margin: 50px 0; padding: 40px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #93c5fd; border-radius: 12px; text-align: center; }
-    .v5-btn { display: inline-block; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white !important; padding: 12px 32px; border-radius: 50px; text-decoration: none !important; font-weight: 700; margin: 8px; }
+    .v5-btn { display: inline-block; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white !important; padding: 12px 32px; border-radius: 50px; text-decoration: none !important; font-weight: 700; margin: 8px; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .v5-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3); }
     .v5-btn-secondary { background: white !important; color: #1e40af !important; border: 2px solid #3b82f6; }
-    #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #1e40af, #3b82f6, #60a5fa); z-index: 9999; transition: width 0.2s; }
-    @media (max-width: 768px) { .v5-btn { display: block; width: 100%; } }
+    
+    /* 进度条样式 */
+    #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #1e40af, #3b82f6, #60a5fa); z-index: 9999; transition: width 0.2s; width: 0; }
+    
+    /* 响应式调整 */
+    @media (max-width: 768px) { 
+      .v5-btn { display: block; width: 100%; margin: 8px 0; } 
+      .markdown-section { padding: 20px 15px 60px; }
+    }
   </style>
 </head>
 
@@ -37,56 +60,115 @@
   <div id="app">🚀 Loading V5 Medical Knowledge Hub...</div>
 
   <script>
-  window.$docsify = {
-    name: '<img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" style="height:36px;vertical-align:middle;margin-right:8px;">V5 Medical',
-    nameLink: 'https://v5md.com',
-    repo: 'https://github.com/alden888/v5md',
-
-    // ✅ 核心修复1：强制指定 UTF-8 编码解析 Markdown 文件
-    encoding: 'utf-8',
-    // ✅ 核心修复2：子目录部署基础路径（保留）
-    basePath: '/blog/',
-    // ✅ 核心修复3：移除 relativePath 配置（默认值为 true，避免绝对路径冲突）
-    // relativePath: false, 
-
-    homepage: 'README.md',
-    loadSidebar: true,
-    loadNavbar: true,
-    subMaxLevel: 3,
-    auto2top: true,
-    routerMode: 'hash',
-
-    search: {
-      maxAge: 86400000,
-      paths: 'auto',
-      placeholder: 'Search insights...',
-      depth: 6,
-    },
-
-    pagination: {
-      previousText: '← Previous',
-      nextText: 'Next →',
-      crossChapter: true,
-    },
-
-    copyCode: {
-      buttonText: 'Copy',
-      successText: '✓ Copied'
-    },
-
-    // ✅ 核心修复4：添加钩子函数，确保渲染内容干净（过滤不可见字符）
-    hooks: {
-      afterEach: function(html) {
-        // 过滤 Markdown 渲染后的不可见控制字符，避免排版错乱
-        const cleanHtml = html.replace(/[\u0000-\u001F\u007F]/g, '');
-        return cleanHtml;
-      }
+    window.$docsify = {
+      basePath: '/blog/',  // 基础路径配置
+      name: '<img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" style="height:40px;vertical-align:middle;margin-right:8px;">V5 Medical',
+      nameLink: 'https://v5md.com',
+      repo: 'https://github.com/alden888/v5md',
+      homepage: 'README.md',
+      
+      loadSidebar: true,
+      loadNavbar: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      coverpage: true,
+      onlyCover: false,
+      routerMode: 'hash',
+      
+      // 搜索配置
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: 'Search insights...',
+        depth: 6,
+      },
+      
+      // 分页配置
+      pagination: {
+        previousText: '← Previous Strategy',
+        nextText: 'Next Strategy →',
+        crossChapter: true,
+      },
+      
+      // 代码复制功能
+      copyCode: {
+        buttonText: 'Copy',
+        successText: '✓ Copied'
+      },
+      
+      // 插件与钩子
+      plugins: [
+        // 添加 CTA 和页脚
+        function(hook) {
+          hook.afterEach(function(html) {
+            // 过滤非法字符，避免乱码
+            const cleanHtml = html.replace(/[\u0000-\u001F\u007F]/g, '');
+            
+            const cta = `
+              <div class="v5-cta-box">
+                <h3>🎯 Ready to Optimize Your Supply Chain?</h3>
+                <p>Download our <strong>Capability Statement</strong> or speak with our strategic sourcing experts.</p>
+                <a href="/pdf/V5_Medical_Capability_Statement.pdf" target="_blank" class="v5-btn">
+                  <i class="fas fa-file-shield"></i> Download Capability Statement
+                </a>
+                <a href="/contact.html" class="v5-btn v5-btn-secondary">
+                  <i class="fas fa-comments"></i> Request Consultation
+                </a>
+              </div>
+            `;
+            
+            const footer = `
+              <hr style="margin-top: 60px; border: none; border-top: 2px solid #e5e7eb;"/>
+              <footer style="text-align: center; padding: 30px 0; color: #64748b; font-size: 0.85rem;">
+                <p>&copy; 2025 <strong>V5 Medical LTD</strong> | Operating Under ISO 13485 Quality Framework</p>
+              </footer>
+            `;
+            
+            return cleanHtml + cta + footer;
+          });
+        },
+        
+        // 进度条逻辑
+        function(hook) {
+          let scrollHandler;
+          
+          // 页面渲染完成后初始化进度条
+          hook.doneEach(function() {
+            const progressBar = document.getElementById('progress-bar');
+            
+            // 移除旧的滚动监听（避免重复绑定）
+            if (scrollHandler) {
+              window.removeEventListener('scroll', scrollHandler);
+            }
+            
+            // 定义滚动处理函数
+            scrollHandler = function() {
+              const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+              const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+              const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+              progressBar.style.width = progress + '%';
+            };
+            
+            // 绑定新的滚动监听
+            window.addEventListener('scroll', scrollHandler);
+            
+            // 初始化时触发一次
+            scrollHandler();
+          });
+          
+          // 页面卸载前移除监听
+          hook.beforeEach(function() {
+            if (scrollHandler) {
+              window.removeEventListener('scroll', scrollHandler);
+            }
+          });
+        }
+      ]
     }
-  }
   </script>
 
-  <!-- ✅ 核心修复5：调整插件加载顺序，添加跨域兼容（解决 preload 警告） -->
-  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <!-- Docsify 核心与插件 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4" crossorigin="anonymous"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js" crossorigin="anonymous"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js" crossorigin="anonymous"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js" crossorigin="anonymous"></script>
@@ -94,6 +176,5 @@
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js" crossorigin="anonymous"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js" crossorigin="anonymous"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js" crossorigin="anonymous"></script>
-
 </body>
 </html>
