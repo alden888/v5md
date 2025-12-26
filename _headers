@@ -1,51 +1,58 @@
 # ------------------------------
 # V5 Medical LTD Headers Configuration
-# Last Updated: 2024-12-11
+# Last Updated: 2025-01-01 (Optimized for Docsify & Security)
 # ------------------------------
 
 # ------------------------------
-# GLOBAL SECURITY HEADERS (APPLIED TO ALL PAGES)
+# GLOBAL SECURITY HEADERS
 # ------------------------------
 /*
-  # Core Security Headers
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), usb=(), accelerometer=(), gyroscope=()
-  Feature-Policy: geolocation 'none'; microphone 'none'; camera 'none'; payment 'none'
-  
-  # HSTS (HTTP Strict Transport Security)
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   
-  # Content Security Policy (CRITICAL SECURITY CONTROL)
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; img-src 'self' data: https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self' https://api.whatsapp.com https://formspree.io https://www.google-analytics.com; frame-src https://www.google.com https://www.youtube.com; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io; upgrade-insecure-requests
-  
-  # Additional Security Headers
+  # CSP: Added 'cdn.jsdelivr.net' for Docsify support
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://www.google.com https://www.gstatic.com https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://fonts.googleapis.com https://cdn.jsdelivr.net; img-src 'self' data: https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev; font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com; connect-src 'self' https://api.whatsapp.com https://formspree.io https://www.google-analytics.com https://raw.githubusercontent.com; frame-src https://www.google.com https://www.youtube.com; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io; upgrade-insecure-requests
+
   X-Permitted-Cross-Domain-Policies: none
   X-Download-Options: noopen
-  X-Content-Security-Policy: default-src 'self'
   Expect-CT: max-age=86400, enforce
-  
-  # Performance Headers
   X-UA-Compatible: IE=edge
-  Content-Type: text/html; charset=utf-8
-  
-  # Mobile Optimization
   Viewport-Width: device-width
   Mobile-Optimized: width
   HandheldFriendly: true
 
 # ------------------------------
+# BLOG MARKDOWN FIX (CRITICAL FOR DOCSIFY)
+# Your Fix + CORS Support
+# ------------------------------
+/blog/*.md
+  Content-Type: text/markdown; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+  Access-Control-Allow-Origin: *
+
+/blog/posts/*.md
+  Content-Type: text/markdown; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+  Access-Control-Allow-Origin: *
+
+/blog/_*.md
+  Content-Type: text/markdown; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+  Access-Control-Allow-Origin: *
+
+# ------------------------------
 # CACHE CONTROL POLICIES
 # ------------------------------
 
-# HTML Pages - No caching (or very short)
+# HTML Pages - Short cache to ensure updates are seen
 /*.html
-  Cache-Control: public, max-age=600, must-revalidate
-  Expires: 0
+  Cache-Control: public, max-age=0, must-revalidate
 
-# Static Assets - Long caching (1 year)
+# Static Assets - Long caching
 /*.css
   Cache-Control: public, max-age=31536000, immutable
 /*.js
@@ -56,8 +63,6 @@
   Cache-Control: public, max-age=31536000, immutable
 /*.jpeg
   Cache-Control: public, max-age=31536000, immutable
-/*.gif
-  Cache-Control: public, max-age=31536000, immutable
 /*.svg
   Cache-Control: public, max-age=31536000, immutable
 /*.ico
@@ -67,87 +72,15 @@
 /*.woff2
   Cache-Control: public, max-age=31536000, immutable
 
-# PDF Files - Medium caching (1 month)
+# PDF Files - Force Inline Display if possible
 /*.pdf
-  Cache-Control: public, max-age=2592000, must-revalidate
-
-# API and Dynamic Content - No caching
-/api/*
-  Cache-Control: no-store, no-cache, must-revalidate, proxy-revalidate
-  Pragma: no-cache
-  Expires: 0
-
-# Admin Area - Strict security
-/admin/*
-  Cache-Control: no-store, no-cache, must-revalidate, proxy-revalidate
-  Pragma: no-cache
-  Expires: 0
-  X-Frame-Options: DENY
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'
+  Content-Type: application/pdf
+  Content-Disposition: inline
+  Cache-Control: public, max-age=2592000
 
 # ------------------------------
-# CROSS-ORIGIN RESOURCE SHARING (CORS)
-# ------------------------------
-/api/*
-  Access-Control-Allow-Origin: *
-  Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
-  Access-Control-Allow-Headers: Content-Type, Authorization
-  Access-Control-Max-Age: 86400
-
-# ------------------------------
-# PRELOAD RESOURCES (PERFORMANCE OPTIMIZATION)
-# ------------------------------
-/*.html
-  Link: </css/style.css>; rel=preload; as=style
-  Link: </js/main.js>; rel=preload; as=script
-  Link: </images/v5logo.png>; rel=preload; as=image
-
-# ------------------------------
-# SECURITY HEADERS FOR SPECIFIC FILE TYPES
-# ------------------------------
-/*.pdf
-  Content-Disposition: inline; filename="V5_Medical_Catalog.pdf"
-  X-Content-Type-Options: nosniff
-
-/*.docx
-  Content-Disposition: attachment; filename="V5_Medical_Quote.docx"
-  X-Content-Type-Options: nosniff
-
-# ------------------------------
-# SEARCH ENGINE OPTIMIZATION HEADERS
-# ------------------------------
-/*.html
-  X-Robots-Tag: index, follow
-  X-Robots-Tag: max-image-preview:large
-  X-Robots-Tag: max-snippet:-1
-  X-Robots-Tag: max-video-preview:-1
-
-# ------------------------------
-# CUSTOM HEADERS FOR BUSINESS NEEDS
+# CUSTOM HEADERS
 # ------------------------------
 /*
   X-Company-Name: V5 Medical LTD
   X-Platform: B2B Medical Supply
-  X-Support-Email: support@v5md.com
-
-# ------------------------------
-# BLOG MARKDOWN FILES (Critical for Docsify)
-# ------------------------------
-/blog/*.md
-  Content-Type: text/markdown; charset=utf-8
-  Cache-Control: public, max-age=3600, must-revalidate
-  Access-Control-Allow-Origin: *
-  X-Content-Type-Options: nosniff
-
-/blog/posts/*.md
-  Content-Type: text/markdown; charset=utf-8
-  Cache-Control: public, max-age=3600, must-revalidate
-  Access-Control-Allow-Origin: *
-  X-Content-Type-Options: nosniff
-
-/blog/_*.md
-  Content-Type: text/markdown; charset=utf-8
-  Cache-Control: public, max-age=3600, must-revalidate
-  Access-Control-Allow-Origin: *
-  X-Content-Type-Options: nosniff
-
