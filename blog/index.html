@@ -17,7 +17,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
-    /* 样式保持不变 */
     :root { --theme-color: #1e40af; --text-color: #334155; }
     body { font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif; color: var(--text-color); }
     /* Sidebar */
@@ -42,93 +41,91 @@
   <div id="app">🚀 Loading V5 Medical Knowledge Hub...</div>
 
   <script>
-  window.$docsify = {
-    /* =========================
-       基础路径（关键）
-    ========================= */
-    basePath: '/blog/',
-    relativePath: true,   // ★ 必须开启
-    homepage: 'README.md',
-
-    /* =========================
-       品牌信息
-    ========================= */
-    name: '<img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" style="height:40px;vertical-align:middle;margin-right:8px;">V5 Medical',
-    nameLink: 'https://v5md.com',
-    repo: 'https://github.com/alden888/v5md',
-
-    /* =========================
-       文档结构
-    ========================= */
-    loadSidebar: true,
-    loadNavbar: true,
-    subMaxLevel: 3,
-    auto2top: true,
-
-    /* ⚠️ 关键：关闭 cover 对 posts 的干扰 */
-    coverpage: false,
-
-    /* =========================
-       路由模式
-    ========================= */
-    routerMode: 'hash',
-
-    /* =========================
-       🔥 最关键：强制 Markdown 解析
-    ========================= */
-    markdown: {
-      smartypants: true,
-      renderer: {
-        code: function(code, lang) {
-          return this.origin.code.apply(this, arguments);
+    window.$docsify = {
+      // ===== 核心配置 (防乱码) =====
+      basePath: '/blog/', 
+      relativePath: true, // 配合 basePath 使用，确保子目录链接正确
+      homepage: 'README.md',
+      
+      // ===== 路由与结构 =====
+      loadSidebar: true,
+      loadNavbar: true,
+      coverpage: false, // ⚠️ 暂时关闭，防止路由冲突，稳定后再开
+      auto2top: true,
+      subMaxLevel: 3,
+      routerMode: 'hash', 
+      
+      // ===== 强制 Markdown 解析 (ChatGPT 建议的核心) =====
+      markdown: {
+        smartypants: true,
+        renderer: {
+          code: function(code, lang) {
+            return this.origin.code.apply(this, arguments);
+          }
         }
-      }
-    },
+      },
 
-    /* =========================
-       搜索
-    ========================= */
-    search: {
-      maxAge: 86400000,
-      paths: 'auto',
-      placeholder: 'Search insights...',
-      depth: 6
-    },
-
-    /* =========================
-       翻页
-    ========================= */
-    pagination: {
-      previousText: '← Previous',
-      nextText: 'Next →',
-      crossChapter: true
-    },
-
-    /* =========================
-       插件（你原来的 CTA / footer）
-    ========================= */
-    plugins: [
-      function (hook) {
-        hook.afterEach(function (html) {
-          const cta = `
-            <div class="v5-cta-box">
-              <h3>🎯 Ready to Optimize Your Supply Chain?</h3>
-              <p>Download our <strong>Capability Statement</strong> or speak with our sourcing experts.</p>
-              <a href="https://v5md.com/pdf/V5_Medical_Capability_Statement.pdf" target="_blank" class="v5-btn">
-                Download Capability Statement
-              </a>
-              <a href="https://v5md.com/contact.html" class="v5-btn v5-btn-secondary">
-                Request Consultation
-              </a>
-            </div>
-          `;
-          return html + cta;
-        });
-      }
-    ]
-  }
-</script>
-
+      // ===== 基础信息 =====
+      name: '<img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" style="height:40px;vertical-align:middle;margin-right:8px;">V5 Medical',
+      nameLink: 'https://v5md.com',
+      repo: 'https://github.com/alden888/v5md',
+      
+      // ===== 功能 =====
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: 'Search insights...',
+        depth: 6,
+      },
+      pagination: {
+        previousText: '← Previous',
+        nextText: 'Next →',
+        crossChapter: true,
+      },
+      copyCode: {
+        buttonText: 'Copy',
+        successText: '✓ Copied'
+      },
+      
+      // ===== 插件 (CTA & Footer) =====
+      plugins: [
+        function(hook) {
+          hook.afterEach(function(html) {
+            const cta = `
+              <div class="v5-cta-box">
+                <h3>🎯 Ready to Optimize Your Supply Chain?</h3>
+                <p>Download our <strong>Capability Statement</strong> or speak with our strategic sourcing experts.</p>
+                <a href="https://v5md.com/pdf/V5_Medical_Capability_Statement.pdf" target="_blank" class="v5-btn">
+                  <i class="fas fa-file-shield"></i> Download Capability Statement
+                </a>
+                <a href="https://v5md.com/contact.html" class="v5-btn v5-btn-secondary">
+                  <i class="fas fa-comments"></i> Request Consultation
+                </a>
+              </div>
+            `;
+            const footer = `
+              <hr style="margin-top: 60px; border: none; border-top: 2px solid #e5e7eb;"/>
+              <footer style="text-align: center; padding: 30px 0; color: #64748b; font-size: 0.85rem;">
+                <p>&copy; 2025 <strong>V5 Medical LTD</strong> | Operating Under ISO 13485 Quality Framework</p>
+              </footer>
+            `;
+            return html + cta + footer;
+          });
+        },
+        function(hook) {
+          hook.doneEach(function() {
+            const progressBar = document.getElementById('progress-bar');
+            window.addEventListener('scroll', function() {
+              const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+              const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+              const progress = (scrollTop / scrollHeight) * 100;
+              progressBar.style.width = progress + '%';
+            });
+          });
+        }
+      ]
+    }
+  </script>
 
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   
@@ -136,9 +133,9 @@
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
-  
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
-  
-  </body>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+
+</body>
 </html>
