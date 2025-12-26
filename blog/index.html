@@ -23,16 +23,27 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
   
   <style>
-    /* 全局变量 */
+    /* 全局变量 - 优化配色层次 */
     :root { 
       --theme-color: #1e40af; 
       --theme-light: #eff6ff;
       --theme-hover: #3b82f6;
+      --theme-active: #2563eb;
       --text-color: #1e293b;
       --text-light: #64748b;
+      --text-muted: #94a3b8;
       --border-color: #e2e8f0;
+      --border-hover: #cbd5e1;
       --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
       --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+      --sidebar-bg: #ffffff;
+      --sidebar-hover-bg: #f8fafc;
+      --content-bg: #ffffff;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
     }
     
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -42,183 +53,285 @@
       color: var(--text-color);
       line-height: 1.7;
       font-weight: 400;
+      background-color: #fafbfc !important; /* 页面背景色，区分侧边栏和内容区 */
     }
     
-    /* 侧边栏核心美化 */
+    /* 侧边栏核心美化 - 重点优化 */
     .sidebar { 
-      background: #ffffff !important; 
+      background: var(--sidebar-bg) !important; 
       border-right: 1px solid var(--border-color) !important;
       box-shadow: var(--shadow-sm) !important;
-      padding-top: 20px !important;
-      width: 280px !important;
+      padding-top: var(--space-xl) !important; /* 统一间距单位 */
+      width: 300px !important; /* 适度加宽，提升内容展示空间 */
+      position: fixed !important; /* 固定侧边栏，滚动时不跟随 */
+      height: 100vh !important; /* 占满视口高度 */
+      overflow-y: auto !important; /* 内容超出时可滚动 */
+      z-index: 100 !important; /* 确保在内容之上 */
+      top: 0 !important;
+      left: 0 !important;
     }
     
     /* 隐藏原生侧边栏标题，避免重复 */
     .sidebar > h1 { display: none !important; }
     
-    .sidebar-nav { padding: 0 15px !important; display: block !important; }
+    .sidebar-nav { 
+      padding: 0 var(--space-md) !important; 
+      display: block !important;
+      width: 100% !important;
+    }
     
-    /* 分类标签样式 */
+    /* 侧边栏头部 Logo 区域 - 新增 */
+    .sidebar-header {
+      padding: 0 var(--space-md) var(--space-lg) !important;
+      margin-bottom: var(--space-md) !important;
+      border-bottom: 1px solid var(--border-color) !important;
+    }
+    
+    .sidebar-logo {
+      width: 180px !important;
+      display: block !important;
+      margin: 0 auto !important;
+    }
+    
+    /* 分类标签样式 - 优化视觉效果 */
     .category-tag {
       display: inline-block !important;
-      padding: 6px 12px !important;
-      border-radius: 8px !important;
-      font-size: 0.85rem !important;
-      font-weight: 700 !important;
+      padding: 8px 16px !important; /* 加大内边距，提升点击体验 */
+      border-radius: 50px !important; /* 全圆角，更现代 */
+      font-size: 0.8rem !important;
+      font-weight: 600 !important;
       color: white !important;
-      margin: 20px 0 12px 8px !important; /* 增加顶部间距 */
-      letter-spacing: 0.5px !important;
+      margin: var(--space-lg) 0 var(--space-md) var(--space-md) !important; 
+      letter-spacing: 0.3px !important;
       text-transform: uppercase !important;
       position: relative !important;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important; /* 轻微阴影，提升层次感 */
     }
     
-    /* 分类主题色 */
-    .tag-home { background: #1e40af !important; }
-    .tag-chain { background: #2563eb !important; }
-    .tag-regulatory { background: #3b82f6 !important; }
-    .tag-product { background: #60a5fa !important; }
-    .tag-main { background: #93c5fd !important; color: #1e293b !important; }
+    /* 分类主题色 - 优化渐变和层次感 */
+    .tag-home { 
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important; 
+    }
+    .tag-chain { 
+      background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%) !important; 
+    }
+    .tag-regulatory { 
+      background: linear-gradient(135deg, #3b82f6 0%, #93c5fd 100%) !important; 
+    }
+    .tag-product { 
+      background: linear-gradient(135deg, #60a5fa 0%, #bfdbfe 100%) !important; 
+      color: #1e293b !important;
+    }
+    .tag-main { 
+      background: linear-gradient(135deg, #93c5fd 0%, #dbeafe 100%) !important; 
+      color: #1e293b !important;
+    }
     
-    /* 侧边栏列表 */
+    /* 侧边栏列表 - 优化间距和布局 */
     .sidebar-list {
       list-style: none !important;
-      margin: 0 0 20px 0 !important;
-      padding: 0 0 0 8px !important;
+      margin: 0 0 var(--space-lg) 0 !important;
+      padding: 0 0 0 var(--space-md) !important;
     }
     
-    .sidebar-list li { margin: 4px 0 !important; }
+    .sidebar-list li { 
+      margin: var(--space-xs) 0 !important; 
+      border-radius: 8px !important; /* 列表项圆角，和链接统一 */
+      overflow: hidden !important; /* 防止链接溢出 */
+    }
     
     .sidebar-list li a {
-      padding: 10px 14px !important;
+      padding: 12px 16px !important; /* 优化内边距，提升点击区域 */
       color: var(--text-color) !important;
       font-weight: 500 !important;
-      font-size: 0.95rem !important;
+      font-size: 0.92rem !important;
       border-radius: 8px !important;
       text-decoration: none !important;
       display: block !important;
       transition: all 0.2s ease !important;
-      border: 1px solid transparent !important;
+      border: none !important; /* 移除边框，改用背景色区分 */
+      position: relative !important;
     }
     
-    /* 激活态 & Hover */
+    /* 激活态 & Hover - 优化视觉反馈 */
     .sidebar-list li a.active,
     .sidebar-nav li.active > a {
       background: var(--theme-light) !important;
-      color: var(--theme-color) !important; 
+      color: var(--theme-active) !important; 
       font-weight: 600 !important; 
-      border-color: #dbeafe !important;
+      padding-left: 14px !important;
+    }
+    
+    /* 激活态侧边标记 - 新增，提升视觉辨识度 */
+    .sidebar-list li a.active::before {
+      content: '' !important;
+      position: absolute !important;
+      left: 0 !important;
+      top: 0 !important;
+      height: 100% !important;
+      width: 4px !important;
+      background-color: var(--theme-active) !important;
+      border-radius: 0 2px 2px 0 !important;
     }
     
     .sidebar-list li a:hover:not(.active) {
-      background: #f8fafc !important;
+      background: var(--sidebar-hover-bg) !important;
       color: var(--theme-hover) !important;
+      transform: translateX(2px) !important; /* 轻微位移，提升交互感 */
     }
     
     .sidebar-icon {
-      margin-right: 10px !important;
-      color: var(--text-light) !important;
-      width: 16px !important;
+      margin-right: 12px !important; /* 加大图标间距 */
+      color: var(--text-muted) !important;
+      width: 18px !important;
       text-align: center !important;
+      font-size: 0.9rem !important;
+      transition: all 0.2s ease !important;
     }
     
-    .sidebar-list li a:hover .sidebar-icon { color: var(--theme-color) !important; }
+    .sidebar-list li a:hover .sidebar-icon,
+    .sidebar-list li a.active .sidebar-icon { 
+      color: var(--theme-active) !important; 
+    }
     
-    /* 内容区域 */
+    /* 内容区域 - 适配新的侧边栏宽度 */
     .markdown-section { 
-      max-width: 950px !important; 
+      max-width: 980px !important; 
       margin: 0 auto !important; 
-      padding: 40px 40px 100px !important;
-      background: #ffffff !important;
-      margin-left: 280px !important; /* 匹配侧边栏宽度 */
+      padding: var(--space-xl) var(--space-xl) 100px !important;
+      background: var(--content-bg) !important;
+      margin-left: 300px !important; /* 匹配新的侧边栏宽度 */
+      min-height: 100vh !important; /* 占满视口高度 */
+      box-shadow: 0 0 10px rgba(0,0,0,0.02) !important; /* 轻微阴影，提升层次感 */
+      border-radius: 0 !important;
     }
     
-    /* 标题样式 */
+    /* 标题样式 - 优化层级 */
     .markdown-section h1 { 
       color: var(--theme-color) !important; 
       font-weight: 800 !important;
-      font-size: 2.4rem !important;
-      margin: 40px 0 28px !important;
+      font-size: 2.2rem !important;
+      margin: 30px 0 24px !important;
       line-height: 1.3 !important;
       border-bottom: 3px solid var(--theme-light) !important;
-      padding-bottom: 16px !important;
+      padding-bottom: 12px !important;
     }
     
     .markdown-section h2 { 
       color: #1e3a8a !important; 
       font-weight: 700 !important;
-      font-size: 1.9rem !important;
-      margin: 40px 0 22px !important;
+      font-size: 1.7rem !important;
+      margin: 36px 0 20px !important;
       line-height: 1.4 !important;
       border-bottom: 2px solid var(--theme-light) !important;
-      padding-bottom: 12px !important;
+      padding-bottom: 10px !important;
     }
     
     .markdown-section h3 { 
       font-weight: 700 !important;
-      font-size: 1.5rem !important;
-      margin: 32px 0 18px !important;
+      font-size: 1.4rem !important;
+      margin: 30px 0 16px !important;
       color: #1e3a8a !important;
     }
     
-    /* 正文 */
+    /* 正文 - 优化行高和间距 */
     .markdown-section p {
-      margin: 18px 0 !important;
-      font-size: 1.08rem !important;
+      margin: 16px 0 !important;
+      font-size: 1.05rem !important;
       color: var(--text-color) !important;
       text-align: left !important;
+      line-height: 1.8 !important;
     }
     
-    /* 列表 */
+    /* 列表 - 优化间距 */
     .markdown-section ul, .markdown-section ol {
-      margin: 20px 0 20px 35px !important;
-      padding-left: 15px !important;
+      margin: 18px 0 18px 30px !important;
+      padding-left: 12px !important;
     }
     
-    .markdown-section li { margin: 10px 0 !important; font-size: 1.08rem !important; }
+    .markdown-section li { margin: 8px 0 !important; font-size: 1.02rem !important; }
     .markdown-section ul > li { list-style-type: disc !important; }
     .markdown-section ol > li { list-style-type: decimal !important; }
     
-    /* 引用块 */
-    .markdown-section blockquote {
+    /* 表格样式 - 新增，解决之前的渲染问题 */
+    .markdown-section table {
+      width: 100% !important;
+      border-collapse: collapse !important;
       margin: 24px 0 !important;
-      padding: 22px !important;
+      font-size: 0.95rem !important;
+      background: white !important;
+      border-radius: 8px !important;
+      overflow: hidden !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+    }
+    
+    .markdown-section th, 
+    .markdown-section td {
+      padding: 14px 16px !important;
+      border: 1px solid var(--border-color) !important;
+      text-align: left !important;
+    }
+    
+    .markdown-section th {
+      background-color: var(--theme-light) !important;
+      color: var(--theme-color) !important;
+      font-weight: 600 !important;
+      font-size: 0.9rem !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.5px !important;
+    }
+    
+    .markdown-section tr:nth-child(even) {
+      background-color: #f8fafc !important;
+    }
+    
+    .markdown-section tr:hover {
+      background-color: var(--theme-light) !important;
+      transition: all 0.2s ease !important;
+    }
+    
+    /* 引用块 - 优化样式 */
+    .markdown-section blockquote {
+      margin: 22px 0 !important;
+      padding: 20px !important;
       background: var(--theme-light) !important;
       border-left: 5px solid var(--theme-color) !important;
       border-radius: 0 8px 8px 0 !important;
       font-style: italic !important;
       color: var(--text-light) !important;
-      font-size: 1.05rem !important;
+      font-size: 1.02rem !important;
     }
     
-    /* CTA 框 */
+    /* CTA 框 - 优化视觉效果 */
     .v5-cta-box { 
-      margin: 60px 0 !important; 
-      padding: 50px 40px !important; 
+      margin: 50px 0 !important; 
+      padding: 40px 36px !important; 
       background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%) !important; 
       border: 1px solid #dbeafe !important;
-      border-radius: 16px !important; 
+      border-radius: 12px !important; 
       text-align: center !important; 
-      box-shadow: 0 10px 30px rgba(30, 64, 175, 0.08) !important;
+      box-shadow: 0 8px 24px rgba(30, 64, 175, 0.06) !important;
     }
     
     .v5-btn { 
       display: inline-block !important; 
       background: var(--theme-color) !important; 
       color: white !important; 
-      padding: 14px 36px !important; 
+      padding: 12px 32px !important; 
       border-radius: 50px !important; 
       text-decoration: none !important; 
       font-weight: 600 !important; 
-      margin: 10px !important;
-      box-shadow: 0 4px 6px rgba(30, 64, 175, 0.2) !important;
+      margin: 8px !important;
+      box-shadow: 0 3px 8px rgba(30, 64, 175, 0.15) !important;
       transition: all 0.3s ease !important;
       border: none !important;
+      font-size: 0.95rem !important;
     }
     
     .v5-btn:hover { 
       transform: translateY(-2px) !important; 
       background: var(--theme-hover) !important;
-      box-shadow: 0 8px 15px rgba(30, 64, 175, 0.3) !important;
+      box-shadow: 0 6px 12px rgba(30, 64, 175, 0.2) !important;
     }
     
     .v5-btn-secondary { 
@@ -227,30 +340,84 @@
       border: 2px solid var(--theme-color) !important;
     }
     
-    .v5-btn-secondary:hover { background: #f8fafc !important; }
+    .v5-btn-secondary:hover { 
+      background: #f8fafc !important; 
+      border-color: var(--theme-hover) !important;
+    }
     
-    /* 页脚 */
+    /* 页脚 - 优化样式 */
     footer {
       margin-top: 40px !important;
-      padding-top: 30px !important;
+      padding-top: 24px !important;
       border-top: 1px solid var(--border-color) !important;
       text-align: center !important;
       color: var(--text-light) !important;
-      font-size: 0.9rem !important;
+      font-size: 0.85rem !important;
+      padding-bottom: 20px !important;
     }
     
-    /* 进度条 */
+    /* 进度条 - 优化样式 */
     #progress-bar { 
-      position: fixed !important; top: 0 !important; left: 0 !important; 
-      height: 4px !important; background: var(--theme-color) !important; 
-      z-index: 9999 !important; transition: width 0.2s ease !important; width: 0 !important;
+      position: fixed !important; 
+      top: 0 !important; 
+      left: 0 !important; 
+      height: 3px !important; 
+      background: linear-gradient(90deg, var(--theme-color), var(--theme-hover)) !important; 
+      z-index: 9999 !important; 
+      transition: width 0.2s ease !important; 
+      width: 0 !important;
+      box-shadow: 0 0 8px rgba(30, 64, 175, 0.3) !important;
     }
     
-    /* 响应式 */
+    /* 响应式 - 优化移动端体验 */
+    @media (max-width: 992px) { 
+      .sidebar { 
+        width: 260px !important; 
+      }
+      .markdown-section { 
+        margin-left: 260px !important; 
+        padding: var(--space-lg) var(--space-md) 80px !important; 
+      }
+    }
+    
     @media (max-width: 768px) { 
-      .sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border-color) !important; position: relative !important; }
-      .markdown-section { margin-left: 0 !important; padding: 25px 20px 80px !important; }
-      .v5-btn { display: block !important; width: 100% !important; margin: 10px 0 !important; } 
+      .sidebar { 
+        width: 100% !important; 
+        border-right: none !important; 
+        border-bottom: 1px solid var(--border-color) !important; 
+        position: relative !important;
+        height: auto !important;
+        max-height: 50vh !important;
+      }
+      .markdown-section { 
+        margin-left: 0 !important; 
+        padding: var(--space-md) var(--space-sm) 60px !important; 
+        max-width: 100% !important;
+      }
+      .v5-btn { 
+        display: block !important; 
+        width: 100% !important; 
+        margin: 8px 0 !important; 
+      } 
+      .category-tag {
+        font-size: 0.75rem !important;
+        padding: 6px 12px !important;
+      }
+    }
+
+    /* 滚动条美化 - 新增，提升侧边栏滚动体验 */
+    .sidebar::-webkit-scrollbar {
+      width: 6px !important;
+    }
+    .sidebar::-webkit-scrollbar-track {
+      background: var(--sidebar-bg) !important;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--text-muted) !important;
+      border-radius: 3px !important;
+    }
+    .sidebar::-webkit-scrollbar-thumb:hover {
+      background: var(--text-light) !important;
     }
   </style>
 </head>
