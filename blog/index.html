@@ -36,7 +36,7 @@
     }
 
     /* =========================================
-       2. 页眉布局 (Flexbox 稳定版)
+       2. 页眉布局 (Flexbox 完美三段式)
        ========================================= */
     #v5-header {
       position: fixed;
@@ -52,28 +52,27 @@
       background: linear-gradient(to right, #eff6ff, #2563eb, #1e3a8a);
     }
 
-    /* 容器布局：左对齐，不留余地 */
     .header-container {
       position: relative;
       width: 100%;
       max-width: 1400px;
       padding: 0 30px;
-      display: flex;
-      align-items: center; 
-      justify-content: flex-start !important; /* 强制从左开始排 */
       height: 100%;
       margin: 0 auto;
+      
+      /* 🎯 核心布局：Grid 布局比 Flex 更稳 */
+      display: grid;
+      grid-template-columns: 280px 1fr 280px; /* 左Logo固定，中Nav自适应，右Btn固定 */
+      align-items: center;
     }
 
-    /* Logo 区域 */
+    /* 左侧 Logo */
     .header-logo {
       display: flex;
       align-items: center;
       gap: 12px;
       text-decoration: none !important;
-      z-index: 10;
-      flex-shrink: 0; 
-      margin-right: 50px !important; /* Logo 右侧留出 50px 给导航 */
+      justify-self: start; /* 靠左 */
     }
     .header-logo img { height: 40px; width: auto; }
     .logo-text { display: flex; flex-direction: column; }
@@ -87,12 +86,11 @@
       text-transform: uppercase; margin-top: 2px; 
     }
 
-    /* 🎯 导航菜单 (左侧跟随) */
+    /* 中间 Nav (绝对居中) */
     .header-nav { 
       display: flex; 
       gap: 32px; 
-      z-index: 10;
-      flex-shrink: 0; 
+      justify-self: center; /* 居中 */
     }
     
     .nav-link {
@@ -111,14 +109,12 @@
       border-bottom: 2px solid #ffffff !important; 
     }
 
-    /* 🎯 右侧按钮区 (强制推向最右) */
+    /* 右侧 Actions (绝对靠右) */
     .header-actions { 
       display: flex; 
       align-items: center; 
       gap: 16px; 
-      margin-left: auto !important; /* 关键：占据剩余空间，推向最右 */
-      z-index: 10;
-      flex-shrink: 0;
+      justify-self: end; /* 靠右 */
     }
     
     .btn-whatsapp {
@@ -144,10 +140,15 @@
       border: none; font-size: 1.5rem; cursor: pointer; z-index: 10;
     }
 
-    /* 移动端适配 */
+    /* 🎯 移动端适配 */
     @media (max-width: 1100px) {
-      .header-nav { display: none !important; } /* 屏幕窄时隐藏文字导航 */
+      .header-container {
+        display: flex; /* 小屏幕切回 Flex */
+        justify-content: space-between;
+      }
+      .header-nav { display: none !important; } /* 隐藏中间 Nav */
       .mobile-menu-btn { display: block; }
+      
       #google_translate_element { top: 24px !important; right: 60px !important; }
       .goog-te-gadget-simple { max-width: 40px !important; overflow: hidden; }
     }
@@ -172,7 +173,7 @@
     .mobile-menu .nav-link.active { color: #1e40af !important; background: #eff6ff; }
 
     /* =========================================
-       3. 文章头部美化 (Front Matter)
+       3. 文章头部美化 (YAML Front Matter 插件样式)
        ========================================= */
     .article-header {
       margin-bottom: 40px; text-align: center;
@@ -293,10 +294,10 @@
         depth: 6,
       },
       plugins: [
-        // 插件1：Front Matter 解析 + 垃圾代码过滤
+        // 1. Front Matter 解析 + 垃圾代码过滤 (这是您要的头部美化)
         function(hook) {
           hook.beforeEach(function(content, url) {
-            // 1. 提取 YAML Front Matter
+            // 解析 YAML
             const yamlMatch = content.match(/^---\n([\s\S]+?)\n---/);
             let headerHtml = '';
             let cleanContent = content;
@@ -314,7 +315,7 @@
                 }
               });
 
-              // 生成漂亮的头部
+              // 生成漂亮的 HTML 头部
               headerHtml = `
                 <div class="article-header">
                   <h1 class="article-title">${frontMatter.title || 'Untitled'}</h1>
@@ -325,12 +326,13 @@
                   </div>
                   ${frontMatter.description ? `<p class="article-description">${frontMatter.description}</p>` : ''}
                 </div>
+                <hr style="margin: 30px 0; border:none; border-top:1px solid #e2e8f0;">
               `;
               // 移除原始 YAML
               cleanContent = content.replace(/^---\n[\s\S]+?\n---/, '');
             }
 
-            // 2. 过滤 Cloudflare 垃圾代码
+            // 过滤 Cloudflare 垃圾代码
             if (url && url.endsWith('.md')) {
               cleanContent = cleanContent
                 .replace(/<script[\s\S]*?<\/script>/gi, '') 
@@ -340,11 +342,10 @@
                 .replace(/^\-\-\-/gm, '');
             }
             
-            // 将生成的头部插入到内容最前面
             return headerHtml + cleanContent;
           });
           
-          // 插件2：CTA 注入
+          // 2. 底部 CTA
           hook.afterEach(function(html) {
             return html + `
               <div class="v5-cta-box">
@@ -359,7 +360,7 @@
             `;
           });
         },
-        // 插件3：侧边栏激活修复
+        // 3. 侧边栏激活修复
         function(hook) {
           hook.ready(function() {
             window.$docsify.router.on('navigate', function(path) {
