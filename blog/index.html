@@ -39,22 +39,19 @@
 
 <body>
   <div id="progress-bar"></div>
-  
   <div id="app">🚀 Loading V5 Medical Knowledge Hub...</div>
 
   <script>
     window.$docsify = {
-      // ===== 核心路径配置 =====
+      // ===== 核心路径配置 (保持不动) =====
       basePath: '/blog/', 
-      // relativePath: true, // 已删除，避免路径冲突
+      // relativePath: true, // 保持删除状态
       
-      // ===== 基础信息 =====
       name: '<img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" style="height:40px;vertical-align:middle;margin-right:8px;">V5 Medical',
       nameLink: 'https://v5md.com',
       repo: 'https://github.com/alden888/v5md',
       homepage: 'README.md',
       
-      // ===== 功能模块 =====
       loadSidebar: true,
       loadNavbar: true,
       subMaxLevel: 3,
@@ -63,7 +60,6 @@
       onlyCover: false,
       routerMode: 'hash', 
       
-      // ===== 搜索 =====
       search: {
         maxAge: 86400000,
         paths: 'auto',
@@ -71,22 +67,18 @@
         depth: 6,
       },
       
-      // ===== 翻页 =====
       pagination: {
         previousText: '← Previous Strategy',
         nextText: 'Next Strategy →',
         crossChapter: true,
       },
       
-      // ===== 复制按钮 =====
       copyCode: {
         buttonText: 'Copy',
         successText: '✓ Copied'
       },
       
-      // ===== 插件系统 =====
       plugins: [
-        // 1. 底部 CTA 插入
         function(hook) {
           hook.afterEach(function(html) {
             const cta = `
@@ -99,27 +91,17 @@
                 <a href="https://v5md.com/contact.html" class="v5-btn v5-btn-secondary">
                   <i class="fas fa-comments"></i> Request Consultation
                 </a>
-                <a href="https://wa.me/447895047944?text=I'm interested in V5 Medical's supply chain solutions" target="_blank" class="v5-btn" style="background:linear-gradient(135deg,#10b981,#34d399);">
-                  <i class="fab fa-whatsapp"></i> WhatsApp Inquiry
-                </a>
               </div>
             `;
             const footer = `
               <hr style="margin-top: 60px; border: none; border-top: 2px solid #e5e7eb;"/>
               <footer style="text-align: center; padding: 30px 0; color: #64748b; font-size: 0.85rem;">
-                <p style="margin-bottom: 8px;">&copy; 2025 <strong>V5 Medical LTD</strong> | Operating Under ISO 13485 Quality Framework</p>
-                <p style="margin-top: 12px; font-size: 0.8rem; opacity: 0.8;">
-                  <a href="https://v5md.com" style="color: #3b82f6; margin: 0 8px;">Main Website</a> •
-                  <a href="https://v5md.com/contact.html" style="color: #3b82f6; margin: 0 8px;">Contact</a> •
-                  <a href="https://v5md.com/privacy.html" style="color: #3b82f6; margin: 0 8px;">Privacy</a>
-                </p>
+                <p>&copy; 2025 <strong>V5 Medical LTD</strong> | Operating Under ISO 13485 Quality Framework</p>
               </footer>
             `;
             return html + cta + footer;
           });
         },
-        
-        // 2. 阅读进度条逻辑
         function(hook) {
           hook.doneEach(function() {
             const progressBar = document.getElementById('progress-bar');
@@ -145,7 +127,5 @@
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
   
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
-
-</body>
+  </body>
 </html>
