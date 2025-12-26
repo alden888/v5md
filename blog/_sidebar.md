@@ -7,6 +7,6 @@
   * **⚖️ Regulatory & Compliance**
   * [ISO 13485: Why It Matters](posts/iso-13485-guide.md)
   * **📦 Product Tech Specs**
-  * [Medical Packaging: Tyvek & PETG](posts/medical-packaging-supply.md)
+  * [Tyvek & PETG Supply](posts/medical-packaging-supply.md)
   * **🔙 Back to Main Site**
   * [Visit V5MD.com](https://v5md.com/)
