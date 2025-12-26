@@ -41,6 +41,10 @@
       <i class="fas fa-shield-halved sidebar-icon"></i> 
       <a href="#/posts/eu-mdr-2025.md">EU MDR 2025 Compliance Guide</a>
     </li>
+    <li>
+      <i class="fas fa-certificate sidebar-icon"></i> 
+      <a href="#/posts/ce-marking-process.md">CE Marking Process Guide</a>
+    </li>
   </ul>
 </div>
 
