@@ -36,7 +36,7 @@
     }
 
     /* =========================================
-       2. 页眉布局 (绝对锁定版)
+       2. 页眉布局 (双向锚定版)
        ========================================= */
     #v5-header {
       position: fixed;
@@ -54,7 +54,6 @@
       background: linear-gradient(to right, #eff6ff, #2563eb, #1e3a8a);
     }
 
-    /* 容器：强制左对齐，不留余地 */
     .header-container {
       position: relative;
       width: 100%;
@@ -62,7 +61,7 @@
       padding: 0 30px;
       display: flex;
       align-items: center; 
-      justify-content: flex-start !important; /* 强制左对齐 */
+      justify-content: flex-start; /* 默认左对齐 */
       height: 100%;
       margin: 0 auto;
     }
@@ -75,22 +74,19 @@
       text-decoration: none;
       z-index: 10;
       flex-shrink: 0; 
-      margin-right: 0 !important; /* 清除右边距干扰 */
     }
     .header-logo img { height: 40px; width: auto; }
     .logo-text { display: flex; flex-direction: column; }
     .brand-name { font-size: 1.25rem; font-weight: 800; color: #1e3a8a; line-height: 1; }
     .brand-tag { font-size: 0.65rem; color: #1d4ed8; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
 
-    /* 🎯 核心修复点：导航菜单布局 
-       使用 margin-right: auto 把它左边的邻居(Logo)吸住，
-       同时把它右边的邻居(Actions)推到天边去。
+    /* 🎯 导航菜单 (左侧锚定) 
+       margin-left: 40px -> 紧跟 Logo，间距适中
     */
     .header-nav { 
       display: flex; 
       gap: 32px; 
-      margin-left: 50px !important;  /* 距离 Logo 50px */
-      margin-right: auto !important; /* 核心：占据右侧剩余空间，推开按钮 */
+      margin-left: 40px !important; 
       z-index: 10;
       flex-shrink: 0; 
     }
@@ -108,12 +104,15 @@
     .nav-link:hover { color: #ffffff; }
     .nav-link.active { color: #ffffff; font-weight: 700; border-bottom: 2px solid #93c5fd; }
 
-    /* 右侧按钮区 */
+    /* 🎯 右侧按钮区 (右侧锚定) 
+       margin-left: auto -> 强制推到最右边
+       无论导航栏是否隐藏，这个属性都生效
+    */
     .header-actions { 
       display: flex; 
       align-items: center; 
       gap: 16px; 
-      margin-left: 0 !important; /* 不需要 margin-left: auto 了，因为 nav 把它推过来了 */
+      margin-left: auto !important; /* 关键：永远靠右 */
       z-index: 10;
       flex-shrink: 0;
     }
@@ -147,7 +146,7 @@
     .goog-te-banner-frame { display: none !important; }
     body { top: 0px !important; } 
 
-    /* 移动端按钮 */
+    /* 移动端菜单按钮 */
     .mobile-menu-btn {
       display: none;
       color: white;
@@ -158,11 +157,9 @@
       z-index: 10;
     }
 
-    /* 🎯 移动端适配 (防重叠断点优化)
-       一旦宽度小于 1100px，立即隐藏文字导航，防止挤压 
-    */
+    /* 🎯 移动端适配 (隐藏导航，但不影响按钮位置) */
     @media (max-width: 1100px) {
-      .header-nav { display: none !important; } /* 强制隐藏 */
+      .header-nav { display: none !important; } /* 屏幕窄时隐藏文字导航 */
       .mobile-menu-btn { display: block; }
       
       /* 移动端调整 Google 翻译位置 */
