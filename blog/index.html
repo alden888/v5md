@@ -37,101 +37,48 @@
   <div id="app">🚀 Loading V5 Medical Knowledge Hub...</div>
 
   <script>
-    window.$docsify = {
-      // ===== 核心路径配置 =====
-      basePath: '/blog/', 
-      relativePath: true, // 保留这个，配合 alias 使用更稳
-      
-      // ===== 关键修复：路径别名映射 =====
-      // 这一步告诉 Docsify：所有请求 /posts/xxx 的，都要去 /blog/posts/xxx 找
-      // 并且强制加上 .md 后缀
-      alias: {
-        '.*?/posts/(.*)': '/posts/$1.md',
-        '.*?/README': '/README.md',
-        '.*?/_sidebar.md': '/_sidebar.md',
-        '.*?/_navbar.md': '/_navbar.md'
-      },
+  window.$docsify = {
+    name: '<img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" style="height:36px;vertical-align:middle;margin-right:8px;">V5 Medical',
+    nameLink: 'https://v5md.com',
 
-      // ===== 关键修复：Markdown 引擎强制重写 =====
-      // 防止 CDN 返回 HTML 时 Docsify 渲染错误
-      markdown: {
-        smartypants: true,
-        renderer: {
-          code: function(code, lang) {
-            return this.origin.code.apply(this, arguments);
-          }
-        }
-      },
+    repo: 'https://github.com/alden888/v5md',
 
-      // ===== 基础信息 =====
-      name: '<img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" style="height:40px;vertical-align:middle;margin-right:8px;">V5 Medical',
-      nameLink: 'https://v5md.com',
-      repo: 'https://github.com/alden888/v5md',
-      homepage: 'README.md',
-      
-      loadSidebar: true,
-      loadNavbar: true,
-      subMaxLevel: 3,
-      auto2top: true,
-      coverpage: false, // 暂时关闭以排除干扰
-      routerMode: 'hash', 
-      
-      search: {
-        maxAge: 86400000,
-        paths: 'auto',
-        placeholder: 'Search insights...',
-        depth: 6,
-      },
-      
-      pagination: {
-        previousText: '← Previous',
-        nextText: 'Next →',
-        crossChapter: true,
-      },
-      
-      copyCode: {
-        buttonText: 'Copy',
-        successText: '✓ Copied'
-      },
-      
-      plugins: [
-        function(hook) {
-          hook.afterEach(function(html) {
-            const cta = `
-              <div class="v5-cta-box">
-                <h3>🎯 Ready to Optimize Your Supply Chain?</h3>
-                <p>Download our <strong>Capability Statement</strong> or speak with our strategic sourcing experts.</p>
-                <a href="https://v5md.com/pdf/V5_Medical_Capability_Statement.pdf" target="_blank" class="v5-btn">
-                  <i class="fas fa-file-shield"></i> Download Capability Statement
-                </a>
-                <a href="https://v5md.com/contact.html" class="v5-btn v5-btn-secondary">
-                  <i class="fas fa-comments"></i> Request Consultation
-                </a>
-              </div>
-            `;
-            const footer = `
-              <hr style="margin-top: 60px; border: none; border-top: 2px solid #e5e7eb;"/>
-              <footer style="text-align: center; padding: 30px 0; color: #64748b; font-size: 0.85rem;">
-                <p>&copy; 2025 <strong>V5 Medical LTD</strong> | Operating Under ISO 13485 Quality Framework</p>
-              </footer>
-            `;
-            return html + cta + footer;
-          });
-        },
-        function(hook) {
-          hook.doneEach(function() {
-            const progressBar = document.getElementById('progress-bar');
-            window.addEventListener('scroll', function() {
-              const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-              const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-              const progress = (scrollTop / scrollHeight) * 100;
-              progressBar.style.width = progress + '%';
-            });
-          });
-        }
-      ]
+    // ✅ 关键：子目录部署只用这个
+    basePath: '/blog/',
+
+    // ❌ 必须关掉
+    relativePath: false,
+
+    homepage: 'README.md',
+
+    loadSidebar: true,
+    loadNavbar: true,
+
+    subMaxLevel: 3,
+    auto2top: true,
+
+    routerMode: 'hash',
+
+    search: {
+      maxAge: 86400000,
+      paths: 'auto',
+      placeholder: 'Search insights...',
+      depth: 6,
+    },
+
+    pagination: {
+      previousText: '← Previous',
+      nextText: 'Next →',
+      crossChapter: true,
+    },
+
+    copyCode: {
+      buttonText: 'Copy',
+      successText: '✓ Copied'
     }
-  </script>
+  }
+</script>
+
 
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
