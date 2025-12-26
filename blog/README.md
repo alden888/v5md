@@ -1,28 +1,65 @@
 # V5 Medical Knowledge Hub
 
-> **Empowering Global Buyers with Supply Chain Intelligence.** > We don't just deliver products; we deliver clarity in a complex market.
+> **Empowering Global Buyers with Supply Chain Intelligence**
+
+We don't just deliver products — we deliver **clarity** in a complex market.
 
 ---
 
-### 🚀 Featured Strategy
-**[Why the "Integrator Model" is the Future of Medical Procurement](posts/integrator-model.md)** Are you tired of managing 10 different factories for one hospital tender? Discover how the Supply Chain Integrator model reduces risk, consolidates logistics, and ensures unified quality control.
+## 🎯 What Makes This Different?
+
+Most medical suppliers publish "news" like *"We shipped 3 containers to Lagos!"*  
+V5 Medical publishes **strategic insights** that help you make better sourcing decisions.
+
+### 📚 Explore by Topic
+
+#### ⛓️ **Supply Chain Strategy**
+Learn how the **Integrator Model** reduces risk and consolidates logistics.
+
+- [Why the "Integrator Model" Works](posts/integrator-model.md)  
+  *Factory vs. Trading Company vs. Supply Chain Integrator — what's the difference?*
+- [How to Verify Chinese Suppliers](posts/supplier-verification.md)  
+  *A due diligence checklist for international buyers*
+
+#### ⚖️ **Regulatory & Compliance**
+Navigate ISO 13485, CE marking, and EU MDR with confidence.
+
+- [Understanding ISO 13485 in Plain English](posts/iso-13485-guide.md)  
+  *Why "Good Price" is dangerous without "Good Quality System"*
+- [EU MDR 2025: What Distributors Need to Know](posts/eu-mdr-2025.md)  
+  *Essential documentation for European tenders*
+
+#### 📦 **Product Technical Specs**
+Deep dives into medical device materials and standards.
+
+- [Surgical Sutures: Material Comparison Guide](posts/suture-guide.md)  
+  *PGA vs PGLA vs PDO — tensile strength, absorption rates, clinical uses*
 
 ---
 
-### 📚 Latest Insights
+## 💼 Corporate Resources
 
-#### ⛓️ Supply Chain & Logistics
-* **[2025 Global Medical Supply Chain Trends](posts/supply-chain-2025.md)** - What to expect regarding freight rates and raw material costs.
-* **[How to Verify a Chinese Medical Factory](posts/supplier-verification.md)** - A checklist for international buyers to avoid scams and low-quality goods.
+### 📄 Official Documents
+- [Download Capability Statement (PDF)](https://v5md.com/pdf/V5_Medical_Capability_Statement.pdf)  
+  *For tender qualification and due diligence*
+- [ISO 13485 Certificate Request](mailto:qa@v5md.com?subject=Request%20ISO%20Certificate)  
+  *Full technical file available upon NDA*
 
-#### ⚖️ Regulatory & Quality
-* **[Understanding ISO 13485 Compliance](posts/iso-13485-guide.md)** - Why "Good Price" is dangerous without a "Good Quality System".
-* **[Navigating EU MDR](posts/eu-mdr-2025.md)** - Essential documentation requirements for European tenders.
+### 🔗 Quick Links
+- [Product Catalog](https://v5md.com/catalog.html)
+- [Contact Specialized Departments](https://v5md.com/contact.html)
+- [About Our Structure](https://v5md.com/about.html)
 
 ---
 
-### 📩 Need Specific Advice?
-Our team of experts is ready to assist with your procurement strategy.
+## 📩 Need Specific Advice?
 
-* **Email:** [sales@v5md.com](mailto:sales@v5md.com)
-* **WhatsApp:** [+44 7895 047944](https://wa.me/447895047944)
+Our team of procurement specialists is ready to assist with your supply chain strategy.
+
+**Email:** [sales@v5md.com](mailto:sales@v5md.com)  
+**WhatsApp:** [+44 7895 047944](https://wa.me/447895047944?text=I'm interested in V5 Medical's insights)  
+**Office:** +86-0512-8781-1988
+
+---
+
+*Last updated: December 2025 | Maintained by V5 Medical Strategic Team*
