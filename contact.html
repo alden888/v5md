@@ -3,21 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Contact V5 Medical | Specialized Supply Chain Support</title>
     
-    <meta name="description" content="Direct contact channels for V5 Medical LTD. Separate departments for Sales Quotes, QA/Regulatory Affairs, and Order Logistics. ISO 13485 Certified Service.">
-    <meta name="keywords" content="V5 Medical contact, surgical sutures inquiry, medical tender support, china medical factory contact">
-    <meta name="author" content="V5 Medical LTD">
+    <meta name="description" content="Direct contact channels for V5 Medical. Submit RFQ, upload specifications, or request regulatory documents. ISO 13485 Certified Response Team.">
+    <meta name="keywords" content="V5 Medical contact, medical RFQ, upload specs, surgical sutures inquiry">
     <meta name="robots" content="index, follow">
-
-    <meta property="og:title" content="Contact V5 Medical - Smart Inquiry Routing">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://v5md.com/contact.html">
-    <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png">
-    
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
-      
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -37,46 +29,21 @@
         .goog-te-banner-frame { display: none !important; }
         body { top: 0px !important; }
         
-        /* 多选卡片样式：选中时变蓝 */
-        .need-checkbox:checked + div {
-            border-color: #2563eb;
-            background-color: #eff6ff;
-            color: #1e40af;
-            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
-        }
-        .need-checkbox:checked + div i {
-            color: #2563eb;
-        }
-        /* 选中时的对勾图标 */
+        /* 多选卡片样式 */
+        .need-checkbox:checked + div { border-color: #2563eb; background-color: #eff6ff; color: #1e40af; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1); }
+        .need-checkbox:checked + div i { color: #2563eb; }
         .check-icon { display: none; }
         .need-checkbox:checked + div .check-icon { display: inline-block; }
-
+        
         /* 动画 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in {
-            animation: fadeIn 0.3s ease-out forwards;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        
+        /* FAQ 折叠动画 */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary ~ * { animation: fadeIn 0.3s ease-in-out; }
     </style>
-
-    <script type="application/ld+json">
-    [
-        {
-          "@context": "https://schema.org",
-          "@type": "ContactPage",
-          "mainEntity": {
-            "@type": "ProfessionalService",
-            "name": "V5 Medical LTD",
-            "contactPoint": [
-              { "@type": "ContactPoint", "email": "sales@v5md.com", "contactType": "Sales" },
-              { "@type": "ContactPoint", "email": "qa@v5md.com", "contactType": "Regulatory Affairs" }
-            ]
-          }
-        }
-    ]
-    </script>
 </head>
 
 <body class="smooth-scroll font-sans text-gray-800 flex flex-col min-h-screen">
@@ -84,13 +51,12 @@
     <div id="v5-header"></div>
 
     <main class="flex-grow pt-20"> 
-        
         <section class="bg-gray-900 text-white py-16 text-center relative overflow-hidden">
             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
             <div class="relative z-10 px-4">
                 <h1 class="text-3xl md:text-5xl font-extrabold mb-4">How can we help?</h1>
                 <p class="text-lg text-gray-400 max-w-2xl mx-auto">
-                    Tell us what you need. Our system will route your details to the right specialists instantly.
+                    Global Supply Chain Support Center. Average response time: <strong>&lt; 4 Hours</strong>.
                 </p>
             </div>
         </section>
@@ -101,78 +67,69 @@
                 <div class="lg:col-span-7 xl:col-span-8">
                     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8">
                         
-                        <form id="smart-form" action="https://formspree.io/f/xdkqlygg" method="POST" class="space-y-6">
-                            <input type="hidden" name="source" value="Smart Hybrid Form v3.0">
+                        <form id="smart-form" action="https://formspree.io/f/xdkqlygg" method="POST" enctype="multipart/form-data" class="space-y-6">
+                            <input type="hidden" name="source" value="Contact Form v4.0 (Full Feature)">
                             <input type="hidden" id="dynamic-subject" name="subject" value="New Inquiry">
 
                             <div class="grid md:grid-cols-2 gap-4">
                                 <div class="col-span-2 md:col-span-1">
                                     <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Company Name *</label>
-                                    <input type="text" name="company" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Your Company LTD">
+                                    <input type="text" name="company" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white outline-none" placeholder="Your Company LTD">
                                 </div>
                                 <div class="col-span-2 md:col-span-1">
                                     <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Business Email *</label>
-                                    <input type="email" name="email" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="name@company.com">
+                                    <input type="email" name="email" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white outline-none" placeholder="name@company.com">
                                 </div>
                                 <div class="col-span-2 md:col-span-1">
                                     <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Contact Person</label>
-                                    <input type="text" name="name" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Your Name">
+                                    <input type="text" name="name" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white outline-none" placeholder="Your Name">
                                 </div>
                                 <div class="col-span-2 md:col-span-1">
                                     <label class="block text-xs font-bold text-gray-700 uppercase mb-1">WhatsApp / Phone</label>
-                                    <input type="text" name="phone" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="+1 234...">
+                                    <input type="text" name="phone" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white outline-none" placeholder="+1 234...">
                                 </div>
                             </div>
 
                             <div class="border-t border-gray-100 my-6"></div>
 
                             <div>
-                                <label class="block text-sm font-bold text-gray-900 mb-3">
-                                    <span class="bg-blue-600 text-white text-xs px-2 py-0.5 rounded mr-2">Step 2</span>
-                                    What can we help with? (Select all that apply)
-                                </label>
+                                <label class="block text-sm font-bold text-gray-900 mb-3"><span class="bg-blue-600 text-white text-xs px-2 py-0.5 rounded mr-2">Step 2</span>Select Needs</label>
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                                     <label class="cursor-pointer relative group select-none">
                                         <input type="checkbox" name="needs[]" value="Quote" id="check-quote" class="need-checkbox sr-only" onchange="updateFormDisplay()">
-                                        <div class="border-2 border-gray-200 rounded-lg p-3 text-center hover:border-blue-300 transition h-full flex flex-col items-center justify-center relative bg-white">
+                                        <div class="border-2 border-gray-200 rounded-lg p-3 text-center hover:border-blue-300 transition h-full flex flex-col items-center justify-center bg-white relative">
                                             <i class="fas fa-check-circle check-icon absolute top-2 right-2 text-blue-500"></i>
-                                            <i class="fas fa-box-open text-xl text-gray-400 mb-1"></i>
-                                            <span class="font-bold text-sm">Quote & Samples</span>
+                                            <i class="fas fa-box-open text-xl text-gray-400 mb-1"></i><span class="font-bold text-sm">Quote / RFQ</span>
                                         </div>
                                     </label>
-
                                     <label class="cursor-pointer relative group select-none">
                                         <input type="checkbox" name="needs[]" value="Regulatory" id="check-qa" class="need-checkbox sr-only" onchange="updateFormDisplay()">
-                                        <div class="border-2 border-gray-200 rounded-lg p-3 text-center hover:border-purple-300 transition h-full flex flex-col items-center justify-center relative bg-white">
+                                        <div class="border-2 border-gray-200 rounded-lg p-3 text-center hover:border-purple-300 transition h-full flex flex-col items-center justify-center bg-white relative">
                                             <i class="fas fa-check-circle check-icon absolute top-2 right-2 text-purple-500"></i>
-                                            <i class="fas fa-file-contract text-xl text-gray-400 mb-1"></i>
-                                            <span class="font-bold text-sm">Regulatory / QA</span>
+                                            <i class="fas fa-file-contract text-xl text-gray-400 mb-1"></i><span class="font-bold text-sm">Regulatory / QA</span>
                                         </div>
                                     </label>
-
                                     <label class="cursor-pointer relative group select-none">
                                         <input type="checkbox" name="needs[]" value="OEM" id="check-oem" class="need-checkbox sr-only" onchange="updateFormDisplay()">
-                                        <div class="border-2 border-gray-200 rounded-lg p-3 text-center hover:border-orange-300 transition h-full flex flex-col items-center justify-center relative bg-white">
+                                        <div class="border-2 border-gray-200 rounded-lg p-3 text-center hover:border-orange-300 transition h-full flex flex-col items-center justify-center bg-white relative">
                                             <i class="fas fa-check-circle check-icon absolute top-2 right-2 text-orange-500"></i>
-                                            <i class="fas fa-paint-brush text-xl text-gray-400 mb-1"></i>
-                                            <span class="font-bold text-sm">OEM / Branding</span>
+                                            <i class="fas fa-paint-brush text-xl text-gray-400 mb-1"></i><span class="font-bold text-sm">OEM / Branding</span>
                                         </div>
                                     </label>
                                 </div>
                             </div>
 
                             <div id="fields-quote" class="hidden fade-in bg-blue-50 p-4 rounded-xl border border-blue-100 space-y-4">
-                                <h4 class="text-sm font-bold text-blue-800 flex items-center gap-2">
-                                    <i class="fas fa-tag"></i> Quote Requirements
-                                </h4>
+                                <h4 class="text-sm font-bold text-blue-800 flex items-center gap-2"><i class="fas fa-tag"></i> Quote Specifications</h4>
                                 <div class="grid md:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-xs font-semibold text-gray-600 mb-1">Est. Annual Volume</label>
                                         <select name="annual_volume" class="w-full px-3 py-2 rounded border border-gray-300 text-sm">
-                                            <option value="">Select Volume...</option>
+                                            <option value="">Select...</option>
                                             <option value="Trial">Trial Order</option>
                                             <option value="10k-50k">$10k - $50k</option>
-                                            <option value="50k+">$50k+</option>
+                                            <option value="50k-200k">$50k - $200k</option>
+                                            <option value="200k+">$200k+</option>
                                         </select>
                                     </div>
                                     <div>
@@ -180,26 +137,24 @@
                                         <select name="incoterms" class="w-full px-3 py-2 rounded border border-gray-300 text-sm">
                                             <option value="FOB">FOB (Free on Board)</option>
                                             <option value="CIF">CIF (Cost, Insurance, Freight)</option>
-                                            <option value="EXW">EXW (Factory Pick-up)</option>
+                                            <option value="EXW">EXW (Ex Works)</option>
+                                            <option value="DDP">DDP (Delivered Duty Paid)</option>
                                         </select>
                                     </div>
                                 </div>
-                                <textarea name="quote_products" rows="2" class="w-full px-3 py-2 rounded border border-gray-300 text-sm focus:ring-1 focus:ring-blue-500" placeholder="Product details (e.g. PGA 2/0, 75cm, 3000 dozens)..."></textarea>
+                                <textarea name="quote_products" rows="3" class="w-full px-3 py-2 rounded border border-gray-300 text-sm" placeholder="Please list items: Product Name, Specs, Quantity, Packing requirement..."></textarea>
                             </div>
 
                             <div id="fields-qa" class="hidden fade-in bg-purple-50 p-4 rounded-xl border border-purple-100 space-y-4">
-                                <h4 class="text-sm font-bold text-purple-800 flex items-center gap-2">
-                                    <i class="fas fa-certificate"></i> Regulatory Support
-                                    <span class="text-[10px] bg-white border border-purple-200 px-2 rounded font-normal text-gray-500">Paid Service Available</span>
-                                </h4>
+                                <h4 class="text-sm font-bold text-purple-800 flex items-center gap-2"><i class="fas fa-certificate"></i> Regulatory Details</h4>
                                 <div class="grid md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-xs font-semibold text-gray-600 mb-1">Cert Required</label>
+                                        <label class="block text-xs font-semibold text-gray-600 mb-1">Required Docs</label>
                                         <select name="certificate_needed" class="w-full px-3 py-2 rounded border border-gray-300 text-sm">
                                             <option value="CE MDR">CE (MDR)</option>
                                             <option value="ISO 13485">ISO 13485</option>
                                             <option value="FSC">Free Sale Certificate</option>
-                                            <option value="Dossier">Technical Dossier</option>
+                                            <option value="Dossier">Technical Dossier (Paid)</option>
                                         </select>
                                     </div>
                                     <div>
@@ -210,139 +165,157 @@
                             </div>
 
                             <div>
-                                <label class="block text-sm font-bold text-gray-900 mb-2">Additional Details / Message *</label>
-                                <textarea name="message" rows="3" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-gray-50 focus:bg-white" placeholder="Please describe your requirements..."></textarea>
+                                <label class="block text-sm font-bold text-gray-900 mb-2">
+                                    Attachments (Optional)
+                                </label>
+                                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 hover:bg-gray-100 transition relative">
+                                    <div class="space-y-1 text-center">
+                                        <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl mb-2"></i>
+                                        <div class="flex text-sm text-gray-600">
+                                            <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none">
+                                                <span>Upload a file</span>
+                                                <input id="file-upload" name="attachment" type="file" class="sr-only">
+                                            </label>
+                                            <p class="pl-1">or drag and drop</p>
+                                        </div>
+                                        <p class="text-xs text-gray-500">
+                                            PDF, JPG, Excel (Max 10MB). RFQ Lists or Tech Specs.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-900 mb-2">Message *</label>
+                                <textarea name="message" rows="3" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50 focus:bg-white" placeholder="Any additional details..."></textarea>
                             </div>
 
                             <div class="flex items-start gap-3 pt-2">
-                                <input type="checkbox" required id="b2b-check" class="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
-                                <label for="b2b-check" class="text-xs text-gray-500 cursor-pointer">
-                                    I confirm this is a business inquiry.
-                                </label>
+                                <input type="checkbox" required id="b2b-check" class="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300">
+                                <label for="b2b-check" class="text-xs text-gray-500">I confirm this is a business inquiry. (V5 Medical does not supply individuals).</label>
                             </div>
 
                             <button type="submit" class="w-full bg-blue-700 text-white font-bold py-4 rounded-xl hover:bg-blue-600 transition shadow-lg flex justify-center items-center gap-2 group">
-                                <span>Send Inquiry</span>
-                                <i class="fas fa-paper-plane group-hover:translate-x-1 transition-transform"></i>
+                                <span>Send Inquiry</span><i class="fas fa-paper-plane group-hover:translate-x-1 transition-transform"></i>
                             </button>
                         </form>
+                    </div>
+                    
+                    <div class="mt-12">
+                        <h3 class="text-xl font-bold text-gray-900 mb-6 text-center">Frequently Asked Questions</h3>
+                        <div class="space-y-4">
+                            <details class="group bg-white rounded-xl shadow-sm border border-gray-200 p-4 cursor-pointer">
+                                <summary class="flex justify-between items-center font-medium text-gray-800">
+                                    <span>What is your general MOQ?</span>
+                                    <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>
+                                </summary>
+                                <p class="text-gray-600 text-sm mt-3 pl-4 border-l-2 border-blue-500">
+                                    For sutures, MOQ is typically 500 dozens per spec. For standard packs, 5,000 pcs. We support mixed-container orders.
+                                </p>
+                            </details>
+                            
+                            <details class="group bg-white rounded-xl shadow-sm border border-gray-200 p-4 cursor-pointer">
+                                <summary class="flex justify-between items-center font-medium text-gray-800">
+                                    <span>Do you provide samples?</span>
+                                    <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>
+                                </summary>
+                                <p class="text-gray-600 text-sm mt-3 pl-4 border-l-2 border-blue-500">
+                                    Yes. Standard samples are free; shipping cost is collected (FedEx/DHL). Custom OEM samples may incur tooling fees.
+                                </p>
+                            </details>
+                            
+                            <details class="group bg-white rounded-xl shadow-sm border border-gray-200 p-4 cursor-pointer">
+                                <summary class="flex justify-between items-center font-medium text-gray-800">
+                                    <span>What are your payment terms?</span>
+                                    <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>
+                                </summary>
+                                <p class="text-gray-600 text-sm mt-3 pl-4 border-l-2 border-blue-500">
+                                    Standard terms are 30% Deposit, 70% Balance before shipment or against BL copy (negotiable for long-term partners).
+                                </p>
+                            </details>
+                        </div>
                     </div>
                 </div>
 
                 <div class="lg:col-span-5 xl:col-span-4 space-y-6">
                     
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <i class="fab fa-whatsapp text-green-500 text-xl"></i> Instant Chat
+                    <div class="bg-gradient-to-br from-blue-50 to-white p-6 rounded-xl shadow-md border border-blue-100 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 -mt-2 -mr-2 w-12 h-12 bg-blue-100 rounded-full opacity-50"></div>
+                        <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                            <i class="fas fa-stopwatch text-blue-600 text-xl"></i> Response Guarantee
                         </h3>
-                        <div class="space-y-4">
-                            <a href="https://wa.me/447895047944" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition border border-transparent hover:border-green-200">
-                                <div class="text-xs text-gray-500">Global (English)</div>
-                                <div class="font-bold text-gray-900 text-lg">+44 7895 047944</div>
-                            </a>
+                        <p class="text-sm text-gray-600 mb-4 leading-relaxed">
+                            We value your time. All verified business inquiries receive a response within:
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <div class="text-3xl font-black text-blue-700">4 <span class="text-sm font-medium text-gray-500">Hours</span></div>
+                            <div class="text-xs text-gray-400 border-l pl-3 border-gray-200">
+                                *During Business Days<br>(GMT+8, 9AM-6PM)
+                            </div>
                         </div>
                     </div>
 
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="font-bold text-gray-900 mb-4">Direct Emails</h3>
+                        <h3 class="font-bold text-gray-900 mb-4">Direct Department Emails</h3>
                         <ul class="space-y-4">
                             <li class="flex items-start gap-3">
                                 <div class="mt-1 text-blue-500"><i class="fas fa-tag"></i></div>
-                                <div>
-                                    <div class="font-bold text-sm text-gray-800">Sales & Quotes</div>
-                                    <a href="mailto:sales@v5md.com" class="text-sm text-blue-600 hover:underline">sales@v5md.com</a>
-                                </div>
+                                <div><div class="font-bold text-sm text-gray-800">Sales</div><a href="mailto:sales@v5md.com" class="text-sm text-blue-600 hover:underline">sales@v5md.com</a></div>
                             </li>
                             <li class="flex items-start gap-3">
                                 <div class="mt-1 text-purple-500"><i class="fas fa-certificate"></i></div>
-                                <div>
-                                    <div class="font-bold text-sm text-gray-800">QA & Regulatory</div>
-                                    <a href="mailto:qa@v5md.com" class="text-sm text-blue-600 hover:underline">qa@v5md.com</a>
-                                </div>
+                                <div><div class="font-bold text-sm text-gray-800">QA / Regulatory</div><a href="mailto:qa@v5md.com" class="text-sm text-blue-600 hover:underline">qa@v5md.com</a></div>
                             </li>
                             <li class="flex items-start gap-3">
                                 <div class="mt-1 text-green-500"><i class="fas fa-box"></i></div>
-                                <div>
-                                    <div class="font-bold text-sm text-gray-800">Logistics & Orders</div>
-                                    <a href="mailto:order@v5md.com" class="text-sm text-blue-600 hover:underline">order@v5md.com</a>
-                                </div>
+                                <div><div class="font-bold text-sm text-gray-800">Logistics</div><a href="mailto:order@v5md.com" class="text-sm text-blue-600 hover:underline">order@v5md.com</a></div>
                             </li>
                         </ul>
                     </div>
+
+                    <div class="bg-gray-900 text-white p-6 rounded-xl shadow-lg text-sm">
+                        <h3 class="font-bold mb-4">What Happens Next?</h3>
+                        <div class="space-y-4 relative">
+                            <div class="absolute left-2.5 top-2 h-full w-0.5 bg-gray-700"></div>
+                            
+                            <div class="relative pl-8">
+                                <div class="absolute left-0 top-0 w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center text-[10px]">1</div>
+                                <h4 class="font-bold text-blue-200">Needs Assessment</h4>
+                                <p class="text-xs text-gray-400 mt-1">Our manager reviews your specs (2-4 hrs).</p>
+                            </div>
+                            <div class="relative pl-8">
+                                <div class="absolute left-0 top-0 w-5 h-5 bg-gray-700 rounded-full flex items-center justify-center text-[10px]">2</div>
+                                <h4 class="font-bold text-gray-300">Quote & Strategy</h4>
+                                <p class="text-xs text-gray-400 mt-1">We send a PI or formal Quotation.</p>
+                            </div>
+                            <div class="relative pl-8">
+                                <div class="absolute left-0 top-0 w-5 h-5 bg-gray-700 rounded-full flex items-center justify-center text-[10px]">3</div>
+                                <h4 class="font-bold text-gray-300">Sampling / Audit</h4>
+                                <p class="text-xs text-gray-400 mt-1">Physical verification before order.</p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
     </main>
-
     <div id="v5-footer"></div>
-
-    <script src="js/config.js?v=2.7.0"></script>     
-    <script src="js/layout.js?v=4.7.3"></script>     
-    <script src="js/main.js?v=2.2.0"></script> 
-    <script src="js/seo-utils.js?v=3.0.0"></script> 
+    <script src="js/config.js?v=2.7.0"></script> <script src="js/layout.js?v=4.7.3"></script> <script src="js/main.js?v=2.2.0"></script> <script src="js/seo-utils.js?v=3.0.0"></script>
     <script>
-        if (window.seoUtils) {
-            window.seoUtils.injectAllSchemas({ includeFAQ: false });
-        }
-        
-        // 核心：智能多选逻辑
         function updateFormDisplay() {
             const isQuote = document.getElementById('check-quote').checked;
             const isQA = document.getElementById('check-qa').checked;
             const isOEM = document.getElementById('check-oem').checked;
-            
-            // 1. 动态显示/隐藏字段
-            toggleSection('fields-quote', isQuote);
-            toggleSection('fields-qa', isQA);
-            // OEM 暂时没有专门的字段块，可以整合到 Message 里或者 Quote 里，这里暂不额外显示复杂块
-            
-            // 2. 动态生成邮件标题 (Smart Routing)
-            let subjectParts = [];
-            if (isQuote) subjectParts.push("Quote");
-            if (isQA) subjectParts.push("Regulatory");
-            if (isOEM) subjectParts.push("OEM");
-            
-            const subjectField = document.getElementById('dynamic-subject');
-            if (subjectParts.length > 0) {
-                subjectField.value = "Inquiry: " + subjectParts.join(" + ");
-            } else {
-                subjectField.value = "General Inquiry";
-            }
+            toggleSection('fields-quote', isQuote); toggleSection('fields-qa', isQA);
+            let subjectParts = []; if (isQuote) subjectParts.push("Quote"); if (isQA) subjectParts.push("Regulatory"); if (isOEM) subjectParts.push("OEM");
+            document.getElementById('dynamic-subject').value = subjectParts.length > 0 ? "Inquiry: " + subjectParts.join(" + ") : "General Inquiry";
         }
-
-        function toggleSection(id, shouldShow) {
-            const el = document.getElementById(id);
-            if (shouldShow) {
-                el.classList.remove('hidden');
-            } else {
-                el.classList.add('hidden');
-            }
-        }
-        
-        // Google Translate
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en', 
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_translate_element');
-        }
-
-        // 初始化：检查URL参数（如果从首页点击进来）
-        document.addEventListener("DOMContentLoaded", function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const type = urlParams.get('type');
-            if(type === 'quote') {
-                document.getElementById('check-quote').checked = true;
-                updateFormDisplay();
-            }
-        });
+        function toggleSection(id, shouldShow) { const el = document.getElementById(id); shouldShow ? el.classList.remove('hidden') : el.classList.add('hidden'); }
+        document.addEventListener("DOMContentLoaded", function() { const urlParams = new URLSearchParams(window.location.search); if(urlParams.get('type') === 'quote') { document.getElementById('check-quote').checked = true; updateFormDisplay(); } });
+        function googleTranslateElementInit(){new google.translate.TranslateElement({pageLanguage:'en',layout:google.translate.TranslateElement.InlineLayout.SIMPLE},'google_translate_element');}
     </script>
     <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
-    
-    <div class="bg-gray-100 py-3 text-center border-t text-sm">
-        <span class="text-gray-500 mr-2">Region/Language:</span>
-        <span id="google_translate_element" class="inline-block align-middle"></span>
-    </div>
-
+    <div class="bg-gray-100 py-3 text-center border-t text-sm"><span id="google_translate_element"></span></div>
 </body>
 </html>
