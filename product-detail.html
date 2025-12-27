@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details | V5 Medical LTD</title>
-    <meta name="description" content="Premium medical products from V5 Medical LTD. ISO 13485 certified supply chain partner.">
+    <meta name="description" content="Premium medical products from V5 Medical LTD. ISO 13485 certified supply chain partner. Technical specs and compliance data available.">
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,6 +18,28 @@
             }
         }
     </script>
+    <style>
+        /* 流程图连接线 */
+        .process-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -20px;
+            width: 20px;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+        @media (max-width: 768px) {
+            .process-step:not(:last-child)::after {
+                top: 100%;
+                left: 50%;
+                right: auto;
+                width: 2px;
+                height: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body class="bg-gray-50 flex flex-col min-h-screen font-sans text-gray-800">
@@ -31,15 +53,12 @@
         
         <div id="loading-state" class="max-w-7xl mx-auto text-center py-20">
             <div class="loader-spinner border-blue-600 border-t-transparent mx-auto mb-4"></div>
-            <p class="text-gray-500 font-medium">Retrieving product data...</p>
+            <p class="text-gray-500 font-medium">Loading technical specifications...</p>
         </div>
 
         <div id="error-state" class="hidden max-w-2xl mx-auto text-center py-20">
             <h2 class="text-2xl font-bold text-gray-900 mb-2">Product Not Found</h2>
-            <p class="text-gray-500 mb-6">This item may have been removed or the link is incorrect.</p>
-            <a href="catalog.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition">
-                Return to Catalog
-            </a>
+            <a href="catalog.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition">Return to Catalog</a>
         </div>
 
         <div id="product-content" class="hidden max-w-7xl mx-auto animate-fade-in">
@@ -53,17 +72,37 @@
                 </ol>
             </nav>
 
-            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
-                <div class="space-y-6">
+            <div class="grid lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-5 space-y-8">
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden aspect-square flex items-center justify-center relative group">
                         <img id="product-image" src="" alt="Product" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1">
-                            <i class="fas fa-shield-alt"></i> Medical Grade
+                            <i class="fas fa-check-circle"></i> ISO 13485 Verified
                         </div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-100 rounded-xl p-6">
+                        <h3 class="font-bold text-blue-900 mb-4 flex items-center gap-2">
+                            <i class="fas fa-sliders-h"></i> Key Parameters
+                        </h3>
+                        <ul class="space-y-3 text-sm" id="key-params-list">
+                            <li class="flex justify-between border-b border-blue-100 pb-2">
+                                <span class="text-gray-600">Sterilization</span>
+                                <span class="font-bold text-gray-900">EO Gas / Gamma (Validated)</span>
+                            </li>
+                            <li class="flex justify-between border-b border-blue-100 pb-2">
+                                <span class="text-gray-600">Shelf Life</span>
+                                <span class="font-bold text-gray-900">3 - 5 Years</span>
+                            </li>
+                            <li class="flex justify-between border-b border-blue-100 pb-2">
+                                <span class="text-gray-600">Production</span>
+                                <span class="font-bold text-gray-900">Class 100,000 Cleanroom</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
-                <div>
+                <div class="lg:col-span-7">
                     <div class="mb-3">
                         <span id="product-category" class="inline-block bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded border border-blue-100 uppercase tracking-wide">Category</span>
                     </div>
@@ -72,58 +111,106 @@
                     
                     <div class="flex flex-wrap gap-2 mb-6" id="cert-tags"></div>
 
-                    <div class="grid grid-cols-2 gap-4 text-sm bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6">
-                        <div>
-                            <span class="text-gray-500 block text-xs uppercase tracking-wide font-semibold">MOQ</span>
-                            <span class="font-bold text-gray-900">Flexible (Contact Us)</span>
-                        </div>
-                        <div>
-                            <span class="text-gray-500 block text-xs uppercase tracking-wide font-semibold">Lead Time</span>
-                            <span class="font-bold text-gray-900">15-30 Days</span>
-                        </div>
-                        <div>
-                            <span class="text-gray-500 block text-xs uppercase tracking-wide font-semibold">OEM / ODM</span>
-                            <span class="font-bold text-green-600">Available</span>
-                        </div>
-                        <div>
-                            <span class="text-gray-500 block text-xs uppercase tracking-wide font-semibold">Export Markets</span>
-                            <span class="font-bold text-gray-900">Global (EU/US/Asia)</span>
-                        </div>
-                    </div>
-
-                    <div class="prose prose-blue text-gray-600 mb-8 leading-relaxed">
+                    <div class="prose prose-blue text-gray-600 mb-8 leading-relaxed max-w-none">
                         <p id="product-desc">Loading description...</p>
                     </div>
 
-                    <div class="mb-8">
-                        <h4 class="font-bold text-gray-900 mb-2 text-sm">Why Source This from V5?</h4>
-                        <ul class="space-y-2 text-sm text-gray-600">
-                            <li class="flex items-start gap-2"><i class="fas fa-check-circle text-blue-500 mt-0.5"></i> Produced by ISO 13485 audited partner factory</li>
-                            <li class="flex items-start gap-2"><i class="fas fa-check-circle text-blue-500 mt-0.5"></i> CE documentation available for registration support</li>
-                            <li class="flex items-start gap-2"><i class="fas fa-check-circle text-blue-500 mt-0.5"></i> Custom labeling & packaging supported</li>
-                        </ul>
+                    <div class="flex flex-col sm:flex-row gap-4 mb-12 border-b border-gray-100 pb-12">
+                        <a id="whatsapp-btn" href="#" target="_blank" class="flex-1 bg-green-600 hover:bg-green-700 text-white text-center px-6 py-4 rounded-xl font-bold shadow-lg transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                            <i class="fab fa-whatsapp text-xl"></i> Request Best Price
+                        </a>
+                        <a href="contact.html?type=qa" class="flex-1 bg-white border-2 border-gray-200 hover:border-purple-600 hover:text-purple-700 text-gray-700 text-center px-6 py-4 rounded-xl font-bold transition flex items-center justify-center gap-2">
+                            <i class="fas fa-file-contract text-lg"></i> Request Docs
+                        </a>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-4 pt-2">
-                        <a id="whatsapp-btn" href="#" target="_blank" class="flex-1 bg-green-600 hover:bg-green-700 text-white text-center px-6 py-4 rounded-xl font-bold shadow-lg transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
-                            <i class="fab fa-whatsapp text-xl"></i> Get Best Quote
-                        </a>
-                        <a href="contact.html" class="flex-1 bg-white border-2 border-gray-200 hover:border-blue-600 text-gray-700 text-center px-6 py-4 rounded-xl font-bold transition flex items-center justify-center gap-2">
-                            <i class="fas fa-envelope text-lg"></i> Email Inquiry
-                        </a>
+                    <div class="space-y-10">
+                        
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                                <i class="fas fa-network-wired text-blue-600"></i> Manufacturing Process
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10">
+                                    <div class="w-10 h-10 bg-white border-2 border-blue-500 rounded-full flex items-center justify-center text-blue-600 font-bold mb-2">1</div>
+                                    <span class="text-xs font-bold uppercase text-gray-700">Raw Material</span>
+                                    <span class="text-[10px] text-gray-500">IQC Check</span>
+                                </div>
+                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10">
+                                    <div class="w-10 h-10 bg-white border-2 border-blue-500 rounded-full flex items-center justify-center text-blue-600 font-bold mb-2">2</div>
+                                    <span class="text-xs font-bold uppercase text-gray-700">Cleanroom</span>
+                                    <span class="text-[10px] text-gray-500">Class 100k</span>
+                                </div>
+                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10">
+                                    <div class="w-10 h-10 bg-white border-2 border-blue-500 rounded-full flex items-center justify-center text-blue-600 font-bold mb-2">3</div>
+                                    <span class="text-xs font-bold uppercase text-gray-700">Packaging</span>
+                                    <span class="text-[10px] text-gray-500">Sealing Val.</span>
+                                </div>
+                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10">
+                                    <div class="w-10 h-10 bg-white border-2 border-purple-500 rounded-full flex items-center justify-center text-purple-600 font-bold mb-2">4</div>
+                                    <span class="text-xs font-bold uppercase text-gray-700">Sterilization</span>
+                                    <span class="text-[10px] text-gray-500">EO / Gamma</span>
+                                </div>
+                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10">
+                                    <div class="w-10 h-10 bg-white border-2 border-green-500 rounded-full flex items-center justify-center text-green-600 font-bold mb-2">5</div>
+                                    <span class="text-xs font-bold uppercase text-gray-700">FQC Release</span>
+                                    <span class="text-[10px] text-gray-500">Batch Record</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <i class="fas fa-microscope text-blue-600"></i> Quality Control Points
+                            </h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left border-collapse">
+                                    <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
+                                        <tr>
+                                            <th class="px-4 py-3 rounded-tl-lg">Checkpoint</th>
+                                            <th class="px-4 py-3">Stage</th>
+                                            <th class="px-4 py-3 rounded-tr-lg">Standard / Criteria</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100 bg-white border border-gray-100" id="qc-table-body">
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">Regulatory Documentation Status</h3>
+                            <ul class="space-y-3">
+                                <li class="flex items-center justify-between text-sm">
+                                    <span class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> CE Certificate (MDR)</span>
+                                    <span class="text-green-700 bg-green-100 px-2 py-0.5 rounded text-xs font-bold">Available</span>
+                                </li>
+                                <li class="flex items-center justify-between text-sm">
+                                    <span class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> ISO 13485:2016</span>
+                                    <span class="text-green-700 bg-green-100 px-2 py-0.5 rounded text-xs font-bold">Available</span>
+                                </li>
+                                <li class="flex items-center justify-between text-sm group cursor-pointer hover:bg-white p-1 rounded transition">
+                                    <span class="flex items-center gap-2 text-gray-600"><i class="fas fa-lock text-orange-400"></i> Technical File (Dossier)</span>
+                                    <a href="contact.html?type=qa" class="text-blue-600 text-xs font-bold hover:underline">Request Access &rarr;</a>
+                                </li>
+                                <li class="flex items-center justify-between text-sm group cursor-pointer hover:bg-white p-1 rounded transition">
+                                    <span class="flex items-center gap-2 text-gray-600"><i class="fas fa-lock text-orange-400"></i> Sterilization Validation Report</span>
+                                    <a href="contact.html?type=qa" class="text-blue-600 text-xs font-bold hover:underline">Request Access &rarr;</a>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
-            <div class="mt-20">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
-                        <h2 class="text-lg font-bold text-gray-900">Technical Specifications</h2>
-                        <span class="text-xs text-gray-400">Data Sheet</span>
-                    </div>
-                    <div class="p-6">
-                        <table class="w-full text-sm text-left spec-table" id="specs-table"></table>
-                    </div>
+            <div class="mt-20 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-gray-900">Detailed Specifications</h2>
+                    <span class="text-xs text-gray-400">Datasheet v2025.1</span>
+                </div>
+                <div class="p-6">
+                    <table class="w-full text-sm text-left" id="specs-table"></table>
                 </div>
             </div>
             
@@ -148,18 +235,13 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             const productId = params.get('id');
-            
             if (!productId) { showError(); return; }
 
             try {
                 if (!window.productLoader) throw new Error('Loader missing');
                 const db = await window.productLoader.loadProducts();
-                
-                // Find Product
                 let product = db.byId ? db.byId[productId] : null;
-                if (!product && Array.isArray(db.products)) {
-                    product = db.products.find(p => p.id === productId);
-                }
+                if (!product && Array.isArray(db.products)) product = db.products.find(p => p.id === productId);
 
                 if (product) {
                     renderProductPage(product);
@@ -174,122 +256,88 @@
         });
 
         function renderProductPage(product) {
-            // 1. Dynamic SEO Update (SEO 优化)
-            if (window.seoUtils) {
-                window.seoUtils.updatePage({
-                    title: `${product.name} | ${formatCategory(product.category)} Manufacturer in China`,
-                    description: product.short || `${product.name} supplied by ISO 13485 certified partner factories. OEM available.`,
-                    image: product.images[0],
-                    product: product,
-                    breadcrumb: [
-                        { name: 'Home', url: 'index.html' },
-                        { name: 'Products', url: 'catalog.html' },
-                        { name: product.name, url: window.location.href }
-                    ]
-                });
-            }
+            // SEO
+            if (window.seoUtils) window.seoUtils.updatePage({
+                title: `${product.name} Manufacturer - Technical Specs | V5 Medical`,
+                description: `Wholesale ${product.name} with ISO 13485 & CE. View manufacturing process, QC standards, and packaging specs.`,
+                image: product.images[0]
+            });
 
             document.getElementById('loading-state').classList.add('hidden');
             document.getElementById('product-content').classList.remove('hidden');
 
-            // 2. Content Injection
+            // Basic Info
             setText('product-name', product.name);
             setText('crumb-name', product.name);
             setText('product-category', formatCategory(product.category));
             document.getElementById('product-desc').innerHTML = `<p>${product.description}</p>`;
             
-            // 3. Robust Image Loading
+            // Image
             const imgEl = document.getElementById('product-image');
             const imgSrc = product.images?.[0] || 'images/products/default-product.jpg';
-            imgEl.setAttribute('data-original-src', imgSrc);
-            if (window.imageUtils) {
-                imgEl.src = window.imageUtils.getImageUrl(imgSrc);
-                imgEl.onerror = function() { window.imageUtils.handleError(this); };
-            } else {
-                imgEl.src = imgSrc;
+            imgEl.src = window.imageUtils ? window.imageUtils.getImageUrl(imgSrc) : imgSrc;
+
+            // Cert Tags
+            document.getElementById('cert-tags').innerHTML = (product.certifications || ['ISO 13485', 'CE', 'FDA Reg']).map(c => 
+                `<span class="px-2.5 py-1 rounded bg-green-100 text-green-800 text-xs font-bold border border-green-200 flex items-center gap-1"><i class="fas fa-certificate text-[10px]"></i> ${c}</span>`
+            ).join('');
+
+            // WhatsApp Logic
+            const phone = window.V5Config?.CONTACT?.WHATSAPP?.NUMBER || '447895047944';
+            const waText = encodeURIComponent(`Hi V5 Medical, inquiring about Technical Specs for: ${product.name} (ID: ${product.id}). Need MOQ & CE Doc.`);
+            document.getElementById('whatsapp-btn').href = `https://wa.me/${phone}?text=${waText}`;
+
+            // 🔥 INJECT QC TABLE (Dynamic based on Category)
+            const qcBody = document.getElementById('qc-table-body');
+            let qcRows = [
+                { stage: 'IQC', point: 'Raw Material Check', criteria: 'USP / EP Standard Compliance' },
+                { stage: 'IPQC', point: 'Cleanroom Assembly', criteria: 'Class 100,000 Particle Count' },
+                { stage: 'FQC', point: 'Sterility Test', criteria: 'SAL 10⁻⁶ (ISO 11135)' },
+                { stage: 'OQC', point: 'Package Seal', criteria: 'ASTM F88 / F1929 Burst Test' }
+            ];
+            
+            // Customizing for Sutures
+            if(product.category.includes('suture')) {
+                qcRows[0].criteria = 'Needle Attachment Strength (USP)';
+                qcRows.push({ stage: 'Lab', point: 'Tensile Strength', criteria: '≥ 110% of USP Min Requirement' });
             }
 
-            // 4. Specs Table
+            qcBody.innerHTML = qcRows.map(row => `
+                <tr>
+                    <td class="px-4 py-3 font-bold text-gray-900">${row.stage}</td>
+                    <td class="px-4 py-3 text-gray-600">${row.point}</td>
+                    <td class="px-4 py-3 text-blue-700 bg-blue-50/50 font-mono text-xs">${row.criteria}</td>
+                </tr>
+            `).join('');
+
+            // Full Specs Table
             const specsTable = document.getElementById('specs-table');
             if (product.specifications) {
                 specsTable.innerHTML = Object.entries(product.specifications)
                     .map(([key, value]) => `<tr><td class="p-3 border-b text-gray-500 w-1/3 font-medium bg-gray-50/30">${key}</td><td class="p-3 border-b text-gray-900">${value}</td></tr>`)
                     .join('');
             }
-
-            // 5. Cert Tags
-            const certTags = document.getElementById('cert-tags');
-            certTags.innerHTML = (product.certifications || ['ISO 13485', 'CE']).map(c => 
-                `<span class="px-2.5 py-1 rounded bg-green-100 text-green-800 text-xs font-bold border border-green-200 flex items-center gap-1"><i class="fas fa-certificate text-[10px]"></i> ${c}</span>`
-            ).join('');
-
-            // 6. Professional WhatsApp Inquiry Logic (成交型询盘)
-            const phone = window.V5Config?.CONTACT?.WHATSAPP?.NUMBER || '447895047944';
-            const waText = encodeURIComponent(
-`Hello V5 Medical,
-
-I am interested in:
-• Product: ${product.name}
-• ID: ${product.id}
-
-Please advise:
-• MOQ
-• Certifications (CE / ISO)
-• FOB Price
-• Lead Time
-
-Thank you.`
-            );
-            document.getElementById('whatsapp-btn').href = `https://wa.me/${phone}?text=${waText}`;
         }
         
         function renderRelatedProducts(current, all) {
             const related = all.filter(p => p.category === current.category && p.id !== current.id).slice(0, 4);
             const container = document.getElementById('related-products');
-            
-            if(!related.length) {
-                container.parentElement.style.display = 'none';
-                return;
-            }
-            
+            if(!related.length) { container.parentElement.style.display = 'none'; return; }
             container.innerHTML = related.map(p => {
                 const pImg = p.images?.[0] || 'images/products/default-product.jpg';
-                const resolved = window.imageUtils ? window.imageUtils.getImageUrl(pImg) : pImg;
-                return `
-                <a href="product-detail.html?id=${p.id}" class="group block bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition">
+                return `<a href="product-detail.html?id=${p.id}" class="group block bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition">
                     <div class="bg-gray-50 aspect-square overflow-hidden relative">
-                        <img src="${resolved}" 
-                             data-original-src="${pImg}"
-                             onerror="window.imageUtils && window.imageUtils.handleError(this)"
-                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
-                             alt="${p.name}" loading="lazy">
-                        <span class="absolute bottom-0 left-0 right-0 bg-white/90 text-[10px] text-center py-1 text-gray-500 opacity-0 group-hover:opacity-100 transition">Same Category</span>
+                        <img src="${pImg}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="${p.name}" loading="lazy">
                     </div>
-                    <div class="p-3">
-                        <h4 class="font-bold text-gray-900 text-sm line-clamp-2 group-hover:text-blue-600 transition">${p.name}</h4>
-                    </div>
-                </a>
-            `}).join('');
+                    <div class="p-3"><h4 class="font-bold text-gray-900 text-sm line-clamp-2 group-hover:text-blue-600">${p.name}</h4></div>
+                </a>`
+            }).join('');
         }
 
-        function showError() {
-            document.getElementById('loading-state').classList.add('hidden');
-            document.getElementById('error-state').classList.remove('hidden');
-        }
-        function setText(id, text) {
-            const el = document.getElementById(id);
-            if (el) el.textContent = text || '';
-        }
-        function formatCategory(cat) {
-            if (!cat) return 'Medical Product';
-            return cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-        }
+        function showError() { document.getElementById('loading-state').classList.add('hidden'); document.getElementById('error-state').classList.remove('hidden'); }
+        function setText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text || ''; }
+        function formatCategory(cat) { return cat ? cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'Medical'; }
     </script>
     <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
 </body>
 </html>
-
-
-
-
-
