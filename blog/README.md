@@ -1,57 +1,55 @@
-# V5 Medical Knowledge Hub
+# V5 Medical Supply Chain Intelligence
 
-> **Empowering Global Buyers with Supply Chain Intelligence**
-
-We don't just deliver products — we deliver **clarity** in a complex market.
+> **For Procurement Managers & RA Specialists** > We bridge the gap between "Factory Output" and "Regulatory Compliance".
 
 ---
 
-## 🚀 Featured Insight
+## 🔥 Featured Insight
 
-### **[Medical Packaging Materials: Tyvek & PETG Supply](posts/medical-packaging-supply.md)**
-> **New Release:** A deep dive into high-quality bulk supply for sterile packaging lines. Learn how our **Integrator Model** ensures heat-sealing stability and strict OD control for automated production.
+### **[Why 60% of Medical Distributors Fail CE Audits (And How to Fix It)](posts/ce-audit-failure.md)**
+> **Risk Alert:** Documentation gaps are the #1 killer of EU tenders. 
+> Most factories provide a certificate, but few provide a defensible **Technical File**. Learn the 7 reasons Notified Bodies reject applications and how our "Integrator Model" fixes the traceability gap.
 
 ---
 
-## 📚 Explore by Topic
+## 📚 Knowledge Base
 
-### ⛓️ **Supply Chain Strategy**
-*Learn how to reduce risk and consolidate logistics.*
+### 🛡️ **Regulatory & Compliance**
+*Navigate ISO 13485, MDR, and Audits.*
 
-- **[The "Integrator" Model Explained](posts/integrator-model.md)** *Factory vs. Trading Company vs. Supply Chain Integrator — understanding the difference.*
-- **[How to Audit a Chinese Factory](posts/supplier-verification.md)** *A comprehensive checklist for international buyers to validate suppliers.*
-- **[Factory vs. Trading Co. vs. Integrator](posts/supply-chain-2025.md)** *Choosing the right partner for your 2025 procurement strategy.*
+- **[Sterilization Validation: EtO vs. Gamma](posts/sterilization-validation.md)** *Understanding bio-burden limits. Why auditors ask for your "Cycle Parameter Rationale" and why factory lab reports often fail scrutiny.*
 
-### ⚖️ **Regulatory & Compliance**
-*Navigate ISO 13485, CE marking, and EU MDR with confidence.*
+### ⛓️ **Sourcing Strategy**
+*How to buy safely in China.*
 
-- **[Understanding ISO 13485](posts/iso-13485-guide.md)** *Why "Good Price" is dangerous without a "Good Quality System".*
-- **[EU MDR 2025 Guide](posts/eu-mdr-2025.md)** *Essential documentation requirements for European tenders.*
+- **[The "Integrator" Model vs. Factory Direct](posts/integrator-model.md)** *Who actually passes the audit? Why a Supply Chain Integrator offers better risk control than a single factory for multi-SKU procurement.*
+  
+- **[MOQ vs. Unit Price: The Real Cost Curve](posts/moq-vs-price.md)** *Why fighting for the lowest price often increases your Total Landed Cost (TLC). Strategic negotiation tactics for long-term supply.*
 
-### 📦 **Product Technical Specs**
-*Deep dives into materials and standards.*
+### 📦 **Technical Specifications**
+*Materials, Packaging, and Standards.*
 
-- **[Surgical Sutures: Material Guide](posts/suture-guide.md)** *PGA vs PGLA vs PDO — tensile strength, absorption rates, and clinical uses.*
+- **[Tyvek vs. Medical Paper Packaging](posts/tyvek-vs-paper.md)** *Choosing the right Sterile Barrier System (SBS). When to pay extra for Tyvek to prevent shelf-life failures during shipping.*
 
 ---
 
 ## 💼 Corporate Resources
 
-| **Official Documents** | **Quick Links** |
+| **Official Documents** | **Quick Access** |
 | :--- | :--- |
 | 📄 **[Download Capability Statement (PDF)](https://v5md.com/pdf/V5_Medical_Capability_Statement.pdf)**<br>*For tender qualification & due diligence* | 🌐 **[Product Catalog](https://v5md.com/catalog.html)** |
-| 🔒 **[Request ISO 13485 Certificate](mailto:qa@v5md.com?subject=Request%20ISO%20Certificate)**<br>*Full technical file available upon NDA* | 🏢 **[About Our Structure](https://v5md.com/about.html)** |
+| 🔒 **[Request ISO 13485 Certificate](https://v5md.com/contact.html?type=qa)**<br>*Full technical file available upon NDA* | 🏢 **[About Our Structure](https://v5md.com/about.html)** |
 
 ---
 
-## 📩 Need Specific Advice?
+## 📩 Ready to Optimize Your Supply Chain?
 
-Our team of procurement specialists is ready to assist with your supply chain strategy.
+Don't let compliance risks slow down your sales.
 
-* **Email:** [sales@v5md.com](mailto:sales@v5md.com)
-* **WhatsApp:** [+44 7895 047944](https://wa.me/447895047944?text=Hello%20V5%20Medical,%20I%20am%20interested%20in%20supply%20chain%20solutions)
-* **Office:** +86-0512-8781-1988
+* **Need a Quote?** [Start Inquiry (Smart Form)](https://v5md.com/contact.html?type=quote)
+* **Need Regulatory Support?** [Contact QA Team](https://v5md.com/contact.html?type=qa)
+* **Urgent?** [WhatsApp Us](https://wa.me/447895047944)
 
 ---
 
-*Last updated: January 2025 | Maintained by V5 Medical Strategic Team*
+*© 2025 V5 Medical LTD | Supply Chain Intelligence Hub*
