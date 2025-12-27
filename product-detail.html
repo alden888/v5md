@@ -193,10 +193,6 @@
                                     <span class="flex items-center gap-2 text-gray-600"><i class="fas fa-lock text-orange-400"></i> Technical File (Dossier)</span>
                                     <a href="contact.html?type=qa" class="text-blue-600 text-xs font-bold hover:underline">Request Access &rarr;</a>
                                 </li>
-                                <li class="flex items-center justify-between text-sm group cursor-pointer hover:bg-white p-1 rounded transition">
-                                    <span class="flex items-center gap-2 text-gray-600"><i class="fas fa-lock text-orange-400"></i> Sterilization Validation Report</span>
-                                    <a href="contact.html?type=qa" class="text-blue-600 text-xs font-bold hover:underline">Request Access &rarr;</a>
-                                </li>
                             </ul>
                         </div>
 
@@ -225,13 +221,29 @@
 
     <script src="js/config.js?v=2.7.0"></script>
     <script src="js/layout.js?v=4.7.3"></script>
-    <script src="js/image-utils.js?v=3.0.0"></script>
     <script src="js/seo-utils.js?v=3.0.0"></script>
     <script src="js/complete-products.js?v=3.3.0"></script>
     <script src="js/product-loader.js?v=2.0.0"></script>
     <script src="js/main.js?v=2.2.0"></script>
 
     <script>
+        // 🔥 核心逻辑：图片路径自动修复
+        function resolveImage(rawPath) {
+            if (!rawPath) return 'https://images.unsplash.com/photo-1584036561566-b93a50208c3c?w=500&q=80'; // 最终兜底图
+            
+            // 如果已经是网络图片，直接返回
+            if (rawPath.startsWith('http')) return rawPath;
+            
+            // 如果已经是 images/products/ 开头，直接返回
+            if (rawPath.startsWith('images/products/')) return rawPath;
+            
+            // 如果是 images/ 开头但没 products，尝试修正
+            if (rawPath.startsWith('images/')) return rawPath.replace('images/', 'images/products/');
+            
+            // 否则（只有文件名），强制加上前缀
+            return `images/products/${rawPath}`;
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             const productId = params.get('id');
@@ -272,10 +284,17 @@
             setText('product-category', formatCategory(product.category));
             document.getElementById('product-desc').innerHTML = `<p>${product.description}</p>`;
             
-            // Image
+            // Image Handling (Robust)
             const imgEl = document.getElementById('product-image');
-            const imgSrc = product.images?.[0] || 'images/products/default-product.jpg';
-            imgEl.src = window.imageUtils ? window.imageUtils.getImageUrl(imgSrc) : imgSrc;
+            const rawSrc = product.images?.[0] || '';
+            const correctSrc = resolveImage(rawSrc); // 使用我们的新函数
+            
+            imgEl.src = correctSrc;
+            // 如果本地路径也挂了，加载 Unsplash 兜底
+            imgEl.onerror = function() {
+                this.onerror = null;
+                this.src = 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80';
+            };
 
             // Cert Tags
             document.getElementById('cert-tags').innerHTML = (product.certifications || ['ISO 13485', 'CE', 'FDA Reg']).map(c => 
@@ -287,7 +306,7 @@
             const waText = encodeURIComponent(`Hi V5 Medical, inquiring about Technical Specs for: ${product.name} (ID: ${product.id}). Need MOQ & CE Doc.`);
             document.getElementById('whatsapp-btn').href = `https://wa.me/${phone}?text=${waText}`;
 
-            // 🔥 INJECT QC TABLE (Dynamic based on Category)
+            // Inject QC Table
             const qcBody = document.getElementById('qc-table-body');
             let qcRows = [
                 { stage: 'IQC', point: 'Raw Material Check', criteria: 'USP / EP Standard Compliance' },
@@ -296,8 +315,7 @@
                 { stage: 'OQC', point: 'Package Seal', criteria: 'ASTM F88 / F1929 Burst Test' }
             ];
             
-            // Customizing for Sutures
-            if(product.category.includes('suture')) {
+            if(product.category && product.category.includes('suture')) {
                 qcRows[0].criteria = 'Needle Attachment Strength (USP)';
                 qcRows.push({ stage: 'Lab', point: 'Tensile Strength', criteria: '≥ 110% of USP Min Requirement' });
             }
@@ -310,7 +328,7 @@
                 </tr>
             `).join('');
 
-            // Full Specs Table
+            // Specs Table
             const specsTable = document.getElementById('specs-table');
             if (product.specifications) {
                 specsTable.innerHTML = Object.entries(product.specifications)
@@ -323,11 +341,18 @@
             const related = all.filter(p => p.category === current.category && p.id !== current.id).slice(0, 4);
             const container = document.getElementById('related-products');
             if(!related.length) { container.parentElement.style.display = 'none'; return; }
+            
             container.innerHTML = related.map(p => {
-                const pImg = p.images?.[0] || 'images/products/default-product.jpg';
+                const rawSrc = p.images?.[0] || '';
+                const pImg = resolveImage(rawSrc); // 同样使用新函数处理关联产品图片
+                
                 return `<a href="product-detail.html?id=${p.id}" class="group block bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition">
                     <div class="bg-gray-50 aspect-square overflow-hidden relative">
-                        <img src="${pImg}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="${p.name}" loading="lazy">
+                        <img src="${pImg}" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
+                             alt="${p.name}" 
+                             loading="lazy"
+                             onerror="this.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=300'">
                     </div>
                     <div class="p-3"><h4 class="font-bold text-gray-900 text-sm line-clamp-2 group-hover:text-blue-600">${p.name}</h4></div>
                 </a>`
