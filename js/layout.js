@@ -58,7 +58,7 @@ const V5Layout = (() => {
                 { id: 'home', href: 'index.html', txt: 'Home' },
                 { id: 'about', href: 'about.html', txt: 'About Us' },
                 { id: 'catalog', href: 'catalog.html', txt: 'Products' },
-                { id: 'blog', href: '/blog/', txt: 'Blog' }, // Points to Docsify directory
+                { id: 'blog', href: 'blog/', txt: 'Blog' }, // Points to Docsify directory
                 { id: 'contact', href: 'contact.html', txt: 'Contact' }
             ];
 
@@ -311,3 +311,4 @@ const V5Layout = (() => {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 else V5Layout.init();
+
