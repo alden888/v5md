@@ -97,7 +97,6 @@ width: 100%;
 height: var(--header-height);
 z-index: 1000;
 box-shadow: var(--shadow-md);
-/* 🔧 关键修改：左侧淡蓝到右侧深蓝的自然渐变 */
 background: linear-gradient(90deg,
 var(--primary-100) 0%,    /* 左侧淡蓝色 */
 var(--primary-200) 20%,   /* 过渡色 */
@@ -418,8 +417,7 @@ display: none;
 ========================================= */
 .sidebar {
 top: var(--header-height) !important;
-padding-top: 2
-4px !important;
+padding-top: 24px !important;
 background-color: white;
 border-right: 1px solid var(--neutral-200);
 z-index: 900;
@@ -546,7 +544,7 @@ line-height: 1.7 !important;
 font-style: italic;
 font-weight: 400;
 }
-/* CTA 区域 - 转化优化 */
+/* CTA 区域 - 转化优化 (更新样式) */
 .v5-cta-box {
 margin: 72px 0;
 padding: 56px;
@@ -566,8 +564,7 @@ top: 0;
 left: 0;
 width: 100%;
 height: 100%;
-background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2
-000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 opacity: 0.5;
 }
 
@@ -587,6 +584,31 @@ margin-bottom: 24px !important;
 position: relative;
 z-index: 1;
 }
+
+/* 新增：Lead Magnet 专属高亮样式 */
+.cta-highlight-box {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-top: 24px;
+    border: 1px dashed var(--primary-300);
+    display: inline-block;
+    max-width: 500px;
+}
+.cta-highlight-box ul {
+    text-align: left;
+    margin-bottom: 20px;
+    color: var(--neutral-600);
+}
+.cta-highlight-box li {
+    list-style: none;
+    margin-bottom: 8px;
+}
+.cta-highlight-box li i {
+    color: var(--success-500);
+    margin-right: 8px;
+}
+
 /* 按钮样式 - 现代扁平化设计 */
 .v5-btn {
 display: inline-block;
@@ -840,8 +862,7 @@ yamlStr.split('\n').forEach(line => {
 const parts = line.split(':');
 if (parts.length >= 2) {
 const key = parts[0].trim();
-let value = parts.slic
-e(1).join(':').trim();
+let value = parts.slice(1).join(':').trim();
 value = value.replace(/^['"](.*)['"]$/, '$1');
 frontMatter[key] = value;
 }
@@ -874,12 +895,25 @@ return headerHtml + `<div class="fade-in">${cleanContent}</div>`;
 });
 
 hook.afterEach(function(html) {
+// 🔥 升级版 Lead Magnet (获客磁铁)
 return html + `
 <div class="v5-cta-box fade-in">
-<h3>🎯 Ready to Optimize?</h3>
-<p>Download our Capability Statement for details.</p>
-<a href="/pdf/V5_Medical_Capability_Statement.pdf" target="_blank" class="v5-btn">Download PDF</a>
-<a href="/contact.html" class="v5-btn v5-btn-secondary">Contact Sales</a>
+<h3><i class="fas fa-file-medical-alt" style="color:var(--primary-600)"></i> Stop Gambling with Compliance</h3>
+<p>Worried about your next Notified Body audit?</p>
+<div class="cta-highlight-box">
+    <ul>
+        <li><i class="fas fa-check"></i> <strong>ISO 13485 Audit Checklist</strong></li>
+        <li><i class="fas fa-check"></i> <strong>CE Technical File Template</strong></li>
+        <li><i class="fas fa-check"></i> <strong>Sterilization Validation Guide</strong></li>
+    </ul>
+</div>
+<div style="margin-top:24px;">
+    <a href="/contact.html?type=qa&subject=Request Audit Checklist PDF" class="v5-btn">Download Free Checklist &rarr;</a>
+    <a href="/contact.html?type=quote" class="v5-btn v5-btn-secondary">Request Product Quote</a>
+</div>
+<p style="font-size:0.8rem; color:var(--neutral-500); margin-top:16px;">
+    <i class="fas fa-user-shield"></i> Trusted by 50+ European Distributors
+</p>
 </div>
 <footer>
 &copy; 2025 V5 Medical LTD | ISO 13485 Certified Framework
