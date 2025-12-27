@@ -47,7 +47,7 @@
         .stats-card { background: rgba(255, 255, 255, 0.98); border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
         .goog-te-banner-frame { display: none !important; }
         body { top: 0px !important; }
-        /* 悬浮按钮样式 */
+        /* 悬浮 WhatsApp 按钮样式 */
         .float-wa { position: fixed; bottom: 20px; right: 20px; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
         .float-wa:hover { transform: scale(1.1); }
     </style>
@@ -89,17 +89,7 @@
 
     <main class="flex-grow pt-20"> 
         
-        <div class="relative min-h-[650px] flex items-center justify-center px-4 overflow-hidden bg-gray-900">
-            <div class="absolute inset-0 z-0">
-                <img src="images/hero-bg.jpg" 
-                     onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920&q=80&auto=format&fit=crop'" 
-                     class="w-full h-full object-cover object-center hero-bg-image" 
-                     alt="Medical Supply Chain Compliance"
-                     width="1920" height="1080"
-                     fetchpriority="high">
-            </div>
-
-            <div class="relative min-h-[500px] md:min-h-[550px] flex items-center justify-center px-4 overflow-hidden bg-gray-900 group">
+        <div class="relative min-h-[500px] md:min-h-[550px] flex items-center justify-center px-4 overflow-hidden bg-gray-900 group">
             <div class="absolute inset-0 z-0">
                 <img src="images/hero-bg.jpg" 
                      onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920&q=80&auto=format&fit=crop'" 
@@ -303,6 +293,7 @@
                         <ul class="space-y-3 text-sm text-gray-600 mb-8">
                             <li class="flex items-start gap-3"><i class="fas fa-check text-green-500 mt-1"></i> Flexible MOQ</li>
                             <li class="flex items-start gap-3"><i class="fas fa-check text-green-500 mt-1"></i> Stock Items</li>
+                            <li class="flex items-start gap-3"><i class="fas fa-check text-green-500 mt-1"></i> Standard QA</li>
                         </ul>
                         <a href="contact.html?type=quote" class="block w-full text-center py-3 border-2 border-blue-100 text-blue-600 font-bold rounded-lg hover:bg-blue-50 transition">Start Trial Order</a>
                     </div>
@@ -330,8 +321,16 @@
                         <ul class="space-y-3 text-sm text-gray-600 mb-8">
                             <li class="flex items-start gap-3"><i class="fas fa-check text-purple-500 mt-1"></i> Exclusivity</li>
                             <li class="flex items-start gap-3"><i class="fas fa-check text-purple-500 mt-1"></i> Joint R&D</li>
+                            <li class="flex items-start gap-3"><i class="fas fa-check text-purple-500 mt-1"></i> OA Credit Terms</li>
                         </ul>
                         <a href="mailto:ceo@v5md.com" class="block w-full text-center py-3 border-2 border-purple-100 text-purple-600 font-bold rounded-lg hover:bg-purple-50 transition">Contact CEO</a>
+                    </div>
+                </div>
+                
+                <div class="mt-12 text-center">
+                    <div class="inline-flex items-center gap-2 bg-yellow-50 text-yellow-800 text-xs px-4 py-2 rounded-full border border-yellow-200">
+                        <i class="fas fa-info-circle"></i> 
+                        <span>Note: We focus on B2B professional buyers. We do not support individual B2C dropshipping.</span>
                     </div>
                 </div>
             </div>
