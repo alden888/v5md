@@ -39,11 +39,12 @@
     </script>
     
     <style>
-        /* 移除多余动效，保持稳重 */
         .hero-bg-image { filter: brightness(0.65) contrast(1.1); transform: scale(1.01); }
         .stats-card { background: rgba(255, 255, 255, 0.98); border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
         .goog-te-banner-frame { display: none !important; }
         body { top: 0px !important; }
+        /* 新增：服务列表的小勾选样式 */
+        .service-check { @apply text-green-500 mr-2 flex-shrink-0 mt-1; }
     </style>
 
     <script type="application/ld+json">
@@ -58,6 +59,37 @@
             "foundingDate": "2023",
             "areaServed": ["Global", "Turkey", "Philippines", "Europe"],
             "knowsAbout": ["Medical Device Regulation", "Supply Chain Management", "Surgical Sutures"]
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "ProfessionalService",
+            "name": "Medical Regulatory Affairs Support",
+            "provider": {
+                "@type": "Organization",
+                "name": "V5 Medical LTD"
+            },
+            "serviceType": "Medical Device Registration Consulting",
+            "areaServed": "Global",
+            "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": "Compliance Services",
+                "itemListElement": [
+                    {
+                        "@type": "Offer",
+                        "itemOffered": {
+                            "@type": "Service",
+                            "name": "Technical File Preparation (MDR/CE)"
+                        }
+                    },
+                    {
+                        "@type": "Offer",
+                        "itemOffered": {
+                            "@type": "Service",
+                            "name": "Sterilization Validation Review"
+                        }
+                    }
+                ]
+            }
         }
     ]
     </script>
@@ -134,21 +166,20 @@
                         <p>
                             Sourcing from China is often a gamble with quality and compliance. V5 Medical removes that risk. We are not just a trading company; we are your legally contracted supply chain partner.
                         </p>
-                        <p class="font-semibold text-gray-800 border-l-4 border-blue-600 pl-4 py-1 bg-gray-50">
-                            "We do not resell random factories. We only work with audited manufacturers where we hold specific QC responsibilities."
-                        </p>
                     </div>
                     
-                    <ul class="space-y-4 pt-4">
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-green-500 text-xl"></i>
-                            <span class="text-gray-700"><strong>Independent QA:</strong> We inspect before the factory ships.</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-green-500 text-xl"></i>
-                            <span class="text-gray-700"><strong>Doc Support:</strong> Technical Files, DOCs, Sterility Reports.</span>
-                        </li>
-                    </ul>
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 mt-4">
+                        <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                            <i class="fas fa-briefcase-medical text-blue-600"></i> Regulatory Services
+                        </h3>
+                        <p class="text-sm text-gray-500 mb-4">Available for contract partners:</p>
+                        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mr-2 mt-1"></i> Technical File Prep</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mr-2 mt-1"></i> Sterilization Validation</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mr-2 mt-1"></i> Audit Documentation</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-500 mr-2 mt-1"></i> Tender Support</li>
+                        </ul>
+                    </div>
 
                     <div class="pt-4">
                         <a href="about.html" class="text-blue-700 font-bold hover:underline">
@@ -158,9 +189,10 @@
                 </div>
                 
                 <div class="relative">
+                    
                     <img src="images/products/SURGICAL SUTURE KIT.jpg" 
                          onerror="this.src='https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&q=80'" 
-                         class="rounded-lg shadow-xl w-full object-cover h-[400px]" 
+                         class="rounded-lg shadow-xl w-full object-cover h-[450px]" 
                          alt="Surgical Kit Production"
                          loading="lazy">
                 </div>
@@ -242,13 +274,13 @@
                         <h2 class="text-2xl md:text-3xl font-bold mb-2">Supply Chain Intelligence</h2>
                         <p class="text-gray-400 text-sm">Technical insights for procurement managers, not just SEO bots.</p>
                     </div>
-                    <a href="/blog/" class="text-blue-400 hover:text-white text-sm font-semibold transition flex items-center gap-2">
+                    <a href="/blog/" rel="noopener" class="text-blue-400 hover:text-white text-sm font-semibold transition flex items-center gap-2">
                         View Knowledge Base <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-6">
-                    <a href="/blog/#/posts/ce-audit-failure" class="group block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-500 hover:bg-gray-750 transition-all duration-300">
+                    <a href="/blog/#/posts/ce-audit-failure" rel="noopener" class="group block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-500 hover:bg-gray-750 transition-all duration-300">
                         <div class="flex items-center justify-between mb-4">
                             <span class="text-xs font-bold bg-red-900/30 text-red-400 px-2 py-1 rounded uppercase tracking-wider">Risk Alert</span>
                             <i class="fas fa-external-link-alt text-gray-600 group-hover:text-blue-400 transition"></i>
@@ -261,7 +293,7 @@
                         </p>
                     </a>
 
-                    <a href="/blog/#/posts/integrator-model" class="group block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-green-500 hover:bg-gray-750 transition-all duration-300">
+                    <a href="/blog/#/posts/integrator-model" rel="noopener" class="group block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-green-500 hover:bg-gray-750 transition-all duration-300">
                         <div class="flex items-center justify-between mb-4">
                             <span class="text-xs font-bold bg-green-900/30 text-green-400 px-2 py-1 rounded uppercase tracking-wider">Strategy</span>
                             <i class="fas fa-external-link-alt text-gray-600 group-hover:text-green-400 transition"></i>
@@ -274,7 +306,7 @@
                         </p>
                     </a>
 
-                    <a href="/blog/#/posts/sterilization-validation" class="group block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-500 hover:bg-gray-750 transition-all duration-300">
+                    <a href="/blog/#/posts/sterilization-validation" rel="noopener" class="group block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-500 hover:bg-gray-750 transition-all duration-300">
                         <div class="flex items-center justify-between mb-4">
                             <span class="text-xs font-bold bg-purple-900/30 text-purple-400 px-2 py-1 rounded uppercase tracking-wider">Technical</span>
                             <i class="fas fa-external-link-alt text-gray-600 group-hover:text-purple-400 transition"></i>
@@ -303,7 +335,6 @@
                     </a>
                 </div>
             </div>
-        </script>
         </section>
 
     </main>
