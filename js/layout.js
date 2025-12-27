@@ -2,8 +2,8 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 4.7.4 (Milestone: Capability Statement Integration & Docsify Support)
- * @updated 2024-12-25
+ * @version 4.8.1 (Compliance Update: Dual-Center Footer & Blog Path Fix)
+ * @updated 2025-12-28
  */
 
 const V5Layout = (() => {
@@ -24,8 +24,9 @@ const V5Layout = (() => {
             this.renderHeader();
             this.renderFooter();
             this.renderFloatingElements();
+            this.highlightCurrentPage(); // 自动高亮当前页
             window.dispatchEvent(new Event('v5-layout-ready'));
-            console.log('[Layout] Initialized v4.7.3 (Capability Statement Ready)');
+            console.log('[Layout] Initialized v4.8.1 (Compliance Footer Active)');
         }
 
         injectStyles() {
@@ -41,7 +42,7 @@ const V5Layout = (() => {
                 .mobile-menu-enter { animation: menuSlide 0.2s ease-out forwards; }
                 
                 /* Footer Hover Effects */
-                .footer-dept-link:hover { color: #60a5fa; padding-left: 5px; transition: all 0.2s ease; }
+                .footer-link:hover { color: #60a5fa; padding-left: 5px; transition: all 0.2s ease; }
             `;
             document.head.appendChild(style);
         }
@@ -54,11 +55,12 @@ const V5Layout = (() => {
             const logoSrc = this.config.IMAGES.LOGO;
             const logoFallback = this.config.IMAGES.LOGO_LOCAL;
 
+            // ✅ 路径修复：Blog 使用 'blog/' 适配 Cloudflare
             const navItems = [
                 { id: 'home', href: 'index.html', txt: 'Home' },
                 { id: 'about', href: 'about.html', txt: 'About Us' },
                 { id: 'catalog', href: 'catalog.html', txt: 'Products' },
-                { id: 'blog', href: 'blog/', txt: 'Blog' }, // Points to Docsify directory
+                { id: 'blog', href: 'blog/', txt: 'Blog' }, 
                 { id: 'contact', href: 'contact.html', txt: 'Contact' }
             ];
 
@@ -66,7 +68,7 @@ const V5Layout = (() => {
                 <ul class="flex gap-6 items-center">
                     ${navItems.map(item => `
                         <li>
-                            <a href="${item.href}" class="font-medium transition duration-200 text-sm lg:text-base ${this.currentPage === item.id ? 'text-white border-b-2 border-blue-300 pb-1' : 'text-blue-100 hover:text-white'}">
+                            <a href="${item.href}" class="nav-link font-medium transition duration-200 text-sm lg:text-base text-blue-100 hover:text-white" data-id="${item.id}">
                                 ${item.txt}
                             </a>
                         </li>
@@ -75,10 +77,10 @@ const V5Layout = (() => {
             `;
 
             const mobileNav = navItems.map(item => `
-                <a href="${item.href}" class="block px-6 py-4 border-b border-gray-100 text-base font-medium transition active:bg-blue-50 ${this.currentPage === item.id ? 'text-blue-700 bg-blue-50/50' : 'text-gray-700'}">
+                <a href="${item.href}" class="block px-6 py-4 border-b border-gray-100 text-base font-medium transition active:bg-blue-50 text-gray-700">
                     <div class="flex justify-between items-center">
                         <span>${item.txt}</span>
-                        ${this.currentPage === item.id ? '<i class="fas fa-chevron-right text-xs text-blue-400"></i>' : ''}
+                        <i class="fas fa-chevron-right text-xs text-gray-300"></i>
                     </div>
                 </a>
             `).join('');
@@ -93,8 +95,8 @@ const V5Layout = (() => {
                             <a href="index.html" class="flex items-center gap-2 sm:gap-3 group relative z-10 pr-2">
                                 <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-8 sm:h-10 md:h-12 w-auto" alt="V5 Medical Logo">
                                 <div class="flex flex-col">
-                                    <div class="font-bold text-lg sm:text-xl text-blue-900 leading-none tracking-tight">V5 Medical LTD</div>
-                                    <div class="text-[9px] sm:text-[10px] text-blue-700 font-bold tracking-wider uppercase mt-0.5 whitespace-nowrap">Global Medical Supply Chain</div>
+                                    <div class="font-bold text-lg sm:text-xl text-blue-900 leading-none tracking-tight">V5 Medical</div>
+                                    <div class="text-[9px] sm:text-[10px] text-blue-700 font-bold tracking-wider uppercase mt-0.5 whitespace-nowrap">Global Supply Chain</div>
                                 </div>
                             </a>
 
@@ -162,7 +164,7 @@ const V5Layout = (() => {
             });
         }
 
-        // --- 2. Footer Rendering ---
+        // --- 2. Footer Rendering (合规化核心修改) ---
         renderFooter() {
             const container = document.getElementById('v5-footer');
             if (!container) return;
@@ -176,103 +178,75 @@ const V5Layout = (() => {
                 <footer class="bg-gray-900 text-white pt-16 pb-8 px-4 border-t border-gray-800 font-sans">
                     <div class="max-w-7xl mx-auto">
                         
-                        <div class="border-b border-gray-800 pb-8 mb-10">
-                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                                <div>
-                                    <h5 class="text-blue-400 font-bold uppercase tracking-wider text-xs mb-1">Quick Department Access</h5>
-                                    <p class="text-gray-400 text-sm">Direct your inquiry to the right team for faster response.</p>
+                        <div class="grid md:grid-cols-4 gap-10 mb-12">
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-2">
+                                    <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-8 w-auto bg-white p-0.5 rounded" alt="V5 Logo">
+                                    <span class="text-lg font-bold tracking-tight">V5 Medical</span>
                                 </div>
-                                <div class="flex flex-wrap gap-3">
-                                    <a href="mailto:sales@v5md.com" class="bg-gray-800 hover:bg-blue-600 border border-gray-700 hover:border-blue-500 text-white px-4 py-2 rounded-lg text-sm transition-all flex items-center gap-2 group">
-                                        <i class="fas fa-briefcase text-blue-400 group-hover:text-white"></i> Sales
-                                    </a>
-                                    <a href="mailto:qa@v5md.com" class="bg-gray-800 hover:bg-purple-600 border border-gray-700 hover:border-purple-500 text-white px-4 py-2 rounded-lg text-sm transition-all flex items-center gap-2 group">
-                                        <i class="fas fa-shield-alt text-purple-400 group-hover:text-white"></i> Quality (QA)
-                                    </a>
-                                    <a href="mailto:logistics@v5md.com" class="bg-gray-800 hover:bg-orange-600 border border-gray-700 hover:border-orange-500 text-white px-4 py-2 rounded-lg text-sm transition-all flex items-center gap-2 group">
-                                        <i class="fas fa-shipping-fast text-orange-400 group-hover:text-white"></i> Logistics
-                                    </a>
+                                <p class="text-gray-400 text-xs leading-relaxed">
+                                    Strategic Supply Chain Integrator.<br>Bridging Chinese Manufacturing with Global Compliance.
+                                </p>
+                                <div class="border-l-2 border-blue-600 pl-3 py-1">
+                                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Legal Manufacturer</p>
+                                    <p class="text-xs text-white font-medium">Suzhou V5 Medical Co., Ltd.</p>
+                                    <p class="text-[10px] text-blue-400">ISO 13485:2016 Certified</p>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="grid md:grid-cols-12 gap-8 mb-12">
-                            
-                            <div class="md:col-span-4">
-                                <div class="flex items-center gap-2 mb-5">
-                                    <img src="${logoSrc}" onerror="this.onerror=null; this.src='${logoFallback}';" class="h-10 w-auto" alt="V5 Medical Logo">
-                                    <span class="text-xl font-bold tracking-tight">V5 Medical LTD</span>
-                                </div>
-                                <p class="text-gray-400 text-sm mb-4 font-medium">Operating Under ISO 13485 Quality Framework</p>
-                                <p class="text-gray-500 text-sm mb-4 leading-relaxed">
-                                    We integrate audited manufacturing, centralized QC, and global logistics to reduce procurement risk for hospitals and distributors worldwide.
-                                </p>
-                                <p class="text-blue-400 text-sm font-bold flex items-center gap-2">
-                                    <i class="fas fa-certificate"></i> Compliance First: CE / FDA / ISO
-                                </p>
-                            </div>
-                            
-                            <div class="md:col-span-2">
-                                <h4 class="font-bold mb-5 text-white">Explore</h4>
+                            <div>
+                                <h4 class="text-blue-400 font-bold uppercase tracking-wider text-xs mb-4">Manufacturing & Logistics</h4>
                                 <ul class="space-y-3 text-sm text-gray-400">
-                                    <li><a href="catalog.html" class="hover:text-white transition block">Product Catalog</a></li>
-                                    <li><a href="about.html" class="hover:text-white transition block">Our Structure</a></li>
-                                    <li><a href="contact.html" class="hover:text-white transition block">Contact Teams</a></li>
-                                    <li><a href="/blog/" class="hover:text-white transition block">Industry Insights</a></li>
+                                    <li class="flex items-start gap-3">
+                                        <i class="fas fa-industry mt-1 text-gray-600"></i>
+                                        <span>
+                                            <strong class="text-gray-300 block">Factory / Warehouse</strong>
+                                            No. 168 Luying Rd, Kunshan,<br>Jiangsu, China 215300
+                                        </span>
+                                    </li>
+                                    <li class="flex items-center gap-3">
+                                        <i class="fas fa-ship text-gray-600"></i>
+                                        <span>Port: Shanghai / Ningbo</span>
+                                    </li>
                                 </ul>
                             </div>
-                            
-                            <div class="md:col-span-3">
-                                <h4 class="font-bold mb-5 text-white">Contact Info</h4>
-                                <div class="space-y-4 text-sm text-gray-400">
-                                    <p class="flex items-center gap-3">
-                                        <span class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center flex-shrink-0"><i class="fab fa-whatsapp text-green-500"></i></span>
-                                        <span>${CONTACT.WHATSAPP.DISPLAY} (Global)</span>
-                                    </p>
-                                    <p class="flex items-center gap-3">
-                                        <span class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center flex-shrink-0"><i class="fas fa-envelope text-blue-400"></i></span>
-                                        <a href="mailto:${CONTACT.EMAIL.SALES}" class="hover:text-white transition">${CONTACT.EMAIL.SALES}</a>
-                                    </p>
-                                    <p class="flex items-start gap-3">
-                                        <span class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center flex-shrink-0 mt-1"><i class="fas fa-map-marker-alt text-red-400"></i></span>
-                                        <span class="leading-snug">${CONTACT.ADDRESS}</span>
-                                    </p>
-                                </div>
+
+                            <div>
+                                <h4 class="text-green-400 font-bold uppercase tracking-wider text-xs mb-4">Global Sales Support</h4>
+                                <ul class="space-y-3 text-sm text-gray-400">
+                                    <li class="flex items-start gap-3">
+                                        <i class="fab fa-whatsapp mt-1 text-green-500"></i>
+                                        <span>
+                                            <strong class="text-gray-300 block">UK / EU Hotline (24/7)</strong>
+                                            <a href="https://wa.me/447895047944" class="hover:text-white transition decoration-dotted underline">+44 7895 047944</a>
+                                        </span>
+                                    </li>
+                                    <li class="flex items-center gap-3">
+                                        <i class="fas fa-envelope text-blue-500"></i>
+                                        <a href="mailto:sales@v5md.com" class="hover:text-white transition">sales@v5md.com</a>
+                                    </li>
+                                </ul>
                             </div>
 
-                            <div class="md:col-span-3">
-                                <h4 class="font-bold mb-5 text-white">Downloads & Social</h4>
-                                <div class="space-y-3 mb-8 text-sm">
-                                    <a href="pdf/Catalog.pdf" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-gray-400 hover:text-white transition group">
-                                        <i class="fas fa-file-pdf text-red-500 group-hover:scale-110 transition-transform"></i> 
-                                        <span>Product Catalog (PDF)</span>
-                                    </a>
-                                    <a href="pdf/V5_Medical_Capability_Statement.pdf" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-gray-400 hover:text-white transition group">
-                                        <i class="fas fa-file-shield text-blue-500 group-hover:scale-110 transition-transform"></i> 
-                                        <span>Capability Statement (PDF)</span>
-                                    </a>
-                                    <a href="mailto:qa@v5md.com?subject=Request ISO Certificate" class="flex items-center gap-2 text-gray-400 hover:text-purple-300 transition group">
-                                        <i class="fas fa-lock text-purple-500 group-hover:scale-110 transition-transform"></i> 
-                                        <span>Request ISO/CE Certs</span>
-                                    </a>
-                                </div>
-                                <div class="flex gap-3 flex-wrap">
-                                    <a href="https://linkedin.com/company/v5med" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center hover:bg-blue-700 text-white transition"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="https://www.facebook.com/v5med" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center hover:bg-blue-600 text-white transition"><i class="fab fa-facebook-f"></i></a>
-                                    <a href="https://www.instagram.com/v5med" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center hover:bg-pink-600 text-white transition"><i class="fab fa-instagram"></i></a>
-                                    <a href="https://x.com/v5med" target="_blank" rel="noopener noreferrer" aria-label="Twitter/X" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center hover:bg-black text-white transition"><i class="fab fa-twitter"></i></a>
-                                </div>
+                            <div>
+                                <h4 class="text-white font-bold uppercase tracking-wider text-xs mb-4">Resources</h4>
+                                <ul class="space-y-2 text-sm text-gray-400">
+                                    <li><a href="catalog.html" class="footer-link block">Product Catalog</a></li>
+                                    <li><a href="blog/" class="footer-link block">Compliance Knowledge Hub</a></li>
+                                    <li><a href="pdf/V5_Medical_Capability_Statement.pdf" target="_blank" class="footer-link block flex items-center gap-2"><i class="fas fa-file-pdf"></i> Capability Statement</a></li>
+                                </ul>
                             </div>
                         </div>
                         
-                        <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
-                            <div class="mb-4 md:mb-0 space-y-1">
-                                <p>&copy; ${year} V5 Medical LTD. All rights reserved.</p>
-                                <p class="italic opacity-70">* Product certifications (CE, FDA, ISO) are held by qualified manufacturing partners unless otherwise stated.</p>
+                        <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600">
+                            <div class="mb-4 md:mb-0 text-center md:text-left">
+                                <p>&copy; ${year} V5 Medical. All rights reserved.</p>
+                                <p class="mt-1">V5 Medical is a trading brand operated by Suzhou V5 Medical Co., Ltd.</p>
                             </div>
-                            <div class="flex gap-4">
-                                <a href="privacy.html" class="hover:text-gray-300">Privacy Policy</a>
-                                <a href="contact.html" class="hover:text-gray-300">Sitemap</a>
+                            <div class="flex gap-6">
+                                <a href="contact.html" class="hover:text-gray-400">Contact Us</a>
+                                <a href="#" class="hover:text-gray-400">Privacy Policy</a>
                             </div>
                         </div>
                     </div>
@@ -305,11 +279,21 @@ const V5Layout = (() => {
             if (path.includes('blog')) return 'blog';
             return 'home';
         }
+
+        // --- 4. Page Highlighter (恢复高亮逻辑) ---
+        highlightCurrentPage() {
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(link => {
+                const id = link.getAttribute('data-id');
+                if (id === this.currentPage) {
+                    link.classList.remove('text-blue-100');
+                    link.classList.add('text-white', 'font-bold', 'border-b-2', 'border-blue-300', 'pb-1');
+                }
+            });
+        }
     }
     return new LayoutManager();
 })();
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
 else V5Layout.init();
-
-
