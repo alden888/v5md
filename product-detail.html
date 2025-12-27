@@ -6,15 +6,39 @@
     <title>Product Details | V5 Medical LTD</title>
     <meta name="description" content="Premium medical products from V5 Medical LTD. ISO 13485 certified supply chain partner. Technical specs and compliance data available.">
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    
     <script>
-        tailwind.config = { theme: { extend: { colors: { primary: '#1e40af', secondary: '#3b82f6', accent: '#2563eb' } } } }
+        tailwind.config = {
+            theme: {
+                extend: { colors: { primary: '#1e40af', secondary: '#3b82f6', accent: '#2563eb' } }
+            }
+        }
     </script>
     <style>
-        .process-step:not(:last-child)::after { content: ''; position: absolute; top: 50%; right: -20px; width: 20px; height: 2px; background: #e5e7eb; z-index: 0; }
-        @media (max-width: 768px) { .process-step:not(:last-child)::after { top: 100%; left: 50%; right: auto; width: 2px; height: 20px; } }
+        /* 流程图连接线 */
+        .process-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -20px;
+            width: 20px;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+        @media (max-width: 768px) {
+            .process-step:not(:last-child)::after {
+                top: 100%;
+                left: 50%;
+                right: auto;
+                width: 2px;
+                height: 20px;
+            }
+        }
     </style>
 </head>
 
@@ -26,10 +50,12 @@
     <div id="v5-header"></div>
 
     <main class="flex-grow pt-24 pb-16 px-4">
+        
         <div id="loading-state" class="max-w-7xl mx-auto text-center py-20">
             <div class="loader-spinner border-blue-600 border-t-transparent mx-auto mb-4"></div>
             <p class="text-gray-500 font-medium">Loading technical specifications...</p>
         </div>
+
         <div id="error-state" class="hidden max-w-2xl mx-auto text-center py-20">
             <h2 class="text-2xl font-bold text-gray-900 mb-2">Product Not Found</h2>
             <a href="catalog.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition">Return to Catalog</a>
@@ -50,54 +76,126 @@
                 <div class="lg:col-span-5 space-y-8">
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden aspect-square flex items-center justify-center relative group">
                         <img id="product-image" src="" alt="Product" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                        <div class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1"><i class="fas fa-check-circle"></i> ISO 13485 Verified</div>
+                        <div class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1">
+                            <i class="fas fa-check-circle"></i> ISO 13485 Verified
+                        </div>
                     </div>
+
                     <div class="bg-blue-50 border border-blue-100 rounded-xl p-6">
-                        <h3 class="font-bold text-blue-900 mb-4 flex items-center gap-2"><i class="fas fa-sliders-h"></i> Key Parameters</h3>
+                        <h3 class="font-bold text-blue-900 mb-4 flex items-center gap-2">
+                            <i class="fas fa-sliders-h"></i> Key Parameters
+                        </h3>
                         <ul class="space-y-3 text-sm" id="key-params-list">
-                            <li class="flex justify-between border-b border-blue-100 pb-2"><span class="text-gray-600">Sterilization</span><span class="font-bold text-gray-900">EO Gas / Gamma</span></li>
-                            <li class="flex justify-between border-b border-blue-100 pb-2"><span class="text-gray-600">Shelf Life</span><span class="font-bold text-gray-900">3 - 5 Years</span></li>
-                            <li class="flex justify-between border-b border-blue-100 pb-2"><span class="text-gray-600">Production</span><span class="font-bold text-gray-900">Class 100,000</span></li>
+                            <li class="flex justify-between border-b border-blue-100 pb-2">
+                                <span class="text-gray-600">Sterilization</span>
+                                <span class="font-bold text-gray-900">EO Gas / Gamma (Validated)</span>
+                            </li>
+                            <li class="flex justify-between border-b border-blue-100 pb-2">
+                                <span class="text-gray-600">Shelf Life</span>
+                                <span class="font-bold text-gray-900">3 - 5 Years</span>
+                            </li>
+                            <li class="flex justify-between border-b border-blue-100 pb-2">
+                                <span class="text-gray-600">Production</span>
+                                <span class="font-bold text-gray-900">Class 100,000 Cleanroom</span>
+                            </li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="lg:col-span-7">
-                    <div class="mb-3"><span id="product-category" class="inline-block bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded border border-blue-100 uppercase tracking-wide">Category</span></div>
+                    <div class="mb-3">
+                        <span id="product-category" class="inline-block bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded border border-blue-100 uppercase tracking-wide">Category</span>
+                    </div>
+                    
                     <h1 id="product-name" class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">Product Name</h1>
+                    
                     <div class="flex flex-wrap gap-2 mb-6" id="cert-tags"></div>
-                    <div class="prose prose-blue text-gray-600 mb-8 leading-relaxed max-w-none"><p id="product-desc">Loading...</p></div>
+
+                    <div class="prose prose-blue text-gray-600 mb-8 leading-relaxed max-w-none">
+                        <p id="product-desc">Loading description...</p>
+                    </div>
 
                     <div class="flex flex-col sm:flex-row gap-4 mb-12 border-b border-gray-100 pb-12">
-                        <a id="whatsapp-btn" href="#" target="_blank" class="flex-1 bg-green-600 hover:bg-green-700 text-white text-center px-6 py-4 rounded-xl font-bold shadow-lg transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2"><i class="fab fa-whatsapp text-xl"></i> Request Best Price</a>
-                        <a href="contact.html?type=qa" class="flex-1 bg-white border-2 border-gray-200 hover:border-purple-600 hover:text-purple-700 text-gray-700 text-center px-6 py-4 rounded-xl font-bold transition flex items-center justify-center gap-2"><i class="fas fa-file-contract text-lg"></i> Request Docs</a>
+                        <a id="whatsapp-btn" href="#" target="_blank" class="flex-1 bg-green-600 hover:bg-green-700 text-white text-center px-6 py-4 rounded-xl font-bold shadow-lg transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                            <i class="fab fa-whatsapp text-xl"></i> Request Best Price
+                        </a>
+                        <a href="contact.html?type=qa" class="flex-1 bg-white border-2 border-gray-200 hover:border-purple-600 hover:text-purple-700 text-gray-700 text-center px-6 py-4 rounded-xl font-bold transition flex items-center justify-center gap-2">
+                            <i class="fas fa-file-contract text-lg"></i> Request Docs
+                        </a>
                     </div>
 
                     <div class="space-y-10">
+                        
                         <div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><i class="fas fa-network-wired text-blue-600"></i> Manufacturing Process</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                                <i class="fas fa-network-wired text-blue-600"></i> Manufacturing Process
+                            </h3>
                             <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
-                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10"><div class="w-10 h-10 bg-white border-2 border-blue-500 rounded-full flex items-center justify-center text-blue-600 font-bold mb-2">1</div><span class="text-xs font-bold uppercase text-gray-700">Raw Material</span><span class="text-[10px] text-gray-500">IQC Check</span></div>
-                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10"><div class="w-10 h-10 bg-white border-2 border-blue-500 rounded-full flex items-center justify-center text-blue-600 font-bold mb-2">2</div><span class="text-xs font-bold uppercase text-gray-700">Cleanroom</span><span class="text-[10px] text-gray-500">Class 100k</span></div>
-                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10"><div class="w-10 h-10 bg-white border-2 border-blue-500 rounded-full flex items-center justify-center text-blue-600 font-bold mb-2">3</div><span class="text-xs font-bold uppercase text-gray-700">Packaging</span><span class="text-[10px] text-gray-500">Sealing Val.</span></div>
-                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10"><div class="w-10 h-10 bg-white border-2 border-purple-500 rounded-full flex items-center justify-center text-purple-600 font-bold mb-2">4</div><span class="text-xs font-bold uppercase text-gray-700">Sterilization</span><span class="text-[10px] text-gray-500">EO / Gamma</span></div>
-                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10"><div class="w-10 h-10 bg-white border-2 border-green-500 rounded-full flex items-center justify-center text-green-600 font-bold mb-2">5</div><span class="text-xs font-bold uppercase text-gray-700">FQC Release</span><span class="text-[10px] text-gray-500">Batch Record</span></div>
+                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10">
+                                    <div class="w-10 h-10 bg-white border-2 border-blue-500 rounded-full flex items-center justify-center text-blue-600 font-bold mb-2">1</div>
+                                    <span class="text-xs font-bold uppercase text-gray-700">Raw Material</span>
+                                    <span class="text-[10px] text-gray-500">IQC Check</span>
+                                </div>
+                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10">
+                                    <div class="w-10 h-10 bg-white border-2 border-blue-500 rounded-full flex items-center justify-center text-blue-600 font-bold mb-2">2</div>
+                                    <span class="text-xs font-bold uppercase text-gray-700">Cleanroom</span>
+                                    <span class="text-[10px] text-gray-500">Class 100k</span>
+                                </div>
+                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10">
+                                    <div class="w-10 h-10 bg-white border-2 border-blue-500 rounded-full flex items-center justify-center text-blue-600 font-bold mb-2">3</div>
+                                    <span class="text-xs font-bold uppercase text-gray-700">Packaging</span>
+                                    <span class="text-[10px] text-gray-500">Sealing Val.</span>
+                                </div>
+                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10">
+                                    <div class="w-10 h-10 bg-white border-2 border-purple-500 rounded-full flex items-center justify-center text-purple-600 font-bold mb-2">4</div>
+                                    <span class="text-xs font-bold uppercase text-gray-700">Sterilization</span>
+                                    <span class="text-[10px] text-gray-500">EO / Gamma</span>
+                                </div>
+                                <div class="process-step relative flex flex-col items-center text-center p-3 bg-gray-50 rounded-lg border border-gray-100 z-10">
+                                    <div class="w-10 h-10 bg-white border-2 border-green-500 rounded-full flex items-center justify-center text-green-600 font-bold mb-2">5</div>
+                                    <span class="text-xs font-bold uppercase text-gray-700">FQC Release</span>
+                                    <span class="text-[10px] text-gray-500">Batch Record</span>
+                                </div>
                             </div>
                         </div>
 
                         <div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2"><i class="fas fa-microscope text-blue-600"></i> Quality Control Points</h3>
-                            <div class="overflow-x-auto"><table class="w-full text-sm text-left border-collapse"><thead class="bg-gray-100 text-gray-700 uppercase text-xs"><tr><th class="px-4 py-3 rounded-tl-lg">Checkpoint</th><th class="px-4 py-3">Stage</th><th class="px-4 py-3 rounded-tr-lg">Standard / Criteria</th></tr></thead><tbody class="divide-y divide-gray-100 bg-white border border-gray-100" id="qc-table-body"></tbody></table></div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <i class="fas fa-microscope text-blue-600"></i> Quality Control Points
+                            </h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left border-collapse">
+                                    <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
+                                        <tr>
+                                            <th class="px-4 py-3 rounded-tl-lg">Checkpoint</th>
+                                            <th class="px-4 py-3">Stage</th>
+                                            <th class="px-4 py-3 rounded-tr-lg">Standard / Criteria</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100 bg-white border border-gray-100" id="qc-table-body">
+                                        </tbody>
+                                </table>
+                            </div>
                         </div>
 
                         <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
                             <h3 class="text-lg font-bold text-gray-900 mb-4">Regulatory Documentation Status</h3>
                             <ul class="space-y-3">
-                                <li class="flex items-center justify-between text-sm"><span class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> CE Certificate (MDR)</span><span class="text-green-700 bg-green-100 px-2 py-0.5 rounded text-xs font-bold">Available</span></li>
-                                <li class="flex items-center justify-between text-sm"><span class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> ISO 13485:2016</span><span class="text-green-700 bg-green-100 px-2 py-0.5 rounded text-xs font-bold">Available</span></li>
-                                <li class="flex items-center justify-between text-sm group cursor-pointer hover:bg-white p-1 rounded transition"><span class="flex items-center gap-2 text-gray-600"><i class="fas fa-lock text-orange-400"></i> Technical File (Dossier)</span><a href="contact.html?type=qa" class="text-blue-600 text-xs font-bold hover:underline">Request Access &rarr;</a></li>
+                                <li class="flex items-center justify-between text-sm">
+                                    <span class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> CE Certificate (MDR)</span>
+                                    <span class="text-green-700 bg-green-100 px-2 py-0.5 rounded text-xs font-bold">Available</span>
+                                </li>
+                                <li class="flex items-center justify-between text-sm">
+                                    <span class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> ISO 13485:2016</span>
+                                    <span class="text-green-700 bg-green-100 px-2 py-0.5 rounded text-xs font-bold">Available</span>
+                                </li>
+                                <li class="flex items-center justify-between text-sm group cursor-pointer hover:bg-white p-1 rounded transition">
+                                    <span class="flex items-center gap-2 text-gray-600"><i class="fas fa-lock text-orange-400"></i> Technical File (Dossier)</span>
+                                    <a href="contact.html?type=qa" class="text-blue-600 text-xs font-bold hover:underline">Request Access &rarr;</a>
+                                </li>
                             </ul>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -118,8 +216,13 @@
             </div>
 
             <div class="mt-20 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center"><h2 class="text-lg font-bold text-gray-900">Detailed Specifications</h2><span class="text-xs text-gray-400">Datasheet v2025.1</span></div>
-                <div class="p-6"><table class="w-full text-sm text-left" id="specs-table"></table></div>
+                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-gray-900">Detailed Specifications</h2>
+                    <span class="text-xs text-gray-400">Datasheet v2025.1</span>
+                </div>
+                <div class="p-6">
+                    <table class="w-full text-sm text-left" id="specs-table"></table>
+                </div>
             </div>
             
             <div class="mt-16 border-t border-gray-100 pt-12">
@@ -190,15 +293,17 @@
 
             const qcBody = document.getElementById('qc-table-body');
             let qcRows = [
-                { stage: 'IQC', point: 'Raw Material', criteria: 'USP / EP Standard' },
-                { stage: 'IPQC', point: 'Cleanroom', criteria: 'Class 100,000 Particle' },
+                { stage: 'IQC', point: 'Raw Material Check', criteria: 'USP / EP Standard Compliance' },
+                { stage: 'IPQC', point: 'Cleanroom Assembly', criteria: 'Class 100,000 Particle Count' },
                 { stage: 'FQC', point: 'Sterility Test', criteria: 'SAL 10⁻⁶ (ISO 11135)' },
-                { stage: 'OQC', point: 'Package Seal', criteria: 'ASTM F88 Burst Test' }
+                { stage: 'OQC', point: 'Package Seal', criteria: 'ASTM F88 / F1929 Burst Test' }
             ];
+            
             if(product.category && product.category.includes('suture')) {
-                qcRows[0].criteria = 'Needle Attachment (USP)';
-                qcRows.push({ stage: 'Lab', point: 'Tensile Strength', criteria: '≥ 110% of USP Min' });
+                qcRows[0].criteria = 'Needle Attachment Strength (USP)';
+                qcRows.push({ stage: 'Lab', point: 'Tensile Strength', criteria: '≥ 110% of USP Min Requirement' });
             }
+
             qcBody.innerHTML = qcRows.map(row => `<tr><td class="px-4 py-3 font-bold text-gray-900">${row.stage}</td><td class="px-4 py-3 text-gray-600">${row.point}</td><td class="px-4 py-3 text-blue-700 bg-blue-50/50 font-mono text-xs">${row.criteria}</td></tr>`).join('');
 
             const specsTable = document.getElementById('specs-table');
@@ -207,14 +312,16 @@
             }
         }
         
-        // 🔥 核心逻辑：根据产品分类显示博客文章
+        // 🔥 核心逻辑优化：根据产品分类推荐博客
         function renderRelatedInsights(category) {
+            if (!category) return;
             const container = document.getElementById('blog-cards');
             const section = document.getElementById('related-insights-section');
             let posts = [];
+            const lcCat = category.toLowerCase();
 
-            // 智能推荐逻辑
-            if (category.includes('suture') || category.includes('thread')) {
+            // 1. Suture Logic
+            if (lcCat.includes('suture') || lcCat.includes('thread')) {
                 posts.push({
                     title: "CE Audit Failure Reasons",
                     desc: "Why 40% of suture technical files get rejected.",
@@ -227,7 +334,39 @@
                     link: "/blog/#/posts/moq-vs-price",
                     tag: "Strategy"
                 });
-            } else if (category.includes('pack') || category.includes('gown') || category.includes('drape')) {
+            } 
+            // 2. Dental Logic (新增)
+            else if (lcCat.includes('dental')) {
+                posts.push({
+                    title: "Dental Kit Regulatory Guide",
+                    desc: "FDA 510(k) vs EU MDR for oral care products.",
+                    link: "/blog/#/posts/ce-audit-failure", // 暂指向通用合规，后续可补 dental-compliance.md
+                    tag: "Dental"
+                });
+                posts.push({
+                    title: "Sterilization: EtO vs Gamma",
+                    desc: "Validation protocols for dental consumables.",
+                    link: "/blog/#/posts/sterilization-validation",
+                    tag: "Technical"
+                });
+            } 
+            // 3. Injection/Syringe Logic (新增)
+            else if (lcCat.includes('injection') || lcCat.includes('syringe') || lcCat.includes('needle')) {
+                posts.push({
+                    title: "Sterilization Validation Guide",
+                    desc: "Critical bio-burden limits for injection devices.",
+                    link: "/blog/#/posts/sterilization-validation",
+                    tag: "Technical"
+                });
+                posts.push({
+                    title: "CE Audit Failure Reasons",
+                    desc: "Why Class IIa/IIb injection devices get rejected.",
+                    link: "/blog/#/posts/ce-audit-failure",
+                    tag: "Compliance"
+                });
+            }
+            // 4. Packs Logic
+            else if (lcCat.includes('pack') || lcCat.includes('gown') || lcCat.includes('drape')) {
                 posts.push({
                     title: "Sterilization: EtO vs Gamma",
                     desc: "Which method validates better for surgical packs?",
@@ -240,8 +379,9 @@
                     link: "/blog/#/posts/tyvek-vs-paper",
                     tag: "Packaging"
                 });
-            } else {
-                // 默认推荐
+            } 
+            // 5. Default Fallback
+            else {
                 posts.push({
                     title: "Integrator vs Factory",
                     desc: "Who passes the audit? The truth about supply chain.",
@@ -275,9 +415,15 @@
             const related = all.filter(p => p.category === current.category && p.id !== current.id).slice(0, 4);
             const container = document.getElementById('related-products');
             if(!related.length) { container.parentElement.style.display = 'none'; return; }
+            
             container.innerHTML = related.map(p => {
                 const pImg = resolveImage(p.images?.[0] || '');
-                return `<a href="product-detail.html?id=${p.id}" class="group block bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition"><div class="bg-gray-50 aspect-square overflow-hidden relative"><img src="${pImg}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="${p.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=300'"></div><div class="p-3"><h4 class="font-bold text-gray-900 text-sm line-clamp-2 group-hover:text-blue-600">${p.name}</h4></div></a>`
+                return `<a href="product-detail.html?id=${p.id}" class="group block bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition">
+                    <div class="bg-gray-50 aspect-square overflow-hidden relative">
+                        <img src="${pImg}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="${p.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=300'">
+                    </div>
+                    <div class="p-3"><h4 class="font-bold text-gray-900 text-sm line-clamp-2 group-hover:text-blue-600">${p.name}</h4></div>
+                </a>`
             }).join('');
         }
 
