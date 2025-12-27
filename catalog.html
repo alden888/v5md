@@ -22,14 +22,38 @@
     <style>
         .cat-link.active { background-color: #eff6ff; color: #1e40af; border-left: 3px solid #1e40af; padding-left: 0.75rem; font-weight: 600; }
         .cat-link { border-left: 3px solid transparent; }
-        .mobile-scroll::-webkit-scrollbar { display: none; }
-        .mobile-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* 🔥 移动端水平滑动优化 */
+        .mobile-scroll {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; /* iOS Momentum Scrolling */
+            padding-bottom: 4px; /* 防止滚动条占位 */
+        }
+        .mobile-scroll::-webkit-scrollbar { display: none; } /* Chrome/Safari/Webkit */
+        
+        /* 侧边栏滚动条美化 */
         .sidebar-scroll::-webkit-scrollbar { width: 4px; }
         .sidebar-scroll::-webkit-scrollbar-thumb { background-color: #e5e7eb; border-radius: 4px; }
+        
         .search-clear { display: none; }
         .search-container.has-value .search-clear { display: block; }
-        /* SR Only for SEO H1 */
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
+        
+        /* 移动端筛选渐变遮罩 */
+        .scroll-mask-right {
+            background: linear-gradient(to right, transparent, white);
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 24px;
+            pointer-events: none;
+            z-index: 10;
+        }
     </style>
 </head>
 
@@ -45,17 +69,21 @@
     <main class="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8"> 
         <div class="max-w-7xl mx-auto">
             
-            <div class="md:hidden mb-6 space-y-4 sticky top-20 z-30 bg-gray-50 pt-2 pb-2">
-                <div class="relative search-container">
+            <div class="md:hidden mb-6 sticky top-20 z-30 bg-gray-50 pt-2 pb-2 -mx-4 px-4 shadow-sm border-b border-gray-100">
+                <div class="relative search-container mb-3">
                     <input type="text" id="mobile-search" placeholder="Search products..." 
-                           class="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition-all"
+                           class="w-full pl-10 pr-10 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition-all bg-white"
                            oninput="handleSearch(this.value)">
                     <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
                     <button onclick="clearSearch()" class="search-clear absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                         <i class="fas fa-times-circle"></i>
                     </button>
                 </div>
-                <div class="flex gap-2 overflow-x-auto mobile-scroll pb-1" id="mobile-filters"></div>
+                
+                <div class="relative">
+                    <div class="flex gap-2 overflow-x-auto mobile-scroll pb-2" id="mobile-filters">
+                        </div>
+                    <div class="scroll-mask-right"></div> </div>
             </div>
 
             <div class="flex flex-col md:flex-row gap-8 lg:gap-10">
@@ -189,10 +217,13 @@
             sidebar.innerHTML = html;
         }
 
+        // 🔥 移动端按钮优化：防止换行，支持水平滑动
         function renderMobileFilters() {
             const container = document.getElementById('mobile-filters');
             if (!container) return;
-            const makeBtn = (id, label, count) => `<button onclick="filterByCategory('${id}')" class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 ${currentCategory === id ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'}">${label} <span class="text-xs opacity-80 ml-1">(${count})</span></button>`;
+            // white-space: nowrap 是关键
+            const makeBtn = (id, label, count) => `<button onclick="filterByCategory('${id}')" class="flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold border transition-all duration-200 ${currentCategory === id ? 'bg-blue-600 text-white border-blue-600 shadow-md ring-2 ring-blue-200' : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400'}">${label} <span class="text-xs opacity-70 ml-1">(${count})</span></button>`;
+            
             let html = makeBtn('all', 'All', categoryCounts['all']);
             Object.keys(categoriesMap).forEach(key => { if (categoryCounts[key] > 0) html += makeBtn(key, categoriesMap[key], categoryCounts[key]); });
             container.innerHTML = html;
@@ -217,26 +248,18 @@
             renderMobileFilters();
             applyFilters();
             if(history.pushState) history.pushState(null, null, cat === 'all' ? 'catalog.html' : '#' + cat);
-            if (window.innerWidth < 768) window.scrollTo({ top: 0, behavior: 'smooth' });
+            // 移动端筛选后不自动跳到顶部，保持筛选栏在视野内，体验更好
         }
 
         function applyFilters() {
             const grid = document.getElementById('products-grid');
             const noResults = document.getElementById('no-results');
 
-            // 4. 优化：增强搜索逻辑 (按字段优先级匹配)
             const filtered = allProducts.filter(p => {
                 const matchCat = currentCategory === 'all' || p.category === currentCategory;
-                
                 if (!searchQuery) return matchCat;
-                
                 const q = searchQuery.toLowerCase();
-                const matchSearch = 
-                    p.name.toLowerCase().includes(q) || 
-                    (p.category && p.category.toLowerCase().includes(q)) ||
-                    (p.short && p.short.toLowerCase().includes(q)) ||
-                    (p.model && p.model.toLowerCase().includes(q)); // 增加型号搜索
-
+                const matchSearch = p.name.toLowerCase().includes(q) || (p.category && p.category.toLowerCase().includes(q)) || (p.short && p.short.toLowerCase().includes(q)) || (p.model && p.model.toLowerCase().includes(q));
                 return matchCat && matchSearch;
             });
 
@@ -258,32 +281,18 @@
         function renderProductCard(product) {
             const fallbackImg = window.V5Config?.IMAGES?.PLACEHOLDER || 'images/products/default-product.jpg';
             const imgSrc = product.images?.[0] || fallbackImg;
+            // 使用之前定义的 resolveImage 逻辑 (这里简化版，直接用 imageUtils 或原路径)
             const resolvedImg = window.imageUtils ? window.imageUtils.getImageUrl(imgSrc) : imgSrc;
             const catLabel = categoriesMap[product.category] || 'Medical Supply';
             
-            // 3. 优化：构建专业的 WhatsApp 询盘内容
-            const waText = encodeURIComponent(
-`Hello V5 Medical,
-
-I am interested in:
-• Product: ${product.name}
-• ID: ${product.id}
-
-Please advise:
-• MOQ
-• Certification
-• FOB Price
-• Lead Time
-
-Thank you.`
-            );
+            const waText = encodeURIComponent(`Hello V5 Medical,\n\nI am interested in:\n• Product: ${product.name}\n• ID: ${product.id}\n\nPlease advise:\n• MOQ\n• Certification\n• FOB Price\n\nThank you.`);
 
             return `
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col h-full transform hover:-translate-y-1">
                 <a href="product-detail.html?id=${product.id}" class="relative h-48 bg-gray-50 overflow-hidden block">
                     <img src="${resolvedImg}" 
                          data-original-src="${imgSrc}"
-                         onerror="window.imageUtils && window.imageUtils.handleError(this)" 
+                         onerror="this.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=300'" 
                          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                          alt="${product.name}" loading="lazy">
                     <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
@@ -301,10 +310,6 @@ Thank you.`
                         <li>OEM / Private Label Available</li>
                         <li>CE / ISO 13485 (Partner Factory)</li>
                     </ul>
-                    
-                    <p class="text-sm text-gray-500 mb-4 line-clamp-2 flex-grow hidden">
-                        ${product.short || product.description}
-                    </p>
                     
                     <div class="pt-4 mt-auto border-t border-gray-50 flex items-center justify-between gap-2">
                         <a href="product-detail.html?id=${product.id}" class="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center">
@@ -324,9 +329,3 @@ Thank you.`
     <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
 </body>
 </html>
-
-
-
-
-
-
