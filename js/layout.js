@@ -2,7 +2,7 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 4.8.1 (Compliance Update: Dual-Center Footer & Blog Path Fix)
+ * @version 4.8.2 (Update: Legal Name Correction & Added CN Contact/Socials)
  * @updated 2025-12-28
  */
 
@@ -24,9 +24,9 @@ const V5Layout = (() => {
             this.renderHeader();
             this.renderFooter();
             this.renderFloatingElements();
-            this.highlightCurrentPage(); // 自动高亮当前页
+            this.highlightCurrentPage(); 
             window.dispatchEvent(new Event('v5-layout-ready'));
-            console.log('[Layout] Initialized v4.8.1 (Compliance Footer Active)');
+            console.log('[Layout] Initialized v4.8.2 (Social Media Restored)');
         }
 
         injectStyles() {
@@ -55,7 +55,6 @@ const V5Layout = (() => {
             const logoSrc = this.config.IMAGES.LOGO;
             const logoFallback = this.config.IMAGES.LOGO_LOCAL;
 
-            // ✅ 路径修复：Blog 使用 'blog/' 适配 Cloudflare
             const navItems = [
                 { id: 'home', href: 'index.html', txt: 'Home' },
                 { id: 'about', href: 'about.html', txt: 'About Us' },
@@ -164,7 +163,7 @@ const V5Layout = (() => {
             });
         }
 
-        // --- 2. Footer Rendering (合规化核心修改) ---
+        // --- 2. Footer Rendering (信息修正版) ---
         renderFooter() {
             const container = document.getElementById('v5-footer');
             if (!container) return;
@@ -190,7 +189,7 @@ const V5Layout = (() => {
                                 </p>
                                 <div class="border-l-2 border-blue-600 pl-3 py-1">
                                     <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Legal Manufacturer</p>
-                                    <p class="text-xs text-white font-medium">Suzhou V5 Medical Co., Ltd.</p>
+                                    <p class="text-xs text-white font-medium">Suzhou V5 Medical Technology Co., Ltd.</p>
                                     <p class="text-[10px] text-blue-400">ISO 13485:2016 Certified</p>
                                 </div>
                             </div>
@@ -217,32 +216,48 @@ const V5Layout = (() => {
                                 <ul class="space-y-3 text-sm text-gray-400">
                                     <li class="flex items-start gap-3">
                                         <i class="fab fa-whatsapp mt-1 text-green-500"></i>
-                                        <span>
-                                            <strong class="text-gray-300 block">UK / EU Hotline (24/7)</strong>
-                                            <a href="https://wa.me/447895047944" class="hover:text-white transition decoration-dotted underline">+44 7895 047944</a>
-                                        </span>
+                                        <div class="flex flex-col gap-1">
+                                            <div>
+                                                <span class="text-[10px] text-gray-500">UK/EU:</span>
+                                                <a href="https://wa.me/447895047944" class="hover:text-white transition decoration-dotted underline">+44 7895 047944</a>
+                                            </div>
+                                            <div>
+                                                <span class="text-[10px] text-gray-500">CN/Asia:</span>
+                                                <a href="https://wa.me/8618012669897" class="hover:text-white transition decoration-dotted underline">+86 180 1266 9897</a>
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li class="flex items-center gap-3">
-                                        <i class="fas fa-envelope text-blue-500"></i>
-                                        <a href="mailto:sales@v5md.com" class="hover:text-white transition">sales@v5md.com</a>
+                                    <li class="flex items-start gap-3">
+                                        <i class="fas fa-envelope mt-1 text-blue-500"></i>
+                                        <div class="flex flex-col">
+                                            <a href="mailto:sales@v5md.com" class="hover:text-white transition">sales@v5md.com</a>
+                                            <a href="mailto:v5md.com@gmail.com" class="text-xs text-gray-500 hover:text-gray-300 transition">v5md.com@gmail.com (Backup)</a>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
 
                             <div>
                                 <h4 class="text-white font-bold uppercase tracking-wider text-xs mb-4">Resources</h4>
-                                <ul class="space-y-2 text-sm text-gray-400">
+                                <ul class="space-y-2 text-sm text-gray-400 mb-6">
                                     <li><a href="catalog.html" class="footer-link block">Product Catalog</a></li>
                                     <li><a href="blog/" class="footer-link block">Compliance Knowledge Hub</a></li>
                                     <li><a href="pdf/V5_Medical_Capability_Statement.pdf" target="_blank" class="footer-link block flex items-center gap-2"><i class="fas fa-file-pdf"></i> Capability Statement</a></li>
                                 </ul>
+                                
+                                <div class="flex gap-3 flex-wrap">
+                                    <a href="https://linkedin.com/company/v5med" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center hover:bg-blue-700 text-white transition"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="https://www.facebook.com/v5med" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center hover:bg-blue-600 text-white transition"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://www.instagram.com/v5med" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center hover:bg-pink-600 text-white transition"><i class="fab fa-instagram"></i></a>
+                                    <a href="https://x.com/v5med" target="_blank" rel="noopener noreferrer" aria-label="Twitter/X" class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center hover:bg-black text-white transition"><i class="fab fa-twitter"></i></a>
+                                </div>
                             </div>
                         </div>
                         
                         <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600">
                             <div class="mb-4 md:mb-0 text-center md:text-left">
                                 <p>&copy; ${year} V5 Medical. All rights reserved.</p>
-                                <p class="mt-1">V5 Medical is a trading brand operated by Suzhou V5 Medical Co., Ltd.</p>
+                                <p class="mt-1">V5 Medical is a trading brand operated by Suzhou V5 Medical Technology Co., Ltd.</p>
                             </div>
                             <div class="flex gap-6">
                                 <a href="contact.html" class="hover:text-gray-400">Contact Us</a>
@@ -280,7 +295,7 @@ const V5Layout = (() => {
             return 'home';
         }
 
-        // --- 4. Page Highlighter (恢复高亮逻辑) ---
+        // --- 4. Page Highlighter ---
         highlightCurrentPage() {
             const links = document.querySelectorAll('.nav-link');
             links.forEach(link => {
