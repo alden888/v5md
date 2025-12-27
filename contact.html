@@ -67,8 +67,11 @@
                 <div class="lg:col-span-7 xl:col-span-8">
                     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8">
                         
-                        <form id="smart-form" action="https://formspree.io/f/xdkqlygg" method="POST" enctype="multipart/form-data" class="space-y-6">
-                            <input type="hidden" name="source" value="Contact Form v4.0 (Full Feature)">
+                        <form id="secure-form" action="https://formspree.io/f/xdkqlygg" method="POST" enctype="multipart/form-data" class="space-y-6" onsubmit="return validateAndSubmit(event)">
+                            
+                            <input type="text" name="_gotcha" style="display:none !important" tabindex="-1" autocomplete="off">
+                            
+                            <input type="hidden" name="source" value="Contact Form v4.1 (Secured)">
                             <input type="hidden" id="dynamic-subject" name="subject" value="New Inquiry">
 
                             <div class="grid md:grid-cols-2 gap-4">
@@ -179,7 +182,7 @@
                                             <p class="pl-1">or drag and drop</p>
                                         </div>
                                         <p class="text-xs text-gray-500">
-                                            PDF, JPG, Excel (Max 10MB). RFQ Lists or Tech Specs.
+                                            PDF, JPG, Excel (Max 10MB).
                                         </p>
                                     </div>
                                 </div>
@@ -191,11 +194,11 @@
                             </div>
 
                             <div class="flex items-start gap-3 pt-2">
-                                <input type="checkbox" required id="b2b-check" class="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300">
-                                <label for="b2b-check" class="text-xs text-gray-500">I confirm this is a business inquiry. (V5 Medical does not supply individuals).</label>
+                                <input type="checkbox" required id="b2b-check" class="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300 cursor-pointer">
+                                <label for="b2b-check" class="text-xs text-gray-500 cursor-pointer">I confirm this is a business inquiry.</label>
                             </div>
 
-                            <button type="submit" class="w-full bg-blue-700 text-white font-bold py-4 rounded-xl hover:bg-blue-600 transition shadow-lg flex justify-center items-center gap-2 group">
+                            <button type="submit" id="submit-btn" class="w-full bg-blue-700 text-white font-bold py-4 rounded-xl hover:bg-blue-600 transition shadow-lg flex justify-center items-center gap-2 group">
                                 <span>Send Inquiry</span><i class="fas fa-paper-plane group-hover:translate-x-1 transition-transform"></i>
                             </button>
                         </form>
@@ -238,7 +241,6 @@
                 </div>
 
                 <div class="lg:col-span-5 xl:col-span-4 space-y-6">
-                    
                     <div class="bg-gradient-to-br from-blue-50 to-white p-6 rounded-xl shadow-md border border-blue-100 relative overflow-hidden">
                         <div class="absolute top-0 right-0 -mt-2 -mr-2 w-12 h-12 bg-blue-100 rounded-full opacity-50"></div>
                         <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
@@ -303,17 +305,66 @@
     <div id="v5-footer"></div>
     <script src="js/config.js?v=2.7.0"></script> <script src="js/layout.js?v=4.7.3"></script> <script src="js/main.js?v=2.2.0"></script> <script src="js/seo-utils.js?v=3.0.0"></script>
     <script>
+        if (window.seoUtils) {
+            window.seoUtils.injectAllSchemas({ includeFAQ: false });
+        }
+        
+        // 1. 智能表单逻辑
         function updateFormDisplay() {
             const isQuote = document.getElementById('check-quote').checked;
             const isQA = document.getElementById('check-qa').checked;
             const isOEM = document.getElementById('check-oem').checked;
-            toggleSection('fields-quote', isQuote); toggleSection('fields-qa', isQA);
-            let subjectParts = []; if (isQuote) subjectParts.push("Quote"); if (isQA) subjectParts.push("Regulatory"); if (isOEM) subjectParts.push("OEM");
+            
+            toggleSection('fields-quote', isQuote); 
+            toggleSection('fields-qa', isQA);
+            
+            let subjectParts = []; 
+            if (isQuote) subjectParts.push("Quote"); 
+            if (isQA) subjectParts.push("Regulatory"); 
+            if (isOEM) subjectParts.push("OEM");
+            
             document.getElementById('dynamic-subject').value = subjectParts.length > 0 ? "Inquiry: " + subjectParts.join(" + ") : "General Inquiry";
         }
-        function toggleSection(id, shouldShow) { const el = document.getElementById(id); shouldShow ? el.classList.remove('hidden') : el.classList.add('hidden'); }
-        document.addEventListener("DOMContentLoaded", function() { const urlParams = new URLSearchParams(window.location.search); if(urlParams.get('type') === 'quote') { document.getElementById('check-quote').checked = true; updateFormDisplay(); } });
-        function googleTranslateElementInit(){new google.translate.TranslateElement({pageLanguage:'en',layout:google.translate.TranslateElement.InlineLayout.SIMPLE},'google_translate_element');}
+
+        function toggleSection(id, shouldShow) { 
+            const el = document.getElementById(id); 
+            shouldShow ? el.classList.remove('hidden') : el.classList.add('hidden'); 
+        }
+
+        // 2. 🛡️ 安全防御逻辑 (Time Trap + Spam Check)
+        let pageLoadTime = Date.now(); // 记录页面加载时间
+
+        function validateAndSubmit(event) {
+            const submitBtn = document.getElementById('submit-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            // 🛡️ Time Trap Check (防止脚本秒填)
+            const timeDiff = Date.now() - pageLoadTime;
+            if (timeDiff < 2000) { // 如果少于2秒就提交
+                console.log("Bot detected: Form submitted too fast.");
+                event.preventDefault();
+                return false;
+            }
+
+            // UI Feedback
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+            
+            return true; // 允许提交给 Formspree
+        }
+
+        document.addEventListener("DOMContentLoaded", function() { 
+            const urlParams = new URLSearchParams(window.location.search); 
+            if(urlParams.get('type') === 'quote') { 
+                document.getElementById('check-quote').checked = true; 
+                updateFormDisplay(); 
+            } 
+        });
+        
+        function googleTranslateElementInit(){
+            new google.translate.TranslateElement({pageLanguage:'en',layout:google.translate.TranslateElement.InlineLayout.SIMPLE},'google_translate_element');
+        }
     </script>
     <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
     <div class="bg-gray-100 py-3 text-center border-t text-sm"><span id="google_translate_element"></span></div>
