@@ -37,16 +37,43 @@
         .goog-te-banner-frame { display: none !important; }
         body { top: 0px !important; }
         
-        /* 表单选中状态的样式 */
+        /* 修复：选中状态样式 */
         .inquiry-type-radio:checked + div {
             border-color: #2563eb;
             background-color: #eff6ff;
             color: #1e40af;
+            box-shadow: 0 2px 5px rgba(37, 99, 235, 0.2);
         }
         .inquiry-type-radio:checked + div i {
             color: #2563eb;
         }
+
+        /* 修复：补全动画 CSS */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.3s ease-out forwards;
+        }
     </style>
+
+    <script type="application/ld+json">
+    [
+        {
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "mainEntity": {
+            "@type": "ProfessionalService",
+            "name": "V5 Medical LTD",
+            "contactPoint": [
+              { "@type": "ContactPoint", "email": "sales@v5md.com", "contactType": "Sales" },
+              { "@type": "ContactPoint", "email": "qa@v5md.com", "contactType": "Regulatory Affairs" }
+            ]
+          }
+        }
+    ]
+    </script>
 </head>
 
 <body class="smooth-scroll font-sans text-gray-800 flex flex-col min-h-screen">
@@ -72,38 +99,40 @@
                     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8">
                         <div class="mb-8 border-b border-gray-100 pb-4">
                             <h2 class="text-2xl font-bold text-gray-900"><i class="fas fa-paper-plane text-blue-600 mr-2"></i> Submit Inquiry</h2>
-                            <p class="text-sm text-gray-500 mt-1">Average response time: &lt; 4 hours for verified business emails.</p>
+                            <p class="text-sm text-gray-500 mt-1">
+                                <i class="fas fa-bolt text-yellow-500 mr-1"></i> Fast Track: Department-direct routing enabled.
+                            </p>
                         </div>
 
                         <form id="smart-form" action="https://formspree.io/f/xdkqlygg" method="POST" class="space-y-6">
-                            <input type="hidden" name="source" value="Smart Contact Form">
+                            <input type="hidden" name="source" value="Smart Contact Form v2.2">
                             <input type="hidden" id="dynamic-subject" name="subject" value="New Inquiry">
 
                             <div>
                                 <label class="block text-sm font-bold text-gray-900 mb-3">1. What is this regarding? *</label>
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                    <label class="cursor-pointer relative">
+                                    <label class="cursor-pointer relative group">
                                         <input type="radio" name="inquiry_type" value="Quote" class="inquiry-type-radio sr-only" checked onclick="toggleFields('quote')">
                                         <div class="border-2 border-gray-200 rounded-lg p-4 text-center hover:border-blue-300 transition h-full flex flex-col items-center justify-center">
-                                            <i class="fas fa-tag text-2xl text-gray-400 mb-2"></i>
+                                            <i class="fas fa-tag text-2xl text-gray-400 mb-2 group-hover:text-blue-400 transition"></i>
                                             <span class="font-bold text-sm">Request Quote</span>
                                             <span class="text-xs text-gray-500 mt-1">Pricing & Samples</span>
                                         </div>
                                     </label>
 
-                                    <label class="cursor-pointer relative">
+                                    <label class="cursor-pointer relative group">
                                         <input type="radio" name="inquiry_type" value="Regulatory" class="inquiry-type-radio sr-only" onclick="toggleFields('qa')">
                                         <div class="border-2 border-gray-200 rounded-lg p-4 text-center hover:border-purple-300 transition h-full flex flex-col items-center justify-center">
-                                            <i class="fas fa-file-contract text-2xl text-gray-400 mb-2"></i>
+                                            <i class="fas fa-file-contract text-2xl text-gray-400 mb-2 group-hover:text-purple-400 transition"></i>
                                             <span class="font-bold text-sm">QA & Tender</span>
-                                            <span class="text-xs text-gray-500 mt-1">Certificates/Docs</span>
+                                            <span class="text-xs text-gray-500 mt-1">Paid Services & Docs</span>
                                         </div>
                                     </label>
 
-                                    <label class="cursor-pointer relative">
+                                    <label class="cursor-pointer relative group">
                                         <input type="radio" name="inquiry_type" value="Logistics" class="inquiry-type-radio sr-only" onclick="toggleFields('logistics')">
                                         <div class="border-2 border-gray-200 rounded-lg p-4 text-center hover:border-green-300 transition h-full flex flex-col items-center justify-center">
-                                            <i class="fas fa-shipping-fast text-2xl text-gray-400 mb-2"></i>
+                                            <i class="fas fa-shipping-fast text-2xl text-gray-400 mb-2 group-hover:text-green-400 transition"></i>
                                             <span class="font-bold text-sm">Order Status</span>
                                             <span class="text-xs text-gray-500 mt-1">Shipping/Payments</span>
                                         </div>
@@ -130,7 +159,7 @@
                                 </div>
                             </div>
 
-                            <div id="field-group-quote" class="dynamic-group space-y-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
+                            <div id="field-group-quote" class="dynamic-group fade-in-up space-y-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
                                 <h4 class="text-sm font-bold text-blue-800 border-b border-blue-200 pb-2">Quote Details</h4>
                                 <div class="grid md:grid-cols-2 gap-4">
                                     <div>
@@ -144,6 +173,15 @@
                                         </select>
                                     </div>
                                     <div>
+                                        <label class="block text-xs font-semibold text-gray-600 mb-1">Target Incoterms</label>
+                                        <select name="incoterms" class="w-full px-3 py-2 rounded border border-gray-300">
+                                            <option value="FOB">FOB (Free on Board)</option>
+                                            <option value="CIF">CIF (Cost, Insurance, Freight)</option>
+                                            <option value="EXW">EXW (Ex Works)</option>
+                                            <option value="DDP">DDP (Delivered Duty Paid)</option>
+                                        </select>
+                                    </div>
+                                    <div>
                                         <label class="block text-xs font-semibold text-gray-600 mb-1">Est. Annual Volume</label>
                                         <select name="annual_volume" class="w-full px-3 py-2 rounded border border-gray-300">
                                             <option value="Trial">Trial Order</option>
@@ -152,15 +190,29 @@
                                             <option value="200k+">$200k+</option>
                                         </select>
                                     </div>
+                                    <div>
+                                         <label class="block text-xs font-semibold text-gray-600 mb-1">Destination Country</label>
+                                         <input type="text" name="destination" class="w-full px-3 py-2 rounded border border-gray-300" placeholder="e.g. Turkey">
+                                    </div>
                                 </div>
                                 <div>
                                     <label class="block text-xs font-semibold text-gray-600 mb-1">Product Specifications *</label>
-                                    <textarea name="quote_details" rows="3" class="w-full px-3 py-2 rounded border border-gray-300 focus:ring-1 focus:ring-blue-500" placeholder="E.g., 5000 boxes PGA 2/0, 75cm, 26mm needle. CIF Istanbul."></textarea>
+                                    <textarea name="quote_details" rows="3" class="w-full px-3 py-2 rounded border border-gray-300 focus:ring-1 focus:ring-blue-500" placeholder="E.g., 5000 boxes PGA 2/0, 75cm, 26mm needle..."></textarea>
                                 </div>
                             </div>
 
-                            <div id="field-group-qa" class="dynamic-group hidden space-y-4 p-4 bg-purple-50 rounded-xl border border-purple-100">
-                                <h4 class="text-sm font-bold text-purple-800 border-b border-purple-200 pb-2">Regulatory Support</h4>
+                            <div id="field-group-qa" class="dynamic-group hidden fade-in-up space-y-4 p-4 bg-purple-50 rounded-xl border border-purple-100">
+                                <h4 class="text-sm font-bold text-purple-800 border-b border-purple-200 pb-2 flex justify-between">
+                                    <span>Regulatory Support</span>
+                                    <span class="text-xs font-normal bg-white px-2 rounded text-purple-600 border border-purple-200">Paid Service Available</span>
+                                </h4>
+                                
+                                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-2 mb-2">
+                                    <p class="text-xs text-yellow-800">
+                                        <strong>Note:</strong> Standard certificates are free. In-depth Technical Files & Gap Analysis are value-added services.
+                                    </p>
+                                </div>
+
                                 <div class="grid md:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-xs font-semibold text-gray-600 mb-1">Required Certificate</label>
@@ -172,17 +224,17 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-semibold text-gray-600 mb-1">Target Registration Country</label>
-                                        <input type="text" name="target_country" class="w-full px-3 py-2 rounded border border-gray-300" placeholder="e.g. Philippines, Turkey">
+                                        <label class="block text-xs font-semibold text-gray-600 mb-1">Timeline / Deadline</label>
+                                        <input type="text" name="deadline" class="w-full px-3 py-2 rounded border border-gray-300" placeholder="e.g. Tender closes in 30 days">
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-600 mb-1">Tender/Registration Details</label>
-                                    <textarea name="qa_details" rows="3" class="w-full px-3 py-2 rounded border border-gray-300 focus:ring-1 focus:ring-purple-500" placeholder="Describe the specific documents needed or tender deadline..."></textarea>
+                                    <label class="block text-xs font-semibold text-gray-600 mb-1">Requirements Detail</label>
+                                    <textarea name="qa_details" rows="3" class="w-full px-3 py-2 rounded border border-gray-300 focus:ring-1 focus:ring-purple-500" placeholder="Describe the documents needed..."></textarea>
                                 </div>
                             </div>
 
-                            <div id="field-group-logistics" class="dynamic-group hidden space-y-4 p-4 bg-green-50 rounded-xl border border-green-100">
+                            <div id="field-group-logistics" class="dynamic-group hidden fade-in-up space-y-4 p-4 bg-green-50 rounded-xl border border-green-100">
                                 <h4 class="text-sm font-bold text-green-800 border-b border-green-200 pb-2">Order Support</h4>
                                 <div class="grid md:grid-cols-2 gap-4">
                                     <div>
@@ -205,9 +257,9 @@
                             </div>
 
                             <div class="flex items-start gap-3 pt-2">
-                                <input type="checkbox" required id="b2b-check" class="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                                <label for="b2b-check" class="text-xs text-gray-500">
-                                    I confirm this is a business inquiry. (V5 Medical does not supply individuals for personal use).
+                                <input type="checkbox" required id="b2b-check" class="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <label for="b2b-check" class="text-xs text-gray-500 cursor-pointer">
+                                    I confirm this is a business inquiry. (V5 Medical does not supply individuals).
                                 </label>
                             </div>
 
@@ -269,11 +321,17 @@
 
                     <div class="bg-gray-900 text-white p-6 rounded-xl shadow-lg text-sm">
                         <h3 class="font-bold mb-3"><i class="fas fa-map-marker-alt mr-2"></i> Factory Address</h3>
-                        <p class="text-gray-400 leading-relaxed">
+                        <p class="text-gray-400 leading-relaxed mb-4">
                             No. 168, Luying Road,<br>
                             Kunshan Development Zone,<br>
                             Jiangsu Province, China 215300
                         </p>
+                        
+                        <div class="pt-4 border-t border-gray-700">
+                            <p class="text-[10px] text-gray-500 italic">
+                                * Disclaimer: We do not assist with certificate borrowing or counterfeit product inquiries.
+                            </p>
+                        </div>
                     </div>
 
                 </div>
@@ -301,11 +359,9 @@
             const selectedGroup = document.getElementById('field-group-' + type);
             if(selectedGroup) {
                 selectedGroup.classList.remove('hidden');
-                // 简单的动画效果
-                selectedGroup.classList.add('fade-in-up');
             }
 
-            // 3. 更新隐藏的 Subject 字段，方便邮件分类
+            // 3. 更新隐藏的 Subject 字段
             const subjectField = document.getElementById('dynamic-subject');
             if(type === 'quote') subjectField.value = "New Quote Request (Web)";
             if(type === 'qa') subjectField.value = "Regulatory Support Inquiry (Web)";
@@ -320,17 +376,15 @@
             }, 'google_translate_element');
         }
 
-        // 初始化：默认检查Quote是否被选中
+        // 初始化
         document.addEventListener("DOMContentLoaded", function() {
             toggleFields('quote');
             
-            // 检查 URL 是否带参数（例如 ?type=quote）
             const urlParams = new URLSearchParams(window.location.search);
             const type = urlParams.get('type');
             if(type) {
                 const radios = document.getElementsByName('inquiry_type');
                 if(type === 'quote') { radios[0].checked = true; toggleFields('quote'); }
-                // 可以扩展其他参数逻辑
             }
         });
     </script>
