@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V5 Medical: Strategic Supply Chain & Compliance Integrator</title>
     <meta name="description" content="V5 Medical LTD: ISO 13485 compliant medical supply chain integrator. We provide audited manufacturing, independent QC, and regulatory documentation.">
-    <meta name="keywords" content="medical supply chain integrator, surgical sutures oem, medical device registration support, ISO 13485 audit">
-    <meta name="author" content="V5 Medical LTD">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -27,16 +25,22 @@
         .hero-bg-image { filter: brightness(0.65) contrast(1.1); transform: scale(1.01); }
         .goog-te-banner-frame { display: none !important; }
         body { top: 0px !important; }
+        /* 悬浮按钮样式 */
+        .float-wa { position: fixed; bottom: 20px; right: 20px; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
     </style>
     <script type="application/ld+json">
     [
-        { "@context": "https://schema.org", "@type": "MedicalOrganization", "name": "V5 Medical LTD", "url": "https://v5md.com", "logo": "https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" },
-        { "@context": "https://schema.org", "@type": "ProfessionalService", "name": "Regulatory Affairs Support", "provider": { "@type": "Organization", "name": "V5 Medical LTD" } }
+        { "@context": "https://schema.org", "@type": "MedicalOrganization", "name": "V5 Medical LTD", "url": "https://v5md.com", "logo": "https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png" }
     ]
     </script>
 </head>
 
 <body class="smooth-scroll font-sans text-gray-800 flex flex-col min-h-screen">
+    
+    <a href="https://wa.me/447895047944?text=Hi%20V5%20Medical,%20I%20visited%20your%20website..." target="_blank" class="float-wa bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center transition transform hover:scale-110">
+        <i class="fab fa-whatsapp text-3xl"></i>
+    </a>
+
     <div id="v5-header"></div>
     <main class="flex-grow pt-20"> 
         
@@ -46,7 +50,6 @@
             </div>
 
             <div class="relative z-10 max-w-5xl mx-auto text-center px-4 py-12">
-                
                 <div class="inline-flex items-center gap-2 bg-yellow-500/20 border border-yellow-400/50 backdrop-blur-md rounded-full px-4 py-1.5 text-yellow-200 text-sm font-semibold mb-8 animate-pulse-slow">
                     <i class="fas fa-clock text-yellow-400"></i>
                     <span>Dec Offer: Free Factory Audit Report for First 10 New Inquiries</span>
@@ -93,7 +96,6 @@
             <div class="max-w-7xl mx-auto text-center">
                 <h2 class="text-3xl font-bold mb-12 text-gray-900">Core Supply Chain Categories</h2>
                 <div class="grid md:grid-cols-3 gap-6">
-                    
                     <div class="group block border border-gray-100 rounded-xl p-6 hover:shadow-lg transition-all relative overflow-hidden">
                         <div class="absolute top-4 right-4 bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded-full border border-green-200 flex items-center gap-1">
                             <i class="fas fa-bolt"></i> Ready to Ship
@@ -105,9 +107,8 @@
                         <p class="text-sm text-gray-600 mb-4">PGA, PDO, Silk, Nylon. Full range of needle combinations.</p>
                         <a href="catalog.html#sutures" class="text-blue-600 font-semibold text-sm hover:underline">Download Specs &rarr;</a>
                     </div>
-
                     <div class="group block border border-gray-100 rounded-xl p-6 hover:shadow-lg transition-all relative overflow-hidden">
-                         <div class="absolute top-4 right-4 bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-1 rounded-full border border-orange-200 flex items-center gap-1">
+                        <div class="absolute top-4 right-4 bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-1 rounded-full border border-orange-200 flex items-center gap-1">
                             <i class="fas fa-clock"></i> High Demand
                         </div>
                         <div class="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mb-4 mx-auto">
@@ -117,7 +118,6 @@
                         <p class="text-sm text-gray-600 mb-4">Universal, C-Section, Orthopedic. AAMI Level 3 Protection.</p>
                         <a href="catalog.html#packs" class="text-blue-600 font-semibold text-sm hover:underline">Download Specs &rarr;</a>
                     </div>
-
                     <div class="group block border border-gray-100 rounded-xl p-6 hover:shadow-lg transition-all relative overflow-hidden">
                         <div class="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mb-4 mx-auto">
                             <i class="fas fa-syringe text-xl"></i>
@@ -130,7 +130,7 @@
             </div>
         </section>
 
-        <section class="py-16 px-4 bg-gray-900 text-white border-b border-gray-800">
+        <section class="py-16 px-4 bg-gray-900 text-white">
             <div class="max-w-5xl mx-auto text-center md:text-left">
                 <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
                     <div>
@@ -143,27 +143,32 @@
                     <a href="/blog/#/posts/ce-audit-failure" class="block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-500 transition">
                         <span class="text-xs font-bold bg-red-900/30 text-red-400 px-2 py-1 rounded">Risk Alert</span>
                         <h3 class="font-bold mt-3 mb-2">Why 40% of Distributors Fail CE Audits</h3>
-                        <p class="text-sm text-gray-400 line-clamp-2">Documentation gaps are the #1 killer of tenders.</p>
                     </a>
                     <a href="/blog/#/posts/integrator-model" class="block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-green-500 transition">
                         <span class="text-xs font-bold bg-green-900/30 text-green-400 px-2 py-1 rounded">Strategy</span>
                         <h3 class="font-bold mt-3 mb-2">Integrator vs. Factory Audit</h3>
-                        <p class="text-sm text-gray-400 line-clamp-2">Why integrators are safer for multi-SKU orders.</p>
                     </a>
                     <a href="/blog/#/posts/sterilization-validation" class="block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition">
                         <span class="text-xs font-bold bg-purple-900/30 text-purple-400 px-2 py-1 rounded">Technical</span>
                         <h3 class="font-bold mt-3 mb-2">Sterilization: EtO vs Gamma</h3>
-                        <p class="text-sm text-gray-400 line-clamp-2">Understanding bio-burden requirements.</p>
                     </a>
                 </div>
             </div>
         </section>
 
-        <section class="py-16 px-4 bg-gray-900 text-white">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="text-3xl font-bold mb-6">Ready to streamline your procurement?</h2>
+        <section class="py-16 px-4 bg-blue-900 text-white border-t border-blue-800">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-4">Ready to streamline your procurement?</h2>
+                <p class="text-blue-200 mb-8 max-w-xl mx-auto">Join the distributors who have stopped gambling with random factories. Get monthly compliance updates.</p>
+                
+                <form action="https://formspree.io/f/xdkqlygg" method="POST" class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto mb-8">
+                    <input type="email" name="email" placeholder="Enter your business email" class="px-5 py-3 rounded-lg text-gray-900 w-full focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <input type="hidden" name="source" value="Footer Newsletter">
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-bold transition">Subscribe</button>
+                </form>
+
                 <div class="flex justify-center gap-4">
-                     <a href="contact.html" class="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold shadow-lg hover:bg-blue-500 transition">Start Inquiry</a>
+                     <a href="contact.html" class="text-white underline hover:text-blue-200">Start Full Inquiry</a>
                 </div>
             </div>
         </section>
