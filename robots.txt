@@ -56,7 +56,8 @@ Allow: /*.png$
 Allow: /*.jpg$
 Allow: /*.svg$
 # Ensure Google respects the PDF blocking strategy
-Disallow: /*.pdf$
+Allow: /pdf/Catalog.pdf
+Disallow: /pdf/price*.pdf  # 仅阻止价格表
 
 # Bingbot (Bing Search)
 User-agent: Bingbot
@@ -82,3 +83,4 @@ Sitemap: https://v5md.com/sitemap.xml
 
 # Blog Knowledge Hub Sitemap (Docsify)
 Sitemap: https://v5md.com/blog/sitemap.xml
+
