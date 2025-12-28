@@ -2,7 +2,7 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 4.8.2 (Update: Legal Name Correction & Added CN Contact/Socials)
+ * @version 4.8.3 (Update: Added Payment Gateway Link)
  * @updated 2025-12-28
  */
 
@@ -26,7 +26,7 @@ const V5Layout = (() => {
             this.renderFloatingElements();
             this.highlightCurrentPage(); 
             window.dispatchEvent(new Event('v5-layout-ready'));
-            console.log('[Layout] Initialized v4.8.2 (Social Media Restored)');
+            console.log('[Layout] Initialized v4.8.3 (Payment Link Added)');
         }
 
         injectStyles() {
@@ -163,7 +163,7 @@ const V5Layout = (() => {
             });
         }
 
-        // --- 2. Footer Rendering (信息修正版) ---
+        // --- 2. Footer Rendering ---
         renderFooter() {
             const container = document.getElementById('v5-footer');
             if (!container) return;
@@ -242,6 +242,7 @@ const V5Layout = (() => {
                                 <ul class="space-y-2 text-sm text-gray-400 mb-6">
                                     <li><a href="catalog.html" class="footer-link block">Product Catalog</a></li>
                                     <li><a href="blog/" class="footer-link block">Compliance Knowledge Hub</a></li>
+                                    <li><a href="payment.html" class="footer-link block text-green-400 font-bold"><i class="fas fa-credit-card mr-1"></i> Pay Invoice / Online</a></li>
                                     <li><a href="pdf/V5_Medical_Capability_Statement.pdf" target="_blank" class="footer-link block flex items-center gap-2"><i class="fas fa-file-pdf"></i> Capability Statement</a></li>
                                 </ul>
                                 
