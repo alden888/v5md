@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V5 Medical - 年度作战指挥部 (Command Center)</title>
-    <meta name="description" content="集成化外贸工作台：业绩监控、报价、物流、沟通一站式工具箱。">
+    <meta name="description" content="集成化外贸工作台：业绩监控、全球时钟、报价、物流工具箱。">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
@@ -78,6 +78,11 @@
             .kpi-card { @apply bg-white p-5 rounded-xl border border-slate-100 shadow-sm relative overflow-hidden; }
             .kpi-icon { @apply absolute right-4 top-4 text-4xl opacity-10; }
 
+            /* 时钟卡片 */
+            .clock-card { @apply text-center p-3 rounded-xl border transition-all duration-300; }
+            .clock-card.active { @apply bg-green-50 border-green-200 shadow-sm transform -translate-y-1; }
+            .clock-card.inactive { @apply bg-slate-50 border-slate-100 opacity-70; }
+
             /* 移动端适配 */
             @media (max-width: 767px) {
                 .sidebar-nav { transform: translateX(-100%); }
@@ -87,7 +92,7 @@
             }
             
             /* 章节标题 */
-            .section-header { @apply flex items-center gap-3 text-xl font-bold text-slate-800 mb-6 mt-2 pt-8 border-t border-slate-200 first:border-0 first:pt-0 scroll-mt-28; }
+            .section-header { @apply flex items-center gap-3 text-xl font-bold text-slate-800 mb-6 mt-8 pt-8 border-t border-slate-200 first:border-0 first:pt-0 scroll-mt-28; }
             .section-icon { @apply w-10 h-10 rounded-lg bg-blue-100 text-primary flex items-center justify-center text-lg; }
             
             /* 通知提示 */
@@ -150,9 +155,6 @@
         </a>
 
         <div class="nav-header mt-2">支持与工具</div>
-        <a href="#section-global" class="nav-item">
-            <i class="fas fa-globe-americas"></i> 全球商机看板
-        </a>
         <a href="#section-communication" class="nav-item">
             <i class="fas fa-comments"></i> 沟通模版
         </a>
@@ -181,7 +183,16 @@
             </div>
         </div>
         
-        <section id="section-dashboard" class="section-header">
+        <div class="mb-8">
+            <div class="flex items-center gap-2 mb-3">
+                <span class="w-1 h-4 bg-primary rounded-full"></span>
+                <h3 class="font-bold text-slate-700">全球商机时钟 (Business Hours)</h3>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3" id="world-clock-container">
+                </div>
+        </div>
+
+        <section id="section-dashboard" class="section-header !mt-0">
             <div class="section-icon bg-red-100 text-red-600"><i class="fas fa-flag-checkered"></i></div>
             <div class="flex-grow">
                 <h2 class="text-slate-800">年度战报指挥舱</h2>
@@ -419,15 +430,6 @@
                     <canvas id="rateChart"></canvas>
                 </div>
             </div>
-        </div>
-
-        <section id="section-global" class="section-header">
-            <div class="section-icon"><i class="fas fa-globe"></i></div>
-            <h2>全球商机看板</h2>
-        </section>
-        
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4" id="world-clock-container"></div>
         </div>
 
         <section id="section-communication" class="section-header">
@@ -757,20 +759,10 @@
 
         // --- 4. 数字转大写 (Professional Version) ---
         function convertAmountToWords(amount) {
-            const units = ['', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE'];
-            const teens = ['TEN', 'ELEVEN', 'TWELVE', 'THIRTEEN', 'FOURTEEN', 'FIFTEEN', 'SIXTEEN', 'SEVENTEEN', 'EIGHTEEN', 'NINETEEN'];
-            const tens = ['', '', 'TWENTY', 'THIRTY', 'FORTY', 'FIFTY', 'SIXTY', 'SEVENTY', 'EIGHTY', 'NINETY'];
-            
-            // Simplified logic for brevity in this single file tool
-            // For production, this function handles standard cases.
-            // Using a simple placeholder logic for clarity in this specific snippet context
-            // In a real scenario, use a dedicated library or full recursive function
-            
             const intPart = Math.floor(amount);
             const decPart = Math.round((amount - intPart) * 100);
-            
-            // A simple robust string for PI
-            return `SAY TOTAL US DOLLARS ${intPart.toLocaleString('en-US')} AND ${decPart}/100 CENTS ONLY`; 
+            return `SAY TOTAL US DOLLARS ${intPart.toLocaleString('en-US')}` + 
+                   (decPart > 0 ? ` AND ${decPart}/100 CENTS ONLY` : ` ONLY`);
         }
 
         // 模拟打印 PI
@@ -817,7 +809,7 @@ Beneficiary: V5 Medical LTD
                 history: JSON.parse(localStorage.getItem('v5_calc_history') || '[]'),
                 rate: localStorage.getItem('v5_usd_rate'),
                 target: localStorage.getItem('v5_target'),
-                version: '6.0',
+                version: '6.1',
                 timestamp: new Date().toISOString()
             };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
@@ -903,22 +895,46 @@ Beneficiary: V5 Medical LTD
             
             document.getElementById('calc-rate').value = currentRate;
             
-            // 全球时钟
+            // 🔥 全球商机时钟逻辑 (Robust Timezone Version)
             const cities = [
-                {name: 'Beijing', h: 8}, {name: 'London', h: 0}, {name: 'New York', h: -5}, 
-                {name: 'Dubai', h: 4}, {name: 'Istanbul', h: 3}
+                {name: 'Beijing', tz: 'Asia/Shanghai', icon: '🇨🇳'}, 
+                {name: 'London', tz: 'Europe/London', icon: '🇬🇧'}, 
+                {name: 'New York', tz: 'America/New_York', icon: '🇺🇸'}, 
+                {name: 'Dubai', tz: 'Asia/Dubai', icon: '🇦🇪'}, 
+                {name: 'Istanbul', tz: 'Europe/Istanbul', icon: '🇹🇷'},
+                {name: 'Sao Paulo', tz: 'America/Sao_Paulo', icon: '🇧🇷'}
             ];
-            const clockHtml = cities.map(c => {
-                const h = new Date().getUTCHours() + c.h;
-                const hh = (h+24)%24;
-                const isWork = hh >= 9 && hh < 18;
-                return `<div class="text-center p-2 rounded bg-slate-50 border border-slate-100">
-                    <div class="text-[10px] text-slate-500">${c.name}</div>
-                    <div class="font-bold text-slate-800">${hh}:00</div>
-                    <div class="w-1.5 h-1.5 rounded-full mx-auto mt-1 ${isWork ? 'bg-green-500' : 'bg-slate-300'}"></div>
-                </div>`;
-            }).join('');
-            document.getElementById('world-clock-container').innerHTML = clockHtml;
+            
+            function updateClockDisplay() {
+                const container = document.getElementById('world-clock-container');
+                container.innerHTML = cities.map(c => {
+                    const now = new Date();
+                    const options = { timeZone: c.tz, hour: 'numeric', minute: '2-digit', hour12: false };
+                    const timeString = new Intl.DateTimeFormat('en-US', options).format(now);
+                    const hour = parseInt(timeString.split(':')[0]);
+                    
+                    // 判断工作状态 (9-18点)
+                    const isWorking = hour >= 9 && hour < 18;
+                    const statusClass = isWorking ? 'active border-green-500 shadow-md' : 'inactive';
+                    const dotClass = isWorking ? 'bg-green-500 animate-pulse' : 'bg-slate-300';
+                    const textStatus = isWorking ? 'Open' : 'Closed';
+                    
+                    return `
+                    <div class="clock-card ${statusClass}">
+                        <div class="flex justify-center items-center gap-1 mb-1">
+                            <span class="text-lg">${c.icon}</span>
+                            <span class="text-xs font-bold text-slate-600">${c.name}</span>
+                        </div>
+                        <div class="text-xl font-mono font-black text-slate-800 tracking-tight">${timeString}</div>
+                        <div class="flex items-center justify-center gap-1 mt-1">
+                            <span class="w-2 h-2 rounded-full ${dotClass}"></span>
+                            <span class="text-[10px] uppercase font-bold text-slate-400">${textStatus}</span>
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+            setInterval(updateClockDisplay, 60000);
+            updateClockDisplay(); // 立即执行一次
             
             // 复制Prompt功能
             window.copyPrompt = function(k) {
