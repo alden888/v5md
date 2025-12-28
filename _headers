@@ -27,3 +27,56 @@
 # ------------------------------
 # DOCSIFY & MARKDOWN CONFIG
 # Ensures .md files are rendered correctly as raw text for Docsify to parse
+# ------------------------------
+/*.md
+  Content-Type: text/markdown; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+  Access-Control-Allow-Origin: *
+
+/blog/*.md
+  Content-Type: text/markdown; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+  Access-Control-Allow-Origin: *
+
+# ------------------------------
+# CACHE CONTROL POLICIES
+# ------------------------------
+
+# HTML - Always revalidate to ensure immediate updates
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Static Assets - Long Term Caching (1 Year)
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+/*.jpeg
+  Cache-Control: public, max-age=31536000, immutable
+/*.gif
+  Cache-Control: public, max-age=31536000, immutable
+/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+/*.ico
+  Cache-Control: public, max-age=31536000, immutable
+/*.woff
+  Cache-Control: public, max-age=31536000, immutable
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+# PDF - Force Inline for Brochures
+/*.pdf
+  Content-Type: application/pdf
+  Content-Disposition: inline
+  Cache-Control: public, max-age=2592000
+
+# ------------------------------
+# BRANDING HEADERS
+# ------------------------------
+/*
+  X-Company-Name: V5 Medical LTD
+  X-Platform: Global Supply Chain
