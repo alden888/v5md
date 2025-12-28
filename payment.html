@@ -103,7 +103,7 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-gray-900">Bank Wire Transfer (T/T)</h4>
-                                <p class="text-xs text-gray-500 mt-0.5">For commercial invoices & mass production.</p>
+                                <p class="text-xs text-gray-500 mt-0.5">For commercial invoices & mass production (USD).</p>
                             </div>
                             <div class="ml-auto">
                                 <i class="fas fa-arrow-right text-gray-300 group-hover:text-blue-600 transition-transform group-hover:translate-x-1"></i>
@@ -154,36 +154,51 @@
                 <i class="fas fa-times text-2xl"></i>
             </button>
             <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <i class="fas fa-university text-blue-600"></i> Bank Wire Transfer
+                <i class="fas fa-university text-blue-600"></i> USD Bank Transfer
             </h3>
             
             <div class="bg-blue-50 border border-blue-100 rounded-lg p-3 mb-4 flex gap-2">
                 <i class="fas fa-info-circle text-blue-600 mt-0.5 text-xs"></i>
                 <p class="text-xs text-blue-800 leading-snug">
-                    <strong>Note:</strong> Bank transfer payments are processed via our <strong>manufacturing entity in China</strong> for bulk commercial orders and tax compliance.
+                    <strong>Note:</strong> Processed via our manufacturing entity in China for commercial compliance.
                 </p>
             </div>
 
             <div class="space-y-4 bg-gray-50 p-6 rounded-xl border border-gray-200 mb-6 text-sm">
                 <div>
                     <label class="text-xs font-bold text-gray-500 uppercase">Beneficiary</label>
-                    <p class="text-gray-900 font-bold select-all">Suzhou V5 Medical Technology Co., Ltd.</p>
+                    <p class="text-gray-900 font-bold select-all break-words">SUZHOU V5 MEDICAL TECHNOLOGY CO., LTD.</p>
                 </div>
                 <div>
                     <label class="text-xs font-bold text-gray-500 uppercase">Bank Name</label>
-                    <p class="text-gray-900 select-all">China Construction Bank (Kunshan Branch)</p>
+                    <p class="text-gray-900 select-all">CHINA CONSTRUCTION BANK CORP SUZHOU BRANCH</p>
                 </div>
                 <div>
-                    <label class="text-xs font-bold text-gray-500 uppercase">Account Number</label>
-                    <p class="text-gray-900 font-mono select-all">3200 1596 6360 5250 8888</p>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Beneficiary Account (USD)</label>
+                    <p class="text-gray-900 font-mono text-lg font-bold select-all bg-white border border-gray-300 rounded px-2 py-1 mt-1">32250198643609850772</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 uppercase">SWIFT Code</label>
+                        <p class="text-gray-900 font-mono select-all font-bold">PCBCCNBJJSS</p>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 uppercase">Post Code</label>
+                        <p class="text-gray-900 font-mono select-all">215300</p>
+                    </div>
                 </div>
                 <div>
-                    <label class="text-xs font-bold text-gray-500 uppercase">SWIFT Code</label>
-                    <p class="text-gray-900 font-mono select-all">PCBCCNBJJSU</p>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Bank Address</label>
+                    <p class="text-gray-600 text-xs mt-1 select-all">NO 180 QIANJIN MID-ROAD KUNSHAN CITY JIANGSU PROVINCE CHINA</p>
                 </div>
             </div>
+
+            <p class="text-[10px] text-red-500 mb-4 text-center">
+                * Please verify bank details by phone/email before transferring large amounts.
+            </p>
+
             <button onclick="copyBankDetails()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition shadow-lg flex items-center justify-center gap-2">
-                <i class="fas fa-copy"></i> Copy Details
+                <i class="fas fa-copy"></i> Copy USD Details
             </button>
         </div>
     </div>
@@ -198,9 +213,10 @@
         function showBankModal() { document.getElementById('bankModal').classList.remove('hidden'); }
         function closeBankModal() { document.getElementById('bankModal').classList.add('hidden'); }
         
+        // Updated Copy Function with Correct Details
         function copyBankDetails() {
-            const details = `Beneficiary: Suzhou V5 Medical Technology Co., Ltd.\nBank: China Construction Bank (Kunshan Branch)\nAccount: 3200 1596 6360 5250 8888\nSWIFT: PCBCCNBJJSU`;
-            navigator.clipboard.writeText(details).then(() => alert('✓ Copied to clipboard!'));
+            const details = `USD Wire Transfer Details (V5 Medical):\n\nBeneficiary: SUZHOU V5 MEDICAL TECHNOLOGY CO., LTD.\nAccount: 32250198643609850772\nBank: CHINA CONSTRUCTION BANK CORP SUZHOU BRANCH\nSWIFT: PCBCCNBJJSS\nBank Address: NO 180 QIANJIN MID-ROAD KUNSHAN CITY JIANGSU PROVINCE CHINA`;
+            navigator.clipboard.writeText(details).then(() => alert('✓ USD Bank details copied to clipboard!'));
         }
 
         function trackPaymentClick(method) {
