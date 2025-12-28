@@ -5,27 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V5 Medical - 外贸工作台 (Workflow Dashboard)</title>
     <meta name="description" content="集成化外贸工作台：报价、物流、沟通、合规一站式工具箱。">
-    <!-- 1. 调整 CDN 顺序：先加载 Tailwind CSS，再加载配置 -->
+    <!-- 核心依赖 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
     
-    <!-- 2. 正确配置 Tailwind（必须在 CDN 之后） -->
+    <!-- Tailwind 配置 -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         primary: '#1e40af', // V5 Blue
-                        secondary: '#3b82f6',
-                        sidebar: '#0f172a', // Dark Slate
-                        surface: '#f8fafc',
+                        sidebar: '#0f172a', 
                         success: '#10b981',
                         warning: '#f59e0b',
                         danger: '#ef4444',
-                        info: '#3b82f6',
                     },
-                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
                     keyframes: {
                         fadeIn: {
                             '0%': { opacity: '0', transform: 'translateY(10px)' },
@@ -45,13 +40,12 @@
         }
     </script>
     
-    <!-- 3. 修复自定义样式：避免与 Tailwind 冲突 -->
+    <!-- 核心样式 -->
     <style type="text/tailwindcss">
         @layer utilities {
-            /* 布局核心样式 */
-            .body-base { @apply bg-surface text-slate-700; }
+            .body-base { @apply bg-slate-50 text-slate-700; }
             
-            /* 侧边栏样式 */
+            /* 侧边栏 */
             .sidebar-nav {
                 @apply fixed left-0 top-[80px] bottom-0 w-64 bg-sidebar text-slate-300 z-40 transition-transform duration-300 shadow-2xl border-r border-slate-800 overflow-y-auto;
             }
@@ -63,16 +57,16 @@
             .nav-item.active { @apply bg-blue-900/20 text-blue-400 border-blue-500; }
             .nav-item i { @apply w-5 mr-3 text-center opacity-70; }
             
-            /* 主内容区样式 */
+            /* 主内容区 */
             .main-content {
                 @apply pt-[100px] pb-12 px-4 md:px-8 transition-all duration-300;
-                margin-left: 0; /* Mobile default */
+                margin-left: 0; 
             }
             @media (min-width: 768px) {
-                .main-content { margin-left: 16rem; } /* 256px = w-64 */
+                .main-content { margin-left: 16rem; }
             }
 
-            /* 工具卡片样式 */
+            /* 工具卡片 */
             .tool-card { @apply bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col hover:shadow-md transition-shadow; }
             .tool-header { @apply bg-slate-50 border-b border-slate-100 p-4 flex items-center justify-between; }
             .tool-title { @apply font-bold text-slate-800 flex items-center gap-2; }
@@ -82,10 +76,10 @@
             .input-field { @apply w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition text-slate-700 text-sm; }
             .btn-action { @apply w-full bg-primary hover:bg-blue-800 text-white font-semibold py-2.5 px-4 rounded-lg transition shadow-sm active:transform active:scale-[0.98] flex items-center justify-center gap-2; }
             
-            /* 结果展示框 */
+            /* 结果展示 */
             .result-box { @apply mt-4 p-4 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-mono text-sm shadow-inner animate-fadeIn; }
 
-            /* 移动端菜单切换 */
+            /* 移动端适配 */
             @media (max-width: 767px) {
                 .sidebar-nav { transform: translateX(-100%); }
                 .sidebar-nav.open { transform: translateX(0); }
@@ -101,14 +95,6 @@
             .toast { @apply fixed bottom-4 right-4 z-50 bg-white shadow-lg rounded-lg border border-slate-200 p-4 flex items-center gap-3 animate-fadeIn; }
             .badge { @apply text-xs px-2 py-0.5 rounded-full font-bold; }
             
-            /* 自定义滚动条 */
-            .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-            .custom-scrollbar::-webkit-scrollbar-track { @apply bg-slate-100 rounded; }
-            .custom-scrollbar::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded hover:bg-slate-400; }
-            
-            /* 无数据状态 */
-            .empty-state { @apply py-12 text-center text-slate-400; }
-            
             /* 表单验证 */
             .input-error { @apply border-red-500 focus:ring-red-200 focus:border-red-500; }
             .error-text { @apply text-xs text-red-500 mt-1; }
@@ -116,43 +102,16 @@
     </style>
 </head>
 <body class="body-base">
-    <!-- 以下内容与原代码一致，无需修改 -->
     <div id="v5-header"></div>
 
-    <button id="sidebar-toggle" class="md:hidden fixed left-4 top-24 z-50 bg-primary text-white p-2 rounded-full shadow-lg hover:bg-blue-700 transition">
-        <<i class="fas fa-bars"></</i>
-    </button>
-    
-    <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
-
-    <aside class="sidebar-nav" id="sidebar">
-        <!-- 侧边栏内容不变 -->
-    </aside>
-
-    <main class="main-content">
-        <!-- 主内容不变 -->
-    </main>
-
-    <div id="v5-footer"></div>
-
-    <!-- JS 部分不变 -->
-    <script src="js/config.js?v=2.7.0"></script>
-    <script src="js/layout.js?v=4.8.3"></script>
-    
-    <script>
-        // 原 JS 代码不变
-    </script>
-</body>
-</html>
-
-    <div id="v5-header"></div>
-
+    <!-- 移动端侧边栏切换按钮 -->
     <button id="sidebar-toggle" class="md:hidden fixed left-4 top-24 z-50 bg-primary text-white p-2 rounded-full shadow-lg hover:bg-blue-700 transition">
         <i class="fas fa-bars"></i>
     </button>
     
     <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
+    <!-- 侧边栏导航 -->
     <aside class="sidebar-nav" id="sidebar">
         <div class="p-4">
             <div class="bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg p-4 text-white shadow-lg">
@@ -174,7 +133,6 @@
         <a href="#section-communication" class="nav-item">
             <i class="fas fa-comments"></i> 沟通与模版
         </a>
-        <!-- 新增：订单与PI生成入口 -->
         <a href="#section-orders" class="nav-item">
             <i class="fas fa-file-invoice"></i> 订单与 PI 生成 <span class="ml-auto text-[10px] bg-red-500 text-white px-1.5 rounded-full">New</span>
         </a>
@@ -199,8 +157,9 @@
         </div>
     </aside>
 
+    <!-- 主内容区 -->
     <main class="main-content">
-        <!-- 顶部快捷通知 -->
+        <!-- 通知提示框 -->
         <div id="notification-toast" class="toast hidden">
             <i class="fas fa-check-circle text-success text-lg"></i>
             <div>
@@ -209,6 +168,7 @@
             </div>
         </div>
         
+        <!-- 全球商机看板 -->
         <section id="section-global" class="section-header">
             <div class="section-icon"><i class="fas fa-globe"></i></div>
             <h2>全球商机看板</h2>
@@ -230,10 +190,10 @@
                 </div>
             </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4" id="world-clock-container">
-                </div>
-                
-            <!-- 新增商机提醒 -->
+            <!-- 全球时钟 -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4" id="world-clock-container"></div>
+            
+            <!-- 商机提醒 -->
             <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100 flex items-center gap-3">
                 <i class="fas fa-lightbulb text-blue-500 text-xl"></i>
                 <div>
@@ -243,6 +203,7 @@
             </div>
         </div>
 
+        <!-- 智能报价核算 -->
         <section id="section-pricing" class="section-header">
             <div class="section-icon"><i class="fas fa-file-invoice-dollar"></i></div>
             <h2>智能报价核算</h2>
@@ -319,15 +280,20 @@
                 </div>
             </div>
 
+            <!-- 汇率查询链接（替代原图表） -->
             <div class="tool-card">
                 <div class="tool-header">
-                    <div class="tool-title"><i class="fas fa-chart-line"></i> 汇率趋势</div>
-                    <div class="text-xs text-slate-400">7天走势</div>
+                    <div class="tool-title"><i class="fas fa-money-bill-wave"></i> 汇率查询</div>
                 </div>
-                <div class="tool-body relative">
-                    <canvas id="rateChart" height="200"></canvas>
-                    <!-- 汇率快捷选择 -->
-                    <div class="mt-4 grid grid-cols-3 gap-2">
+                <div class="tool-body flex flex-col items-center justify-center p-6">
+                    <a href="https://www.safe.gov.cn" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 mb-4">
+                        <i class="fas fa-external-link-alt"></i> 国家外汇管理局
+                    </a>
+                    <a href="https://www.boc.cn/sourcedb/whpj/" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2">
+                        <i class="fas fa-external-link-alt"></i> 中国银行牌价
+                    </a>
+                    <!-- 快捷汇率选择 -->
+                    <div class="mt-6 grid grid-cols-3 gap-2 w-full">
                         <button onclick="setRate(7.20)" class="text-xs py-1 bg-slate-100 hover:bg-slate-200 rounded transition">7.20</button>
                         <button onclick="setRate(7.25)" class="text-xs py-1 bg-slate-100 hover:bg-slate-200 rounded transition">7.25</button>
                         <button onclick="setRate(7.30)" class="text-xs py-1 bg-slate-100 hover:bg-slate-200 rounded transition">7.30</button>
@@ -336,6 +302,7 @@
             </div>
         </div>
 
+        <!-- 沟通与模版 -->
         <section id="section-communication" class="section-header">
             <div class="section-icon"><i class="fas fa-comments"></i></div>
             <h2>沟通与模版</h2>
@@ -349,7 +316,7 @@
                         <i class="fas fa-lightbulb mr-1"></i> 点击复制
                     </div>
                 </div>
-                <div class="tool-body space-y-3 custom-scrollbar max-h-[300px]">
+                <div class="tool-body space-y-3 max-h-[300px] overflow-y-auto">
                     <button onclick="copyPrompt('dev')" class="w-full text-left p-3 bg-indigo-50 hover:bg-indigo-100 rounded-lg border border-indigo-100 transition group">
                         <div class="font-bold text-indigo-800 text-xs mb-1 flex items-center">
                             📧 开发信优化
@@ -380,7 +347,7 @@
                     </button>
                 </div>
                 <div class="tool-body flex flex-col h-full">
-                    <div class="flex gap-2 mb-3 overflow-x-auto pb-2 no-scrollbar">
+                    <div class="flex gap-2 mb-3 overflow-x-auto pb-2">
                         <span class="px-2 py-1 text-xs font-bold text-slate-400">场景:</span>
                         <button onclick="setTemplate('quote')" class="px-3 py-1 bg-amber-100 text-amber-800 text-xs rounded-full hover:bg-amber-200 transition">报价</button>
                         <button onclick="setTemplate('sample')" class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full hover:bg-slate-200 transition">寄样</button>
@@ -418,6 +385,7 @@
             </div>
         </div>
 
+        <!-- 物流与装箱 -->
         <section id="section-shipping" class="section-header">
             <div class="section-icon"><i class="fas fa-truck-loading"></i></div>
             <h2>物流与装箱</h2>
@@ -445,7 +413,7 @@
                         </div>
                     </div>
                     
-                    <!-- 新增重量计算 -->
+                    <!-- 重量计算 -->
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <div>
                             <label class="input-label">单箱毛重 (kg)</label>
@@ -575,6 +543,7 @@
             </div>
         </div>
 
+        <!-- 行业工具集 -->
         <section id="section-tools" class="section-header">
             <div class="section-icon"><i class="fas fa-ruler-combined"></i></div>
             <h2>行业工具集</h2>
@@ -632,7 +601,7 @@
                 </div>
             </div>
             
-            <!-- 新增单位换算工具 -->
+            <!-- 单位换算工具 -->
             <div class="tool-card border-l-4 border-l-blue-500 hover:shadow-md transition col-span-2 md:col-span-4">
                 <div class="p-4">
                     <h3 class="font-bold text-sm mb-3 flex items-center">
@@ -673,6 +642,7 @@
             </div>
         </div>
 
+        <!-- 轻量级 CRM -->
         <section id="section-crm" class="section-header">
             <div class="section-icon"><i class="fas fa-user-clock"></i></div>
             <h2>轻量级 CRM</h2>
@@ -688,7 +658,7 @@
                 </div>
             </div>
             
-            <div class="space-y-2 custom-scrollbar max-h-[400px]" id="follow-up-list">
+            <div class="space-y-2 max-h-[400px] overflow-y-auto" id="follow-up-list">
                 <div class="flex items-center justify-between p-3 bg-slate-50 rounded border border-slate-100 hover:border-blue-200 transition group">
                     <div class="flex items-center gap-3 flex-grow">
                         <div class="w-2 h-2 rounded-full bg-red-500 animate-pulseSoft"></div>
@@ -734,7 +704,7 @@
             </div>
             
             <!-- 空状态 -->
-            <div id="empty-tasks" class="empty-state hidden">
+            <div id="empty-tasks" class="py-12 text-center text-slate-400 hidden">
                 <i class="fas fa-inbox text-4xl mb-2 text-slate-300"></i>
                 <div class="text-slate-400">暂无待跟进事项</div>
                 <button onclick="addFollowUp()" class="mt-4 text-xs bg-primary text-white px-3 py-1.5 rounded hover:bg-blue-700 transition">
@@ -743,8 +713,8 @@
             </div>
         </div>
         
-        <!-- 客户管理卡片 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- 客户管理卡片（简化版） -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <div class="tool-card border-t-4 border-t-blue-500">
                 <div class="tool-header">
                     <div class="tool-title"><i class="fas fa-users"></i> 客户统计</div>
@@ -760,7 +730,9 @@
                             <div class="text-2xl font-bold text-green-800">17</div>
                         </div>
                     </div>
-                    <canvas id="customerChart" height="150"></canvas>
+                    <div class="text-xs text-slate-500 text-center">
+                        数据更新至: 2025-12-28
+                    </div>
                 </div>
             </div>
             
@@ -769,8 +741,7 @@
                     <div class="tool-title"><i class="fas fa-chart-pie"></i> 区域分布</div>
                 </div>
                 <div class="tool-body">
-                    <canvas id="regionChart" height="150"></canvas>
-                    <div class="grid grid-cols-2 gap-2 mt-4 text-xs">
+                    <div class="grid grid-cols-2 gap-2 text-xs mb-4">
                         <div class="flex items-center gap-1">
                             <div class="w-2 h-2 rounded-full bg-blue-500"></div>
                             <span>北美: 32%</span>
@@ -795,7 +766,7 @@
                 <div class="tool-header">
                     <div class="tool-title"><i class="fas fa-star"></i> 重点客户</div>
                 </div>
-                <div class="tool-body custom-scrollbar max-h-[250px]">
+                <div class="tool-body max-h-[250px] overflow-y-auto">
                     <div class="space-y-2">
                         <div class="p-2 bg-purple-50 rounded border border-purple-100">
                             <div class="font-bold text-xs text-purple-800">Medical Plus (USA)</div>
@@ -817,7 +788,7 @@
             </div>
         </div>
 
-        <!-- 新增：订单管理 (Mini ERP) 模块 -->
+        <!-- 订单管理 (Mini ERP) 模块 -->
         <section id="section-orders" class="section-header">
             <div class="section-icon"><i class="fas fa-file-invoice"></i></div>
             <h2>订单管理 (Mini ERP)</h2>
@@ -923,19 +894,19 @@
 
     </main>
 
+    <!-- 页脚 -->
     <div id="v5-footer"></div>
 
-    <script src="js/config.js?v=2.7.0"></script>
-    <script src="js/layout.js?v=4.8.3"></script>
-    
+    <!-- 核心JS逻辑 -->
     <script>
-        // --- 1. Sidebar & Scroll Logic ---
+        // --- 1. 基础布局逻辑 ---
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebar-overlay');
         const toggleBtn = document.getElementById('sidebar-toggle');
         const navLinks = document.querySelectorAll('.nav-item');
         const sections = document.querySelectorAll('section');
 
+        // 侧边栏切换
         function toggleSidebar() {
             sidebar.classList.toggle('open');
             overlay.classList.toggle('show');
@@ -943,10 +914,9 @@
             icon.classList.toggle('fa-bars');
             icon.classList.toggle('fa-times');
         }
-
         toggleBtn.addEventListener('click', toggleSidebar);
 
-        // Active Link on Scroll
+        // 滚动激活导航
         window.addEventListener('scroll', () => {
             let current = '';
             sections.forEach(section => {
@@ -965,8 +935,10 @@
             });
         });
 
-        // Initialize Date
-        document.getElementById('sidebar-date').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        // 初始化日期
+        document.getElementById('sidebar-date').innerText = new Date().toLocaleDateString('en-US', { 
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+        });
         
         // 更新最后刷新时间
         function updateLastUpdate() {
@@ -977,13 +949,12 @@
         updateLastUpdate();
         setInterval(updateLastUpdate, 60000);
 
-        // --- 2. Notification Toast ---
+        // --- 2. 通知提示框 ---
         function showToast(message, type = 'success') {
             const toast = document.getElementById('notification-toast');
             const toastMsg = document.getElementById('toast-message');
             const icon = toast.querySelector('i');
             
-            // 设置图标和颜色
             icon.className = '';
             if (type === 'success') {
                 icon.className = 'fas fa-check-circle text-success text-lg';
@@ -992,20 +963,19 @@
                 icon.className = 'fas fa-exclamation-circle text-danger text-lg';
                 toast.querySelector('.font-bold').textContent = '操作失败';
             } else if (type === 'info') {
-                icon.className = 'fas fa-info-circle text-info text-lg';
+                icon.className = 'fas fa-info-circle text-primary text-lg';
                 toast.querySelector('.font-bold').textContent = '提示';
             }
             
             toastMsg.textContent = message;
             toast.classList.remove('hidden');
             
-            // 3秒后隐藏
             setTimeout(() => {
                 toast.classList.add('hidden');
             }, 3000);
         }
 
-        // --- 3. Global Clock ---
+        // --- 3. 全球时钟 ---
         const cities = [
             { name: 'Beijing', tz: 'Asia/Shanghai', icon: '🇨🇳' },
             { name: 'London', tz: 'Europe/London', icon: '🇬🇧' },
@@ -1017,10 +987,11 @@
         function updateClock() {
             const container = document.getElementById('world-clock-container');
             container.innerHTML = cities.map(city => {
-                const now = new Date().toLocaleTimeString('en-US', { timeZone: city.tz, hour: '2-digit', minute: '2-digit', hour12: false });
+                const now = new Date().toLocaleTimeString('en-US', { 
+                    timeZone: city.tz, hour: '2-digit', minute: '2-digit', hour12: false 
+                });
                 const hour = parseInt(now.split(':')[0]);
                 const isWorking = hour >= 9 && hour < 18;
-                const statusColor = isWorking ? 'text-green-500' : 'text-slate-300';
                 
                 return `
                     <div class="text-center p-3 rounded-lg bg-slate-50 border border-slate-100 hover:shadow-sm transition">
@@ -1032,9 +1003,10 @@
                 `;
             }).join('');
         }
-        setInterval(updateClock, 60000); updateClock();
+        setInterval(updateClock, 60000); 
+        updateClock();
 
-        // --- 4. FOB Calculator ---
+        // --- 4. FOB报价计算器 ---
         function calculateFOB() {
             const costInput = document.getElementById('calc-cost');
             const cost = parseFloat(costInput.value) || 0;
@@ -1060,12 +1032,11 @@
             const taxRefund = taxBase * (rebate / 100);
             const realCost = cost - taxRefund + extra;
             
-            // Formula: Price = RealCost / (1 - Margin%) / Rate
             let finalPrice = (realCost / (1 - (margin/100))) / rate;
             
-            if (term === 'CIF') finalPrice += freight; // Simplified
-            if (term === 'EXW') finalPrice = (cost / rate) * (1 + margin/100); // EXW不包含退税
-            
+            if (term === 'CIF') finalPrice += freight;
+            if (term === 'EXW') finalPrice = (cost / rate) * (1 + margin/100);
+
             const profitRMB = (finalPrice * rate) - (realCost + (freight * rate));
             const profitMarginPercent = (profitRMB / (finalPrice * rate)) * 100;
 
@@ -1076,7 +1047,6 @@
             document.getElementById('price-note').textContent = `${term} Shanghai`;
             document.getElementById('fob-result').classList.remove('hidden');
             
-            // 保存计算记录
             saveCalculationHistory('fob', { cost, rate, margin, finalPrice, term });
         }
         
@@ -1108,56 +1078,10 @@
             localStorage.setItem('v5_usd_rate', document.getElementById('calc-rate').value);
             showToast('汇率已保存', 'success');
         }
-        // Load Rate
+        // 加载汇率
         document.getElementById('calc-rate').value = localStorage.getItem('v5_usd_rate') || 7.25;
 
-        // --- 5. Chart.js (Rate Trend) ---
-        new Chart(document.getElementById('rateChart'), {
-            type: 'line',
-            data: {
-                labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-                datasets: [{
-                    label: 'USD/CNY',
-                    data: [7.18, 7.20, 7.22, 7.21, 7.23, 7.24, 7.25],
-                    borderColor: '#1e40af',
-                    backgroundColor: 'rgba(30, 64, 175, 0.05)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { 
-                    legend: {display: false},
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,                        callbacks: {
-                            label: function(context) {
-                                return `¥${context.raw}`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        min: 7.15,
-                        ticks: {
-                            stepSize: 0.02
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-
-        // --- 6. CBM Calculator ---
+        // --- 5. CBM装箱计算 ---
         function calculateCBM() {
             const l = parseFloat(document.getElementById('cbm-l').value) || 0;
             const w = parseFloat(document.getElementById('cbm-w').value) || 0;
@@ -1171,30 +1095,29 @@
                 return;
             }
 
-            // CBM Calculation
-            const cbmPerCtn = (l * w * h) / 1000000; // cm³ to m³
+            const cbmPerCtn = (l * w * h) / 1000000;
             const totalCBM = cbmPerCtn * ctn;
             const totalGross = grossPerCtn * ctn;
             const totalNet = netPerCtn * ctn;
 
-            // Container Capacities (Standard)
+                        // 集装箱参数
             const container20GP = { cbm: 28, maxWeight: 21000 };
             const container40HQ = { cbm: 68, maxWeight: 26000 };
 
-            // Loading Rate
+            // 装载率计算
             const loadRate20GP = Math.min((totalCBM / container20GP.cbm) * 100, 100);
             const loadRate40HQ = Math.min((totalCBM / container40HQ.cbm) * 100, 100);
             
-            // Qty per Container (Volume vs Weight)
+            // 单柜可装数量（体积 vs 重量）
             const qtyByVolume20 = Math.floor(container20GP.cbm / cbmPerCtn);
-            const qtyByWeight20 = Math.floor(container20GP.maxWeight / grossPerCtn) || 0;
+            const qtyByWeight20 = grossPerCtn > 0 ? Math.floor(container20GP.maxWeight / grossPerCtn) : 0;
             const qty20GP = grossPerCtn > 0 ? Math.min(qtyByVolume20, qtyByWeight20) : qtyByVolume20;
 
             const qtyByVolume40 = Math.floor(container40HQ.cbm / cbmPerCtn);
-            const qtyByWeight40 = Math.floor(container40HQ.maxWeight / grossPerCtn) || 0;
+            const qtyByWeight40 = grossPerCtn > 0 ? Math.floor(container40HQ.maxWeight / grossPerCtn) : 0;
             const qty40HQ = grossPerCtn > 0 ? Math.min(qtyByVolume40, qtyByWeight40) : qtyByVolume40;
 
-            // Update DOM
+            // 更新DOM
             document.getElementById('res-cbm').textContent = totalCBM.toFixed(3);
             document.getElementById('res-gross').textContent = totalGross.toFixed(1);
             document.getElementById('res-net').textContent = totalNet.toFixed(1);
@@ -1214,6 +1137,7 @@
             saveCalculationHistory('cbm', { l, w, h, ctn, totalCBM, totalGross });
         }
 
+        // 重置CBM计算
         function resetCBM() {
             document.getElementById('cbm-l').value = '';
             document.getElementById('cbm-w').value = '';
@@ -1224,14 +1148,14 @@
             document.getElementById('cbm-result').classList.add('hidden');
         }
 
-        // --- 7. Shipping Cost Estimator ---
+        // --- 6. 快递运费估算 ---
         function estimateShipping() {
             const to = document.getElementById('ship-to').value;
             const weight = parseFloat(document.getElementById('ship-weight').value) || 1;
             const type = document.getElementById('ship-type').value;
             const battery = document.getElementById('ship-battery').value;
 
-            // Base Rates (Simplified)
+            // 基础费率（简化版）
             const baseRates = {
                 'us': { dhl: 85, fedex: 78, ups: 82 },
                 'uk': { dhl: 78, fedex: 72, ups: 75 },
@@ -1240,28 +1164,28 @@
                 'au': { dhl: 90, fedex: 82, ups: 85 }
             };
 
-            // Adjustment Factors
+            // 调整系数
             let factor = 1;
             if (type === 'commercial') factor = 1.2;
             if (battery === 'yes') factor = 1.1;
 
-            // Calculate Final Prices
+            // 计算最终价格
             const rates = baseRates[to];
             const dhl = Math.round(rates.dhl * weight * factor);
             const fedex = Math.round(rates.fedex * weight * factor);
             const ups = Math.round(rates.ups * weight * factor);
 
-            // Update DOM
+            // 更新DOM
             document.getElementById('dhl-price').textContent = dhl;
             document.getElementById('fedex-price').textContent = fedex;
             document.getElementById('ups-price').textContent = ups;
             document.getElementById('shipping-result').classList.remove('hidden');
             
-            // 保存查询记录
+            // 保存记录
             saveCalculationHistory('shipping', { to, weight, type, battery, dhl, fedex, ups });
         }
 
-        // --- 8. Medical Unit Conversion ---
+        // --- 7. 医疗单位换算 ---
         function convertMedical(type) {
             const frInput = document.getElementById('conv-fr');
             const mmInput = document.getElementById('conv-mm');
@@ -1291,7 +1215,7 @@
         }
         showGaugeColor(); // 初始化
 
-        // --- 9. Amount Conversion (Number to Text) ---
+        // --- 8. 金额转大写 ---
         function convertAmount() {
             const num = parseFloat(document.getElementById('amount-num').value) || 0;
             const currency = document.getElementById('amount-currency').value;
@@ -1302,7 +1226,7 @@
                 'CNY': 'YUAN'
             };
             
-            // 简化版数字转大写（实际项目建议用完整库）
+            // 简化版数字转大写
             const intPart = Math.floor(num);
             const decPart = Math.round((num - intPart) * 100);
             let text = `SAY TOTAL ${currencyMap[currency]} ${intPart.toLocaleString('en-US')} AND ${decPart}/100 ONLY`;
@@ -1320,7 +1244,7 @@
             });
         }
 
-        // --- 10. Unit Conversion (新增) ---
+        // --- 9. 通用单位换算 ---
         // 重量换算 (g ↔ oz)
         function convertWeight(type) {
             const gInput = document.getElementById('conv-g');
@@ -1363,7 +1287,7 @@
             }
         }
 
-        // --- 11. AI Prompts & Email Templates ---
+        // --- 10. AI指令与邮件模板 ---
         const prompts = {
             'dev': "Help me polish this cold email to a medical distributor, highlighting ISO13485 certification and competitive pricing. Make it professional but not too salesy, keep it under 150 words.",
             'reject': "Client said 'Price too high'. Write a reply emphasizing ISO13485 quality control and suggesting a trial order with small MOQ. Include a gentle reminder about long-term partnership benefits.",
@@ -1461,7 +1385,7 @@ V5 Medical Team`
             document.getElementById('mail-subject').value = template.subject.replace('{日期}', today);
             document.getElementById('mail-body').value = template.body.replace('{日期}', today);
             
-            // 启用编辑模式（首次点击时）
+            // 启用编辑
             document.getElementById('mail-subject').readOnly = false;
             document.getElementById('mail-body').readOnly = false;
             
@@ -1501,7 +1425,7 @@ V5 Medical Team`
             showToast(subject.readOnly ? '模板已锁定' : '模板已解锁编辑', 'info');
         }
 
-        // --- 12. CRM & Follow-up Tasks ---
+        // --- 11. CRM跟进任务 ---
         function completeTask(el) {
             const task = el.closest('.flex.items-center.justify-between');
             task.classList.add('opacity-50', 'line-through');
@@ -1509,7 +1433,7 @@ V5 Medical Team`
             el.classList.remove('hover:text-green-500');
             el.classList.add('text-green-500');
             
-            // 检查是否所有任务都已完成
+            // 检查是否全部完成
             const allTasks = document.querySelectorAll('#follow-up-list > div');
             const completedTasks = document.querySelectorAll('#follow-up-list > div.opacity-50');
             
@@ -1523,8 +1447,6 @@ V5 Medical Team`
 
         function filterTasks(type) {
             const tasks = document.querySelectorAll('#follow-up-list > div');
-            const todayTasks = document.querySelectorAll('#follow-up-list > div:has(.bg-red-500)');
-            
             tasks.forEach(task => task.classList.remove('hidden'));
             
             if (type === 'today') {
@@ -1539,7 +1461,6 @@ V5 Medical Team`
         }
 
         function addFollowUp() {
-            // 简易弹窗（实际项目建议用模态框）
             const clientName = prompt('请输入客户名称：', 'New Client');
             if (!clientName) return;
             
@@ -1576,69 +1497,7 @@ V5 Medical Team`
             showToast('新任务已添加', 'success');
         }
 
-        // --- 13. Customer Charts ---
-new Chart(document.getElementById('customerChart'), {
-    type: 'bar',
-    data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        datasets: [
-            {
-                label: 'New Customers',
-                data: [5, 8, 6, 9, 7, 10],
-                backgroundColor: 'rgba(30, 64, 175, 0.7)',
-                borderRadius: 4
-            },
-            {
-                label: 'Orders',
-                data: [12, 15, 9, 18, 14, 20],
-                backgroundColor: 'rgba(16, 185, 129, 0.7)',
-                borderRadius: 4
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { 
-            legend: { 
-                position: 'bottom', 
-                labels: { 
-                    boxWidth: 10, 
-                    font: { size: 10 } 
-                } 
-            } 
-        },
-        scales: {
-            y: { 
-                beginAtZero: true, 
-                ticks: { font: { size: 10 } } 
-            },
-            x: { 
-                ticks: { font: { size: 10 } } 
-            }
-        }
-    }
-});
-
-        new Chart(document.getElementById('regionChart'), {
-            type: 'doughnut',
-            data: {
-                labels: ['North America', 'Europe', 'Middle East', 'APAC'],
-                datasets: [{
-                    data: [32, 28, 18, 22],
-                    backgroundColor: ['#3b82f6', '#6366f1', '#f59e0b', '#22c55e'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                cutout: '70%'
-            }
-        });
-
-        // --- 14. Calculation History (LocalStorage) ---
+        // --- 12. 计算历史存储 ---
         function saveCalculationHistory(type, data) {
             const history = JSON.parse(localStorage.getItem('v5_calc_history') || '[]');
             history.push({
@@ -1647,14 +1506,14 @@ new Chart(document.getElementById('customerChart'), {
                 timestamp: new Date().toISOString()
             });
             
-            // 只保留最近20条记录
+            // 保留最近20条
             if (history.length > 20) history.shift();
             
             localStorage.setItem('v5_calc_history', JSON.stringify(history));
         }
 
-        // --- 15. Mini ERP Logic (订单管理核心) ---
-        // 模拟产品数据库 (SKU Master Data)
+        // --- 13. Mini ERP 订单管理核心 ---
+        // 模拟产品数据库
         const productsDB = [
             { sku: 'V5-SUT-PGA', name: 'PGA Absorbable Suture', price: 1.25, unit: 'doz' },
             { sku: 'V5-SUT-SILK', name: 'Silk Braided Suture', price: 0.85, unit: 'doz' },
@@ -1778,7 +1637,7 @@ new Chart(document.getElementById('customerChart'), {
             currentCart.push({ sku, name, price, qty, total: price * qty });
             renderCart();
             
-            // Reset inputs
+            // 重置输入
             document.getElementById('pi-qty').value = '';
         }
 
@@ -1897,7 +1756,7 @@ new Chart(document.getElementById('customerChart'), {
             }
         }
 
-        // 模拟打印 PI (这里用 alert 代替，实际可生成 PDF)
+        // 模拟打印 PI
         function printPI() {
             if(currentCart.length === 0) return alert('购物车为空');
             const customer = document.getElementById('pi-customer').value || 'Customer';
