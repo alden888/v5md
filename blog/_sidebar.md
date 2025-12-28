@@ -12,6 +12,12 @@
   <span class="category-tag tag-chain">Sourcing Strategy</span>
   <ul class="sidebar-list">
     <li class="sidebar-highlight">
+      <i class="fas fa-credit-card sidebar-icon text-green-500"></i> 
+      <a href="#/posts/payment-strategy-guide.md">
+        Payment & Sourcing Guide
+      </a>
+    </li>
+    <li class="sidebar-highlight">
       <i class="fas fa-star sidebar-icon text-yellow-500"></i> 
       <a href="#/posts/moq-vs-price.md">
         MOQ vs Unit Price Strategy
@@ -53,7 +59,7 @@
         Why CE Audits Fail (Fix It)
       </a>
     </li>
-    </ul>
+  </ul>
 </div>
 
 <div class="sidebar-category">
@@ -73,5 +79,3 @@
     </li>
   </ul>
 </div>
-* **Finance & Strategy**
-  * [Payment & Sourcing Strategy](posts/payment-strategy-guide.md)
