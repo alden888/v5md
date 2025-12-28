@@ -33,7 +33,7 @@ We have integrated **Stripe** into our infrastructure. You can now pay instantly
 2.  **Buyer Protection:** Payments are processed via PCI DSS Level 1 certified gateways.
 3.  **Low Friction:** No need to involve your finance department for small testing expenses.
 
-👉 **[Access the Secure Payment Portal Here](/payment.html)**
+👉 **[Access the Secure Payment Portal Here](https://v5md.com/payment.html)**
 
 ---
 
@@ -61,14 +61,14 @@ You might ask: *"Why can't I pay $50,000 via Credit Card?"*
 
 ### 🔄 The "Blog-to-Portal" Workflow
 We have designed our website to support this flow:
-1.  Read our **[Product Catalog](catalog.html)** to find what you need.
-2.  Use the **[Payment Portal](/payment.html)** to pay for samples instantly.
+1.  Read our **[Product Catalog](https://v5md.com/catalog.html)** to find what you need.
+2.  Use the **[Payment Portal](https://v5md.com/payment.html)** to pay for samples instantly.
 3.  Once samples are approved, contact our team to sign the PI for bulk production via T/T.
 
 ### Ready to start?
 Don't let logistics wait for paperwork.
 
-[**Pay for Your Samples Now &rarr;**](/payment.html)
+[**Pay for Your Samples Now &rarr;**](https://v5md.com/payment.html)
 
 ---
 
