@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V5 Medical - 外贸效能工具箱</title>
-    <meta name="description" content="V5 Medical 专属外贸工具：报价核算、装箱计算、全球时钟、AI指令库及医疗单位换算。">
+    <title>V5 Medical - 外贸工作台 (Workflow Dashboard)</title>
+    <meta name="description" content="集成化外贸工作台：报价、物流、沟通、合规一站式工具箱。">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
@@ -13,487 +13,490 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1e40af', // V5 Medical Blue
+                        primary: '#1e40af', // V5 Blue
                         secondary: '#3b82f6',
-                        accent: '#0f172a',
+                        sidebar: '#0f172a', // Dark Slate
+                        surface: '#f8fafc',
                         success: '#10b981',
                         warning: '#f59e0b',
+                        danger: '#ef4444',
+                        info: '#3b82f6',
                     },
-                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        pulseSoft: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.7' }
+                        }
+                    },
+                    animation: {
+                        fadeIn: 'fadeIn 0.3s ease-out',
+                        pulseSoft: 'pulseSoft 2s infinite'
+                    }
                 }
             }
         }
     </script>
     <style>
-        .tool-card { @apply bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 overflow-hidden flex flex-col; }
-        .tool-header { @apply bg-gray-50 border-b border-gray-100 p-4 flex items-center justify-between; }
-        .tool-title { @apply font-bold text-gray-800 flex items-center gap-2; }
-        .tool-body { @apply p-5 flex-grow text-sm text-gray-600; }
-        .input-group { @apply mb-3; }
-        .input-label { @apply block text-xs font-semibold text-gray-500 uppercase mb-1; }
-        .input-field { @apply w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition; }
-        .btn-action { @apply w-full bg-primary hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded transition shadow-sm active:transform active:scale-95; }
-        .btn-copy { @apply text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-2 py-1 rounded transition; }
-        .result-box { @apply mt-3 p-3 bg-blue-50/50 border border-blue-100 rounded text-blue-900 font-mono text-sm; }
-        /* 滚动条隐藏但可滚动 */
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        /* 新增样式 */
-        .history-item { @apply p-2 border-b border-gray-100 text-xs hover:bg-gray-50 cursor-pointer; }
-        .country-flag { @apply w-6 h-4 bg-cover bg-center inline-block rounded-sm mr-1; }
-        .rate-trend { @apply h-20 mt-2 mb-1; }
+        /* 布局核心样式 */
+        body { @apply bg-surface text-slate-700; }
+        
+        /* 侧边栏样式 */
+        .sidebar-nav {
+            @apply fixed left-0 top-[80px] bottom-0 w-64 bg-sidebar text-slate-300 z-40 transition-transform duration-300 shadow-2xl border-r border-slate-800 overflow-y-auto;
+        }
+        .sidebar-nav::-webkit-scrollbar { width: 4px; }
+        .sidebar-nav::-webkit-scrollbar-thumb { @apply bg-slate-700 rounded; }
+        
+        .nav-header { @apply px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest border-b border-slate-800/50; }
+        .nav-item { @apply flex items-center px-6 py-3 text-sm font-medium hover:bg-white/5 hover:text-white transition-colors border-l-4 border-transparent; }
+        .nav-item.active { @apply bg-blue-900/20 text-blue-400 border-blue-500; }
+        .nav-item i { @apply w-5 mr-3 text-center opacity-70; }
+        
+        /* 主内容区样式 */
+        .main-content {
+            @apply pt-[100px] pb-12 px-4 md:px-8 transition-all duration-300;
+            margin-left: 0; /* Mobile default */
+        }
+        @media (min-width: 768px) {
+            .main-content { margin-left: 16rem; } /* 256px = w-64 */
+        }
+
+        /* 工具卡片样式 */
+        .tool-card { @apply bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col hover:shadow-md transition-shadow; }
+        .tool-header { @apply bg-slate-50 border-b border-slate-100 p-4 flex items-center justify-between; }
+        .tool-title { @apply font-bold text-slate-800 flex items-center gap-2; }
+        .tool-body { @apply p-5 flex-grow text-sm text-slate-600; }
+        
+        .input-label { @apply block text-xs font-semibold text-slate-500 uppercase mb-1.5; }
+        .input-field { @apply w-full px-3 py-2 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition text-slate-700 text-sm; }
+        .btn-action { @apply w-full bg-primary hover:bg-blue-800 text-white font-semibold py-2.5 px-4 rounded-lg transition shadow-sm active:transform active:scale-[0.98] flex items-center justify-center gap-2; }
+        
+        /* 结果展示框 */
+        .result-box { @apply mt-4 p-4 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-mono text-sm shadow-inner animate-fadeIn; }
+
+        /* 移动端菜单切换 */
+        @media (max-width: 767px) {
+            .sidebar-nav { transform: translateX(-100%); }
+            .sidebar-nav.open { transform: translateX(0); }
+            .sidebar-overlay { @apply fixed inset-0 bg-black/50 z-30 hidden; }
+            .sidebar-overlay.show { display: block; }
+        }
+        
+        /* 章节标题 */
+        .section-header { @apply flex items-center gap-3 text-xl font-bold text-slate-800 mb-6 mt-2 pt-8 border-t border-slate-200 first:border-0 first:pt-0 scroll-mt-28; }
+        .section-icon { @apply w-10 h-10 rounded-lg bg-blue-100 text-primary flex items-center justify-center text-lg; }
+        
+        /* 通知提示 */
+        .toast { @apply fixed bottom-4 right-4 z-50 bg-white shadow-lg rounded-lg border border-slate-200 p-4 flex items-center gap-3 animate-fadeIn; }
+        .badge { @apply text-xs px-2 py-0.5 rounded-full font-bold; }
+        
+        /* 自定义滚动条 */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { @apply bg-slate-100 rounded; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded hover:bg-slate-400; }
+        
+        /* 无数据状态 */
+        .empty-state { @apply py-12 text-center text-slate-400; }
+        
+        /* 表单验证 */
+        .input-error { @apply border-red-500 focus:ring-red-200 focus:border-red-500; }
+        .error-text { @apply text-xs text-red-500 mt-1; }
     </style>
 </head>
-<body class="bg-slate-50 font-sans text-gray-700">
+<body>
 
     <div id="v5-header"></div>
 
-    <main class="max-w-7xl mx-auto px-4 py-8 pt-24">
+    <button id="sidebar-toggle" class="md:hidden fixed left-4 top-24 z-50 bg-primary text-white p-2 rounded-full shadow-lg hover:bg-blue-700 transition">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <aside class="sidebar-nav" id="sidebar">
+        <div class="p-4">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg p-4 text-white shadow-lg">
+                <div class="text-xs opacity-80 mb-1">Current Status</div>
+                <div class="font-bold text-lg flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulseSoft"></span> Online
+                </div>
+                <div class="text-[10px] mt-2 opacity-70" id="sidebar-date">Loading...</div>
+            </div>
+        </div>
+
+        <div class="nav-header">Sales Workflow</div>
+        <a href="#section-global" class="nav-item active">
+            <i class="fas fa-globe-americas"></i> 全球商机看板
+        </a>
+        <a href="#section-pricing" class="nav-item">
+            <i class="fas fa-calculator"></i> 智能报价 (FOB)
+        </a>
+        <a href="#section-communication" class="nav-item">
+            <i class="fas fa-comments"></i> 沟通与模版
+        </a>
+
+        <div class="nav-header mt-2">Logistics & Ops</div>
+        <a href="#section-shipping" class="nav-item">
+            <i class="fas fa-cube"></i> 装箱与运费
+        </a>
+        <a href="#section-tools" class="nav-item">
+            <i class="fas fa-toolbox"></i> 常用工具集
+        </a>
+
+        <div class="nav-header mt-2">Admin & QA</div>
+        <a href="#section-crm" class="nav-item">
+            <i class="fas fa-users-cog"></i> 客户跟进
+        </a>
         
-        <!-- 顶部快捷数据面板 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center">
-                <div class="bg-blue-50 p-3 rounded-lg mr-4">
-                    <i class="fas fa-exchange-alt text-primary text-xl"></i>
+        <div class="p-6 mt-4">
+            <a href="catalog.html" class="block w-full py-2 border border-slate-600 rounded text-center text-xs text-slate-400 hover:border-slate-400 hover:text-white transition">
+                <i class="fas fa-arrow-left mr-1"></i> Back to Catalog
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <!-- 顶部快捷通知 -->
+        <div id="notification-toast" class="toast hidden">
+            <i class="fas fa-check-circle text-success text-lg"></i>
+            <div>
+                <div class="font-bold text-sm text-slate-800">操作成功</div>
+                <div class="text-xs text-slate-500" id="toast-message">内容已复制到剪贴板</div>
+            </div>
+        </div>
+        
+        <section id="section-global" class="section-header">
+            <div class="section-icon"><i class="fas fa-globe"></i></div>
+            <h2>全球商机看板</h2>
+        </section>
+        
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
+            <!-- 顶部状态筛选 -->
+            <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                <div class="text-sm text-slate-500">
+                    <i class="fas fa-clock mr-1"></i> 实时更新: <span id="last-update">刚刚</span>
                 </div>
-                <div>
-                    <div class="text-xs text-gray-500">实时美元汇率</div>
-                    <div class="text-2xl font-bold text-gray-800" id="live-rate">7.213</div>
-                    <div class="text-xs text-green-500"><i class="fas fa-caret-up"></i> 0.12% 今日</div>
+                <div class="flex gap-2">
+                    <button class="text-xs bg-blue-50 text-blue-600 px-3 py-1 rounded hover:bg-blue-100 transition">
+                        <i class="fas fa-sync-alt mr-1"></i> 刷新
+                    </button>
+                    <button class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded hover:bg-slate-200 transition">
+                        <i class="fas fa-filter mr-1"></i> 筛选
+                    </button>
                 </div>
             </div>
             
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center">
-                <div class="bg-green-50 p-3 rounded-lg mr-4">
-                    <i class="fas fa-calendar-alt text-green-600 text-xl"></i>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4" id="world-clock-container">
                 </div>
+                
+            <!-- 新增商机提醒 -->
+            <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100 flex items-center gap-3">
+                <i class="fas fa-lightbulb text-blue-500 text-xl"></i>
                 <div>
-                    <div class="text-xs text-gray-500">国际商务日历</div>
-                    <div class="text-lg font-bold text-gray-800" id="business-date">2023-06-15</div>
-                    <div class="text-xs text-gray-500" id="holidays">美国: 无假期 | 欧盟: 无假期</div>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center">
-                <div class="bg-purple-50 p-3 rounded-lg mr-4">
-                    <i class="fas fa-percentage text-purple-600 text-xl"></i>
-                </div>
-                <div>
-                    <div class="text-xs text-gray-500">平均利润率计算器</div>
-                    <div class="text-2xl font-bold text-gray-800" id="avg-margin">18.7%</div>
-                    <div class="text-xs text-gray-500">基于最近 10 笔订单</div>
+                    <div class="font-bold text-sm text-blue-800">商机提醒</div>
+                    <div class="text-xs text-blue-600">现在是迪拜工作时间 (9:00-18:00)，建议优先跟进中东客户</div>
                 </div>
             </div>
         </div>
 
-        <div class="mb-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <i class="fas fa-globe-americas text-primary"></i> 全球商机时钟 (客户现在醒着吗?)
-            </h2>
-            <div class="grid grid-cols-2 md:grid-cols-6 gap-4" id="world-clock-container">
-                </div>
-        </div>
+        <section id="section-pricing" class="section-header">
+            <div class="section-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+            <h2>智能报价核算</h2>
+        </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            <!-- 1. 报价核算工具增强版 -->
-            <div class="tool-card border-t-4 border-t-primary">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+            <div class="tool-card lg:col-span-2 border-t-4 border-t-primary">
                 <div class="tool-header">
-                    <div class="tool-title"><i class="fas fa-calculator text-primary"></i> 快速报价核算 (FOB)</div>
-                    <div class="flex gap-1">
-                        <button onclick="saveRate()" class="text-xs text-blue-600 hover:underline">保存汇率</button>
-                        <button onclick="loadHistory('fob')" class="text-xs text-gray-400 hover:text-gray-600"><i class="fas fa-history"></i></button>
+                    <div class="tool-title text-primary"><i class="fas fa-calculator"></i> FOB/CIF 报价计算器</div>
+                    <div class="flex gap-2">
+                        <button onclick="saveRate()" class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100">保存汇率</button>
+                        <button onclick="resetCalculator()" class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded hover:bg-slate-200">重置</button>
                     </div>
                 </div>
                 <div class="tool-body">
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="input-group">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                        <div>
                             <label class="input-label">工厂含税价 (CNY)</label>
-                            <input type="number" id="calc-cost" class="input-field" placeholder="100">
+                            <input type="number" id="calc-cost" class="input-field" placeholder="100.00" min="0" step="0.01">
+                            <div id="cost-error" class="error-text hidden">请输入有效的金额</div>
                         </div>
-                        <div class="input-group">
-                            <label class="input-label">汇率 (USD:CNY)</label>
-                            <input type="number" id="calc-rate" class="input-field" placeholder="7.2">
+                        <div>
+                            <label class="input-label">当前汇率 (USD)</label>
+                            <input type="number" id="calc-rate" class="input-field" placeholder="7.25" min="0" step="0.01">
                         </div>
-                    </div>
-                    
-                    <!-- 新增费用项 -->
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="input-group">
+                        <div>
                             <label class="input-label">退税率 (%)</label>
-                            <input type="number" id="calc-rebate" class="input-field" value="13">
+                            <input type="number" id="calc-rebate" class="input-field" value="13" min="0" max="100">
                         </div>
-                        <div class="input-group">
-                            <label class="input-label">增值税率 (%)</label>
-                            <input type="number" id="calc-vat" class="input-field" value="13">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="input-group">
+                        <div>
                             <label class="input-label">目标利润率 (%)</label>
-                            <input type="number" id="calc-margin" class="input-field" value="20">
+                            <input type="number" id="calc-margin" class="input-field" value="20" min="0" max="100">
                         </div>
-                        <div class="input-group">
-                            <label class="input-label">佣金比例 (%)</label>
-                            <input type="number" id="calc-commission" class="input-field" value="0">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label class="input-label">国内杂费 (总额)</label>
+                            <input type="number" id="calc-extra" class="input-field" value="0" min="0" step="0.01">
+                        </div>
+                        <div>
+                            <label class="input-label">贸易术语</label>
+                            <select id="trade-term" class="input-field" onchange="toggleFreightField()">
+                                <option value="FOB">FOB</option>
+                                <option value="CIF">CIF</option>
+                                <option value="EXW">EXW</option>
+                            </select>
+                        </div>
+                        <div id="freight-field" class="hidden">
+                            <label class="input-label">海运费 (USD)</label>
+                            <input type="number" id="calc-freight" class="input-field" value="0" min="0" step="0.01">
                         </div>
                     </div>
 
-                    <div class="input-group">
-                        <label class="input-label">国内杂费 (CNY/Total)</label>
-                        <input type="number" id="calc-extra" class="input-field" value="0" placeholder="运费+报关">
-                    </div>
-                    
-                    <!-- 新增贸易术语选择 -->
-                    <div class="input-group">
-                        <label class="input-label">贸易术语</label>
-                        <select id="trade-term" class="input-field" onchange="toggleFreightField()">
-                            <option value="FOB">FOB 上海</option>
-                            <option value="CIF">CIF 目的港</option>
-                            <option value="EXW">EXW 工厂</option>
-                        </select>
-                    </div>
-                    
-                    <div id="freight-field" class="input-group hidden">
-                        <label class="input-label">海运费 (USD)</label>
-                        <input type="number" id="calc-freight" class="input-field" value="0">
-                    </div>
+                    <button onclick="calculateFOB()" class="btn-action">
+                        <i class="fas fa-search-dollar"></i> 计算报价 & 利润
+                    </button>
 
-                    <button onclick="calculateFOB()" class="btn-action">计算价格</button>
-                    <div id="fob-result" class="result-box hidden">
-                        <div class="flex justify-between font-bold"><span>FOB Price:</span> <span id="res-price">$0.00</span></div>
-                        <div class="flex justify-between text-xs text-gray-500 mt-1"><span>预估退税:</span> <span id="res-tax">¥0.00</span></div>
-                        <div class="flex justify-between text-xs text-gray-500"><span>佣金金额:</span> <span id="res-commission">$0.00</span></div>
-                        <div class="flex justify-between text-xs text-gray-500"><span>总利润 (含退税):</span> <span id="res-profit">¥0.00</span></div>
-                    </div>
-                    
-                    <!-- 汇率趋势图 -->
-                    <div class="mt-4 text-xs text-gray-500">
-                        <div>近7天汇率趋势</div>
-                        <canvas id="rateChart" class="rate-trend"></canvas>
+                    <div id="fob-result" class="result-box hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-xs text-slate-500 mb-1">建议报价 (USD)</div>
+                            <div class="text-2xl font-bold text-primary" id="res-price">$0.00</div>
+                            <div class="text-xs text-slate-500 mt-1" id="price-note">FOB Shanghai</div>
+                        </div>
+                        <div class="space-y-1 text-right">
+                            <div class="flex justify-between text-xs"><span>退税收入:</span> <span id="res-tax" class="font-bold text-green-600">¥0.00</span></div>
+                            <div class="flex justify-between text-xs"><span>净利润:</span> <span id="res-profit" class="font-bold text-blue-600">¥0.00</span></div>
+                            <div class="flex justify-between text-xs mt-2 pt-2 border-t border-slate-200">
+                                <span>利润率:</span> 
+                                <span id="profit-margin" class="font-bold">0%</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 2. 装箱量计算增强版 -->
-            <div class="tool-card border-t-4 border-t-green-500">
+            <div class="tool-card">
                 <div class="tool-header">
-                    <div class="tool-title"><i class="fas fa-cube text-green-600"></i> 装箱量计算 (CBM)</div>
-                    <button onclick="loadHistory('cbm')" class="text-xs text-gray-400 hover:text-gray-600"><i class="fas fa-history"></i></button>
+                    <div class="tool-title"><i class="fas fa-chart-line"></i> 汇率趋势</div>
+                    <div class="text-xs text-slate-400">7天走势</div>
                 </div>
-                <div class="tool-body">
-                    <div class="grid grid-cols-3 gap-2">
-                        <div class="input-group">
-                            <label class="input-label">长 (cm)</label>
-                            <input type="number" id="cbm-l" class="input-field">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">宽 (cm)</label>
-                            <input type="number" id="cbm-w" class="input-field">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">高 (cm)</label>
-                            <input type="number" id="cbm-h" class="input-field">
-                        </div>
-                    </div>
-                    
-                    <!-- 新增内盒计算 -->
-                    <div class="input-group">
-                        <label class="input-label">每箱内盒数</label>
-                        <input type="number" id="inner-boxes" class="input-field" value="1">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label class="input-label">总箱数 (Cartons)</label>
-                        <input type="number" id="cbm-ctn" class="input-field" placeholder="100">
-                    </div>
-                    
-                    <!-- 新增毛重计算 -->
-                    <div class="grid grid-cols-2 gap-2">
-                        <div class="input-group">
-                            <label class="input-label">单箱毛重 (kg)</label>
-                            <input type="number" id="gross-weight" class="input-field" placeholder="10">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">单箱净重 (kg)</label>
-                            <input type="number" id="net-weight" class="input-field" placeholder="8">
-                        </div>
-                    </div>
-
-                    <button onclick="calculateCBM()" class="btn-action bg-green-600 hover:bg-green-700">计算体积</button>
-                    <div id="cbm-result" class="result-box hidden">
-                        <div class="font-bold text-lg"><span id="res-cbm">0</span> m³</div>
-                        <div class="flex justify-between text-xs mt-1">
-                            <span>总毛重: <span id="total-gross">0</span> kg</span>
-                            <span>总净重: <span id="total-net">0</span> kg</span>
-                        </div>
-                        <div class="h-2 bg-gray-200 rounded-full mt-2 overflow-hidden">
-                            <div id="bar-20gp" class="h-full bg-blue-500" style="width:0%"></div>
-                        </div>
-                        <div class="text-xs flex justify-between mt-1">
-                            <span>20GP: <span id="txt-20gp">0%</span> (约 <span id="qty-20gp">0</span> 箱)</span>
-                            <span>40HQ: <span id="txt-40hq">0%</span> (约 <span id="qty-40hq">0</span> 箱)</span>
-                        </div>
+                <div class="tool-body relative">
+                    <canvas id="rateChart" height="200"></canvas>
+                    <!-- 汇率快捷选择 -->
+                    <div class="mt-4 grid grid-cols-3 gap-2">
+                        <button onclick="setRate(7.20)" class="text-xs py-1 bg-slate-100 hover:bg-slate-200 rounded transition">7.20</button>
+                        <button onclick="setRate(7.25)" class="text-xs py-1 bg-slate-100 hover:bg-slate-200 rounded transition">7.25</button>
+                        <button onclick="setRate(7.30)" class="text-xs py-1 bg-slate-100 hover:bg-slate-200 rounded transition">7.30</button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- 3. 医疗单位换算增强版 -->
-            <div class="tool-card border-t-4 border-t-purple-500">
-                <div class="tool-header">
-                    <div class="tool-title"><i class="fas fa-ruler-combined text-purple-600"></i> 医疗单位换算</div>
-                </div>
-                <div class="tool-body space-y-4">
-                    <div class="bg-gray-50 p-2 rounded border border-gray-100">
-                        <label class="input-label">导管尺寸 (Fr/Ch ⇋ mm)</label>
-                        <div class="flex gap-2">
-                            <input type="number" id="conv-fr" class="input-field" placeholder="Fr" oninput="convertMedical('fr')">
-                            <span class="self-center">=</span>
-                            <input type="number" id="conv-mm" class="input-field" placeholder="mm" oninput="convertMedical('mm')">
-                        </div>
-                        <p class="text-[10px] text-gray-400 mt-1">1 Fr = 0.33 mm (Outer Diameter)</p>
-                    </div>
-                    
-                    <div class="bg-gray-50 p-2 rounded border border-gray-100">
-                        <label class="input-label">针头规格 (Gauge → Color)</label>
-                        <select id="conv-gauge" class="input-field" onchange="showGaugeColor()">
-                            <option value="">选择 G 号</option>
-                            <option value="14">14G (2.1mm) - Orange</option>
-                            <option value="16">16G (1.7mm) - Gray</option>
-                            <option value="18">18G (1.2mm) - Pink</option>
-                            <option value="20">20G (0.9mm) - Yellow</option>
-                            <option value="21">21G (0.8mm) - Green</option>
-                            <option value="22">22G (0.7mm) - Black</option>
-                            <option value="23">23G (0.6mm) - Blue</option>
-                            <option value="25">25G (0.5mm) - Orange</option>
-                            <option value="27">27G (0.4mm) - Red</option>
-                        </select>
-                        <div id="gauge-color" class="h-2 mt-1 rounded w-full bg-gray-200 transition-colors duration-300"></div>
-                    </div>
-                    
-                    <!-- 新增单位换算 -->
-                    <div class="bg-gray-50 p-2 rounded border border-gray-100">
-                        <label class="input-label">重量单位换算 (g ⇋ oz)</label>
-                        <div class="flex gap-2">
-                            <input type="number" id="conv-g" class="input-field" placeholder="克 (g)" oninput="convertWeight('g')">
-                            <span class="self-center">=</span>
-                            <input type="number" id="conv-oz" class="input-field" placeholder="盎司 (oz)" oninput="convertWeight('oz')">
-                        </div>
-                        <p class="text-[10px] text-gray-400 mt-1">1 oz = 28.35 g</p>
-                    </div>
-                    
-                    <div class="bg-gray-50 p-2 rounded border border-gray-100">
-                        <label class="input-label">温度换算 (°C ⇋ °F)</label>
-                        <div class="flex gap-2">
-                            <input type="number" id="conv-c" class="input-field" placeholder="摄氏度 (°C)" oninput="convertTemp('c')">
-                            <span class="self-center">=</span>
-                            <input type="number" id="conv-f" class="input-field" placeholder="华氏度 (°F)" oninput="convertTemp('f')">
-                        </div>
-                        <p class="text-[10px] text-gray-400 mt-1">°F = (°C × 9/5) + 32</p>
-                    </div>
-                </div>
-            </div>
+        <section id="section-communication" class="section-header">
+            <div class="section-icon"><i class="fas fa-comments"></i></div>
+            <h2>沟通与模版</h2>
+        </section>
 
-            <!-- 4. AI外贸指令库增强版 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
             <div class="tool-card border-t-4 border-t-indigo-500">
                 <div class="tool-header">
-                    <div class="tool-title"><i class="fas fa-robot text-indigo-600"></i> AI 外贸指令库</div>
-                    <span class="text-xs text-gray-400">复制发给 ChatGPT</span>
-                </div>
-                <div class="tool-body space-y-2">
-                    <button onclick="copyPrompt('dev')" class="w-full text-left p-2 hover:bg-indigo-50 rounded border border-transparent hover:border-indigo-100 transition group">
-                        <div class="font-bold text-gray-700 text-xs">📧 开发信润色</div>
-                        <div class="text-[10px] text-gray-400 truncate">Help me polish this cold email to a medical distributor...</div>
-                    </button>
-                    <button onclick="copyPrompt('reject')" class="w-full text-left p-2 hover:bg-indigo-50 rounded border border-transparent hover:border-indigo-100 transition group">
-                        <div class="font-bold text-gray-700 text-xs">🛡️ 处理客户拒信</div>
-                        <div class="text-[10px] text-gray-400 truncate">Client said "Price too high". Write a professional reply emphasizing quality...</div>
-                    </button>
-                    <button onclick="copyPrompt('desc')" class="w-full text-left p-2 hover:bg-indigo-50 rounded border border-transparent hover:border-indigo-100 transition group">
-                        <div class="font-bold text-gray-700 text-xs">📝 产品描述生成</div>
-                        <div class="text-[10px] text-gray-400 truncate">Write 5 bullet points for [Product] highlighting CE/ISO compliance...</div>
-                    </button>
-                    <!-- 新增AI指令 -->
-                    <button onclick="copyPrompt('claim')" class="w-full text-left p-2 hover:bg-indigo-50 rounded border border-transparent hover:border-indigo-100 transition group">
-                        <div class="font-bold text-gray-700 text-xs">📦 处理客户索赔</div>
-                        <div class="text-[10px] text-gray-400 truncate">Client reported 5% defective products. Draft a response with solution...</div>
-                    </button>
-                    <button onclick="copyPrompt('cert')" class="w-full text-left p-2 hover:bg-indigo-50 rounded border border-transparent hover:border-indigo-100 transition group">
-                        <div class="font-bold text-gray-700 text-xs">📄 认证说明</div>
-                        <div class="text-[10px] text-gray-400 truncate">Explain CE certification process for medical devices to a new client...</div>
-                    </button>
-                    
-                    <div class="grid grid-cols-3 gap-2 mt-2 pt-2 border-t border-gray-100">
-                        <a href="https://chat.openai.com" target="_blank" class="text-center text-xs p-1 bg-gray-100 hover:bg-green-100 rounded">ChatGPT</a>
-                        <a href="https://claude.ai" target="_blank" class="text-center text-xs p-1 bg-gray-100 hover:bg-orange-100 rounded">Claude</a>
-                        <a href="https://www.perplexity.ai" target="_blank" class="text-center text-xs p-1 bg-gray-100 hover:bg-blue-100 rounded">Perplexity</a>
+                    <div class="tool-title text-indigo-700"><i class="fas fa-robot"></i> AI 指令库 (ChatGPT/Claude)</div>
+                    <div class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">
+                        <i class="fas fa-lightbulb mr-1"></i> 点击复制
                     </div>
+                </div>
+                <div class="tool-body space-y-3 custom-scrollbar max-h-[300px]">
+                    <button onclick="copyPrompt('dev')" class="w-full text-left p-3 bg-indigo-50 hover:bg-indigo-100 rounded-lg border border-indigo-100 transition group">
+                        <div class="font-bold text-indigo-800 text-xs mb-1 flex items-center">
+                            📧 开发信优化
+                            <span class="badge bg-indigo-100 text-indigo-700 ml-2">常用</span>
+                        </div>
+                        <div class="text-[10px] text-slate-500 line-clamp-2">Help me polish this cold email to a medical distributor, highlighting ISO13485 certification and competitive pricing.</div>
+                    </button>
+                    <button onclick="copyPrompt('reject')" class="w-full text-left p-3 bg-indigo-50 hover:bg-indigo-100 rounded-lg border border-indigo-100 transition group">
+                        <div class="font-bold text-indigo-800 text-xs mb-1">🛡️ 客户嫌贵回复</div>
+                        <div class="text-[10px] text-slate-500 line-clamp-2">Client said "Price too high". Write a reply emphasizing ISO13485 quality control and suggesting a trial order with small MOQ.</div>
+                    </button>
+                    <button onclick="copyPrompt('claim')" class="w-full text-left p-3 bg-indigo-50 hover:bg-indigo-100 rounded-lg border border-indigo-100 transition group">
+                        <div class="font-bold text-indigo-800 text-xs mb-1">📦 售后索赔处理</div>
+                        <div class="text-[10px] text-slate-500 line-clamp-2">Draft a professional response to a quality complaint, offering replacement and CAPA report to prevent recurrence.</div>
+                    </button>
+                    <button onclick="copyPrompt('sample')" class="w-full text-left p-3 bg-indigo-50 hover:bg-indigo-100 rounded-lg border border-indigo-100 transition group">
+                        <div class="font-bold text-indigo-800 text-xs mb-1">📬 样品跟进</div>
+                        <div class="text-[10px] text-slate-500 line-clamp-2">Follow up with client who received samples 1 week ago, ask for feedback and next steps.</div>
+                    </button>
                 </div>
             </div>
 
-            <!-- 5. 高频邮件模板增强版 -->
             <div class="tool-card border-t-4 border-t-amber-500">
                 <div class="tool-header">
-                    <div class="tool-title"><i class="fas fa-envelope-open-text text-amber-600"></i> 高频邮件模板</div>
+                    <div class="tool-title text-amber-700"><i class="fas fa-envelope"></i> 邮件生成器</div>
+                    <button onclick="editMailTemplate()" class="text-xs text-amber-700 hover:underline">
+                        <i class="fas fa-edit mr-1"></i> 编辑
+                    </button>
+                </div>
+                <div class="tool-body flex flex-col h-full">
+                    <div class="flex gap-2 mb-3 overflow-x-auto pb-2 no-scrollbar">
+                        <span class="px-2 py-1 text-xs font-bold text-slate-400">场景:</span>
+                        <button onclick="setTemplate('quote')" class="px-3 py-1 bg-amber-100 text-amber-800 text-xs rounded-full hover:bg-amber-200 transition">报价</button>
+                        <button onclick="setTemplate('sample')" class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full hover:bg-slate-200 transition">寄样</button>
+                        <button onclick="setTemplate('payment')" class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full hover:bg-slate-200 transition">催款</button>
+                        <button onclick="setTemplate('followup')" class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full hover:bg-slate-200 transition">跟进</button>
+                    </div>
+                    
+                    <!-- 邮件主题 -->
+                    <div class="mb-2">
+                        <label class="input-label">邮件主题</label>
+                        <input type="text" id="mail-subject" class="input-field font-bold" placeholder="Subject line..." readonly>
+                    </div>
+                    
+                    <!-- 邮件正文 -->
+                    <div class="mb-3 flex-grow">
+                        <label class="input-label">邮件内容</label>
+                        <textarea id="mail-body" class="input-field flex-grow resize-none min-h-[120px]" placeholder="Email body content..." readonly></textarea>
+                    </div>
+                    
+                    <!-- 快捷替换 -->
+                    <div class="mb-3">
+                        <div class="text-xs text-slate-500 mb-1">快捷替换:</div>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="insertVariable('{客户名称}')" class="text-xs px-2 py-1 bg-slate-100 rounded hover:bg-slate-200">客户名称</button>
+                            <button onclick="insertVariable('{产品名称}')" class="text-xs px-2 py-1 bg-slate-100 rounded hover:bg-slate-200">产品名称</button>
+                            <button onclick="insertVariable('{报价金额}')" class="text-xs px-2 py-1 bg-slate-100 rounded hover:bg-slate-200">报价金额</button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3 mt-auto">
+                        <button onclick="copyMail()" class="btn-action bg-slate-700 hover:bg-slate-800 text-xs"><i class="fas fa-copy"></i> 复制内容</button>
+                        <a href="mailto:" id="btn-send-mail" class="btn-action bg-amber-600 hover:bg-amber-700 text-xs"><i class="fas fa-paper-plane"></i> 调起邮箱</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="section-shipping" class="section-header">
+            <div class="section-icon"><i class="fas fa-truck-loading"></i></div>
+            <h2>物流与装箱</h2>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+            <div class="tool-card border-t-4 border-t-green-500">
+                <div class="tool-header">
+                    <div class="tool-title text-green-700"><i class="fas fa-cubes"></i> CBM 装箱计算</div>
+                    <button onclick="resetCBM()" class="text-xs bg-green-50 text-green-700 px-2 py-1 rounded hover:bg-green-100">重置</button>
                 </div>
                 <div class="tool-body">
-                    <div class="flex gap-2 mb-3 overflow-x-auto hide-scrollbar pb-1">
-                        <button onclick="setTemplate('quote')" class="px-3 py-1 bg-amber-100 text-amber-700 text-xs rounded-full whitespace-nowrap hover:bg-amber-200">报价单</button>
-                        <button onclick="setTemplate('sample')" class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full whitespace-nowrap hover:bg-gray-200">寄样通知</button>
-                        <button onclick="setTemplate('payment')" class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full whitespace-nowrap hover:bg-gray-200">催付水单</button>
-                        <!-- 新增模板 -->
-                        <button onclick="setTemplate('delay')" class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full whitespace-nowrap hover:bg-gray-200">延迟通知</button>
-                        <button onclick="setTemplate('claim')" class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full whitespace-nowrap hover:bg-gray-200">处理索赔</button>
+                    <div class="flex items-end gap-2 mb-4">
+                        <div class="flex-grow">
+                            <label class="input-label">L x W x H (cm)</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <input type="number" id="cbm-l" class="input-field" placeholder="L" min="0">
+                                <input type="number" id="cbm-w" class="input-field" placeholder="W" min="0">
+                                <input type="number" id="cbm-h" class="input-field" placeholder="H" min="0">
+                            </div>
+                        </div>
+                        <div class="w-1/4">
+                            <label class="input-label">箱数</label>
+                            <input type="number" id="cbm-ctn" class="input-field" placeholder="Qty" min="1" value="1">
+                        </div>
                     </div>
-                    <input type="text" id="mail-subject" class="input-field mb-2 text-xs font-bold" placeholder="邮件主题" readonly>
-                    <textarea id="mail-body" class="input-field h-24 text-xs resize-none mb-2" placeholder="邮件内容..." readonly></textarea>
-                    <div class="flex gap-2">
-                        <button onclick="copyMail()" class="flex-1 btn-action bg-gray-800 hover:bg-gray-900 text-xs py-1.5"><i class="fas fa-copy"></i> 复制</button>
-                        <button onclick="editMail()" class="flex-1 btn-action bg-blue-600 hover:bg-blue-700 text-xs py-1.5"><i class="fas fa-edit"></i> 编辑</button>
-                        <a href="mailto:" id="btn-send-mail" class="flex-1 btn-action bg-amber-600 hover:bg-amber-700 text-xs py-1.5 text-center"><i class="fas fa-paper-plane"></i> 发送</a>
+                    
+                    <!-- 新增重量计算 -->
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="input-label">单箱毛重 (kg)</label>
+                            <input type="number" id="cbm-gross" class="input-field" placeholder="0" min="0">
+                        </div>
+                        <div>
+                            <label class="input-label">单箱净重 (kg)</label>
+                            <input type="number" id="cbm-net" class="input-field" placeholder="0" min="0">
+                        </div>
+                    </div>
+                    
+                    <button onclick="calculateCBM()" class="btn-action bg-green-600 hover:bg-green-700">计算装载量</button>
+                    
+                    <div id="cbm-result" class="result-box hidden">
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <div class="text-xs text-slate-500 mb-1">总体积</div>
+                                <div class="font-bold text-lg"><span id="res-cbm">0</span> m³</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-slate-500 mb-1">总重量</div>
+                                <div class="font-bold text-lg">
+                                    <span id="res-gross">0</span> kg (毛重)
+                                    <span class="text-slate-400 text-sm ml-2">/ <span id="res-net">0</span> kg (净重)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-2">
+                            <div class="text-xs text-slate-500 mb-1">集装箱装载率</div>
+                            <div class="h-4 bg-slate-200 rounded-full overflow-hidden flex text-[9px] text-white font-bold leading-4 text-center">
+                                <div id="bar-20gp" class="bg-blue-500 h-full transition-all duration-500 flex items-center justify-center" style="width: 0%">20GP</div>
+                                <div id="bar-40hq" class="bg-indigo-500 h-full transition-all duration-500 flex items-center justify-center" style="width: 0%">40HQ</div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div class="flex justify-between text-slate-500">
+                                <span>20GP装载率:</span> 
+                                <span id="txt-20gp" class="font-bold text-blue-600">0%</span>
+                            </div>
+                            <div class="flex justify-between text-slate-500">
+                                <span>40HQ装载率:</span> 
+                                <span id="txt-40hq" class="font-bold text-indigo-600">0%</span>
+                            </div>
+                            <div class="flex justify-between text-slate-500">
+                                <span>20GP可装箱数:</span> 
+                                <span id="qty-20gp" class="font-bold">0</span>
+                            </div>
+                            <div class="flex justify-between text-slate-500">
+                                <span>40HQ可装箱数:</span> 
+                                <span id="qty-40hq" class="font-bold">0</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 6. 物流与单证增强版 -->
-            <div class="tool-card border-t-4 border-t-gray-500">
+            <div class="tool-card border-t-4 border-t-blue-400">
                 <div class="tool-header">
-                    <div class="tool-title"><i class="fas fa-shipping-fast text-gray-600"></i> 物流与单证</div>
-                </div>
-                <div class="tool-body space-y-4">
-                    <div>
-                        <label class="input-label">金额转大写 (For PI)</label>
-                        <div class="flex gap-2">
-                            <input type="number" id="amount-num" class="input-field" placeholder="1234.50" oninput="convertAmount()">
-                            <select id="amount-currency" class="input-field" onchange="convertAmount()">
-                                <option value="USD">USD</option>
-                                <option value="EUR">EUR</option>
-                                <option value="GBP">GBP</option>
-                                <option value="CNY">CNY</option>
-                            </select>
-                        </div>
-                        <div id="amount-text" class="text-xs text-gray-500 italic mt-1 min-h-[1.2em]">English amount will appear here...</div>
-                    </div>
-                    
-                    <!-- 新增HS编码查询 -->
-                    <div class="pt-2 border-t border-gray-100">
-                        <label class="input-label">HS编码查询</label>
-                        <div class="flex gap-2">
-                            <input type="text" id="hs-code" class="input-field" placeholder="输入产品关键词或编码">
-                            <button onclick="searchHSCode()" class="bg-gray-100 hover:bg-gray-200 p-2 rounded border border-gray-300">
-                                <i class="fas fa-search text-gray-600"></i>
-                            </button>
-                        </div>
-                        <div id="hs-result" class="text-xs text-gray-600 mt-1 max-h-20 overflow-y-auto hide-scrollbar"></div>
-                    </div>
-                    
-                    <div class="pt-3 border-t border-gray-100">
-                        <label class="input-label">物流查询入口</label>
-                        <div class="grid grid-cols-3 gap-2 text-xs text-center font-medium text-white">
-                            <a href="https://www.dhl.com/en/express/tracking.html" target="_blank" class="bg-[#d40511] py-1 rounded hover:opacity-90">DHL</a>
-                            <a href="https://www.fedex.com/fedextrack/" target="_blank" class="bg-[#4d148c] py-1 rounded hover:opacity-90">FedEx</a>
-                            <a href="https://www.ups.com/track" target="_blank" class="bg-[#ffb500] text-black py-1 rounded hover:opacity-90">UPS</a>
-                            <a href="https://www.tnt.com/express/en_us/site/tracking.html" target="_blank" class="bg-[#0052cc] py-1 rounded hover:opacity-90">TNT</a>
-                            <a href="https://www.posten.no/en/track" target="_blank" class="bg-[#ff5800] py-1 rounded hover:opacity-90">Posten</a>
-                            <a href="https://www.marinetraffic.com/" target="_blank" class="bg-blue-500 py-1 rounded hover:opacity-90"><i class="fas fa-ship"></i> 海运</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 新增: 7. 客户跟进管理工具 -->
-            <div class="tool-card border-t-4 border-t-red-500 md:col-span-2 lg:col-span-1">
-                <div class="tool-header">
-                    <div class="tool-title"><i class="fas fa-users text-red-600"></i> 客户跟进提醒</div>
-                    <button onclick="addFollowUp()" class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded hover:bg-red-200">+ 新增</button>
+                    <div class="tool-title text-blue-600"><i class="fas fa-plane-departure"></i> 快递运费估算</div>
                 </div>
                 <div class="tool-body">
-                    <div class="space-y-1 max-h-64 overflow-y-auto hide-scrollbar" id="follow-up-list">
-                        <div class="history-item flex justify-between">
-                            <div>
-                                <div class="font-medium">土耳其 ABC 公司</div>
-                                <div class="text-gray-500">发送产品手册 (6月18日前)</div>
-                            </div>
-                            <div class="text-red-500 text-xs">2天后</div>
-                        </div>
-                        <div class="history-item flex justify-between">
-                            <div>
-                                <div class="font-medium">迪拜 XYZ 集团</div>
-                                <div class="text-gray-500">跟进报价反馈 (已逾期)</div>
-                            </div>
-                            <div class="text-gray-500 text-xs">3天前</div>
-                        </div>
-                        <div class="history-item flex justify-between">
-                            <div>
-                                <div class="font-medium">美国 Medical Plus</div>
-                                <div class="text-gray-500">确认样品收到情况 (6月20日前)</div>
-                            </div>
-                            <div class="text-red-500 text-xs">4天后</div>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-4 pt-3 border-t border-gray-100">
-                        <label class="input-label">最近联系客户</label>
-                        <select id="recent-clients" class="input-field text-xs">
-                            <option value="">选择客户快速添加</option>
-                            <option value="turkey">土耳其 ABC 公司 - abc@example.com</option>
-                            <option value="dubai">迪拜 XYZ 集团 - xyz@example.com</option>
-                            <option value="usa">美国 Medical Plus - contact@medplus.com</option>
-                            <option value="new">+ 添加新客户</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 新增: 8. 国际快递费用估算 -->
-            <div class="tool-card border-t-4 border-t-blue-500 md:col-span-2 lg:col-span-2">
-                <div class="tool-header">
-                    <div class="tool-title"><i class="fas fa-box text-blue-600"></i> 国际快递费用估算</div>
-                </div>
-                <div class="tool-body">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div class="input-group">
-                            <label class="input-label">发件地</label>
-                            <select id="ship-from" class="input-field">
-                                <option value="shanghai">上海</option>
-                                <option value="guangzhou">广州</option>
-                                <option value="beijing">北京</option>
-                                <option value="shenzhen">深圳</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">目的地国家</label>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="input-label">目的地</label>
                             <select id="ship-to" class="input-field">
-                                <option value="us">美国</option>
-                                <option value="de">德国</option>
-                                <option value="uk">英国</option>
-                                <option value="ae">阿联酋</option>
-                                <option value="tr">土耳其</option>
-                                <option value="jp">日本</option>
+                                <option value="us">USA (美国)</option>
+                                <option value="uk">UK (英国)</option>
+                                <option value="de">Europe (欧洲)</option>
+                                <option value="ae">Middle East (中东)</option>
+                                <option value="au">Australia (澳大利亚)</option>
                             </select>
                         </div>
-                        <div class="input-group">
+                        <div>
+                            <label class="input-label">重量 (kg)</label>
+                            <input type="number" id="ship-weight" class="input-field" value="1" min="0.1" step="0.1">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
                             <label class="input-label">货物类型</label>
                             <select id="ship-type" class="input-field">
                                 <option value="document">文件</option>
-                                <option value="sample" selected>样品 (≤2kg)</option>
-                                <option value="small">小包裹 (2-10kg)</option>
-                                <option value="large">大包裹 (>10kg)</option>
+                                <option value="sample" selected>样品</option>
+                                <option value="commercial">商业件</option>
                             </select>
                         </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div class="input-group">
-                            <label class="input-label">重量 (kg)</label>
-                            <input type="number" id="ship-weight" class="input-field" value="1.5">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">预估时效 (工作日)</label>
-                            <input type="text" id="ship-days" class="input-field bg-gray-50" value="3-5" readonly>
-                        </div>
-                        <div class="input-group">
+                        <div>
                             <label class="input-label">是否带电</label>
                             <select id="ship-battery" class="input-field">
                                 <option value="no">否</option>
@@ -502,73 +505,370 @@
                         </div>
                     </div>
                     
-                    <button onclick="estimateShipping()" class="btn-action bg-blue-600 hover:bg-blue-700">估算费用</button>
+                    <button onclick="estimateShipping()" class="btn-action bg-blue-500 hover:bg-blue-600">查询参考价</button>
                     
-                    <div id="shipping-result" class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-3 hidden">
-                        <div class="p-2 bg-gray-50 border border-gray-100 rounded">
-                            <div class="text-xs text-gray-500">DHL</div>
-                            <div class="font-bold text-gray-800">¥<span id="dhl-price">380</span></div>
-                            <div class="text-xs text-gray-600">3-4天</div>
+                    <div id="shipping-result" class="hidden mt-4 space-y-2 animate-fadeIn">
+                        <div class="flex justify-between items-center p-2 bg-slate-50 rounded border border-slate-100 hover:shadow-sm transition">
+                            <div class="flex items-center gap-2">
+                                <span class="text-red-600 font-bold text-xs">DHL</span> 
+                                <span class="text-[10px] text-slate-400">3-4 Days</span>
+                                <span class="badge bg-blue-100 text-blue-700">最快</span>
+                            </div>
+                            <div class="font-bold text-sm">¥<span id="dhl-price">0</span></div>
                         </div>
-                        <div class="p-2 bg-gray-50 border border-gray-100 rounded">
-                            <div class="text-xs text-gray-500">FedEx</div>
-                            <div class="font-bold text-gray-800">¥<span id="fedex-price">350</span></div>
-                            <div class="text-xs text-gray-600">4-5天</div>
+                        <div class="flex justify-between items-center p-2 bg-slate-50 rounded border border-slate-100 hover:shadow-sm transition">
+                            <div class="flex items-center gap-2">
+                                <span class="text-purple-600 font-bold text-xs">FedEx</span> 
+                                <span class="text-[10px] text-slate-400">4-6 Days</span>
+                                <span class="badge bg-green-100 text-green-700">经济</span>
+                            </div>
+                            <div class="font-bold text-sm">¥<span id="fedex-price">0</span></div>
                         </div>
-                        <div class="p-2 bg-gray-50 border border-gray-100 rounded">
-                            <div class="text-xs text-gray-500">UPS</div>
-                            <div class="font-bold text-gray-800">¥<span id="ups-price">365</span></div>
-                            <div class="text-xs text-gray-600">3-5天</div>
+                        <div class="flex justify-between items-center p-2 bg-slate-50 rounded border border-slate-100 hover:shadow-sm transition">
+                            <div class="flex items-center gap-2">
+                                <span class="text-amber-600 font-bold text-xs">UPS</span> 
+                                <span class="text-[10px] text-slate-400">3-5 Days</span>
+                            </div>
+                            <div class="font-bold text-sm">¥<span id="ups-price">0</span></div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
+
+        <section id="section-tools" class="section-header">
+            <div class="section-icon"><i class="fas fa-ruler-combined"></i></div>
+            <h2>行业工具集</h2>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+            <div class="tool-card border-l-4 border-l-purple-500 hover:shadow-md transition">
+                <div class="p-4">
+                    <h3 class="font-bold text-sm mb-3 flex items-center">
+                        <i class="fas fa-ruler mr-2 text-purple-500"></i> 导管 Fr/Ch ⇋ mm
+                    </h3>
+                    <div class="flex gap-2 items-center">
+                        <input type="number" id="conv-fr" class="input-field" placeholder="Fr" oninput="convertMedical('fr')" min="0" step="0.1">
+                        <i class="fas fa-exchange-alt text-slate-300 text-xs"></i>
+                        <input type="number" id="conv-mm" class="input-field" placeholder="mm" oninput="convertMedical('mm')" min="0" step="0.01">
+                    </div>
+                    <div class="text-[10px] text-slate-400 mt-2">1 Fr = 0.33 mm (外径)</div>
+                </div>
+            </div>
+            
+            <div class="tool-card border-l-4 border-l-purple-500 hover:shadow-md transition">
+                <div class="p-4">
+                    <h3 class="font-bold text-sm mb-3 flex items-center">
+                        <i class="fas fa-syringe mr-2 text-purple-500"></i> 针头 Gauge 颜色
+                    </h3>
+                    <select id="conv-gauge" class="input-field" onchange="showGaugeColor()">
+                        <option value="18">18G (Pink)</option>
+                        <option value="20">20G (Yellow)</option>
+                        <option value="21">21G (Green)</option>
+                        <option value="22">22G (Black)</option>
+                        <option value="23">23G (Blue)</option>
+                    </select>
+                    <div id="gauge-color" class="h-1.5 mt-2 w-full bg-pink-300 rounded"></div>
+                    <div id="gauge-size" class="text-[10px] text-slate-400 mt-1">外径: 1.2mm</div>
+                </div>
+            </div>
+
+            <div class="tool-card border-l-4 border-l-gray-500 hover:shadow-md transition col-span-2">
+                <div class="p-4">
+                    <h3 class="font-bold text-sm mb-3 flex items-center">
+                        <i class="fas fa-dollar-sign mr-2 text-gray-500"></i> 金额转大写 (For PI)
+                    </h3>
+                    <div class="grid grid-cols-3 gap-2 mb-1">
+                        <input type="number" id="amount-num" class="input-field col-span-2" placeholder="1234.50" oninput="convertAmount()" min="0" step="0.01">
+                        <select id="amount-currency" class="input-field" onchange="convertAmount()">
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="CNY">CNY</option>
+                        </select>
+                    </div>
+                    <div id="amount-text" class="text-[10px] text-slate-500 italic truncate">SAY TOTAL US DOLLARS...</div>
+                    <button onclick="copyAmountText()" class="mt-2 text-xs text-blue-600 hover:underline flex items-center">
+                        <i class="fas fa-copy mr-1"></i> 复制大写金额
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 新增单位换算工具 -->
+            <div class="tool-card border-l-4 border-l-blue-500 hover:shadow-md transition col-span-2 md:col-span-4">
+                <div class="p-4">
+                    <h3 class="font-bold text-sm mb-3 flex items-center">
+                        <i class="fas fa-exchange-alt mr-2 text-blue-500"></i> 常用单位换算
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- 重量换算 -->
+                        <div>
+                            <label class="input-label">重量 (g ⇋ oz)</label>
+                            <div class="flex gap-2 items-center">
+                                <input type="number" id="conv-g" class="input-field" placeholder="克" oninput="convertWeight('g')" min="0" step="0.1">
+                                <i class="fas fa-exchange-alt text-slate-300 text-xs"></i>
+                                <input type="number" id="conv-oz" class="input-field" placeholder="盎司" oninput="convertWeight('oz')" min="0" step="0.01">
+                            </div>
+                        </div>
+                        
+                        <!-- 温度换算 -->
+                        <div>
+                            <label class="input-label">温度 (°C ⇋ °F)</label>
+                            <div class="flex gap-2 items-center">
+                                <input type="number" id="conv-c" class="input-field" placeholder="摄氏度" oninput="convertTemp('c')" step="0.1">
+                                <i class="fas fa-exchange-alt text-slate-300 text-xs"></i>
+                                <input type="number" id="conv-f" class="input-field" placeholder="华氏度" oninput="convertTemp('f')" step="0.1">
+                            </div>
+                        </div>
+                        
+                        <!-- 长度换算 -->
+                        <div>
+                            <label class="input-label">长度 (cm ⇋ inch)</label>
+                            <div class="flex gap-2 items-center">
+                                <input type="number" id="conv-cm" class="input-field" placeholder="厘米" oninput="convertLength('cm')" min="0" step="0.1">
+                                <i class="fas fa-exchange-alt text-slate-300 text-xs"></i>
+                                <input type="number" id="conv-inch" class="input-field" placeholder="英寸" oninput="convertLength('inch')" min="0" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="section-crm" class="section-header">
+            <div class="section-icon"><i class="fas fa-user-clock"></i></div>
+            <h2>轻量级 CRM</h2>
+        </section>
+        
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-slate-700">待跟进事项</h3>
+                <div class="flex gap-2">
+                    <button onclick="filterTasks('all')" class="text-xs bg-primary text-white px-3 py-1.5 rounded hover:bg-blue-700 transition">全部</button>
+                    <button onclick="filterTasks('today')" class="text-xs bg-red-100 text-red-600 px-3 py-1.5 rounded hover:bg-red-200 transition">今日</button>
+                    <button onclick="addFollowUp()" class="text-xs bg-primary text-white px-3 py-1.5 rounded hover:bg-blue-700 transition"><i class="fas fa-plus mr-1"></i> Add Task</button>
+                </div>
+            </div>
+            
+            <div class="space-y-2 custom-scrollbar max-h-[400px]" id="follow-up-list">
+                <div class="flex items-center justify-between p-3 bg-slate-50 rounded border border-slate-100 hover:border-blue-200 transition group">
+                    <div class="flex items-center gap-3 flex-grow">
+                        <div class="w-2 h-2 rounded-full bg-red-500 animate-pulseSoft"></div>
+                        <div class="flex-grow min-w-0">
+                            <div class="text-sm font-bold text-slate-700 truncate">Mikki (Philippines)</div>
+                            <div class="text-xs text-slate-500 truncate">Send Suture Samples (Deadline: Today)</div>
+                            <div class="text-[10px] text-slate-400 mt-1">客户等级: <span class="text-amber-500 font-bold">A类</span> | 产品: 缝合线</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 ml-2">
+                        <button class="text-slate-400 hover:text-blue-500 transition"><i class="fas fa-edit"></i></button>
+                        <button onclick="completeTask(this)" class="text-slate-300 hover:text-green-500 transition"><i class="fas fa-check-circle"></i></button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between p-3 bg-slate-50 rounded border border-slate-100 hover:border-blue-200 transition group">
+                    <div class="flex items-center gap-3 flex-grow">
+                        <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                        <div class="flex-grow min-w-0">
+                            <div class="text-sm font-bold text-slate-700 truncate">Turhan (Turkey)</div>
+                            <div class="text-xs text-slate-500 truncate">Follow up on PI #2025001 (Tomorrow)</div>
+                            <div class="text-[10px] text-slate-400 mt-1">客户等级: <span class="text-blue-500 font-bold">B类</span> | 产品: 导管</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 ml-2">
+                        <button class="text-slate-400 hover:text-blue-500 transition"><i class="fas fa-edit"></i></button>
+                        <button onclick="completeTask(this)" class="text-slate-300 hover:text-green-500 transition"><i class="fas fa-check-circle"></i></button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between p-3 bg-slate-50 rounded border border-slate-100 hover:border-blue-200 transition group">
+                    <div class="flex items-center gap-3 flex-grow">
+                        <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                        <div class="flex-grow min-w-0">
+                            <div class="text-sm font-bold text-slate-700 truncate">Alex (USA)</div>
+                            <div class="text-xs text-slate-500 truncate">Prepare certification documents (Jun 20)</div>
+                            <div class="text-[10px] text-slate-400 mt-1">客户等级: <span class="text-green-500 font-bold">C类</span> | 产品: 医疗耗材</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 ml-2">
+                        <button class="text-slate-400 hover:text-blue-500 transition"><i class="fas fa-edit"></i></button>
+                        <button onclick="completeTask(this)" class="text-slate-300 hover:text-green-500 transition"><i class="fas fa-check-circle"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 空状态 -->
+            <div id="empty-tasks" class="empty-state hidden">
+                <i class="fas fa-inbox text-4xl mb-2 text-slate-300"></i>
+                <div class="text-slate-400">暂无待跟进事项</div>
+                <button onclick="addFollowUp()" class="mt-4 text-xs bg-primary text-white px-3 py-1.5 rounded hover:bg-blue-700 transition">
+                    <i class="fas fa-plus mr-1"></i> 添加第一个任务
+                </button>
+            </div>
+        </div>
+        
+        <!-- 客户管理卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="tool-card border-t-4 border-t-blue-500">
+                <div class="tool-header">
+                    <div class="tool-title"><i class="fas fa-users"></i> 客户统计</div>
+                </div>
+                <div class="tool-body">
+                    <div class="grid grid-cols-2 gap-4 text-center mb-4">
+                        <div class="p-3 bg-blue-50 rounded-lg">
+                            <div class="text-xs text-blue-600 mb-1">总客户数</div>
+                            <div class="text-2xl font-bold text-blue-800">48</div>
+                        </div>
+                        <div class="p-3 bg-green-50 rounded-lg">
+                            <div class="text-xs text-green-600 mb-1">活跃客户</div>
+                            <div class="text-2xl font-bold text-green-800">17</div>
+                        </div>
+                    </div>
+                    <canvas id="customerChart" height="150"></canvas>
+                </div>
+            </div>
+            
+            <div class="tool-card border-t-4 border-t-amber-500">
+                <div class="tool-header">
+                    <div class="tool-title"><i class="fas fa-chart-pie"></i> 区域分布</div>
+                </div>
+                <div class="tool-body">
+                    <canvas id="regionChart" height="150"></canvas>
+                    <div class="grid grid-cols-2 gap-2 mt-4 text-xs">
+                        <div class="flex items-center gap-1">
+                            <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                            <span>北美: 32%</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
+                            <span>欧洲: 28%</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                            <span>中东: 18%</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                            <span>亚太: 22%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tool-card border-t-4 border-t-purple-500">
+                <div class="tool-header">
+                    <div class="tool-title"><i class="fas fa-star"></i> 重点客户</div>
+                </div>
+                <div class="tool-body custom-scrollbar max-h-[250px]">
+                    <div class="space-y-2">
+                        <div class="p-2 bg-purple-50 rounded border border-purple-100">
+                            <div class="font-bold text-xs text-purple-800">Medical Plus (USA)</div>
+                            <div class="text-[10px] text-slate-500">订单金额: $128,000 | 合作时长: 2年</div>
+                        </div>
+                        <div class="p-2 bg-purple-50 rounded border border-purple-100">
+                            <div class="font-bold text-xs text-purple-800">HealthCare Ltd (UK)</div>
+                            <div class="text-[10px] text-slate-500">订单金额: $86,500 | 合作时长: 1.5年</div>
+                        </div>
+                        <div class="p-2 bg-purple-50 rounded border border-purple-100">
+                            <div class="font-bold text-xs text-purple-800">MedTech (Dubai)</div>
+                            <div class="text-[10px] text-slate-500">订单金额: $75,200 | 合作时长: 1年</div>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 text-xs text-purple-600 hover:bg-purple-50 py-2 rounded border border-purple-100 transition">
+                        <i class="fas fa-eye mr-1"></i> 查看全部客户
+                    </button>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <div id="v5-footer"></div>
-
-    <!-- 历史记录弹窗 -->
-    <div id="history-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
-        <div class="bg-white rounded-xl p-4 w-full max-w-md">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="font-bold text-gray-800">历史记录</h3>
-                <button onclick="document.getElementById('history-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div id="history-content" class="max-h-60 overflow-y-auto mb-3">
-                <!-- 历史记录内容将通过JS填充 -->
-            </div>
-            <button onclick="clearHistory()" class="w-full text-xs text-gray-500 py-2 border border-gray-200 rounded hover:bg-gray-50">
-                清空历史记录
-            </button>
-        </div>
-    </div>
 
     <script src="js/config.js?v=2.7.0"></script>
     <script src="js/layout.js?v=4.8.3"></script>
     
     <script>
-        // 初始化日期和汇率显示
-        document.addEventListener('DOMContentLoaded', function() {
-            // 显示当前日期
-            const today = new Date();
-            document.getElementById('business-date').textContent = today.toISOString().split('T')[0];
-            
-            // 初始化汇率图表
-            initRateChart();
+        // --- 1. Sidebar & Scroll Logic ---
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const toggleBtn = document.getElementById('sidebar-toggle');
+        const navLinks = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('section');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+            const icon = toggleBtn.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        }
+
+        toggleBtn.addEventListener('click', toggleSidebar);
+
+        // Active Link on Scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
         });
 
-        // --- 1. 全球时钟增强版 ---
+        // Initialize Date
+        document.getElementById('sidebar-date').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        
+        // 更新最后刷新时间
+        function updateLastUpdate() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('last-update').textContent = timeStr;
+        }
+        updateLastUpdate();
+        setInterval(updateLastUpdate, 60000);
+
+        // --- 2. Notification Toast ---
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('notification-toast');
+            const toastMsg = document.getElementById('toast-message');
+            const icon = toast.querySelector('i');
+            
+            // 设置图标和颜色
+            icon.className = '';
+            if (type === 'success') {
+                icon.className = 'fas fa-check-circle text-success text-lg';
+                toast.querySelector('.font-bold').textContent = '操作成功';
+            } else if (type === 'error') {
+                icon.className = 'fas fa-exclamation-circle text-danger text-lg';
+                toast.querySelector('.font-bold').textContent = '操作失败';
+            } else if (type === 'info') {
+                icon.className = 'fas fa-info-circle text-info text-lg';
+                toast.querySelector('.font-bold').textContent = '提示';
+            }
+            
+            toastMsg.textContent = message;
+            toast.classList.remove('hidden');
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        // --- 3. Global Clock ---
         const cities = [
             { name: 'Beijing', tz: 'Asia/Shanghai', icon: '🇨🇳' },
             { name: 'London', tz: 'Europe/London', icon: '🇬🇧' },
             { name: 'New York', tz: 'America/New_York', icon: '🇺🇸' },
             { name: 'Dubai', tz: 'Asia/Dubai', icon: '🇦🇪' },
-            { name: 'Istanbul', tz: 'Europe/Istanbul', icon: '🇹🇷' },
-            { name: 'São Paulo', tz: 'America/Sao_Paulo', icon: '🇧🇷' } // 新增南美城市
+            { name: 'Istanbul', tz: 'Europe/Istanbul', icon: '🇹🇷' }
         ];
 
         function updateClock() {
@@ -576,492 +876,702 @@
             container.innerHTML = cities.map(city => {
                 const now = new Date().toLocaleTimeString('en-US', { timeZone: city.tz, hour: '2-digit', minute: '2-digit', hour12: false });
                 const hour = parseInt(now.split(':')[0]);
-                // 工作时间判断优化：9:00 - 18:00 为工作时间
                 const isWorking = hour >= 9 && hour < 18;
-                const statusColor = isWorking ? 'text-green-500' : 'text-gray-400';
-                const statusText = isWorking ? 'Open' : 'Closed';
-                
-                // 显示日期
-                const date = new Date().toLocaleDateString('en-US', { timeZone: city.tz, month: 'short', day: 'numeric' });
+                const statusColor = isWorking ? 'text-green-500' : 'text-slate-300';
                 
                 return `
-                    <div class="text-center p-2 rounded bg-gray-50 border border-gray-100">
-                        <div class="text-xs text-gray-500 mb-1">${city.icon} ${city.name}</div>
-                        <div class="font-mono font-bold text-gray-800 text-lg">${now}</div>
-                        <div class="text-[10px] text-gray-500 mb-1">${date}</div>
-                        <div class="text-[10px] font-bold ${statusColor} uppercase tracking-wider">● ${statusText}</div>
+                    <div class="text-center p-3 rounded-lg bg-slate-50 border border-slate-100 hover:shadow-sm transition">
+                        <div class="text-[10px] text-slate-500 mb-1 flex justify-center items-center gap-1">${city.icon} ${city.name}</div>
+                        <div class="font-mono font-bold text-slate-800 text-lg">${now}</div>
+                        <div class="h-1.5 w-1.5 rounded-full mx-auto mt-1 ${isWorking ? 'bg-green-500 animate-pulseSoft' : 'bg-slate-300'}"></div>
+                        <div class="text-[9px] text-slate-400 mt-1">${isWorking ? 'Working Hours' : 'Off Hours'}</div>
                     </div>
                 `;
             }).join('');
         }
-        setInterval(updateClock, 60000); // 每分钟更新一次
-        updateClock(); // 初始化
+        setInterval(updateClock, 60000); updateClock();
 
-        // --- 2. FOB计算器增强版 ---
-        // 加载保存的汇率
-        document.getElementById('calc-rate').value = localStorage.getItem('v5_usd_rate') || 7.2;
-
-        function saveRate() {
-            const rate = document.getElementById('calc-rate').value;
-            localStorage.setItem('v5_usd_rate', rate);
-            alert('汇率 ' + rate + ' 已保存');
-        }
-
-        // 切换贸易术语时显示/隐藏海运费字段
-        function toggleFreightField() {
-            const term = document.getElementById('trade-term').value;
-            const freightField = document.getElementById('freight-field');
-            if (term === 'CIF') {
-                freightField.classList.remove('hidden');
-            } else {
-                freightField.classList.add('hidden');
-            }
-        }
-
+        // --- 4. FOB Calculator ---
         function calculateFOB() {
-            const cost = parseFloat(document.getElementById('calc-cost').value) || 0;
+            const costInput = document.getElementById('calc-cost');
+            const cost = parseFloat(costInput.value) || 0;
             const rate = parseFloat(document.getElementById('calc-rate').value) || 7.2;
             const rebate = parseFloat(document.getElementById('calc-rebate').value) || 13;
-            const vat = parseFloat(document.getElementById('calc-vat').value) || 13;
             const margin = parseFloat(document.getElementById('calc-margin').value) || 20;
-            const commission = parseFloat(document.getElementById('calc-commission').value) || 0;
             const extra = parseFloat(document.getElementById('calc-extra').value) || 0;
             const freight = parseFloat(document.getElementById('calc-freight').value) || 0;
             const term = document.getElementById('trade-term').value;
+            
+            // 表单验证
+            if (cost <= 0) {
+                costInput.classList.add('input-error');
+                document.getElementById('cost-error').classList.remove('hidden');
+                showToast('请输入有效的工厂价格', 'error');
+                return;
+            } else {
+                costInput.classList.remove('input-error');
+                document.getElementById('cost-error').classList.add('hidden');
+            }
 
-            if(cost === 0) return;
-
-            // 核心公式
-            const taxBase = cost / (1 + vat/100);
+            const taxBase = cost / 1.13; 
             const taxRefund = taxBase * (rebate / 100);
             const realCost = cost - taxRefund + extra;
             
-            // 计算基础价格
-            let basePrice = (realCost / (1 - (margin/100))) / rate;
+            // Formula: Price = RealCost / (1 - Margin%) / Rate
+            let finalPrice = (realCost / (1 - (margin/100))) / rate;
             
-            // 加上佣金
-            const commissionAmount = basePrice * (commission / 100);
-            let finalPrice = basePrice + commissionAmount;
+            if (term === 'CIF') finalPrice += freight; // Simplified
+            if (term === 'EXW') finalPrice = (cost / rate) * (1 + margin/100); // EXW不包含退税
             
-            // CIF价需加海运费
-            if (term === 'CIF') {
-                finalPrice += freight / (document.getElementById('cbm-ctn').value || 1);
-            }
-            
-            // EXW价无需考虑退税
-            if (term === 'EXW') {
-                finalPrice = (cost / rate) * (1 + margin/100) + commissionAmount;
-            }
-
             const profitRMB = (finalPrice * rate) - (realCost + (freight * rate));
+            const profitMarginPercent = (profitRMB / (finalPrice * rate)) * 100;
 
-            // 更新结果显示
-            document.getElementById('res-price').textContent = term + ' ' + finalPrice.toFixed(2);
+            document.getElementById('res-price').textContent = term + ' $' + finalPrice.toFixed(2);
             document.getElementById('res-tax').textContent = '¥' + taxRefund.toFixed(2);
-            document.getElementById('res-commission').textContent = '$' + commissionAmount.toFixed(2);
             document.getElementById('res-profit').textContent = '¥' + profitRMB.toFixed(2);
+            document.getElementById('profit-margin').textContent = profitMarginPercent.toFixed(1) + '%';
+            document.getElementById('price-note').textContent = `${term} Shanghai`;
             document.getElementById('fob-result').classList.remove('hidden');
             
-            // 保存到历史记录
-            saveToHistory('fob', {
-                cost, rate, margin, result: finalPrice.toFixed(2), term
-            });
+            // 保存计算记录
+            saveCalculationHistory('fob', { cost, rate, margin, finalPrice, term });
+        }
+        
+        // 重置计算器
+        function resetCalculator() {
+            document.getElementById('calc-cost').value = '';
+            document.getElementById('calc-rate').value = localStorage.getItem('v5_usd_rate') || 7.25;
+            document.getElementById('calc-rebate').value = 13;
+            document.getElementById('calc-margin').value = 20;
+            document.getElementById('calc-extra').value = 0;
+            document.getElementById('calc-freight').value = 0;
+            document.getElementById('trade-term').value = 'FOB';
+            document.getElementById('fob-result').classList.add('hidden');
+            toggleFreightField();
         }
 
-        // 汇率趋势图
-        function initRateChart() {
-            const ctx = document.getElementById('rateChart').getContext('2d');
-            const rateChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['6/9', '6/10', '6/11', '6/12', '6/13', '6/14', '6/15'],
-                    datasets: [{
-                        label: 'USD/CNY',
-                        data: [7.18, 7.19, 7.20, 7.22, 7.21, 7.20, 7.21],
-                        borderColor: '#1e40af',
-                        backgroundColor: 'rgba(30, 64, 175, 0.1)',
-                        tension: 0.3,
-                        fill: true
-                    }]
+        function toggleFreightField() {
+            const term = document.getElementById('trade-term').value;
+            document.getElementById('freight-field').classList.toggle('hidden', term !== 'CIF');
+        }
+        
+        // 设置快捷汇率
+        function setRate(value) {
+            document.getElementById('calc-rate').value = value;
+            showToast(`汇率已设置为 ${value}`, 'info');
+        }
+
+        function saveRate() {
+            localStorage.setItem('v5_usd_rate', document.getElementById('calc-rate').value);
+            showToast('汇率已保存', 'success');
+        }
+        // Load Rate
+        document.getElementById('calc-rate').value = localStorage.getItem('v5_usd_rate') || 7.25;
+
+        // --- 5. Chart.js (Rate Trend) ---
+        new Chart(document.getElementById('rateChart'), {
+            type: 'line',
+            data: {
+                labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+                datasets: [{
+                    label: 'USD/CNY',
+                    data: [7.18, 7.20, 7.22, 7.21, 7.23, 7.24, 7.25],
+                    borderColor: '#1e40af',
+                    backgroundColor: 'rgba(30, 64, 175, 0.05)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: {display: false},
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        titleColor: '#1e40af',
+                        bodyColor: '#475569',
+                        borderColor: '#e2e8f0',
+                        borderWidth: 1,
+                        padding: 10,
+                        boxPadding: 5
+                    }
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: { mode: 'index', intersect: false }
-                    },
-                    scales: {
-                        x: { display: false },
-                        y: { display: false }
-                    },
-                    elements: { point: { radius: 0 } }
+                scales: { 
+                    x: {display: false}, 
+                    y: {display: false} 
+                },
+                elements: { point: {radius: 0, hitRadius: 10} }
+            }
+        });
+        
+        // 客户统计图表
+        new Chart(document.getElementById('customerChart'), {
+            type: 'bar',
+            data: {
+                labels: ['一月', '二月', '三月', '四月', '五月'],
+                datasets: [{
+                    label: '新增客户',
+                    data: [5, 8, 6, 9, 7],
+                    backgroundColor: 'rgba(30, 64, 175, 0.7)',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: {display: false} },
+                scales: { 
+                    x: {grid: {display: false}}, 
+                    y: {grid: {display: false}, beginAtZero: true} 
                 }
-            });
-        }
+            }
+        });
+        
+        // 区域分布图表
+        new Chart(document.getElementById('regionChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['北美', '欧洲', '中东', '亚太'],
+                datasets: [{
+                    data: [32, 28, 18, 22],
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(99, 102, 241, 0.8)',
+                        'rgba(245, 158, 11, 0.8)',
+                        'rgba(16, 185, 129, 0.8)'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: {display: false} },
+                cutout: '70%'
+            }
+        });
 
-        // --- 3. CBM计算器增强版 ---
+        // --- 6. Logistics Calculators ---
         function calculateCBM() {
             const l = parseFloat(document.getElementById('cbm-l').value) || 0;
             const w = parseFloat(document.getElementById('cbm-w').value) || 0;
             const h = parseFloat(document.getElementById('cbm-h').value) || 0;
-            const ctn = parseInt(document.getElementById('cbm-ctn').value) || 0;
-            const innerBoxes = parseInt(document.getElementById('inner-boxes').value) || 1;
-            const grossWeight = parseFloat(document.getElementById('gross-weight').value) || 0;
-            const netWeight = parseFloat(document.getElementById('net-weight').value) || 0;
+            const ctn = parseInt(document.getElementById('cbm-ctn').value) || 1;
+            const gross = parseFloat(document.getElementById('cbm-gross').value) || 0;
+            const net = parseFloat(document.getElementById('cbm-net').value) || 0;
 
-            if(l*w*h === 0) return;
+            if(l*w*h === 0) {
+                showToast('请输入完整的尺寸信息', 'error');
+                return;
+            }
 
-            // 计算体积
-            const volPerCtn = (l * w * h) / 1000000;
+            const volPerCtn = (l*w*h)/1000000;
             const totalVol = volPerCtn * ctn;
+            const totalGross = gross * ctn;
+            const totalNet = net * ctn;
             
-            // 计算总重量
-            const totalGross = grossWeight * ctn;
-            const totalNet = netWeight * ctn;
-
-            // 集装箱容量 (约数)
-            const c20 = 28; // 20GP 约28CBM
-            const c40hq = 68; // 40HQ 约68CBM
+            // 集装箱容量
+            const c20 = 28; // 20GP
+            const c40hq = 68; // 40HQ
             
-            // 计算可装箱数
-            const qty20gp = Math.floor(c20 / volPerCtn);
-            const qty40hq = Math.floor(c40hq / volPerCtn);
+            const p20 = Math.min((totalVol/c20)*100, 100);
+            const p40 = Math.min((totalVol/c40hq)*100, 100);
+            
+            // 可装箱数
+            const qty20 = Math.floor(c20 / volPerCtn);
+            const qty40 = Math.floor(c40hq / volPerCtn);
 
-            // 更新结果
             document.getElementById('res-cbm').textContent = totalVol.toFixed(3);
-            document.getElementById('total-gross').textContent = totalGross.toFixed(1);
-            document.getElementById('total-net').textContent = totalNet.toFixed(1);
-            document.getElementById('txt-20gp').textContent = ((totalVol/c20)*100).toFixed(1) + '%';
-            document.getElementById('txt-40hq').textContent = ((totalVol/c40hq)*100).toFixed(1) + '%';
-            document.getElementById('qty-20gp').textContent = qty20gp;
-            document.getElementById('qty-40hq').textContent = qty40hq;
+            document.getElementById('res-gross').textContent = totalGross.toFixed(1);
+            document.getElementById('res-net').textContent = totalNet.toFixed(1);
             
-            // 进度条
-            const width = Math.min((totalVol/c20)*100, 100);
-            const bar = document.getElementById('bar-20gp');
-            bar.style.width = width + '%';
-            bar.className = width > 100 ? 'h-full bg-red-500' : 'h-full bg-blue-500';
-
+            document.getElementById('bar-20gp').style.width = p20 + '%';
+            document.getElementById('bar-40hq').style.width = p40 + '%';
+            
+            document.getElementById('txt-20gp').textContent = p20.toFixed(1) + '%';
+            document.getElementById('txt-40hq').textContent = p40.toFixed(1) + '%';
+            
+            document.getElementById('qty-20gp').textContent = qty20;
+            document.getElementById('qty-40hq').textContent = qty40;
+            
             document.getElementById('cbm-result').classList.remove('hidden');
             
-            // 保存到历史记录
-            saveToHistory('cbm', {
-                l, w, h, ctn, result: totalVol.toFixed(3)
-            });
+            // 保存记录
+            saveCalculationHistory('cbm', { l, w, h, ctn, totalVol });
+        }
+        
+        // 重置CBM计算器
+        function resetCBM() {
+            document.getElementById('cbm-l').value = '';
+            document.getElementById('cbm-w').value = '';
+            document.getElementById('cbm-h').value = '';
+            document.getElementById('cbm-ctn').value = 1;
+            document.getElementById('cbm-gross').value = '';
+            document.getElementById('cbm-net').value = '';
+            document.getElementById('cbm-result').classList.add('hidden');
         }
 
-        // --- 4. 医疗单位换算增强版 ---
-        function convertMedical(type) {
-            const fr = document.getElementById('conv-fr');
-            const mm = document.getElementById('conv-mm');
+        function estimateShipping() {
+            const to = document.getElementById('ship-to').value;
+            const w = parseFloat(document.getElementById('ship-weight').value) || 1;
+            const type = document.getElementById('ship-type').value;
+            const battery = document.getElementById('ship-battery').value;
             
-            if(type === 'fr') {
-                mm.value = (fr.value / 3).toFixed(2);
+            // Dummy logic for demo
+            const base = { 'us': 45, 'uk': 40, 'de': 38, 'ae': 35, 'au': 42 };
+            let price = (base[to] || 50) + (w * 8);
+            
+            // 货物类型加价
+            if (type === 'commercial') price *= 1.2;
+            // 带电加价
+            if (battery === 'yes') price *= 1.15;
+            
+            const rate = parseFloat(document.getElementById('calc-rate').value) || 7.2;
+            
+            document.getElementById('dhl-price').textContent = Math.round(price * rate);
+            document.getElementById('fedex-price').textContent = Math.round(price * 0.9 * rate);
+            document.getElementById('            document.getElementById('ups-price').textContent = Math.round(price * 0.95 * rate);
+            document.getElementById('shipping-result').classList.remove('hidden');
+            
+            // 保存运费查询记录
+            saveCalculationHistory('shipping', { to, weight: w, type, battery, dhl: Math.round(price * rate) });
+        }
+
+        // --- 7. Medical Unit Conversion ---
+        function convertMedical(type) {
+            const frInput = document.getElementById('conv-fr');
+            const mmInput = document.getElementById('conv-mm');
+            
+            if (type === 'fr') {
+                const fr = parseFloat(frInput.value) || 0;
+                mmInput.value = (fr * 0.33).toFixed(2);
             } else {
-                fr.value = (mm.value * 3).toFixed(1);
+                const mm = parseFloat(mmInput.value) || 0;
+                frInput.value = (mm / 0.33).toFixed(1);
             }
         }
 
         function showGaugeColor() {
-            const val = document.getElementById('conv-gauge').value;
-            const bar = document.getElementById('gauge-color');
-            const colors = {
-                '14': '#ffa500', // Orange
-                '16': '#808080', // Gray
-                '18': '#ffc0cb', // Pink
-                '20': '#ffff00', // Yellow
-                '21': '#008000', // Green
-                '22': '#000000', // Black
-                '23': '#0000ff', // Blue
-                '25': '#ffa500', // Orange
-                '27': '#ff0000'  // Red
+            const gauge = document.getElementById('conv-gauge').value;
+            const colorMap = {
+                '18': { color: 'bg-pink-300', size: '1.2mm' },
+                '20': { color: 'bg-yellow-300', size: '0.9mm' },
+                '21': { color: 'bg-green-300', size: '0.8mm' },
+                '22': { color: 'bg-black', size: '0.7mm' },
+                '23': { color: 'bg-blue-300', size: '0.6mm' }
             };
-            bar.style.backgroundColor = colors[val] || '#e5e7eb';
-        }
-        
-        // 新增重量换算
-        function convertWeight(type) {
-            const g = document.getElementById('conv-g');
-            const oz = document.getElementById('conv-oz');
-            const ratio = 28.35; // 1 oz = 28.35 g
             
-            if(type === 'g') {
-                oz.value = (g.value / ratio).toFixed(2);
-            } else {
-                g.value = (oz.value * ratio).toFixed(1);
-            }
+            const data = colorMap[gauge] || colorMap['18'];
+            document.getElementById('gauge-color').className = `h-1.5 mt-2 w-full ${data.color} rounded`;
+            document.getElementById('gauge-size').textContent = `外径: ${data.size}`;
         }
-        
-        // 新增温度换算
-        function convertTemp(type) {
-            const c = document.getElementById('conv-c');
-            const f = document.getElementById('conv-f');
+        showGaugeColor(); // 初始化
+
+        // --- 8. Amount Conversion (Number to Text) ---
+        function convertAmount() {
+            const num = parseFloat(document.getElementById('amount-num').value) || 0;
+            const currency = document.getElementById('amount-currency').value;
             
-            if(type === 'c') {
-                f.value = (c.value * 9/5 + 32).toFixed(1);
-            } else {
-                c.value = ((f.value - 32) * 5/9).toFixed(1);
-            }
+            const currencyMap = {
+                'USD': 'US DOLLARS',
+                'EUR': 'EUROS',
+                'CNY': 'YUAN'
+            };
+            
+            // 简化版数字转大写（实际项目建议用完整库）
+            const intPart = Math.floor(num);
+            const decPart = Math.round((num - intPart) * 100);
+            let text = `SAY TOTAL ${currencyMap[currency]} ${intPart.toLocaleString('en-US')} AND ${decPart}/100 ONLY`;
+            
+            document.getElementById('amount-text').textContent = text;
+            localStorage.setItem('last_amount_text', text); // 缓存
         }
 
-        // --- 5. AI指令库增强版 ---
-        const prompts = {
-            'dev': 'Write a short, professional cold email to a medical device distributor. Introduce [My Company] as an ISO13485 certified manufacturer of [Product]. Highlight competitive price and stable quality. Keep it under 150 words.',
-            'reject': 'A client rejected our quote saying "price is too high". Write a polite reply acknowledging their concern, but explaining our value proposition (raw material quality, QC standards, CE certification). Offer a small discount for a trial order.',
-            'desc': 'Write 5 professional bullet points for [Medical Product] product description on Amazon. Focus on: Sterility, Ease of use, Patient comfort, Compliance.',
-            'claim': 'Client reported 5% defective products in their last order. Draft a professional response that acknowledges the issue, expresses concern, and offers a solution (replacement + 10% discount on next order). Keep it empathetic but concise.',
-            'cert': 'Explain the CE certification process for medical devices to a new international client. Include key steps, timeline, and why it matters for market access in the EU. Keep it simple and avoid excessive jargon.'
-        };
-
-        function copyPrompt(key) {
-            navigator.clipboard.writeText(prompts[key]).then(() => {
-                alert('Prompt copied! Paste it into ChatGPT.');
+        function copyAmountText() {
+            const text = document.getElementById('amount-text').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('大写金额已复制', 'success');
+            }).catch(() => {
+                showToast('复制失败，请手动复制', 'error');
             });
         }
 
-        // --- 6. 邮件模板增强版 ---
-        const templates = {
+        // --- 9. Unit Conversion (新增) ---
+        // 重量换算 (g ↔ oz)
+        function convertWeight(type) {
+            const gInput = document.getElementById('conv-g');
+            const ozInput = document.getElementById('conv-oz');
+            
+            if (type === 'g') {
+                const g = parseFloat(gInput.value) || 0;
+                ozInput.value = (g / 28.35).toFixed(2);
+            } else {
+                const oz = parseFloat(ozInput.value) || 0;
+                gInput.value = (oz * 28.35).toFixed(1);
+            }
+        }
+
+        // 温度换算 (°C ↔ °F)
+        function convertTemp(type) {
+            const cInput = document.getElementById('conv-c');
+            const fInput = document.getElementById('conv-f');
+            
+            if (type === 'c') {
+                const c = parseFloat(cInput.value) || 0;
+                fInput.value = ((c * 9/5) + 32).toFixed(1);
+            } else {
+                const f = parseFloat(fInput.value) || 0;
+                cInput.value = ((f - 32) * 5/9).toFixed(1);
+            }
+        }
+
+        // 长度换算 (cm ↔ inch)
+        function convertLength(type) {
+            const cmInput = document.getElementById('conv-cm');
+            const inchInput = document.getElementById('conv-inch');
+            
+            if (type === 'cm') {
+                const cm = parseFloat(cmInput.value) || 0;
+                inchInput.value = (cm / 2.54).toFixed(2);
+            } else {
+                const inch = parseFloat(inchInput.value) || 0;
+                cmInput.value = (inch * 2.54).toFixed(1);
+            }
+        }
+
+        // --- 10. AI Prompts & Email Templates ---
+        const prompts = {
+            'dev': "Help me polish this cold email to a medical distributor, highlighting ISO13485 certification and competitive pricing. Make it professional but not too salesy, keep it under 150 words.",
+            'reject': "Client said 'Price too high'. Write a reply emphasizing ISO13485 quality control and suggesting a trial order with small MOQ. Include a gentle reminder about long-term partnership benefits.",
+            'claim': "Draft a professional response to a quality complaint, offering replacement and CAPA report to prevent recurrence. Acknowledge the issue without taking excessive blame.",
+            'sample': "Follow up with client who received samples 1 week ago, ask for feedback and next steps. Keep it friendly but purposeful, include a link to product specs."
+        };
+
+        function copyPrompt(type) {
+            navigator.clipboard.writeText(prompts[type]).then(() => {
+                showToast('AI指令已复制到剪贴板', 'success');
+            }).catch(() => {
+                showToast('复制失败', 'error');
+            });
+        }
+
+        const mailTemplates = {
             'quote': {
-                sub: 'Quotation for V5 Medical Products - [Date]',
-                body: "Dear [Name],\n\nThank you for your inquiry. Please find the attached quotation for [Product].\n\n- Terms: FOB Shanghai\n- Lead time: 20 days\n- Validity: 15 days\n- Payment: 30% deposit, 70% against B/L copy\n\nLet me know if you have any questions.\n\nBest regards,\nV5 Medical Team"
+                subject: 'Quotation for {产品名称} - V5 Medical [{日期}]',
+                body: `Dear {客户名称},
+
+Thank you for your inquiry about {产品名称}.
+
+Attached please find our formal quotation with detailed pricing and specifications.
+
+Key highlights:
+• FOB Price: {报价金额} USD/unit
+• MOQ: 1000 units
+• Lead time: 30 days after deposit
+• Payment term: 30% deposit, 70% before shipment
+
+We hold ISO13485 certification and can provide all necessary documents for customs clearance.
+
+Please feel free to contact me if you have any questions or need further clarification.
+
+Best regards,
+V5 Medical Team`
             },
             'sample': {
-                sub: 'Samples Sent - Tracking Number [No.]',
-                body: "Dear [Name],\n\nGood news! Your samples have been dispatched via FedEx today.\n\nTracking No.: [Number]\nEst. Delivery: [Date]\nSamples included: [List]\n\nYou should receive them within 3-5 days. We look forward to your feedback.\n\nBest regards,"
+                subject: 'Sample Follow-up - {产品名称} | V5 Medical',
+                body: `Dear {客户名称},
+
+Hope this email finds you well.
+
+We are following up to check if you have received the {产品名称} samples we sent on {日期}.
+
+Could you please share your feedback on the quality, packaging, and specifications? We value your opinion and are ready to make any necessary adjustments.
+
+If you are satisfied with the samples, we can proceed with the formal order process at any time.
+
+Looking forward to your reply.
+
+Best regards,
+V5 Medical Team`
             },
             'payment': {
-                sub: 'Bank Slip Request - Invoice #[No.]',
-                body: "Dear [Name],\n\nFriendly reminder that production for Invoice #[No.] is ready to start.\n\nCould you please send us the bank slip once the deposit is arranged? This will help us secure the raw materials immediately.\n\nOur bank details:\nBank Name: [Bank]\nAccount Name: [Name]\nAccount No.: [Number]\nSwift Code: [Code]\n\nThanks,\nAlden"
+                subject: 'Payment Reminder - PI #{PI号} | V5 Medical',
+                body: `Dear {客户名称},
+
+This is a gentle reminder about the payment for Proforma Invoice #{PI号} (total amount: {报价金额} USD).
+
+As per our agreement, the 30% deposit is due by {截止日期}. Timely payment will help us secure the production schedule and ensure on-time delivery.
+
+Please let us know once the payment is made, and share the bank slip for our reference.
+
+Thank you for your cooperation.
+
+Best regards,
+V5 Medical Team`
             },
-            'delay': {
-                sub: 'Production Update - Order #[No.]',
-                body: "Dear [Name],\n\nWe regret to inform you that there will be a slight delay in the production of Order #[No.].\n\nOriginal ETD: [Date]\nNew ETD: [Date]\nReason: [Brief explanation]\n\nWe apologize for any inconvenience and will provide weekly updates.\n\nBest regards,"
-            },
-            'claim': {
-                sub: 'Re: Your Feedback on Order #[No.]',
-                body: "Dear [Name],\n\nThank you for bringing the quality issue to our attention. We sincerely apologize for the inconvenience.\n\nWe would like to offer: 1) Full replacement of defective units 2) 10% discount on your next order.\n\nPlease confirm the shipping address for the replacement.\n\nWe value your partnership and will strengthen our QC process.\n\nBest regards,"
+            'followup': {
+                subject: 'Following Up on Our Discussion | V5 Medical',
+                body: `Dear {客户名称},
+
+Hope you had a great week!
+
+We are following up on our recent discussion about {产品名称}. We haven't heard back from you and wanted to check if you have any questions or need additional information.
+
+Our team is ready to provide:
+• Detailed technical specifications
+• Certifications (ISO13485, CE, FDA)
+• Customization options
+• Competitive bulk pricing
+
+Please let us know how we can assist you further.
+
+Best regards,
+V5 Medical Team`
             }
         };
 
-        function setTemplate(key) {
-            const t = templates[key];
-            document.getElementById('mail-subject').value = t.sub;
-            document.getElementById('mail-body').value = t.body;
-            document.getElementById('btn-send-mail').href = `mailto:?subject=${encodeURIComponent(t.sub)}&body=${encodeURIComponent(t.body)}`;
+        function setTemplate(type) {
+            const template = mailTemplates[type] || mailTemplates['quote'];
+            const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
             
-            // 允许编辑
+            document.getElementById('mail-subject').value = template.subject.replace('{日期}', today);
+            document.getElementById('mail-body').value = template.body.replace('{日期}', today);
+            
+            // 启用编辑模式（首次点击时）
             document.getElementById('mail-subject').readOnly = false;
             document.getElementById('mail-body').readOnly = false;
             
-            // 高亮当前模板按钮
-            document.querySelectorAll('.tool-card:nth-child(5) button').forEach(b => {
-                b.classList.remove('bg-amber-200');
-                b.classList.add('bg-gray-100', 'text-gray-600');
-            });
-            event.target.classList.remove('bg-gray-100', 'text-gray-600');
-            event.target.classList.add('bg-amber-200', 'text-amber-700');
+            showToast('邮件模板已加载', 'info');
+        }
+        setTemplate('quote'); // 初始化
+
+        function insertVariable(varText) {
+            const body = document.getElementById('mail-body');
+            const start = body.selectionStart;
+            const end = body.selectionEnd;
+            
+            body.value = body.value.substring(0, start) + varText + body.value.substring(end);
+            body.focus();
+            body.selectionStart = body.selectionEnd = start + varText.length;
         }
 
         function copyMail() {
-            const sub = document.getElementById('mail-subject').value;
+            const subject = document.getElementById('mail-subject').value;
             const body = document.getElementById('mail-body').value;
-            if(!sub) return;
-            navigator.clipboard.writeText(`Subject: ${sub}\n\n${body}`).then(() => alert('Copied to clipboard!'));
+            const fullMail = `Subject: ${subject}\n\n${body}`;
+            
+            navigator.clipboard.writeText(fullMail).then(() => {
+                showToast('邮件内容已复制', 'success');
+            }).catch(() => {
+                showToast('复制失败', 'error');
+            });
         }
-        
-        function editMail() {
-            const sub = document.getElementById('mail-subject');
+
+        function editMailTemplate() {
+            const subject = document.getElementById('mail-subject');
             const body = document.getElementById('mail-body');
-            sub.readOnly = !sub.readOnly;
+            
+            subject.readOnly = !subject.readOnly;
             body.readOnly = !body.readOnly;
-            alert(sub.readOnly ? '已锁定编辑' : '现在可以编辑内容');
+            
+            showToast(subject.readOnly ? '模板已锁定' : '模板已解锁编辑', 'info');
         }
 
-        // --- 7. 物流与单证增强版 ---
-        function convertAmount() {
-            const num = document.getElementById('amount-num').value;
-            const currency = document.getElementById('amount-currency').value;
-            if(!num) { 
-                document.getElementById('amount-text').textContent = ''; 
-                return; 
+        // --- 11. CRM & Follow-up Tasks ---
+        function completeTask(el) {
+            const task = el.closest('.flex.items-center.justify-between');
+            task.classList.add('opacity-50', 'line-through');
+            el.disabled = true;
+            el.classList.remove('hover:text-green-500');
+            el.classList.add('text-green-500');
+            
+            // 检查是否所有任务都已完成
+            const allTasks = document.querySelectorAll('#follow-up-list > div');
+            const completedTasks = document.querySelectorAll('#follow-up-list > div.opacity-50');
+            
+            if (allTasks.length === completedTasks.length) {
+                document.getElementById('follow-up-list').classList.add('hidden');
+                document.getElementById('empty-tasks').classList.remove('hidden');
             }
             
-            // 货币名称映射
-            const currencyNames = {
-                'USD': 'US DOLLARS',
-                'EUR': 'EURO',
-                'GBP': 'BRITISH POUND',
-                'CNY': 'CHINESE YUAN'
-            };
-            
-            document.getElementById('amount-text').textContent = 
-                `SAY TOTAL ${currencyNames[currency]} ${num} ONLY. (Please double check invoice amount)`;
-        }
-        
-        // 模拟HS编码查询
-        function searchHSCode() {
-            const keyword = document.getElementById('hs-code').value.toLowerCase();
-            if(!keyword) {
-                document.getElementById('hs-result').textContent = '';
-                return;
-            }
-            
-            // 模拟搜索结果
-            const mockResults = [
-                { code: '9018.31', desc: 'Surgical sutures, absorbable' },
-                { code: '9018.39', desc: 'Surgical sutures, non-absorbable' },
-                { code: '9019.20', desc: 'Surgical gloves, latex' },
-                { code: '9019.30', desc: 'Surgical gloves, vinyl' },
-                { code: '3005.90', desc: 'Gauze dressings, sterile' }
-            ];
-            
-            // 过滤结果
-            const results = mockResults.filter(item => 
-                item.code.includes(keyword) || item.desc.toLowerCase().includes(keyword)
-            );
-            
-            // 显示结果
-            document.getElementById('hs-result').innerHTML = results.map(item => 
-                `<div class="p-1 border-b border-gray-100 last:border-0">
-                    <div class="font-medium">${item.code}</div>
-                    <div class="text-[9px] text-gray-500">${item.desc}</div>
-                </div>`
-            ).join('') || 'No results found';
+            showToast('任务已标记为完成', 'success');
         }
 
-        // --- 8. 客户跟进管理 ---
-        function addFollowUp() {
-            const client = prompt("客户名称:");
-            if(!client) return;
+        function filterTasks(type) {
+            const tasks = document.querySelectorAll('#follow-up-list > div');
+            const todayTasks = document.querySelectorAll('#follow-up-list > div:has(.bg-red-500)');
             
-            const task = prompt("跟进任务:");
-            if(!task) return;
+            tasks.forEach(task => task.classList.remove('hidden'));
             
-            const date = prompt("截止日期 (YYYY-MM-DD):");
-            if(!date) return;
-            
-            // 这里可以添加到本地存储的逻辑
-            alert(`已添加跟进: ${client} - ${task}`);
-            // 实际应用中应该刷新列表
-        }
-
-        // --- 9. 国际快递费用估算 ---
-        function estimateShipping() {
-            const to = document.getElementById('ship-to').value;
-            const weight = parseFloat(document.getElementById('ship-weight').value) || 1;
-            const type = document.getElementById('ship-type').value;
-            const battery = document.getElementById('ship-battery').value;
-            
-            // 基础价格 (USD)
-            const basePrices = {
-                'us': { dhl: 45, fedex: 42, ups: 43 },
-                'de': { dhl: 40, fedex: 38, ups: 39 },
-                'uk': { dhl: 42, fedex: 40, ups: 41 },
-                'ae': { dhl: 38, fedex: 36, ups: 37 },
-                'tr': { dhl: 48, fedex: 46, ups: 47 },
-                'jp': { dhl: 35, fedex: 33, ups: 34 }
-            };
-            
-            // 根据重量调整价格
-            let factor = 1;
-            if (type === 'small') factor = 3;
-            if (type === 'large') factor = 8;
-            
-            // 带电产品加价
-            if (battery === 'yes') factor *= 1.2;
-            
-            // 计算价格并转换为人民币
-            const prices = basePrices[to];
-            const rate = parseFloat(document.getElementById('calc-rate').value) || 7.2;
-            
-            document.getElementById('dhl-price').textContent = Math.round(prices.dhl * factor * rate);
-            document.getElementById('fedex-price').textContent = Math.round(prices.fedex * factor * rate);
-            document.getElementById('ups-price').textContent = Math.round(prices.ups * factor * rate);
-            
-            // 显示结果
-            document.getElementById('shipping-result').classList.remove('hidden');
-        }
-
-        // --- 历史记录管理 ---
-        function saveToHistory(type, data) {
-            const history = JSON.parse(localStorage.getItem('v5_tool_history') || '{}');
-            if (!history[type]) history[type] = [];
-            
-            // 添加时间戳
-            data.timestamp = new Date().toISOString();
-            history[type].unshift(data);
-            
-            // 限制历史记录数量
-            if (history[type].length > 10) history[type].pop();
-            
-            localStorage.setItem('v5_tool_history', JSON.stringify(history));
-        }
-
-        function loadHistory(type) {
-            const history = JSON.parse(localStorage.getItem('v5_tool_history') || '{}');
-            const content = document.getElementById('history-content');
-            
-            if (!history[type] || history[type].length === 0) {
-                content.innerHTML = '<div class="text-center py-4 text-gray-500">No history found</div>';
-            } else {
-                content.innerHTML = history[type].map((item, i) => {
-                    const date = new Date(item.timestamp).toLocaleString();
-                    let html = `<div class="history-item flex justify-between items-center">
-                        <div>
-                            <div class="font-medium">${date}</div>
-                            <div class="text-gray-500 text-xs">`;
-                    
-                    // 根据类型显示不同内容
-                    if (type === 'fob') {
-                        html += `成本: ¥${item.cost}, 汇率: ${item.rate}, 利润率: ${item.margin}%<br>
-                                结果: ${item.term} $${item.result}`;
-                    } else if (type === 'cbm') {
-                        html += `尺寸: ${item.l}x${item.w}x${item.h}cm, 箱数: ${item.ctn}<br>
-                                结果: ${item.result} CBM`;
+            if (type === 'today') {
+                tasks.forEach(task => {
+                    if (!task.querySelector('.bg-red-500')) {
+                        task.classList.add('hidden');
                     }
-                    
-                    html += `</div></div>
-                        <button onclick="loadHistoryItem('${type}', ${i})" class="text-xs text-blue-600">加载</button>
-                    </div>`;
-                    return html;
-                }).join('');
+                });
             }
             
-            document.getElementById('history-modal').classList.remove('hidden');
-            document.getElementById('history-modal').classList.add('flex');
+            showToast(`已筛选：${type === 'today' ? '今日任务' : '全部任务'}`, 'info');
         }
 
-        function loadHistoryItem(type, index) {
-            const history = JSON.parse(localStorage.getItem('v5_tool_history') || '{}');
-            const item = history[type][index];
+        function addFollowUp() {
+            // 简易弹窗（实际项目建议用模态框）
+            const clientName = prompt('请输入客户名称：', 'New Client');
+            if (!clientName) return;
             
-            if (type === 'fob') {
-                document.getElementById('calc-cost').value = item.cost;
-                document.getElementById('calc-rate').value = item.rate;
-                document.getElementById('calc-margin').value = item.margin;
-                document.getElementById('trade-term').value = item.term;
-                toggleFreightField();
-                calculateFOB();
-            } else if (type === 'cbm') {
-                document.getElementById('cbm-l').value = item.l;
-                document.getElementById('cbm-w').value = item.w;
-                document.getElementById('cbm-h').value = item.h;
-                document.getElementById('cbm-ctn').value = item.ctn;
-                calculateCBM();
-            }
+            const taskDesc = prompt('请输入跟进事项：', 'Send quotation for product X');
+            if (!taskDesc) return;
             
-            document.getElementById('history-modal').classList.add('hidden');
+            const deadline = prompt('请输入截止日期（如：Today/Tomorrow/Jun 20）：', 'Today');
+            if (!deadline) return;
+            
+            const priorityColor = deadline.toLowerCase() === 'today' ? 'red' : deadline.toLowerCase() === 'tomorrow' ? 'yellow' : 'blue';
+            const priorityClass = `bg-${priorityColor}-500`;
+            
+            const newTask = `
+                <div class="flex items-center justify-between p-3 bg-slate-50 rounded border border-slate-100 hover:border-blue-200 transition group">
+                    <div class="flex items-center gap-3 flex-grow">
+                        <div class="w-2 h-2 rounded-full ${priorityClass}"></div>
+                        <div class="flex-grow min-w-0">
+                            <div class="text-sm font-bold text-slate-700 truncate">${clientName}</div>
+                            <div class="text-xs text-slate-500 truncate">${taskDesc} (Deadline: ${deadline})</div>
+                            <div class="text-[10px] text-slate-400 mt-1">客户等级: <span class="text-amber-500 font-bold">新增</span> | 产品: 未指定</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 ml-2">
+                        <button class="text-slate-400 hover:text-blue-500 transition"><i class="fas fa-edit"></i></button>
+                        <button onclick="completeTask(this)" class="text-slate-300 hover:text-green-500 transition"><i class="fas fa-check-circle"></i></button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('follow-up-list').insertAdjacentHTML('afterbegin', newTask);
+            document.getElementById('empty-tasks').classList.add('hidden');
+            document.getElementById('follow-up-list').classList.remove('hidden');
+            
+            showToast('新任务已添加', 'success');
         }
 
-        function clearHistory() {
-            if (confirm('确定要清空所有历史记录吗?')) {
-                localStorage.removeItem('v5_tool_history');
-                document.getElementById('history-content').innerHTML = 
-                    '<div class="text-center py-4 text-gray-500">No history found</div>';
-            }
+        // --- 12. 计算历史记录保存（本地存储）---
+        function saveCalculationHistory(type, data) {
+            const history = JSON.parse(localStorage.getItem('v5_calc_history') || '[]');
+            history.push({
+                type,
+                data,
+                timestamp: new Date().toISOString()
+            });
+            
+            // 只保留最近20条记录
+            if (history.length > 20) history.shift();
+            
+            localStorage.setItem('v5_calc_history', JSON.stringify(history));
         }
+
+        // --- 页面初始化 ---
+        document.addEventListener('DOMContentLoaded', function() {
+            // 加载Header/Footer（模拟）
+            document.getElementById('v5-header').innerHTML = `
+                <header class="fixed top-0 left-0 right-0 bg-white shadow-sm border-b border-slate-200 z-40 h-[80px] flex items-center justify-between px-4 md:px-6">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-primary text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg">V5</div>
+                        <div>
+                            <h1 class="font-bold text-lg text-slate-800">V5 Medical Workflow</h1>
+                            <div class="text-xs text-slate-500">Medical Device Export Dashboard</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="relative">
+                            <button class="text-slate-500 hover:text-primary transition">
+                                <i class="fas fa-bell text-lg"></i>
+                                <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <img src="https://picsum.photos/id/64/40/40" alt="User" class="w-8 h-8 rounded-full border-2 border-white shadow-sm">
+                            <div class="hidden md:block text-right">
+                                <div class="text-sm font-bold text-slate-700">Alex Zhang</div>
+                                <div class="text-xs text-slate-500">Export Manager</div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            `;
+            
+            document.getElementById('v5-footer').innerHTML = `
+                <footer class="bg-white border-t border-slate-200 py-6 px-4 md:px-8 mt-12">
+                    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div>
+                            <div class="font-bold text-lg text-primary mb-2">V5 Medical</div>
+                            <div class="text-sm text-slate-500">Professional medical device export solutions</div>
+                            <div class="mt-4 flex gap-3 text-slate-400">
+                                <a href="#" class="hover:text-primary transition"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="hover:text-primary transition"><i class="fab fa-whatsapp"></i></a>
+                                <a href="#" class="hover:text-primary transition"><i class="fab fa-email"></i></a>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm text-slate-800 mb-2">Quick Links</div>
+                            <div class="grid grid-cols-2 gap-2 text-sm">
+                                <a href="#" class="text-slate-500 hover:text-primary transition">Product Catalog</a>
+                                <a href="#" class="text-slate-500 hover:text-primary transition">Certifications</a>
+                                <a href="#" class="text-slate-500 hover:text-primary transition">Logistics</a>
+                                <a href="#" class="text-slate-500 hover:text-primary transition">Pricing Calculator</a>
+                                <a href="#" class="text-slate-500 hover:text-primary transition">CRM System</a>
+                                <a href="#" class="text-slate-500 hover:text-primary transition">Support</a>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm text-slate-800 mb-2">Contact</div>
+                            <div class="text-sm text-slate-500 space-y-1">
+                                <div><i class="fas fa-envelope mr-2 text-xs"></i> export@v5medical.com</div>
+                                <div><i class="fas fa-phone mr-2 text-xs"></i> +86 138 0000 0000</div>
+                                <div><i class="fas fa-map-marker-alt mr-2 text-xs"></i> Shanghai, China</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-slate-100 text-center text-xs text-slate-400">
+                        © 2025 V5 Medical. All rights reserved. | ISO13485 Certified
+                    </div>
+                </footer>
+            `;
+            
+            // 初始化所有交互元素
+            toggleFreightField();
+            
+            // 移动端点击外部关闭侧边栏
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 767) {
+                    const isClickInside = sidebar.contains(e.target) || toggleBtn.contains(e.target);
+                    if (!isClickInside && sidebar.classList.contains('open')) {
+                        toggleSidebar();
+                    }
+                }
+            });
+            
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                        
+                        // 移动端点击导航后关闭侧边栏
+                        if (window.innerWidth <= 767) {
+                            toggleSidebar();
+                        }
+                    }
+                });
+            });
+            
+            // 加载完成提示
+            showToast('工作台已加载完成', 'success');
+        });
     </script>
-    <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
 </body>
 </html>
