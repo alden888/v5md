@@ -73,3 +73,5 @@
     </li>
   </ul>
 </div>
+* **Finance & Strategy**
+  * [Payment & Sourcing Strategy](posts/payment-strategy-guide.md)
