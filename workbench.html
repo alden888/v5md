@@ -144,7 +144,7 @@
     <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <aside class="sidebar-nav" id="sidebar">
-        <div class="p-6">
+        <div class="p-6 pb-2">
             <div class="bg-gradient-to-br from-indigo-900 to-slate-900 rounded-xl p-4 text-white shadow-xl border border-slate-700/50">
                 <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Current Achievement</div>
                 <div class="font-bold text-2xl text-white flex items-baseline gap-1">
@@ -156,7 +156,18 @@
             </div>
         </div>
 
-        <div class="nav-header">核心作战区</div>
+        <div class="grid grid-cols-2 gap-2 px-6 mb-4 mt-2">
+            <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" class="flex flex-col items-center justify-center p-2 rounded bg-slate-800 hover:bg-red-900/30 border border-slate-700 hover:border-red-500/50 transition group cursor-pointer">
+                <i class="fab fa-google text-slate-400 group-hover:text-red-500 mb-1 text-lg"></i>
+                <span class="text-[10px] text-slate-400 group-hover:text-red-100">Gmail</span>
+            </a>
+            <a href="https://web.whatsapp.com" target="_blank" class="flex flex-col items-center justify-center p-2 rounded bg-slate-800 hover:bg-green-900/30 border border-slate-700 hover:border-green-500/50 transition group cursor-pointer">
+                <i class="fab fa-whatsapp text-slate-400 group-hover:text-green-500 mb-1 text-lg"></i>
+                <span class="text-[10px] text-slate-400 group-hover:text-green-100">WhatsApp</span>
+            </a>
+        </div>
+
+        <div class="nav-header">核心业务</div>
         <a href="#section-dashboard" class="nav-item active">
             <i class="fas fa-tachometer-alt"></i> 战报指挥舱
         </a>
