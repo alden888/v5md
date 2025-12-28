@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V5 Medical - 年度作战指挥部 (Command Center)</title>
-    <meta name="description" content="集成化外贸工作台：业绩监控、全球时钟、报价、物流工具箱。">
+    <title>V5 Medical - 内部实战工作台 (Internal Ops Dashboard)</title>
+    <meta name="description" content="V5 Medical 内部专用：报价核算、单证制作、物流查询、财务对账。">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
     
     <script>
         tailwind.config = {
@@ -116,7 +115,7 @@
         <div class="flex items-center gap-4">
             <div class="hidden md:flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full text-xs font-medium text-slate-600">
                 <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                <span>System Live</span>
+                <span>Internal Use</span>
             </div>
             <div class="flex items-center gap-2">
                 <img src="https://ui-avatars.com/api/?name=Alden+Cheng&background=1e40af&color=fff" alt="User" class="w-8 h-8 rounded-full border-2 border-white shadow-sm">
@@ -143,23 +142,26 @@
             </div>
         </div>
 
-        <div class="nav-header">核心作战区</div>
+        <div class="nav-header">核心业务</div>
         <a href="#section-dashboard" class="nav-item active">
             <i class="fas fa-tachometer-alt"></i> 战报指挥舱
         </a>
         <a href="#section-orders" class="nav-item">
-            <i class="fas fa-file-invoice-dollar"></i> 订单与PI (Mini ERP)
+            <i class="fas fa-file-invoice-dollar"></i> 订单 Mini ERP
         </a>
         <a href="#section-pricing" class="nav-item">
-            <i class="fas fa-calculator"></i> 智能报价核算
+            <i class="fas fa-calculator"></i> 报价与核算
         </a>
 
-        <div class="nav-header mt-2">支持与工具</div>
-        <a href="#section-communication" class="nav-item">
-            <i class="fas fa-comments"></i> 沟通模版
+        <div class="nav-header mt-2">支持系统</div>
+        <a href="#section-tools" class="nav-item">
+            <i class="fas fa-toolbox"></i> 单证与工具 <span class="ml-auto text-[10px] bg-red-500 text-white px-1.5 rounded-full">Hot</span>
         </a>
-        <a href="#section-shipping" class="nav-item">
-            <i class="fas fa-cube"></i> 物流与装箱
+        <a href="#section-logistics" class="nav-item">
+            <i class="fas fa-truck"></i> 亚马逊与物流
+        </a>
+        <a href="#section-crm" class="nav-item">
+            <i class="fas fa-tasks"></i> 待办与营销
         </a>
 
         <div class="mt-auto">
@@ -172,7 +174,8 @@
             </a>
             <input type="file" id="import-file" style="display: none" onchange="importData(this)">
         </div>
-        <div class="h-6"></div> </aside>
+        <div class="h-6"></div> 
+    </aside>
 
     <main class="main-content">
         <div id="notification-toast" class="toast">
@@ -188,8 +191,7 @@
                 <span class="w-1 h-4 bg-primary rounded-full"></span>
                 <h3 class="font-bold text-slate-700">全球商机时钟 (Business Hours)</h3>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3" id="world-clock-container">
-                </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3" id="world-clock-container"></div>
         </div>
 
         <section id="section-dashboard" class="section-header !mt-0">
@@ -214,7 +216,6 @@
                     <div id="kpi-progress-bar" class="bg-primary h-full rounded-full animate-progress-grow" style="--target-width: 0%"></div>
                 </div>
             </div>
-
             <div class="kpi-card border-l-4 border-l-green-500">
                 <i class="fas fa-coins kpi-icon text-green-500"></i>
                 <div class="text-sm font-bold text-slate-500 uppercase tracking-wider">已回款金额 (RMB)</div>
@@ -223,14 +224,12 @@
                     折合约 $<span id="kpi-sales-usd">0</span> USD
                 </div>
             </div>
-
             <div class="kpi-card border-l-4 border-l-red-500">
                 <i class="fas fa-mountain kpi-icon text-red-500"></i>
                 <div class="text-sm font-bold text-slate-500 uppercase tracking-wider">距离目标还差</div>
                 <div class="mt-2 text-3xl font-black text-red-500" id="kpi-gap">¥500w</div>
                 <div class="text-[10px] text-slate-400 mt-1">需每日进账 ¥<span id="kpi-daily-need">0</span></div>
             </div>
-
             <div class="kpi-card border-l-4 border-l-gold">
                 <i class="fas fa-hourglass-half kpi-icon text-gold"></i>
                 <div class="text-sm font-bold text-slate-500 uppercase tracking-wider">待回款 (Pipeline)</div>
@@ -265,7 +264,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 mb-4">
                         <div class="grid grid-cols-12 gap-3 mb-2">
                             <div class="col-span-12 md:col-span-6">
@@ -287,7 +285,6 @@
                             <i class="fas fa-plus-circle"></i> 添加到列表
                         </button>
                     </div>
-
                     <div class="border border-slate-200 rounded-xl overflow-hidden mb-4">
                         <table class="w-full text-sm text-left">
                             <thead class="bg-slate-50 text-xs text-slate-500 uppercase">
@@ -311,7 +308,6 @@
                             </tfoot>
                         </table>
                     </div>
-
                     <div class="flex gap-3">
                         <button onclick="saveOrder()" class="flex-1 btn-action bg-green-600 hover:bg-green-700 shadow-green-500/20 shadow-lg">
                             <i class="fas fa-save"></i> 生成订单 (Save)
@@ -322,7 +318,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="space-y-6">
                 <div class="tool-card h-full border-t-4 border-t-slate-500">
                     <div class="tool-header">
@@ -422,70 +417,136 @@
                     </div>
                 </div>
             </div>
+            
             <div class="tool-card">
                 <div class="tool-header">
-                    <div class="tool-title"><i class="fas fa-chart-line"></i> 汇率趋势</div>
+                    <div class="tool-title"><i class="fas fa-university"></i> 银行与汇率查询</div>
                 </div>
-                <div class="tool-body relative h-full min-h-[200px]">
-                    <canvas id="rateChart"></canvas>
+                <div class="tool-body flex flex-col justify-center gap-4">
+                    <a href="https://www.boc.cn/sourcedb/whpj/" target="_blank" class="flex items-center gap-3 p-3 bg-red-50 text-red-700 rounded-lg border border-red-100 hover:shadow-md transition">
+                        <i class="fas fa-chart-line text-xl"></i>
+                        <div>
+                            <div class="font-bold text-sm">中国银行外汇牌价</div>
+                            <div class="text-[10px] opacity-70">权威汇率参考</div>
+                        </div>
+                    </a>
+                    <a href="https://finance.sina.com.cn/forex/" target="_blank" class="flex items-center gap-3 p-3 bg-blue-50 text-blue-700 rounded-lg border border-blue-100 hover:shadow-md transition">
+                        <i class="fas fa-globe text-xl"></i>
+                        <div>
+                            <div class="font-bold text-sm">新浪财经外汇</div>
+                            <div class="text-[10px] opacity-70">实时汇率走势</div>
+                        </div>
+                    </a>
+                    <div class="mt-2 pt-4 border-t border-slate-100">
+                        <div class="text-xs font-bold text-slate-400 mb-2 uppercase">公司银行入口 (需U盾)</div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="http://www.ccb.com/cn/home/indexv3.html" target="_blank" class="text-center p-2 bg-slate-50 rounded hover:bg-blue-50 text-xs font-medium text-slate-600">建设银行</a>
+                            <a href="https://www.icbc.com.cn/" target="_blank" class="text-center p-2 bg-slate-50 rounded hover:bg-red-50 text-xs font-medium text-slate-600">工商银行</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <section id="section-communication" class="section-header">
-            <div class="section-icon"><i class="fas fa-comments"></i></div>
-            <h2>沟通与模版</h2>
+        <section id="section-tools" class="section-header">
+            <div class="section-icon"><i class="fas fa-toolbox"></i></div>
+            <h2>单证与工具</h2>
         </section>
+        
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
-            <div class="tool-card border-t-4 border-t-indigo-500">
+            <div class="tool-card border-t-4 border-t-purple-600">
                 <div class="tool-header">
-                    <div class="tool-title text-indigo-700"><i class="fas fa-robot"></i> AI 指令库</div>
-                </div>
-                <div class="tool-body space-y-2">
-                    <button onclick="copyPrompt('dev')" class="w-full text-left p-3 bg-slate-50 hover:bg-indigo-50 rounded border border-slate-100 hover:border-indigo-200 transition">
-                        <div class="font-bold text-slate-700 text-xs">📧 开发信优化</div>
-                    </button>
-                    <button onclick="copyPrompt('reject')" class="w-full text-left p-3 bg-slate-50 hover:bg-indigo-50 rounded border border-slate-100 hover:border-indigo-200 transition">
-                        <div class="font-bold text-slate-700 text-xs">🛡️ 嫌贵回复</div>
-                    </button>
-                </div>
-            </div>
-            <div class="tool-card border-t-4 border-t-amber-500">
-                <div class="tool-header">
-                    <div class="tool-title text-amber-700"><i class="fas fa-envelope"></i> 邮件生成</div>
+                    <div class="tool-title text-purple-700"><i class="fas fa-file-contract"></i> 金额转大写 (Amount to Words)</div>
                 </div>
                 <div class="tool-body">
                     <div class="flex gap-2 mb-3">
-                        <button onclick="setTemplate('quote')" class="px-3 py-1 bg-amber-100 text-amber-800 text-xs rounded hover:bg-amber-200">报价</button>
-                        <button onclick="setTemplate('payment')" class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded hover:bg-slate-200">催款</button>
+                        <input type="number" id="amount-num" class="input-field" placeholder="1234.50" oninput="convertAmount()">
+                        <select id="amount-currency" class="input-field w-32" onchange="convertAmount()">
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="CNY">CNY</option>
+                        </select>
                     </div>
-                    <textarea id="mail-body" class="input-field h-24 text-xs resize-none" readonly></textarea>
-                    <button onclick="copyMail()" class="mt-2 w-full btn-action bg-slate-700 hover:bg-slate-800 text-xs py-2">复制内容</button>
+                    <div class="bg-purple-50 p-3 rounded-lg border border-purple-100 min-h-[60px] flex items-center">
+                        <p id="amount-text" class="text-sm font-mono text-purple-900 break-words w-full">SAY TOTAL US DOLLARS...</p>
+                    </div>
+                    <button onclick="copyAmountText()" class="mt-3 w-full btn-action bg-purple-600 hover:bg-purple-700 text-xs">
+                        <i class="fas fa-copy"></i> 复制到剪贴板
+                    </button>
+                </div>
+            </div>
+            
+            <div class="tool-card border-t-4 border-t-gray-500">
+                <div class="tool-header">
+                    <div class="tool-title text-slate-700"><i class="fas fa-ruler-combined"></i> 医疗单位换算</div>
+                </div>
+                <div class="tool-body space-y-3">
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="conv-fr" class="input-field text-center" placeholder="Fr" oninput="convertMedical('fr')">
+                        <i class="fas fa-exchange-alt text-slate-400"></i>
+                        <input type="number" id="conv-mm" class="input-field text-center" placeholder="mm" oninput="convertMedical('mm')">
+                        <span class="text-xs text-slate-400 shrink-0">1 Fr ≈ 0.33mm</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <select id="conv-gauge" class="input-field" onchange="showGaugeColor()">
+                            <option value="18">18G (Pink)</option>
+                            <option value="20">20G (Yellow)</option>
+                            <option value="21">21G (Green)</option>
+                            <option value="22">22G (Black)</option>
+                            <option value="23">23G (Blue)</option>
+                        </select>
+                        <div id="gauge-color" class="h-8 w-full bg-pink-300 rounded flex items-center justify-center text-[10px] text-white font-bold shadow-inner">
+                            <span id="gauge-size">OD: 1.2mm</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <section id="section-shipping" class="section-header">
-            <div class="section-icon"><i class="fas fa-cube"></i></div>
-            <h2>物流与装箱</h2>
-        </section>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
-            <div class="tool-card border-t-4 border-t-green-500">
+            <div class="tool-card border-t-4 border-t-orange-500" id="section-logistics">
                 <div class="tool-header">
-                    <div class="tool-title text-green-700"><i class="fas fa-cubes"></i> CBM 计算</div>
+                    <div class="tool-title text-orange-600"><i class="fab fa-amazon"></i> 亚马逊与物流查询</div>
+                </div>
+                <div class="tool-body grid grid-cols-2 gap-3">
+                    <a href="https://sellercentral.amazon.com/" target="_blank" class="p-3 bg-slate-50 hover:bg-orange-50 border border-slate-200 hover:border-orange-200 rounded-lg text-center transition">
+                        <i class="fab fa-amazon text-2xl text-slate-700 mb-1"></i>
+                        <div class="text-xs font-bold text-slate-600">卖家中心 (US)</div>
+                    </a>
+                    <a href="https://sellercentral.amazon.co.uk/" target="_blank" class="p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-lg text-center transition">
+                        <i class="fab fa-amazon text-2xl text-slate-700 mb-1"></i>
+                        <div class="text-xs font-bold text-slate-600">卖家中心 (UK)</div>
+                    </a>
+                    <a href="https://www.17track.net/zh-cn" target="_blank" class="col-span-2 p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-lg flex items-center justify-center gap-3 transition">
+                        <i class="fas fa-truck text-blue-500"></i>
+                        <span class="font-bold text-sm text-slate-700">17Track 全球物流查询</span>
+                    </a>
+                    <div class="col-span-2 grid grid-cols-3 gap-2 mt-1">
+                        <a href="https://www.dhl.com" target="_blank" class="text-xs text-center p-2 bg-slate-100 hover:bg-red-100 rounded">DHL</a>
+                        <a href="https://www.fedex.com" target="_blank" class="text-xs text-center p-2 bg-slate-100 hover:bg-purple-100 rounded">FedEx</a>
+                        <a href="https://www.ups.com" target="_blank" class="text-xs text-center p-2 bg-slate-100 hover:bg-yellow-100 rounded">UPS</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-card border-t-4 border-t-red-500" id="section-crm">
+                <div class="tool-header">
+                    <div class="tool-title text-red-600"><i class="fas fa-tasks"></i> 待办事项</div>
+                    <button onclick="addFollowUp()" class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded hover:bg-red-200">+ 新增</button>
                 </div>
                 <div class="tool-body">
-                    <div class="flex gap-2 mb-3">
-                        <input type="number" id="cbm-l" class="input-field" placeholder="L">
-                        <input type="number" id="cbm-w" class="input-field" placeholder="W">
-                        <input type="number" id="cbm-h" class="input-field" placeholder="H">
-                        <input type="number" id="cbm-ctn" class="input-field" placeholder="Qty">
-                    </div>
-                    <button onclick="calculateCBM()" class="btn-action bg-green-600">计算</button>
-                    <div id="cbm-result" class="hidden mt-3 p-3 bg-slate-50 border rounded text-sm">
-                        <div class="font-bold"><span id="res-cbm">0</span> m³</div>
-                        <div class="text-xs text-slate-500 mt-1">20GP: <span id="txt-20gp" class="font-bold text-blue-600">0%</span></div>
-                    </div>
+                    <div class="space-y-2 max-h-[300px] overflow-y-auto" id="follow-up-list">
+                        <div class="flex items-center justify-between p-3 bg-amber-50 rounded border border-amber-100">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-xs font-bold"><i class="fas fa-sync"></i></div>
+                                <div>
+                                    <div class="text-sm font-bold text-slate-700">月初营销工作</div>
+                                    <div class="text-xs text-slate-500">1. 制作贺卡群发客户<br>2. 社媒 (LinkedIn/FB) 发帖分享</div>
+                                </div>
+                            </div>
+                            <span class="text-[10px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">每月循环</span>
+                        </div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -498,23 +559,18 @@
         let ANNUAL_TARGET = parseInt(localStorage.getItem('v5_target')) || 5000000;
         let currentRate = localStorage.getItem('v5_usd_rate') || 7.25;
 
-        // --- 1. Dashboard 逻辑 (核心升级) ---
+        // --- 1. Dashboard 逻辑 ---
         function updateDashboard() {
-            // 更新 UI 上的目标显示
             document.getElementById('header-target-display').innerText = ANNUAL_TARGET.toLocaleString();
             document.getElementById('dashboard-target-display').innerText = ANNUAL_TARGET.toLocaleString();
 
             const orders = JSON.parse(localStorage.getItem('v5_orders') || '[]');
-            
-            // 计算已回款金额 (Status = Paid)
             let totalSalesRMB = 0;
             let pipelineRMB = 0;
             let pendingCount = 0;
 
             orders.forEach(order => {
-                // 假设所有PI是美金，转换为人民币
                 const amountRMB = order.total * currentRate;
-                
                 if (order.status === 'Paid') {
                     totalSalesRMB += amountRMB;
                 } else {
@@ -523,25 +579,19 @@
                 }
             });
 
-            // 计算百分比
             const percent = Math.min((totalSalesRMB / ANNUAL_TARGET) * 100, 100).toFixed(1);
             const gap = ANNUAL_TARGET - totalSalesRMB;
             
-            // 计算每日需进账 (剩余天数)
             const today = new Date();
             const endYear = new Date(today.getFullYear(), 11, 31);
             const daysLeft = Math.ceil((endYear - today) / (1000 * 60 * 60 * 24));
             const dailyNeed = daysLeft > 0 ? (gap / daysLeft) : 0;
 
             // 更新DOM
-            // 顶部侧边栏
             document.getElementById('sidebar-percent').innerText = percent;
             document.getElementById('sidebar-progress').style.width = percent + '%';
-            
-            // KPI卡片
             document.getElementById('kpi-percent').innerText = percent;
             document.getElementById('kpi-progress-bar').style.setProperty('--target-width', percent + '%');
-            
             document.getElementById('kpi-sales').innerText = '¥' + Math.floor(totalSalesRMB).toLocaleString();
             document.getElementById('kpi-sales-usd').innerText = Math.floor(totalSalesRMB / currentRate).toLocaleString();
             
@@ -549,12 +599,9 @@
                 document.getElementById('kpi-gap').innerText = '¥' + (gap/10000).toFixed(1) + 'w';
             } else {
                 document.getElementById('kpi-gap').innerText = '已达标!';
-                document.getElementById('kpi-gap').classList.add('text-green-500');
-                document.getElementById('kpi-gap').classList.remove('text-red-500');
             }
             
             document.getElementById('kpi-daily-need').innerText = Math.floor(dailyNeed).toLocaleString();
-            
             document.getElementById('kpi-pipeline').innerText = '¥' + Math.floor(pipelineRMB).toLocaleString();
             document.getElementById('kpi-pending-count').innerText = pendingCount;
         }
@@ -566,12 +613,11 @@
                 ANNUAL_TARGET = parseInt(newTarget);
                 localStorage.setItem('v5_target', ANNUAL_TARGET);
                 updateDashboard();
-                showToast("年度目标已更新！加油！", "success");
+                showToast("年度目标已更新！", "success");
             }
         }
 
         // --- 2. Mini ERP 逻辑 ---
-        // 模拟产品库
         const productsDB = [
             { sku: 'V5-SUT-PGA', name: 'PGA Absorbable Suture', price: 1.25 },
             { sku: 'V5-SUT-SILK', name: 'Silk Braided Suture', price: 0.85 },
@@ -648,7 +694,7 @@
                 customer: customer,
                 date: new Date().toISOString(),
                 total: total,
-                status: 'Pending', // 默认为待付款
+                status: 'Pending',
                 items: currentCart
             };
 
@@ -660,7 +706,7 @@
             currentCart = [];
             renderCart();
             renderOrderList();
-            updateDashboard(); // 更新KPI
+            updateDashboard();
             generatePINumber();
         }
 
@@ -697,16 +743,11 @@
             const orders = JSON.parse(localStorage.getItem('v5_orders') || '[]');
             const order = orders.find(o => o.id === id);
             if(order) {
-                // 切换状态
                 order.status = order.status === 'Paid' ? 'Pending' : 'Paid';
                 localStorage.setItem('v5_orders', JSON.stringify(orders));
-                
                 renderOrderList();
-                updateDashboard(); // 重新计算KPI
-                
-                if(order.status === 'Paid') {
-                    showToast('🎉 恭喜！业绩已计入年度目标', 'success');
-                }
+                updateDashboard();
+                if(order.status === 'Paid') showToast('🎉 业绩已更新', 'success');
             }
         }
 
@@ -729,87 +770,77 @@
         function calculateFOB() {
             const cost = parseFloat(document.getElementById('calc-cost').value);
             const rate = parseFloat(document.getElementById('calc-rate').value);
+            const margin = parseFloat(document.getElementById('calc-margin').value) || 20;
+            const rebate = parseFloat(document.getElementById('calc-rebate').value) || 13;
+            
             if(!cost || !rate) return;
-            const res = (cost / 7.25) * 1.2; // Dummy calc for visual
-            document.getElementById('res-price').innerText = '$' + res.toFixed(2);
+            
+            // 简单FOB计算公式演示
+            const taxBase = cost / 1.13;
+            const taxRefund = taxBase * (rebate / 100);
+            const realCost = cost - taxRefund;
+            const finalPrice = (realCost / (1 - margin/100)) / rate;
+            const profitRMB = (finalPrice * rate) - realCost;
+            
+            document.getElementById('res-price').innerText = '$' + finalPrice.toFixed(2);
+            document.getElementById('res-tax').innerText = '¥' + taxRefund.toFixed(2);
+            document.getElementById('res-profit').innerText = '¥' + profitRMB.toFixed(2);
+            document.getElementById('profit-margin').innerText = margin + '%';
+            
             document.getElementById('fob-result').classList.remove('hidden');
         }
         function saveRate() {
             currentRate = document.getElementById('calc-rate').value;
             localStorage.setItem('v5_usd_rate', currentRate);
             showToast('汇率已保存', 'success');
-            updateDashboard(); // 汇率变了，KPI也要变
+            updateDashboard();
         }
         function resetCalculator() {
             document.getElementById('calc-cost').value = '';
             document.getElementById('fob-result').classList.add('hidden');
         }
-        function calculateCBM() {
-            const l = document.getElementById('cbm-l').value;
-            const w = document.getElementById('cbm-w').value;
-            const h = document.getElementById('cbm-h').value;
-            const q = document.getElementById('cbm-ctn').value;
-            if(l && w && h) {
-                const total = (l*w*h/1000000) * q;
-                document.getElementById('res-cbm').innerText = total.toFixed(3);
-                document.getElementById('txt-20gp').innerText = ((total/28)*100).toFixed(1) + '%';
-                document.getElementById('cbm-result').classList.remove('hidden');
-            }
-        }
 
-        // --- 4. 数字转大写 (Professional Version) ---
-        function convertAmountToWords(amount) {
-            const intPart = Math.floor(amount);
-            const decPart = Math.round((amount - intPart) * 100);
-            return `SAY TOTAL US DOLLARS ${intPart.toLocaleString('en-US')}` + 
-                   (decPart > 0 ? ` AND ${decPart}/100 CENTS ONLY` : ` ONLY`);
-        }
-
-        // 模拟打印 PI
-        function printPI() {
-            if(currentCart.length === 0) return alert('购物车为空');
-            const customer = document.getElementById('pi-customer').value || 'Customer';
-            const id = document.getElementById('new-pi-no').innerText;
-            const total = document.getElementById('pi-total').innerText.replace('$','');
+        // --- 4. 金额大写神器 ---
+        function convertAmount() {
+            const num = document.getElementById('amount-num').value;
+            const currency = document.getElementById('amount-currency').value;
+            if(!num) { document.getElementById('amount-text').textContent = "SAY TOTAL..."; return; }
             
-            const totalWords = convertAmountToWords(parseFloat(total));
-
-            let printContent = `
-========================================
-       PROFORMA INVOICE
-       V5 Medical LTD
-========================================
-Invoice No: ${id}
-Date: ${new Date().toLocaleDateString()}
-Bill To: ${customer}
-Term: ${document.getElementById('pi-term').value}
-----------------------------------------
-Item                  Qty      Price
-----------------------------------------
-`;
-            currentCart.forEach(i => {
-                printContent += `${i.name.padEnd(20)} ${i.qty.toString().padEnd(8)} $${i.total.toFixed(2)}\n`;
-            });
-            printContent += `----------------------------------------
-TOTAL:                $${total}
-${totalWords}
-========================================
-Bank: Citibank Hong Kong
-Account: 123-456-789
-Beneficiary: V5 Medical LTD
-========================================`;
-
-            alert("模拟打印预览 (实际项目可生成PDF):\n" + printContent);
+            const n = parseFloat(num);
+            const intPart = Math.floor(n);
+            const decPart = Math.round((n - intPart) * 100);
+            
+            const currencyMap = {'USD': 'US DOLLARS', 'EUR': 'EUROS', 'CNY': 'CHINESE YUAN'};
+            let text = `SAY TOTAL ${currencyMap[currency]} ${intPart.toLocaleString('en-US')}`;
+            text += decPart > 0 ? ` AND ${decPart}/100 CENTS ONLY` : ` ONLY`;
+            
+            document.getElementById('amount-text').textContent = text;
+        }
+        function copyAmountText() {
+            navigator.clipboard.writeText(document.getElementById('amount-text').textContent)
+                .then(() => showToast('大写金额已复制', 'success'));
         }
 
-        // --- 5. 数据安全 (Backup & Restore) ---
+        // --- 5. 医疗换算 ---
+        function convertMedical(type) {
+            const fr = document.getElementById('conv-fr');
+            const mm = document.getElementById('conv-mm');
+            if(type === 'fr') mm.value = (fr.value/3).toFixed(2);
+            else fr.value = (mm.value*3).toFixed(1);
+        }
+        function showGaugeColor() {
+            const colors = { '18': '1.2mm', '20': '0.9mm', '21': '0.8mm', '22': '0.7mm', '23': '0.6mm' };
+            const v = document.getElementById('conv-gauge').value;
+            document.getElementById('gauge-size').innerText = "OD: " + (colors[v] || 'N/A');
+        }
+
+        // --- 6. 数据安全 (Backup & Restore) ---
         function exportData() {
             const data = {
                 orders: JSON.parse(localStorage.getItem('v5_orders') || '[]'),
-                history: JSON.parse(localStorage.getItem('v5_calc_history') || '[]'),
                 rate: localStorage.getItem('v5_usd_rate'),
                 target: localStorage.getItem('v5_target'),
-                version: '6.1',
+                version: '7.0',
                 timestamp: new Date().toISOString()
             };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
@@ -845,7 +876,7 @@ Beneficiary: V5 Medical LTD
             reader.readAsText(file);
         }
 
-        // --- 6. 辅助UI ---
+        // --- 7. 辅助UI ---
         function showToast(msg, type) {
             const t = document.getElementById('notification-toast');
             document.getElementById('toast-message').innerText = msg;
@@ -869,22 +900,32 @@ Beneficiary: V5 Medical LTD
             overlay.classList.remove('show');
         });
 
-        // 汇率图表
-        new Chart(document.getElementById('rateChart'), {
-            type: 'line',
-            data: {
-                labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-                datasets: [{
-                    label: 'USD/CNY',
-                    data: [7.18, 7.20, 7.22, 7.21, 7.23, 7.24, 7.25],
-                    borderColor: '#1e40af',
-                    backgroundColor: 'rgba(30, 64, 175, 0.05)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: {legend: false}, scales: {x: {display:false}, y: {display:false}}, elements: {point:{radius:0}} }
-        });
+        // 待办事项新增
+        function addFollowUp() {
+            const task = prompt("新增待办事项内容:");
+            if(task) {
+                const list = document.getElementById('follow-up-list');
+                list.insertAdjacentHTML('afterbegin', `
+                    <div class="flex items-center justify-between p-3 bg-white rounded border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                            <div class="text-sm font-bold text-slate-700">${task}</div>
+                        </div>
+                        <button onclick="this.parentElement.remove()" class="text-xs text-green-500"><i class="fas fa-check"></i></button>
+                    </div>
+                `);
+                showToast("任务已添加", "success");
+            }
+        }
+
+        // 模拟打印 PI
+        function printPI() {
+            if(currentCart.length === 0) return alert('购物车为空');
+            const customer = document.getElementById('pi-customer').value || 'Customer';
+            const id = document.getElementById('new-pi-no').innerText;
+            const total = document.getElementById('pi-total').innerText;
+            alert(`正在生成 PI PDF: ${id}\n客户: ${customer}\n总额: ${total}\n(此处为模拟打印)`);
+        }
 
         // 初始化执行
         document.addEventListener('DOMContentLoaded', () => {
@@ -895,7 +936,7 @@ Beneficiary: V5 Medical LTD
             
             document.getElementById('calc-rate').value = currentRate;
             
-            // 🔥 全球商机时钟逻辑 (Robust Timezone Version)
+            // 🔥 全球商机时钟逻辑
             const cities = [
                 {name: 'Beijing', tz: 'Asia/Shanghai', icon: '🇨🇳'}, 
                 {name: 'London', tz: 'Europe/London', icon: '🇬🇧'}, 
@@ -913,9 +954,8 @@ Beneficiary: V5 Medical LTD
                     const timeString = new Intl.DateTimeFormat('en-US', options).format(now);
                     const hour = parseInt(timeString.split(':')[0]);
                     
-                    // 判断工作状态 (9-18点)
                     const isWorking = hour >= 9 && hour < 18;
-                    const statusClass = isWorking ? 'active border-green-500 shadow-md' : 'inactive';
+                    const statusClass = isWorking ? 'active border-green-500 shadow-md bg-green-50' : 'inactive bg-slate-50 opacity-70';
                     const dotClass = isWorking ? 'bg-green-500 animate-pulse' : 'bg-slate-300';
                     const textStatus = isWorking ? 'Open' : 'Closed';
                     
@@ -934,25 +974,8 @@ Beneficiary: V5 Medical LTD
                 }).join('');
             }
             setInterval(updateClockDisplay, 60000);
-            updateClockDisplay(); // 立即执行一次
-            
-            // 复制Prompt功能
-            window.copyPrompt = function(k) {
-                const prompts = {'dev':'Help write a cold email...', 'reject':'Handle price objection...'};
-                navigator.clipboard.writeText(prompts[k]||"").then(()=>showToast("AI指令已复制","success"));
-            }
-            window.copyMail = function() {
-                const b = document.getElementById('mail-body').value;
-                navigator.clipboard.writeText(b).then(()=>showToast("邮件内容已复制","success"));
-            }
-            window.setTemplate = function(k) {
-                document.getElementById('mail-body').value = "Sample Template Content loaded for " + k;
-            }
+            updateClockDisplay();
         });
     </script>
-    
-    <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
-    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
-    <script>function googleTranslateElementInit() {new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');}</script>
 </body>
 </html>
