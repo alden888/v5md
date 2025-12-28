@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V5 Medical - 外贸工具中心</title>
+    <meta name="description" content="集成金额转换、亚马逊快捷访问、邮件客户端、AI工具、节日提醒和快递查询的外贸实用工具">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#1e40af',
+                        accent: '#3b82f6',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                        neutral: '#64748b'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .tool-card {
+                @apply bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden;
+            }
+            .tool-header {
+                @apply bg-gradient-to-r from-primary to-secondary text-white p-4;
+            }
+            .tool-body {
+                @apply p-5;
+            }
+            .btn-primary {
+                @apply bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded-lg transition duration-200;
+            }
+            .input-field {
+                @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 页面头部会由LayoutManager自动渲染 -->
+    <div id="v5-header"></div>
+
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <div class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">外贸工具中心</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">集成实用工具，提升工作效率，专注核心业务发展</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 金额大小写转换工具 -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-money-bill-wave text-xl"></i>
+                        <h2 class="text-xl font-bold">金额大小写转换</h2>
+                    </div>
+                </div>
+                <div class="tool-body space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">输入金额 (USD)</label>
+                        <input type="number" id="amount" class="input-field" placeholder="例如: 1234.56" step="0.01" min="0">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">大写金额</label>
+                        <div id="amount-words" class="p-3 bg-gray-50 border border-gray-200 rounded-lg min-h-[42px] text-gray-800"></div>
+                    </div>
+                    <button onclick="convertAmount()" class="btn-primary w-full">转换</button>
+                </div>
+            </div>
+
+            <!-- 亚马逊卖家快捷访问 -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="flex items-center gap-3">
+                        <i class="fab fa-amazon text-xl"></i>
+                        <h2 class="text-xl font-bold">亚马逊卖家工具</h2>
+                    </div>
+                </div>
+                <div class="tool-body space-y-3">
+                    <a href="https://sellercentral.amazon.com" target="_blank" rel="noopener noreferrer" 
+                       class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                        <i class="fas fa-tachometer-alt text-amber-600"></i>
+                        <span>卖家中心 dashboard</span>
+                    </a>
+                    <a href="https://sellercentral.amazon.com/inventory" target="_blank" rel="noopener noreferrer" 
+                       class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                        <i class="fas fa-boxes text-blue-600"></i>
+                        <span>库存管理</span>
+                    </a>
+                    <a href="https://sellercentral.amazon.com/orders-v3" target="_blank" rel="noopener noreferrer" 
+                       class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                        <i class="fas fa-shopping-cart text-green-600"></i>
+                        <span>订单管理</span>
+                    </a>
+                    <a href="https://sellercentral.amazon.com/advertising" target="_blank" rel="noopener noreferrer" 
+                       class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                        <i class="fas fa-bullhorn text-purple-600"></i>
+                        <span>广告管理</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 邮件客户端链接 -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-envelope text-xl"></i>
+                        <h2 class="text-xl font-bold">邮件快捷发送</h2>
+                    </div>
+                </div>
+                <div class="tool-body space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">收件人</label>
+                        <input type="email" id="email-to" class="input-field" placeholder="客户邮箱地址">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">主题</label>
+                        <input type="text" id="email-subject" class="input-field" placeholder="邮件主题">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="mailto:sales@v5md.com" class="btn-primary flex items-center justify-center gap-2">
+                            <i class="fas fa-inbox"></i> 查看收件箱
+                        </a>
+                        <button onclick="sendEmail()" class="btn-primary flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane"></i> 发送邮件
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI工具集成 -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-brain text-xl"></i>
+                        <h2 class="text-xl font-bold">AI辅助工具</h2>
+                    </div>
+                </div>
+                <div class="tool-body space-y-3">
+                    <a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer" 
+                       class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                        <i class="fas fa-comment-dots text-gray-800"></i>
+                        <span>ChatGPT - 邮件撰写/翻译</span>
+                    </a>
+                    <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" 
+                       class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                        <i class="fas fa-file-alt text-blue-800"></i>
+                        <span>Claude - 文档分析</span>
+                    </a>
+                    <a href="https://www.perplexity.ai" target="_blank" rel="noopener noreferrer" 
+                       class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                        <i class="fas fa-search text-green-800"></i>
+                        <span>Perplexity - 市场研究</span>
+                    </a>
+                    <div class="pt-2">
+                        <button onclick="generateEmail()" class="btn-primary w-full flex items-center justify-center gap-2">
+                            <i class="fas fa-magic"></i> 生成客户跟进邮件
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 客户节日提醒 -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-calendar-alt text-xl"></i>
+                        <h2 class="text-xl font-bold">国际节日提醒</h2>
+                    </div>
+                </div>
+                <div class="tool-body space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">选择国家</label>
+                        <select id="country-select" class="input-field">
+                            <option value="us">美国</option>
+                            <option value="de">德国</option>
+                            <option value="fr">法国</option>
+                            <option value="uk">英国</option>
+                            <option value="tr">土耳其</option>
+                            <option value="ae">阿联酋</option>
+                            <option value="jp">日本</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">近期节日</label>
+                        <div id="holidays-list" class="space-y-2 max-h-40 overflow-y-auto p-2"></div>
+                    </div>
+                    <button onclick="showHolidays()" class="btn-primary w-full">查询节日</button>
+                </div>
+            </div>
+
+            <!-- 国际快递查询 -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-truck text-xl"></i>
+                        <h2 class="text-xl font-bold">国际快递查询</h2>
+                    </div>
+                </div>
+                <div class="tool-body space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">快递公司</label>
+                        <select id="courier" class="input-field">
+                            <option value="dhl">DHL</option>
+                            <option value="fedex">FedEx</option>
+                            <option value="ups">UPS</option>
+                            <option value="tnt">TNT</option>
+                            <option value="ems">EMS</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">运单号</label>
+                        <input type="text" id="tracking-number" class="input-field" placeholder="输入运单号">
+                    </div>
+                    <button onclick="trackShipment()" class="btn-primary w-full flex items-center justify-center gap-2">
+                        <i class="fas fa-search"></i> 查询物流
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 客户贺卡模板 -->
+        <div class="mt-10">
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-gift text-xl"></i>
+                        <h2 class="text-xl font-bold">客户贺卡模板</h2>
+                    </div>
+                </div>
+                <div class="tool-body">
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition">
+                            <div class="h-32 bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center">
+                                <i class="fas fa-birthday-cake text-white text-5xl"></i>
+                            </div>
+                            <div class="p-3 text-center">
+                                <h3 class="font-bold text-gray-800">生日贺卡</h3>
+                                <button onclick="useTemplate('birthday')" class="mt-2 text-sm text-primary hover:text-secondary">使用模板</button>
+                            </div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition">
+                            <div class="h-32 bg-gradient-to-r from-green-400 to-teal-500 flex items-center justify-center">
+                                <i class="fas fa-holiday text-white text-5xl"></i>
+                            </div>
+                            <div class="p-3 text-center">
+                                <h3 class="font-bold text-gray-800">节日贺卡</h3>
+                                <button onclick="useTemplate('holiday')" class="mt-2 text-sm text-primary hover:text-secondary">使用模板</button>
+                            </div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition">
+                            <div class="h-32 bg-gradient-to-r from-amber-400 to-orange-500 flex items-center justify-center">
+                                <i class="fas fa-handshake text-white text-5xl"></i>
+                            </div>
+                            <div class="p-3 text-center">
+                                <h3 class="font-bold text-gray-800">合作纪念</h3>
+                                <button onclick="useTemplate('cooperation')" class="mt-2 text-sm text-primary hover:text-secondary">使用模板</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">贺卡内容</label>
+                        <textarea id="card-content" class="input-field h-32" placeholder="贺卡内容将在这里生成..."></textarea>
+                        <div class="mt-3 flex justify-end">
+                            <button onclick="copyCardContent()" class="btn-primary flex items-center gap-2">
+                                <i class="fas fa-copy"></i> 复制内容
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚会由LayoutManager自动渲染 -->
+    <div id="v5-footer"></div>
+
+    <script>
+        // 金额转换功能
+        function convertAmount() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            if (isNaN(amount) || amount < 0) {
+                alert('请输入有效的金额');
+                return;
+            }
+            document.getElementById('amount-words').textContent = convertNumberToWords(amount);
+        }
+
+        // 数字转英文大写
+        function convertNumberToWords(amount) {
+            // 简化版实现，实际项目中可使用更完善的库
+            const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+            const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+            
+            const dollars = Math.floor(amount);
+            const cents = Math.round((amount - dollars) * 100);
+            
+            let dollarStr = '';
+            if (dollars > 0) {
+                dollarStr = convertNumber(dollars) + ' Dollar' + (dollars !== 1 ? 's' : '');
+            }
+            
+            let centStr = '';
+            if (cents > 0) {
+                centStr = convertNumber(cents) + ' Cent' + (cents !== 1 ? 's' : '');
+            }
+            
+            return (dollarStr + (dollarStr && centStr ? ' and ' : '') + centStr) || 'Zero Dollars';
+            
+            function convertNumber(num) {
+                if (num === 0) return '';
+                let str = '';
+                
+                if (num >= 1000) {
+                    str += convertNumber(Math.floor(num / 1000)) + ' Thousand ';
+                    num %= 1000;
+                }
+                
+                if (num >= 100) {
+                    str += ones[Math.floor(num / 100)] + ' Hundred ';
+                    num %= 100;
+                }
+                
+                if (num > 0) {
+                    if (str !== '') str += 'and ';
+                    if (num < 20) {
+                        str += ones[num];
+                    } else {
+                        str += tens[Math.floor(num / 10)];
+                        if (num % 10 !== 0) {
+                            str += '-' + ones[num % 10];
+                        }
+                    }
+                }
+                
+                return str.trim();
+            }
+        }
+
+        // 发送邮件功能
+        function sendEmail() {
+            const to = document.getElementById('email-to').value;
+            const subject = document.getElementById('email-subject').value;
+            
+            if (!to) {
+                alert('请输入收件人邮箱');
+                return;
+            }
+            
+            let mailtoLink = `mailto:${to}`;
+            if (subject) {
+                mailtoLink += `?subject=${encodeURIComponent(subject)}`;
+            }
+            
+            window.location.href = mailtoLink;
+        }
+
+        // 生成邮件功能
+        function generateEmail() {
+            // 实际项目中可连接AI API生成更智能的邮件内容
+            const emailContent = `Dear [客户名称],
+
+Hope this email finds you well.
+
+We would like to follow up on our previous discussion regarding [产品/服务名称]. 
+If you have any questions or need further information, please feel free to contact us.
+
+We look forward to your reply.
+
+Best regards,
+V5 Medical Team
+sales@v5md.com`;
+            
+            alert('邮件内容已生成，可粘贴到邮件客户端使用：\n\n' + emailContent);
+        }
+
+        // 显示节日
+        function showHolidays() {
+            const country = document.getElementById('country-select').value;
+            const holidaysList = document.getElementById('holidays-list');
+            
+            // 模拟节日数据，实际项目中可对接节日API
+            const holidays = {
+                'us': [
+                    { date: '2023-12-25', name: 'Christmas Day' },
+                    { date: '2024-01-01', name: 'New Year\'s Day' },
+                    { date: '2024-02-19', name: 'Presidents\' Day' }
+                ],
+                'de': [
+                    { date: '2023-12-25', name: 'Christmas Day' },
+                    { date: '2023-12-26', name: 'Second Day of Christmas' },
+                    { date: '2024-01-01', name: 'New Year\'s Day' }
+                ],
+                'tr': [
+                    { date: '2023-12-25', name: 'Christmas Day' },
+                    { date: '2024-01-01', name: 'New Year\'s Day' },
+                    { date: '2024-04-23', name: 'National Sovereignty and Children\'s Day' }
+                ]
+            };
+            
+            // 默认使用美国节日
+            const countryHolidays = holidays[country] || holidays['us'];
+            
+            holidaysList.innerHTML = countryHolidays.map(holiday => `
+                <div class="flex justify-between items-center p-2 border-b border-gray-100 last:border-0">
+                    <span>${holiday.name}</span>
+                    <span class="text-sm text-gray-500">${holiday.date}</span>
+                </div>
+            `).join('');
+        }
+
+        // 快递查询
+        function trackShipment() {
+            const courier = document.getElementById('courier').value;
+            const trackingNumber = document.getElementById('tracking-number').value;
+            
+            if (!trackingNumber) {
+                alert('请输入运单号');
+                return;
+            }
+            
+            // 各快递公司查询链接
+            const courierUrls = {
+                'dhl': `https://www.dhl.com/en/express/tracking.html?tracking_number=${trackingNumber}`,
+                'fedex': `https://www.fedex.com/fedextrack/?tracknumbers=${trackingNumber}`,
+                'ups': `https://www.ups.com/track?tracknum=${trackingNumber}`,
+                'tnt': `https://www.tnt.com/express/en_us/site/tracking.html?searchType=con&cons=${trackingNumber}`,
+                'ems': `https://www.ems.com.cn/english.html#/trackQuery?mailNo=${trackingNumber}`
+            };
+            
+            window.open(courierUrls[courier], '_blank');
+        }
+
+        // 使用贺卡模板
+        function useTemplate(type) {
+            const cardContent = document.getElementById('card-content');
+            const today = new Date().toLocaleDateString();
+            
+            const templates = {
+                'birthday': `Dear [客户名称],
+
+Warm wishes on your birthday!
+
+May your special day be filled with joy and happiness. Thank you for your continued support and partnership with V5 Medical.
+
+We look forward to another year of successful collaboration.
+
+Best regards,
+V5 Medical Team
+${today}`,
+                
+                'holiday': `Dear [客户名称],
+
+Happy [节日名称]!
+
+As we celebrate this special occasion, we want to express our gratitude for your trust and partnership throughout the year.
+
+Wishing you and your loved ones a wonderful holiday season.
+
+Best regards,
+V5 Medical Team
+${today}`,
+                
+                'cooperation': `Dear [客户名称],
+
+Celebrating [X] years of successful partnership!
+
+It has been a pleasure working with you, and we appreciate your trust in V5 Medical. We look forward to many more years of collaboration.
+
+Thank you for your continued support.
+
+Best regards,
+V5 Medical Team
+${today}`
+            };
+            
+            cardContent.value = templates[type];
+        }
+
+        // 复制贺卡内容
+        function copyCardContent() {
+            const cardContent = document.getElementById('card-content');
+            if (!cardContent.value) {
+                alert('请先选择模板生成贺卡内容');
+                return;
+            }
+            
+            cardContent.select();
+            document.execCommand('copy');
+            alert('贺卡内容已复制到剪贴板');
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化节日显示
+            showHolidays();
+            
+            // 如果页面有LayoutManager，初始化布局
+            if (window.LayoutManager) {
+                const layoutManager = new LayoutManager();
+                layoutManager.init();
+            }
+        });
+    </script>
+</body>
+</html>
