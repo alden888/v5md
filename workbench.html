@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V5 Medical - Global Workbench (2026 Edition)</title>
-    <meta name="description" content="V5 Medical Workbench: The central operating system for global sales, logistics, and compliance.">
+    <title>V5 Medical - Internal Workbench (实战版)</title>
+    <meta name="description" content="V5 Medical 内部专用：报价核算、单证制作、物流查询、财务对账。">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
@@ -20,17 +20,10 @@
                         warning: '#f59e0b',
                         danger: '#ef4444',
                         gold: '#fbbf24',
-                        feishu: '#3370ff', // 飞书蓝
+                        xtransfer: '#f64d2a', // XTransfer Brand Color
                     },
                     animation: {
                         'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'progress-grow': 'growWidth 1.5s ease-out forwards',
-                    },
-                    keyframes: {
-                        growWidth: {
-                            '0%': { width: '0%' },
-                            '100%': { width: 'var(--target-width)' }
-                        }
                     }
                 }
             }
@@ -130,7 +123,7 @@
         <div class="flex items-center gap-4 z-10">
             <div class="hidden md:flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full text-xs font-medium text-slate-600">
                 <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                <span>Workbench Live</span>
+                <span>Internal Use</span>
             </div>
             <div class="flex items-center gap-2">
                 <img src="https://ui-avatars.com/api/?name=Alden+Cheng&background=1e40af&color=fff" alt="User" class="w-8 h-8 rounded-full border-2 border-white shadow-sm">
@@ -160,11 +153,11 @@
         <div class="grid grid-cols-2 gap-2 px-6 mb-4 mt-2">
             <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" class="flex flex-col items-center justify-center p-2 rounded bg-slate-800 hover:bg-red-900/30 border border-slate-700 hover:border-red-500/50 transition group cursor-pointer text-center">
                 <i class="fab fa-google text-slate-400 group-hover:text-red-500 mb-1 text-lg"></i>
-                <span class="text-[10px] text-slate-400 group-hover:text-red-100 font-bold">Company Mail</span>
+                <span class="text-[10px] text-slate-400 group-hover:text-red-100 font-bold">GMail</span>
             </a>
             <a href="https://web.whatsapp.com" target="_blank" class="flex flex-col items-center justify-center p-2 rounded bg-slate-800 hover:bg-green-900/30 border border-slate-700 hover:border-green-500/50 transition group cursor-pointer text-center">
                 <i class="fab fa-whatsapp text-slate-400 group-hover:text-green-500 mb-1 text-lg"></i>
-                <span class="text-[10px] text-slate-400 group-hover:text-green-100 font-bold">WhatsApp Web</span>
+                <span class="text-[10px] text-slate-400 group-hover:text-green-100 font-bold">WhatsApp</span>
             </a>
         </div>
 
@@ -180,14 +173,17 @@
         </a>
 
         <div class="nav-header mt-2">支持系统</div>
+        <a href="#section-finance" class="nav-item">
+            <i class="fas fa-university"></i> 财务与对账 <span class="ml-auto text-[10px] bg-red-500 text-white px-1.5 rounded-full">New</span>
+        </a>
         <a href="#section-tools" class="nav-item">
-            <i class="fas fa-toolbox"></i> 单证与工具 <span class="ml-auto text-[10px] bg-red-500 text-white px-1.5 rounded-full">Hot</span>
+            <i class="fas fa-toolbox"></i> 单证与工具
         </a>
         <a href="#section-logistics" class="nav-item">
             <i class="fas fa-truck"></i> 亚马逊与物流
         </a>
-        <a href="#section-feishu" class="nav-item">
-            <i class="fas fa-rocket"></i> 飞书协作中心 <span class="ml-auto text-[10px] bg-feishu text-white px-1.5 rounded-full">New</span>
+        <a href="#section-crm" class="nav-item">
+            <i class="fas fa-tasks"></i> 待办与营销
         </a>
 
         <div class="mt-auto">
@@ -446,14 +442,14 @@
             
             <div class="tool-card">
                 <div class="tool-header">
-                    <div class="tool-title"><i class="fas fa-university"></i> 银行与汇率查询</div>
+                    <div class="tool-title"><i class="fas fa-university"></i> 官方汇率查询</div>
                 </div>
                 <div class="tool-body flex flex-col justify-center gap-4">
                     <a href="https://www.boc.cn/sourcedb/whpj/" target="_blank" class="flex items-center gap-3 p-3 bg-red-50 text-red-700 rounded-lg border border-red-100 hover:shadow-md transition">
                         <i class="fas fa-chart-line text-xl"></i>
                         <div>
                             <div class="font-bold text-sm">中国银行外汇牌价</div>
-                            <div class="text-[10px] opacity-70">权威汇率参考</div>
+                            <div class="text-[10px] opacity-70">唯一指定参考汇率</div>
                         </div>
                     </a>
                     <a href="https://finance.sina.com.cn/forex/" target="_blank" class="flex items-center gap-3 p-3 bg-blue-50 text-blue-700 rounded-lg border border-blue-100 hover:shadow-md transition">
@@ -463,23 +459,43 @@
                             <div class="text-[10px] opacity-70">实时汇率走势</div>
                         </div>
                     </a>
-                    <div class="mt-2 pt-4 border-t border-slate-100">
-                        <div class="text-xs font-bold text-slate-400 mb-2 uppercase">公司银行入口 (需U盾)</div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <a href="http://www.ccb.com/cn/home/indexv3.html" target="_blank" class="text-center p-2 bg-slate-50 rounded hover:bg-blue-50 text-xs font-medium text-slate-600">建设银行</a>
-                            <a href="https://www.icbc.com.cn/" target="_blank" class="text-center p-2 bg-slate-50 rounded hover:bg-red-50 text-xs font-medium text-slate-600">工商银行</a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <section id="section-tools" class="section-header">
-            <div class="section-icon"><i class="fas fa-toolbox"></i></div>
-            <h2>单证与工具</h2>
+        <section id="section-finance" class="section-header">
+            <div class="section-icon bg-xtransfer text-white"><i class="fas fa-university"></i></div>
+            <h2>财务与对账</h2>
         </section>
-        
+
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+            <div class="tool-card border-t-4 border-t-xtransfer">
+                <div class="tool-header">
+                    <div class="tool-title text-xtransfer"><i class="fas fa-exchange-alt"></i> XTransfer 结汇/对账</div>
+                    <a href="https://www.xtransfer.cn/" target="_blank" class="text-xs bg-red-50 text-red-600 px-3 py-1 rounded hover:bg-red-100">登录后台</a>
+                </div>
+                <div class="tool-body">
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600 relative group">
+                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition">
+                            <button onclick="copyBankInfo()" class="text-xs bg-white border border-slate-300 px-2 py-1 rounded hover:bg-blue-50 hover:text-blue-600">复制全部</button>
+                        </div>
+                        <div class="font-bold mb-2 flex items-center gap-2">
+                            <i class="fas fa-info-circle text-xtransfer"></i> 收款账户信息 (JPMorgan HK)
+                        </div>
+                        <div class="space-y-1 font-mono text-xs" id="bank-info-text">
+                            <p><span class="text-slate-400">Beneficiary:</span> Kunshan Vvohoo Industry Co., Ltd</p>
+                            <p><span class="text-slate-400">Bank:</span> JPMorgan Chase Bank N.A., Hong Kong Branch</p>
+                            <p><span class="text-slate-400">Account:</span> 63007935038</p>
+                            <p><span class="text-slate-400">SWIFT:</span> CHASHKHH</p>
+                            <p><span class="text-slate-400">Bank Addr:</span> 18/F, 20/F, 22-29/F, CHATER HOUSE, 8 CONNAUGHT ROAD CENTRAL, HONG KONG</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-xs text-slate-400 flex items-center gap-1">
+                        <i class="fas fa-shield-alt"></i> 资金安全提示：大额交易请务必核对 SWIFT Code。
+                    </div>
+                </div>
+            </div>
+
             <div class="tool-card border-t-4 border-t-purple-600">
                 <div class="tool-header">
                     <div class="tool-title text-purple-700"><i class="fas fa-file-contract"></i> 金额转大写 (Amount to Words)</div>
@@ -489,8 +505,8 @@
                         <input type="number" id="amount-num" class="input-field" placeholder="1234.50" oninput="convertAmount()">
                         <select id="amount-currency" class="input-field w-32" onchange="convertAmount()">
                             <option value="USD">USD</option>
+                            <option value="CNY">RMB</option>
                             <option value="EUR">EUR</option>
-                            <option value="CNY">CNY</option>
                         </select>
                     </div>
                     <div class="bg-purple-50 p-3 rounded-lg border border-purple-100 min-h-[60px] flex items-center">
@@ -501,97 +517,99 @@
                     </button>
                 </div>
             </div>
-            
-            <div class="tool-card border-t-4 border-t-gray-500">
+        </div>
+
+        <section id="section-logistics" class="section-header">
+            <div class="section-icon"><i class="fas fa-truck-loading"></i></div>
+            <h2>物流与亚马逊</h2>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+            <div class="tool-card border-t-4 border-t-orange-500">
                 <div class="tool-header">
-                    <div class="tool-title text-slate-700"><i class="fas fa-ruler-combined"></i> 医疗单位换算</div>
+                    <div class="tool-title text-orange-600"><i class="fab fa-amazon"></i> 卖家后台 & 快递查询</div>
                 </div>
-                <div class="tool-body space-y-3">
-                    <div class="flex items-center gap-2">
-                        <input type="number" id="conv-fr" class="input-field text-center" placeholder="Fr" oninput="convertMedical('fr')">
-                        <i class="fas fa-exchange-alt text-slate-400"></i>
-                        <input type="number" id="conv-mm" class="input-field text-center" placeholder="mm" oninput="convertMedical('mm')">
-                        <span class="text-xs text-slate-400 shrink-0">1 Fr ≈ 0.33mm</span>
+                <div class="tool-body">
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <a href="https://sellercentral.amazon.com/" target="_blank" class="p-3 bg-slate-50 hover:bg-orange-50 border border-slate-200 hover:border-orange-200 rounded-lg text-center transition">
+                            <i class="fab fa-amazon text-2xl text-slate-700 mb-1"></i>
+                            <div class="text-xs font-bold text-slate-600">Amazon SC (US)</div>
+                        </a>
+                        <a href="https://sellercentral.amazon.co.uk/" target="_blank" class="p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-lg text-center transition">
+                            <i class="fab fa-amazon text-2xl text-slate-700 mb-1"></i>
+                            <div class="text-xs font-bold text-slate-600">Amazon SC (UK)</div>
+                        </a>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <select id="conv-gauge" class="input-field" onchange="showGaugeColor()">
-                            <option value="18">18G (Pink)</option>
-                            <option value="20">20G (Yellow)</option>
-                            <option value="21">21G (Green)</option>
-                            <option value="22">22G (Black)</option>
-                            <option value="23">23G (Blue)</option>
-                        </select>
-                        <div id="gauge-color" class="h-8 w-full bg-pink-300 rounded flex items-center justify-center text-[10px] text-white font-bold shadow-inner">
-                            <span id="gauge-size">OD: 1.2mm</span>
+                    
+                    <div class="space-y-2">
+                        <a href="https://www.17track.net/zh-cn" target="_blank" class="block w-full p-2 bg-blue-50 border border-blue-100 rounded text-center text-sm font-bold text-blue-700 hover:bg-blue-100 transition">
+                            <i class="fas fa-search-location mr-1"></i> 17Track 全球物流查询
+                        </a>
+                        <div class="grid grid-cols-3 gap-2">
+                            <a href="https://www.dhl.com" target="_blank" class="text-xs text-center p-2 bg-slate-100 hover:bg-red-100 rounded text-slate-600 font-medium">DHL</a>
+                            <a href="https://www.fedex.com" target="_blank" class="text-xs text-center p-2 bg-slate-100 hover:bg-purple-100 rounded text-slate-600 font-medium">FedEx</a>
+                            <a href="https://www.ups.com" target="_blank" class="text-xs text-center p-2 bg-slate-100 hover:bg-yellow-100 rounded text-slate-600 font-medium">UPS</a>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="tool-card border-t-4 border-t-red-500" id="section-crm">
+                <div class="tool-header">
+                    <div class="tool-title text-red-600"><i class="fas fa-tasks"></i> 待办事项</div>
+                    <button onclick="addFollowUp()" class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded hover:bg-red-200">+ 新增</button>
+                </div>
+                <div class="tool-body">
+                    <div class="space-y-2 max-h-[300px] overflow-y-auto" id="follow-up-list">
+                        <div class="flex items-center justify-between p-3 bg-amber-50 rounded border border-amber-100 shadow-sm">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-xs font-bold animate-pulse-fast"><i class="fas fa-bullhorn"></i></div>
+                                <div>
+                                    <div class="text-sm font-bold text-slate-700">月初营销工作</div>
+                                    <div class="text-xs text-slate-500">1. 制作贺卡群发客户<br>2. 社媒 (LinkedIn/FB) 发帖分享</div>
+                                </div>
+                            </div>
+                            <span class="text-[10px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full font-bold">每月循环</span>
+                        </div>
+                        </div>
                 </div>
             </div>
         </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
-            <div class="tool-card border-t-4 border-t-orange-500" id="section-logistics">
-                <div class="tool-header">
-                    <div class="tool-title text-orange-600"><i class="fab fa-amazon"></i> 亚马逊与物流查询</div>
-                </div>
-                <div class="tool-body grid grid-cols-2 gap-3">
-                    <a href="https://sellercentral.amazon.com/" target="_blank" class="p-3 bg-slate-50 hover:bg-orange-50 border border-slate-200 hover:border-orange-200 rounded-lg text-center transition">
-                        <i class="fab fa-amazon text-2xl text-slate-700 mb-1"></i>
-                        <div class="text-xs font-bold text-slate-600">卖家中心 (US)</div>
-                    </a>
-                    <a href="https://sellercentral.amazon.co.uk/" target="_blank" class="p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-lg text-center transition">
-                        <i class="fab fa-amazon text-2xl text-slate-700 mb-1"></i>
-                        <div class="text-xs font-bold text-slate-600">卖家中心 (UK)</div>
-                    </a>
-                    <a href="https://www.17track.net/zh-cn" target="_blank" class="col-span-2 p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-lg flex items-center justify-center gap-3 transition">
-                        <i class="fas fa-truck text-blue-500"></i>
-                        <span class="font-bold text-sm text-slate-700">17Track 全球物流查询</span>
-                    </a>
-                    <div class="col-span-2 grid grid-cols-3 gap-2 mt-1">
-                        <a href="https://www.dhl.com" target="_blank" class="text-xs text-center p-2 bg-slate-100 hover:bg-red-100 rounded">DHL</a>
-                        <a href="https://www.fedex.com" target="_blank" class="text-xs text-center p-2 bg-slate-100 hover:bg-purple-100 rounded">FedEx</a>
-                        <a href="https://www.ups.com" target="_blank" class="text-xs text-center p-2 bg-slate-100 hover:bg-yellow-100 rounded">UPS</a>
+        
+        <section id="section-tools" class="section-header">
+            <div class="section-icon"><i class="fas fa-toolbox"></i></div>
+            <h2>更多工具</h2>
+        </section>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+            <div class="tool-card border-l-4 border-l-purple-500 hover:shadow-md transition col-span-2">
+                <div class="p-4">
+                    <h3 class="font-bold text-sm mb-3 flex items-center">
+                        <i class="fas fa-ruler mr-2 text-purple-500"></i> 导管 Fr/Ch ⇋ mm
+                    </h3>
+                    <div class="flex gap-2 items-center">
+                        <input type="number" id="conv-fr" class="input-field text-center" placeholder="Fr" oninput="convertMedical('fr')" min="0" step="0.1">
+                        <i class="fas fa-exchange-alt text-slate-300 text-xs"></i>
+                        <input type="number" id="conv-mm" class="input-field text-center" placeholder="mm" oninput="convertMedical('mm')" min="0" step="0.01">
                     </div>
+                    <div class="text-[10px] text-slate-400 mt-2">1 Fr = 0.33 mm (外径)</div>
                 </div>
             </div>
-
-            <div class="tool-card border-t-4 border-t-feishu" id="section-feishu">
-                <div class="tool-header">
-                    <div class="tool-title text-feishu"><i class="fas fa-rocket"></i> 飞书协作中心</div>
-                    <button onclick="toggleWebhookConfig()" class="text-xs text-slate-400 hover:text-blue-500"><i class="fas fa-cog"></i> 配置</button>
-                </div>
-                <div class="tool-body">
-                    <div id="webhook-config" class="hidden mb-4 p-3 bg-slate-100 rounded border border-slate-200">
-                        <label class="input-label">飞书群 Webhook 地址</label>
-                        <input type="text" id="feishu-webhook" class="input-field text-xs" placeholder="https://open.feishu.cn/open-apis/bot/v2/hook/..." onchange="saveWebhook()">
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2 mb-3">
-                        <a href="lark://app.feishu.cn/todo" class="flex flex-col items-center p-3 bg-blue-50 hover:bg-blue-100 rounded border border-blue-100 transition">
-                            <i class="fas fa-check-square text-feishu text-lg mb-1"></i>
-                            <span class="text-xs font-bold text-slate-700">飞书待办</span>
-                        </a>
-                        <a href="lark://app.feishu.cn/calendar" class="flex flex-col items-center p-3 bg-orange-50 hover:bg-orange-100 rounded border border-orange-100 transition">
-                            <i class="fas fa-calendar-alt text-orange-500 text-lg mb-1"></i>
-                            <span class="text-xs font-bold text-slate-700">飞书日历</span>
-                        </a>
-                    </div>
-
-                    <div class="p-2 bg-slate-50 rounded border border-slate-100">
-                        <textarea id="push-content" class="input-field h-16 text-xs resize-none mb-2" placeholder="输入备忘内容，或粘贴 PI 摘要..."></textarea>
-                        <button onclick="pushToFeishu()" class="w-full btn-action bg-green-600 hover:bg-green-700 text-xs py-1.5">
-                            <i class="fas fa-paper-plane"></i> 推送到飞书群
-                        </button>
-                    </div>
-                    
-                    <div class="mt-3 flex items-center justify-between p-2 bg-amber-50 rounded border border-amber-100">
-                        <div class="flex items-center gap-2">
-                            <div class="w-6 h-6 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-[10px] font-bold"><i class="fas fa-sync"></i></div>
-                            <div>
-                                <div class="text-[10px] font-bold text-slate-700">月初营销工作 (Monthly)</div>
-                                <div class="text-[9px] text-slate-500">贺卡群发 & 社媒分享</div>
-                            </div>
-                        </div>
+            
+            <div class="tool-card border-l-4 border-l-purple-500 hover:shadow-md transition col-span-2">
+                <div class="p-4">
+                    <h3 class="font-bold text-sm mb-3 flex items-center">
+                        <i class="fas fa-syringe mr-2 text-purple-500"></i> 针头 Gauge 颜色
+                    </h3>
+                    <select id="conv-gauge" class="input-field" onchange="showGaugeColor()">
+                        <option value="18">18G (Pink)</option>
+                        <option value="20">20G (Yellow)</option>
+                        <option value="21">21G (Green)</option>
+                        <option value="22">22G (Black)</option>
+                        <option value="23">23G (Blue)</option>
+                    </select>
+                    <div id="gauge-color" class="h-6 mt-2 w-full bg-pink-300 rounded flex items-center justify-center text-[10px] text-white font-bold">
+                        <span id="gauge-size">OD: 1.2mm</span>
                     </div>
                 </div>
             </div>
@@ -601,7 +619,6 @@
 
     <script>
         // --- 全局配置 ---
-        // 优先读取本地存储的目标，如果没有则默认为 500万
         let ANNUAL_TARGET = parseInt(localStorage.getItem('v5_target')) || 5000000;
         let currentRate = localStorage.getItem('v5_usd_rate') || 7.25;
 
@@ -886,7 +903,7 @@
                 orders: JSON.parse(localStorage.getItem('v5_orders') || '[]'),
                 rate: localStorage.getItem('v5_usd_rate'),
                 target: localStorage.getItem('v5_target'),
-                version: '8.3',
+                version: '7.0',
                 timestamp: new Date().toISOString()
             };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
@@ -946,6 +963,24 @@
             overlay.classList.remove('show');
         });
 
+        // 待办事项新增
+        function addFollowUp() {
+            const task = prompt("新增待办事项内容:");
+            if(task) {
+                const list = document.getElementById('follow-up-list');
+                list.insertAdjacentHTML('afterbegin', `
+                    <div class="flex items-center justify-between p-3 bg-white rounded border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                            <div class="text-sm font-bold text-slate-700">${task}</div>
+                        </div>
+                        <button onclick="this.parentElement.remove()" class="text-xs text-green-500"><i class="fas fa-check"></i></button>
+                    </div>
+                `);
+                showToast("任务已添加", "success");
+            }
+        }
+
         // 模拟打印 PI
         function printPI() {
             if(currentCart.length === 0) return alert('购物车为空');
@@ -955,42 +990,9 @@
             alert(`正在生成 PI PDF: ${id}\n客户: ${customer}\n总额: ${total}\n(此处为模拟打印)`);
         }
 
-        // --- 8. 飞书集成逻辑 (修复回归) ---
-        function toggleWebhookConfig() {
-            document.getElementById('webhook-config').classList.toggle('hidden');
-        }
-
-        function saveWebhook() {
-            const url = document.getElementById('feishu-webhook').value;
-            localStorage.setItem('v5_feishu_hook', url);
-            showToast('Webhook 地址已保存', 'success');
-        }
-
-        async function pushToFeishu(content = null) {
-            const url = localStorage.getItem('v5_feishu_hook');
-            if(!url) {
-                alert('请先配置飞书 Webhook 地址');
-                toggleWebhookConfig();
-                return;
-            }
-            const text = content || document.getElementById('push-content').value;
-            if(!text) return showToast('内容不能为空', 'error');
-
-            try {
-                // 尝试发送 (注意跨域限制)
-                await fetch(url, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ msg_type: "text", content: { text: "【V5 Workbench】\n" + text } })
-                });
-                showToast('推送请求已发送', 'success');
-            } catch (e) {
-                console.error(e);
-                if(confirm("发送受阻(跨域)，是否复制内容手动粘贴？")) {
-                    navigator.clipboard.writeText(text);
-                    window.open('https://www.feishu.cn/messenger/', '_blank');
-                }
-            }
+        function copyBankInfo() {
+            const text = document.getElementById('bank-info-text').innerText;
+            navigator.clipboard.writeText(text).then(() => showToast('收款信息已复制', 'success'));
         }
 
         // 初始化执行
@@ -1001,12 +1003,6 @@
             updateDashboard();
             
             document.getElementById('calc-rate').value = currentRate;
-            
-            // Webhook 回显
-            const savedHook = localStorage.getItem('v5_feishu_hook');
-            if(savedHook && document.getElementById('feishu-webhook')) {
-                document.getElementById('feishu-webhook').value = savedHook;
-            }
             
             // 🔥 全球商机时钟逻辑
             const cities = [
