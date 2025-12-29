@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V5 Medical - 内部工作台 2.0</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        sidebar: '#0f172a',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .loader { border: 4px solid #f3f4f6; border-top: 4px solid #1e40af; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- 加载屏幕 -->
+    <div id="v5-loader" class="fixed inset-0 bg-white z-[10000] flex items-center justify-center">
+        <div class="text-center">
+            <div class="loader mx-auto mb-4"></div>
+            <p class="text-slate-600 font-medium">正在加载工作台...</p>
+            <p class="text-xs text-slate-400 mt-2">V5 Medical Workbench v2.0</p>
+        </div>
+    </div>
+
+    <!-- 工作台主体将由JS动态渲染 -->
+    <div id="workbench-app"></div>
+
+    <!-- ============================================ -->
+    <!-- 模块加载顺序（从主站继承配置） -->
+    <!-- ============================================ -->
+    
+    <!-- 1. 主站配置（继承） -->
+    <script src="../js/config.js?v=2.7.0"></script>
+    
+    <!-- 2. 工作台核心模块 -->
+    <script src="js/workbench-auth.js?v=2.0.0"></script>
+    <script src="js/workbench-config.js?v=2.0.0"></script>
+    <script src="js/workbench-utils.js?v=2.0.0"></script>
+    <script src="js/workbench-storage.js?v=2.0.0"></script>
+    
+    <!-- 3. 业务模块 -->
+    <script src="js/workbench-dashboard.js?v=2.0.0"></script>
+    <script src="js/workbench-orders.js?v=2.0.0"></script>
+    <script src="js/workbench-pricing.js?v=2.0.0"></script>
+    <script src="js/workbench-finance.js?v=2.0.0"></script>
+
+    <!-- 4. 主初始化脚本 -->
+    <script>
+        // ============================================
+        // 工作台主初始化流程
+        // ============================================
+        (async function initWorkbench() {
+            try {
+                console.log('%c🚀 V5 Medical Workbench v2.0', 'color: #1e40af; font-size: 16px; font-weight: bold');
+                
+                // Step 1: 身份验证
+                const auth = new WorkbenchAuth();
+                const isAuthorized = await auth.init();
+                
+                if (!isAuthorized) {
+                    throw new Error('Authentication failed');
+                }
+
+                // Step 2: 初始化数据存储
+                const storage = new WorkbenchStorage();
+                await storage.init();
+
+                // Step 3: 渲染工作台界面
+                renderWorkbenchUI();
+
+                // Step 4: 初始化各业务模块
+                const dashboard = new WorkbenchDashboard();
+                const orders = new WorkbenchOrders();
+                const pricing = new WorkbenchPricing();
+                const finance = new WorkbenchFinance();
+
+                // 挂载到全局
+                window.V5Workbench = {
+                    auth,
+                    storage,
+                    dashboard,
+                    orders,
+                    pricing,
+                    finance,
+                    version: WorkbenchConfig.VERSION
+                };
+
+                // Step 5: 隐藏加载屏幕
+                setTimeout(() => {
+                    document.getElementById('v5-loader').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('v5-loader').style.display = 'none';
+                    }, 300);
+                }, 500);
+
+                console.log('✅ Workbench initialized successfully');
+
+            } catch (error) {
+                console.error('❌ Workbench initialization failed:', error);
+                document.getElementById('v5-loader').innerHTML = `
+                    <div class="text-center">
+                        <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+                        <p class="text-red-600 font-bold">工作台加载失败</p>
+                        <p class="text-sm text-slate-500 mt-2">${error.message}</p>
+                        <button onclick="location.reload()" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                            重新加载
+                        </button>
+                    </div>
+                `;
+            }
+        })();
+
+        // ============================================
+        // 渲染主界面框架
+        // ============================================
+        function renderWorkbenchUI() {
+            const app = document.getElementById('workbench-app');
+            app.innerHTML = `
+                <!-- 顶部导航 -->
+                <header class="fixed top-0 left-0 right-0 bg-white shadow-sm border-b border-slate-200 z-50 h-16">
+                    <div class="flex items-center justify-between h-full px-4">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-primary text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold">V5</div>
+                            <div>
+                                <h1 class="font-bold text-lg text-slate-800">工作台 2.0</h1>
+                                <div class="text-xs text-slate-400">Workbench</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <button onclick="window.V5Workbench.auth.logout()" class="text-sm text-slate-600 hover:text-red-600 flex items-center gap-1">
+                                <i class="fas fa-sign-out-alt"></i> 退出
+                            </button>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- 主内容区 -->
+                <main class="pt-20 px-4 pb-8">
+                    <div id="workbench-content" class="max-w-7xl mx-auto">
+                        <!-- 内容由各模块动态渲染 -->
+                    </div>
+                </main>
+            `;
+        }
+    </script>
+</body>
+</html>
