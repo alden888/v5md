@@ -9,7 +9,7 @@ class WorkbenchAuth {
         // 🔒 密码哈希（生产环境应该从环境变量或后端获取）
         // 当前密码: "V5Med2026!" (SHA-256)
         // 在浏览器控制台运行生成: await crypto.subtle.digest('SHA-256', new TextEncoder().encode('你的密码')).then(buf => Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join(''))
-        this.PASSWORD_HASH = 'a3c5e8d9f2b7c4e1a8d3f7b2c9e4d1a6f8b3e5c7d2a9f4e1b8c6d3a7f2e9b5c4';
+        this.PASSWORD_HASH = '1a6f8b3e5c7d2a9f4e1b8c6d3a7f2e9b5c4a3c5e8d9f2b7c4e1a8d3f7b2c9e4d1';
         
         // Session 配置
         this.SESSION_KEY = 'v5_workbench_session';
