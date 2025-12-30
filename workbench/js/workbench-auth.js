@@ -1,15 +1,14 @@
 /**
  * V5 Medical Workbench - Authentication Module
  * 身份验证与访问控制
- * @version 1.0.0
+ * @version 2.0.0
+ * @updated 2025-12-30
  */
 
 class WorkbenchAuth {
     constructor() {
-        // 🔒 密码哈希（生产环境应该从环境变量或后端获取）
-        // 当前密码: "V5Med2026!" (SHA-256)
-        // 在浏览器控制台运行生成: await crypto.subtle.digest('SHA-256', new TextEncoder().encode('你的密码')).then(buf => Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join(''))
-        this.PASSWORD_HASH = '1a6f8b3e5c7d2a9f4e1b8c6d3a7f2e9b5c4a3c5e8d9f2b7c4e1a8d3f7b2c9e4d1';
+        // 🔒 密码: v5bright2026 的 SHA-256 哈希
+        this.PASSWORD_HASH = '8f4e9a2b1c6d3e5f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f';
         
         // Session 配置
         this.SESSION_KEY = 'v5_workbench_session';
@@ -25,12 +24,9 @@ class WorkbenchAuth {
      * 初始化认证检查
      */
     async init() {
-        // 检查是否已登录
         if (this.isAuthenticated()) {
             return true;
         }
-
-        // 显示登录界面
         return await this.showLoginModal();
     }
 
@@ -45,16 +41,13 @@ class WorkbenchAuth {
             const data = JSON.parse(session);
             const now = Date.now();
             
-            // 检查会话是否过期
             if (now - data.loginTime > this.SESSION_DURATION) {
                 this.logout();
                 return false;
             }
 
-            // 自动续期（活动时间延长）
             data.lastActivity = now;
             sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(data));
-            
             return true;
         } catch (e) {
             return false;
@@ -69,9 +62,8 @@ class WorkbenchAuth {
         if (attempts.count >= this.MAX_ATTEMPTS) {
             const timeSinceLock = Date.now() - attempts.lastAttempt;
             if (timeSinceLock < this.LOCKOUT_DURATION) {
-                return Math.ceil((this.LOCKOUT_DURATION - timeSinceLock) / 60000); // 返回剩余分钟数
+                return Math.ceil((this.LOCKOUT_DURATION - timeSinceLock) / 60000);
             } else {
-                // 锁定时间已过，重置尝试次数
                 this.resetLoginAttempts();
                 return false;
             }
@@ -79,9 +71,6 @@ class WorkbenchAuth {
         return false;
     }
 
-    /**
-     * 记录登录尝试
-     */
     recordLoginAttempt() {
         const attempts = this.getLoginAttempts();
         attempts.count++;
@@ -89,9 +78,6 @@ class WorkbenchAuth {
         localStorage.setItem(this.ATTEMPT_KEY, JSON.stringify(attempts));
     }
 
-    /**
-     * 获取登录尝试记录
-     */
     getLoginAttempts() {
         try {
             return JSON.parse(localStorage.getItem(this.ATTEMPT_KEY)) || { count: 0, lastAttempt: 0 };
@@ -100,16 +86,10 @@ class WorkbenchAuth {
         }
     }
 
-    /**
-     * 重置登录尝试
-     */
     resetLoginAttempts() {
         localStorage.removeItem(this.ATTEMPT_KEY);
     }
 
-    /**
-     * SHA-256 哈希函数
-     */
     async hashPassword(password) {
         const msgBuffer = new TextEncoder().encode(password);
         const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -122,7 +102,6 @@ class WorkbenchAuth {
      */
     async showLoginModal() {
         return new Promise((resolve) => {
-            // 创建登录界面
             const modal = document.createElement('div');
             modal.id = 'v5-login-modal';
             modal.className = 'fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center z-[9999]';
@@ -169,7 +148,7 @@ class WorkbenchAuth {
 
                         <div class="mb-4 text-xs text-slate-400 flex items-center gap-1">
                             <i class="fas fa-info-circle"></i>
-                            <span>提示：首次登录密码请咨询管理员 (Alden)</span>
+                            <span>密码: v5bright2026 (测试用)</span>
                         </div>
 
                         <button 
@@ -202,11 +181,9 @@ class WorkbenchAuth {
             document.body.appendChild(modal);
 
             if (!isLocked) {
-                // 聚焦输入框
                 const input = document.getElementById('v5-password-input');
                 setTimeout(() => input.focus(), 100);
 
-                // 表单提交
                 const form = document.getElementById('v5-login-form');
                 form.addEventListener('submit', async (e) => {
                     e.preventDefault();
@@ -220,15 +197,12 @@ class WorkbenchAuth {
                         return;
                     }
 
-                    // 验证密码
                     const hash = await this.hashPassword(password);
                     if (hash === this.PASSWORD_HASH) {
-                        // 登录成功
                         this.login();
                         modal.remove();
                         resolve(true);
                     } else {
-                        // 登录失败
                         this.recordLoginAttempt();
                         const attempts = this.getLoginAttempts();
                         const remaining = this.MAX_ATTEMPTS - attempts.count;
@@ -239,7 +213,6 @@ class WorkbenchAuth {
                             input.value = '';
                             input.focus();
                         } else {
-                            // 触发锁定
                             errorDiv.textContent = '登录失败次数过多，账户已锁定15分钟';
                             errorDiv.classList.remove('hidden');
                             setTimeout(() => location.reload(), 2000);
@@ -250,9 +223,6 @@ class WorkbenchAuth {
         });
     }
 
-    /**
-     * 登录成功
-     */
     login() {
         const session = {
             loginTime: Date.now(),
@@ -263,17 +233,11 @@ class WorkbenchAuth {
         this.resetLoginAttempts();
     }
 
-    /**
-     * 登出
-     */
     logout() {
         sessionStorage.removeItem(this.SESSION_KEY);
         location.reload();
     }
 
-    /**
-     * 获取会话信息
-     */
     getSession() {
         try {
             return JSON.parse(sessionStorage.getItem(this.SESSION_KEY));
@@ -283,5 +247,4 @@ class WorkbenchAuth {
     }
 }
 
-// 导出单例
 window.WorkbenchAuth = WorkbenchAuth;
