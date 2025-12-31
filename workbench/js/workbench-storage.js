@@ -10,8 +10,8 @@ class WorkbenchStorage {
         this.USE_CLOUD = true; // 🔥 切换到云端存储
         
         // Cloudflare Workers API 配置
-        this.WORKER_URL = 'https://v5-workbench.yourdomain.workers.dev'; // ⚠️ 需要替换为实际 Worker URL
-        this.API_KEY = 'YOUR_SECRET_KEY'; // ⚠️ 需要配置 API Key
+        this.WORKER_URL = 'https://v5-workbench-api.alden888.workers.dev'; // ⚠️ 需要替换为实际 Worker URL
+        this.API_KEY = 'v5bright2026_secret_key'; // ⚠️ 需要配置 API Key
         
         // 本地缓存
         this.cache = {
