@@ -7,7 +7,7 @@
 class WorkbenchStorage {
     constructor() {
         this.config = window.WorkbenchConfig;
-        this.USE_CLOUD = true; // 🔥 切换到云端存储
+        this.USE_CLOUD = false; // 🔥 切换到云端存储
         
         // Cloudflare Workers API 配置
         this.WORKER_URL = 'https://v5-workbench-api.alden888.workers.dev'; // ⚠️ 需要替换为实际 Worker URL
