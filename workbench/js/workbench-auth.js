@@ -104,7 +104,7 @@ class WorkbenchAuth {
         return new Promise((resolve) => {
             const modal = document.createElement('div');
             modal.id = 'v5-login-modal';
-            modal.className = 'fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center z-[9999]';
+            modal.className = 'fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center z-[20000]';
             
             const lockoutMinutes = this.isLockedOut();
             const isLocked = lockoutMinutes !== false;
