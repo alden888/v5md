@@ -67,7 +67,7 @@
     <!-- 4. 主初始化脚本 -->
     <script>
         // ============================================
-        // 工作台主初始化流程
+        // 工作台主初始化流程 (已修复逻辑)
         // ============================================
         (async function initWorkbench() {
             try {
@@ -75,6 +75,7 @@
                 
                 // Step 1: 身份验证
                 const auth = new WorkbenchAuth();
+                // 此时 Login 弹窗的 z-index 已修正在 20000，用户可以看到并输入密码
                 const isAuthorized = await auth.init();
                 
                 if (!isAuthorized) {
@@ -85,48 +86,66 @@
                 const storage = new WorkbenchStorage();
                 await storage.init();
 
-                // Step 3: 渲染工作台界面
+                // Step 3: 渲染工作台界面框架
                 renderWorkbenchUI();
 
-                // Step 4: 初始化各业务模块
+                // Step 4: 挂载全局对象 (🔥 关键修复：先挂载，再实例化模块)
+                window.V5Workbench = {
+                    auth,
+                    storage,
+                    // 占位，稍后填充
+                    dashboard: null,
+                    orders: null,
+                    pricing: null,
+                    finance: null,
+                    version: WorkbenchConfig.VERSION
+                };
+
+                // Step 5: 初始化各业务模块 (🔥 修复依赖顺序)
+                // 现在模块内部可以安全访问 window.V5Workbench.storage 了
                 const dashboard = new WorkbenchDashboard();
                 const orders = new WorkbenchOrders();
                 const pricing = new WorkbenchPricing();
                 const finance = new WorkbenchFinance();
 
-                // 挂载到全局
-                window.V5Workbench = {
-                    auth,
-                    storage,
-                    dashboard,
-                    orders,
-                    pricing,
-                    finance,
-                    version: WorkbenchConfig.VERSION
-                };
+                // 更新全局对象
+                window.V5Workbench.dashboard = dashboard;
+                window.V5Workbench.orders = orders;
+                window.V5Workbench.pricing = pricing;
+                window.V5Workbench.finance = finance;
 
-                // Step 5: 隐藏加载屏幕
-                setTimeout(() => {
-                    document.getElementById('v5-loader').style.opacity = '0';
+                // Step 6: 🔥 启动模块 (之前漏掉了这一步)
+                // 必须调用 init() 才会加载数据和渲染图表
+                await dashboard.init();
+                // 如果其他模块也有 init 方法，也要在这里调用
+                // await orders.init(); 
+
+                // Step 7: 隐藏加载屏幕
+                const loader = document.getElementById('v5-loader');
+                if (loader) {
+                    loader.style.opacity = '0';
                     setTimeout(() => {
-                        document.getElementById('v5-loader').style.display = 'none';
-                    }, 300);
-                }, 500);
+                        loader.style.display = 'none';
+                    }, 500);
+                }
 
                 console.log('✅ Workbench initialized successfully');
 
             } catch (error) {
                 console.error('❌ Workbench initialization failed:', error);
-                document.getElementById('v5-loader').innerHTML = `
-                    <div class="text-center">
-                        <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
-                        <p class="text-red-600 font-bold">工作台加载失败</p>
-                        <p class="text-sm text-slate-500 mt-2">${error.message}</p>
-                        <button onclick="location.reload()" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-                            重新加载
-                        </button>
-                    </div>
-                `;
+                const loader = document.getElementById('v5-loader');
+                if (loader) {
+                    loader.innerHTML = `
+                        <div class="text-center">
+                            <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+                            <p class="text-red-600 font-bold">工作台加载失败</p>
+                            <p class="text-sm text-slate-500 mt-2">${error.message}</p>
+                            <button onclick="location.reload()" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                                重新加载
+                            </button>
+                        </div>
+                    `;
+                }
             }
         })();
 
@@ -134,9 +153,9 @@
         // 渲染主界面框架
         // ============================================
         function renderWorkbenchUI() {
+            // ... 保持原有代码不变 ...
             const app = document.getElementById('workbench-app');
             app.innerHTML = `
-                <!-- 顶部导航 -->
                 <header class="fixed top-0 left-0 right-0 bg-white shadow-sm border-b border-slate-200 z-50 h-16">
                     <div class="flex items-center justify-between h-full px-4">
                         <div class="flex items-center gap-3">
@@ -153,12 +172,8 @@
                         </div>
                     </div>
                 </header>
-
-                <!-- 主内容区 -->
                 <main class="pt-20 px-4 pb-8">
-                    <div id="workbench-content" class="max-w-7xl mx-auto">
-                        <!-- 内容由各模块动态渲染 -->
-                    </div>
+                    <div id="workbench-content" class="max-w-7xl mx-auto"></div>
                 </main>
             `;
         }
