@@ -4,66 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V5 Medical 工作台</title>
-    <!-- 复用主站的Tailwind和Font Awesome样式（解决样式缺失） -->
+    <!-- 直接引入Tailwind（确保样式生效） -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 复用主站的全局CSS（保持风格统一） -->
-    <link rel="stylesheet" href="../css/style.css">
-    <!-- 主站的配置文件（复用全局变量） -->
-    <script src="../js/config.js"></script>
 </head>
-<body class="bg-slate-50 min-h-screen">
-    <!-- 工作台容器（登录后显示） -->
-    <div id="workbench-container" class="container mx-auto px-4 py-8">
-        <!-- 导航栏（复用主站风格） -->
-        <nav class="bg-white shadow-sm rounded-lg p-4 mb-6">
-            <div class="flex justify-between items-center">
-                <!-- 复用主站的Logo风格 -->
-                <div class="flex items-center gap-3">
-                    <div class="bg-primary text-white w-9 h-9 rounded-lg flex items-center justify-center font-bold text-lg shadow-lg shadow-blue-500/30">V5</div>
-                    <h1 class="text-xl font-bold text-slate-800">V5 Medical 工作台</h1>
-                </div>
-                <button id="logout-btn" class="text-red-600 hover:text-red-700 transition flex items-center gap-1">
-                    <i class="fas fa-sign-out-alt"></i> 退出登录
-                </button>
+<body class="bg-slate-50 min-h-screen p-4 md:p-8">
+    <!-- 工作台容器 -->
+    <div class="max-w-7xl mx-auto">
+        <!-- 导航栏（内联样式） -->
+        <nav class="bg-white shadow-sm rounded-lg p-4 mb-8 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-[#1e40af] text-white w-9 h-9 rounded-lg flex items-center justify-center font-bold text-lg shadow-lg shadow-blue-500/30">V5</div>
+                <h1 class="text-xl font-bold text-slate-800">V5 Medical 工作台</h1>
             </div>
+            <button id="logout-btn" class="text-red-600 hover:text-red-700 transition flex items-center gap-1">
+                <i class="fas fa-sign-out-alt"></i> 退出登录
+            </button>
         </nav>
 
-        <!-- 功能模块（网格布局+卡片样式，和主站保持一致） -->
+        <!-- 功能模块（网格布局+卡片，全部内联样式） -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- 订单管理模块 -->
-            <div class="tool-card p-6">
+            <!-- 订单管理卡片 -->
+            <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all border border-slate-200">
                 <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center">
                     <i class="fas fa-shopping-cart text-blue-600 mr-2"></i> 订单管理
                 </h2>
-                <button id="clear-all-orders" class="btn-action bg-red-50 text-red-600 border border-red-200 hover:bg-red-100">
-                    <i class="fas fa-trash-alt mr-1"></i> 清空所有订单
+                <button id="clear-all-orders" class="w-full bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 py-2 px-4 rounded-lg transition flex items-center justify-center gap-1">
+                    <i class="fas fa-trash-alt"></i> 清空所有订单
                 </button>
             </div>
 
-            <!-- 数据仪表盘模块 -->
-            <div class="tool-card p-6">
+            <!-- 数据仪表盘卡片 -->
+            <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all border border-slate-200">
                 <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center">
                     <i class="fas fa-chart-line text-green-600 mr-2"></i> 数据仪表盘
                 </h2>
-                <button id="open-dashboard" class="btn-action bg-green-50 text-green-600 border border-green-200 hover:bg-green-100">
-                    <i class="fas fa-eye mr-1"></i> 查看仪表盘
+                <button id="open-dashboard" class="w-full bg-green-50 text-green-600 border border-green-200 hover:bg-green-100 py-2 px-4 rounded-lg transition flex items-center justify-center gap-1">
+                    <i class="fas fa-eye"></i> 查看仪表盘
                 </button>
             </div>
 
-            <!-- 定价管理模块 -->
-            <div class="tool-card p-6">
+            <!-- 定价管理卡片 -->
+            <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all border border-slate-200">
                 <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center">
                     <i class="fas fa-dollar-sign text-purple-600 mr-2"></i> 定价管理
                 </h2>
-                <button id="open-pricing" class="btn-action bg-purple-50 text-purple-600 border border-purple-200 hover:bg-purple-100">
-                    <i class="fas fa-edit mr-1"></i> 编辑定价规则
+                <button id="open-pricing" class="w-full bg-purple-50 text-purple-600 border border-purple-200 hover:bg-purple-100 py-2 px-4 rounded-lg transition flex items-center justify-center gap-1">
+                    <i class="fas fa-edit"></i> 编辑定价规则
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- 引入工作台模块文件（确保路径正确） -->
+    <!-- 工作台模块引入（确保路径正确） -->
     <script src="js/workbench-config.js"></script>
     <script src="js/workbench-auth.js"></script>
     <script src="js/workbench-orders.js"></script>
@@ -72,30 +65,25 @@
 
     <!-- 初始化逻辑 -->
     <script>
-        // 复用主站的工具类（如果主站有全局工具）
-        const WorkbenchUtils = {
-            toast: (msg, type = 'success') => {
-                alert(msg); // 后续可替换为主站的toast组件
-            }
-        };
-
-        // 初始化工作台模块
-        const workbench = {
-            orders: new WorkbenchOrders(),
-            dashboard: new WorkbenchDashboard(),
-            pricing: new WorkbenchPricing()
-        };
-
         // 绑定按钮事件
         document.getElementById('clear-all-orders').addEventListener('click', () => {
-            workbench.orders.clearAllOrders();
+            if (confirm('确定清空所有订单吗？')) {
+                // 调用orders模块的清空方法
+                window.WorkbenchOrders?.clearAllOrders();
+                alert('订单已清空');
+            }
         });
+
         document.getElementById('open-dashboard').addEventListener('click', () => {
-            workbench.dashboard.render();
+            // 调用仪表盘模块的渲染方法
+            window.WorkbenchDashboard?.render();
         });
+
         document.getElementById('open-pricing').addEventListener('click', () => {
-            workbench.pricing.openEditor();
+            // 调用定价模块的编辑方法
+            window.WorkbenchPricing?.openEditor();
         });
+
         document.getElementById('logout-btn').addEventListener('click', () => {
             localStorage.removeItem('workbench_auth');
             location.href = '../index.html';
