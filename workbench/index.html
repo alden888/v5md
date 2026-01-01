@@ -6,7 +6,6 @@
     <title>V5 Medical - 内部工作台 2.0</title>
     <meta name="robots" content="noindex, nofollow">
     
-    <!-- 引入必要的库 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -29,17 +28,17 @@
     
     <style>
         body { font-family: 'Inter', system-ui, sans-serif; }
-        .loader { border: 4px solid #f3f4f6; border-top: 4px solid #1e40af; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        /* 自定义动画 */
-        @keyframes fade-in {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .loader { 
+            border: 4px solid #f3f4f6; 
+            border-top: 4px solid #1e40af; 
+            border-radius: 50%; 
+            width: 40px; 
+            height: 40px; 
+            animation: spin 1s linear infinite; 
         }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes fade-in { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in { animation: fade-in 0.4s ease-out; }
-        
-        /* 平滑滚动 */
         html { scroll-behavior: smooth; }
     </style>
 </head>
@@ -54,340 +53,422 @@
         </div>
     </div>
 
-    <!-- 工作台主体将由JS动态渲染 -->
+    <!-- 工作台主体 -->
     <div id="workbench-app"></div>
 
     <!-- ============================================ -->
-    <!-- 模块加载顺序 (使用简化版认证) -->
+    <!-- JavaScript 模块加载（修复版）-->
     <!-- ============================================ -->
     
-    <!-- 1. 工作台核心模块 -->
-    <script src="js/workbench-config.js"></script>
-    <script src="js/workbench-utils.js"></script>
-    <script src="js/workbench-storage.js"></script>
-    <script src="js/workbench-auth_simple.js"></script> <!-- 使用简化版认证 -->
-    
-    <!-- 2. 业务模块 -->
-    <script src="js/workbench-dashboard.js"></script>
-    <script src="js/workbench-orders.js"></script>
-    <script src="js/workbench-pricing.js"></script>
-    <script src="js/workbench-finance.js"></script>
-
-    <!-- 3. 主初始化脚本 -->
     <script>
-        // ============================================
-        // 工作台主初始化流程
-        // ============================================
-        (async function initWorkbench() {
-            try {
-                console.log('%c🚀 V5 Medical Workbench v2.0', 'color: #1e40af; font-size: 16px; font-weight: bold');
-                console.log('🔒 使用简化版认证 (直接密码比较)');
-                
-                // Step 1: 身份验证
-                const auth = new WorkbenchAuth();
-                const isAuthorized = await auth.init();
-                
-                if (!isAuthorized) {
-                    throw new Error('Authentication failed');
-                }
-
-                // Step 2: 初始化数据存储
-                const storage = new WorkbenchStorage();
-                await storage.init();
-
-                // Step 3: 渲染工作台界面
-                renderWorkbenchUI();
-
-                // Step 4: 初始化各业务模块
-                const dashboard = new WorkbenchDashboard();
-                const orders = new WorkbenchOrders();
-                const pricing = new WorkbenchPricing();
-                const finance = new WorkbenchFinance();
-
-                // 挂载到全局
-                window.V5Workbench = {
-                    auth,
-                    storage,
-                    dashboard,
-                    orders,
-                    pricing,
-                    finance,
-                    version: WorkbenchConfig.VERSION
-                };
-
-                // Step 5: 初始化默认模块
-                await dashboard.init();
-
-                // Step 6: 隐藏加载屏幕
-                setTimeout(() => {
-                    document.getElementById('v5-loader').style.opacity = '0';
-                    setTimeout(() => {
-                        document.getElementById('v5-loader').style.display = 'none';
-                    }, 300);
-                }, 500);
-
-                console.log('✅ Workbench initialized successfully');
-
-            } catch (error) {
-                console.error('❌ Workbench initialization failed:', error);
-                document.getElementById('v5-loader').innerHTML = `
-                    <div class="text-center">
-                        <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
-                        <p class="text-red-600 font-bold">工作台加载失败</p>
-                        <p class="text-sm text-slate-500 mt-2">${error.message}</p>
-                        <button onclick="location.reload()" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-                            重新加载
-                        </button>
-                    </div>
-                `;
-            }
-        })();
-
-        // ============================================
-        // 渲染主界面框架
-        // ============================================
-        function renderWorkbenchUI() {
-            const app = document.getElementById('workbench-app');
-            app.innerHTML = `
-                <!-- 顶部导航 -->
-                <header class="fixed top-0 left-0 right-0 bg-white shadow-sm border-b border-slate-200 z-50 h-16">
-                    <div class="flex items-center justify-between h-full px-4">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-primary text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold">V5</div>
-                            <div>
-                                <h1 class="font-bold text-lg text-slate-800">工作台 2.0</h1>
-                                <div class="text-xs text-slate-400">Workbench</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <button onclick="window.V5Workbench.auth.logout()" class="text-sm text-slate-600 hover:text-red-600 flex items-center gap-1">
-                                <i class="fas fa-sign-out-alt"></i> 退出
-                            </button>
-                        </div>
-                    </div>
-                </header>
-
-                <!-- 侧边导航 -->
-                <nav class="fixed left-0 top-16 bottom-0 w-64 bg-white shadow-sm border-r border-slate-200 z-40 overflow-y-auto">
-                    <div class="py-6">
-                        <div class="px-4 mb-4">
-                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">功能模块</h3>
-                        </div>
-                        <ul class="space-y-1">
-                            <li>
-                                <a href="#dashboard" onclick="switchModule('dashboard')" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
-                                    <i class="fas fa-tachometer-alt w-5 text-center"></i>
-                                    <span>业绩仪表盘</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#orders" onclick="switchModule('orders')" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
-                                    <i class="fas fa-file-invoice w-5 text-center"></i>
-                                    <span>订单管理</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#pricing" onclick="switchModule('pricing')" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
-                                    <i class="fas fa-calculator w-5 text-center"></i>
-                                    <span>报价计算</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#finance" onclick="switchModule('finance')" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
-                                    <i class="fas fa-money-bill-wave w-5 text-center"></i>
-                                    <span>财务设置</span>
-                                </a>
-                            </li>
-                        </ul>
-                        
-                        <div class="px-4 mt-8 mb-4">
-                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">快捷工具</h3>
-                        </div>
-                        <ul class="space-y-1">
-                            <li>
-                                <a href="javascript:void(0)" onclick="window.V5Workbench.storage.exportBackup()" class="flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
-                                    <i class="fas fa-download w-5 text-center"></i>
-                                    <span>数据备份</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" onclick="showImportDialog()" class="flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
-                                    <i class="fas fa-upload w-5 text-center"></i>
-                                    <span>数据恢复</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" onclick="showAboutDialog()" class="flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
-                                    <i class="fas fa-info-circle w-5 text-center"></i>
-                                    <span>关于系统</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-
-                <!-- 主内容区 -->
-                <main class="pt-20 pl-64 pb-8">
-                    <div id="workbench-content" class="max-w-7xl mx-auto px-6 py-8">
-                        <!-- 内容由各模块动态渲染 -->
-                    </div>
-                </main>
-            `;
-
-            // 初始化导航链接样式
-            updateNavActive('dashboard');
-        }
-
-        // ============================================
-        // 模块切换功能
-        // ============================================
-        let currentModule = 'dashboard';
-
-        async function switchModule(moduleName) {
-            if (currentModule === moduleName) return;
-            
-            currentModule = moduleName;
-            
-            // 更新导航激活状态
-            updateNavActive(moduleName);
-            
-            // 显示加载指示器
-            const content = document.getElementById('workbench-content');
-            content.innerHTML = `
-                <div class="flex items-center justify-center min-h-[400px]">
-                    <div class="text-center">
-                        <div class="loader mx-auto mb-4"></div>
-                        <p class="text-slate-600">正在加载 ${getModuleName(moduleName)}...</p>
-                    </div>
+    // 全局错误捕获（调试用）
+    window.addEventListener('error', function(e) {
+        console.error('🔴 Global Error:', e.error || e.message);
+        const loader = document.getElementById('v5-loader');
+        if (loader) {
+            loader.innerHTML = `
+                <div class="text-center max-w-md">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-5xl mb-4"></i>
+                    <h2 class="text-xl font-bold text-red-600 mb-2">加载失败</h2>
+                    <p class="text-sm text-slate-600 mb-4">${e.error?.message || e.message || '未知错误'}</p>
+                    <pre class="text-xs text-left bg-slate-100 p-3 rounded overflow-auto max-h-40 mb-4">${e.error?.stack || '无堆栈信息'}</pre>
+                    <button onclick="location.reload()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-bold">
+                        <i class="fas fa-redo mr-2"></i> 重新加载
+                    </button>
+                    <a href="../index.html" class="block mt-4 text-sm text-blue-600 hover:underline">
+                        <i class="fas fa-arrow-left mr-1"></i> 返回主站
+                    </a>
                 </div>
             `;
-            
-            // 初始化对应模块
-            try {
-                switch (moduleName) {
-                    case 'dashboard':
-                        await window.V5Workbench.dashboard.init();
-                        break;
-                    case 'orders':
-                        await window.V5Workbench.orders.init();
-                        break;
-                    case 'pricing':
-                        await window.V5Workbench.pricing.init();
-                        break;
-                    case 'finance':
-                        await window.V5Workbench.finance.init();
-                        break;
-                }
-            } catch (error) {
-                content.innerHTML = `
-                    <div class="text-center py-12">
-                        <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
-                        <p class="text-red-600 font-bold">模块加载失败</p>
-                        <p class="text-sm text-slate-500 mt-2">${error.message}</p>
-                        <button onclick="switchModule('${moduleName}')" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                            重试
-                        </button>
-                    </div>
-                `;
-            }
         }
+    });
 
-        function updateNavActive(moduleName) {
-            // 移除所有激活状态
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('bg-blue-50', 'text-blue-600', 'font-bold');
-            });
-            
-            // 添加当前激活状态
-            const activeLink = document.querySelector(`a[href="#${moduleName}"]`);
-            if (activeLink) {
-                activeLink.classList.add('bg-blue-50', 'text-blue-600', 'font-bold');
-            }
-        }
-
-        function getModuleName(moduleName) {
-            const names = {
-                dashboard: '业绩仪表盘',
-                orders: '订单管理',
-                pricing: '报价计算',
-                finance: '财务设置'
+    // 脚本加载器（顺序加载）
+    async function loadScript(src) {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = () => {
+                console.log(`✅ Loaded: ${src}`);
+                resolve();
             };
-            return names[moduleName] || moduleName;
-        }
+            script.onerror = () => {
+                console.error(`❌ Failed: ${src}`);
+                reject(new Error(`Failed to load: ${src}`));
+            };
+            document.body.appendChild(script);
+        });
+    }
 
-        // ============================================
-        // 辅助功能
-        // ============================================
-        function showImportDialog() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = async (e) => {
-                if (e.target.files.length > 0) {
-                    try {
-                        await window.V5Workbench.storage.importBackup(e.target.files[0]);
-                        window.WorkbenchUtils.toast.success('数据恢复成功！');
-                        await switchModule(currentModule); // 刷新当前模块
-                    } catch (error) {
-                        window.WorkbenchUtils.toast.error('数据恢复失败: ' + error.message);
+    // 主初始化流程
+    (async function initWorkbench() {
+        try {
+            console.log('%c🚀 V5 Medical Workbench v2.0', 'color: #1e40af; font-size: 16px; font-weight: bold');
+            
+            // Step 1: 按顺序加载核心模块
+            console.log('📦 Loading core modules...');
+            await loadScript('js/workbench-config.js');
+            await loadScript('js/workbench-utils.js');
+            await loadScript('js/workbench-storage.js');
+            
+            // Step 2: 加载认证模块（新增内联代码）
+            console.log('🔒 Initializing authentication...');
+            if (!window.WorkbenchAuth) {
+                console.warn('⚠️ WorkbenchAuth not found, using inline version');
+                // 内联认证类（防止文件加载失败）
+                window.WorkbenchAuth = class {
+                    constructor() {
+                        this.VALID_PASSWORD = 'v5admin123';
+                        this.SESSION_KEY = 'v5_workbench_session';
+                        this.SESSION_DURATION = 8 * 60 * 60 * 1000;
+                        this.MAX_ATTEMPTS = 5;
+                        this.LOCKOUT_DURATION = 15 * 60 * 1000;
+                        this.ATTEMPT_KEY = 'v5_login_attempts';
                     }
-                }
-            };
-            input.click();
-        }
 
-        function showAboutDialog() {
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]';
-            modal.innerHTML = `
-                <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full animate-fade-in">
-                    <div class="text-center mb-6">
-                        <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-medkit text-blue-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-slate-800">V5 Medical Workbench</h3>
-                        <p class="text-sm text-slate-500">Version ${WorkbenchConfig.VERSION}</p>
-                    </div>
-                    <div class="space-y-3 text-sm text-slate-600">
-                        <div class="flex items-center justify-between">
-                            <span>构建日期:</span>
-                            <span class="font-mono">${WorkbenchConfig.BUILD_DATE}</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span>作者:</span>
-                            <span>V5 Medical Team</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span>联系方式:</span>
-                            <span class="text-blue-600">${WorkbenchConfig.MAIN_SITE.CONTACT.EMAIL.SALES}</span>
-                        </div>
-                    </div>
-                    <div class="mt-6 pt-6 border-t border-slate-200 text-center">
-                        <button onclick="this.closest('.fixed').remove()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition">
-                            确定
-                        </button>
-                    </div>
+                    async init() {
+                        return this.isAuthenticated() ? true : await this.showLoginModal();
+                    }
+
+                    isAuthenticated() {
+                        const session = sessionStorage.getItem(this.SESSION_KEY);
+                        if (!session) return false;
+                        try {
+                            const data = JSON.parse(session);
+                            const now = Date.now();
+                            if (now - data.loginTime > this.SESSION_DURATION) {
+                                this.logout();
+                                return false;
+                            }
+                            data.lastActivity = now;
+                            sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(data));
+                            return true;
+                        } catch { return false; }
+                    }
+
+                    isLockedOut() {
+                        const attempts = this.getLoginAttempts();
+                        if (attempts.count >= this.MAX_ATTEMPTS) {
+                            const timeSinceLock = Date.now() - attempts.lastAttempt;
+                            return timeSinceLock < this.LOCKOUT_DURATION 
+                                ? Math.ceil((this.LOCKOUT_DURATION - timeSinceLock) / 60000) 
+                                : (this.resetLoginAttempts(), false);
+                        }
+                        return false;
+                    }
+
+                    getLoginAttempts() {
+                        try {
+                            return JSON.parse(localStorage.getItem(this.ATTEMPT_KEY)) || { count: 0, lastAttempt: 0 };
+                        } catch { return { count: 0, lastAttempt: 0 }; }
+                    }
+
+                    recordLoginAttempt() {
+                        const attempts = this.getLoginAttempts();
+                        attempts.count++;
+                        attempts.lastAttempt = Date.now();
+                        localStorage.setItem(this.ATTEMPT_KEY, JSON.stringify(attempts));
+                    }
+
+                    resetLoginAttempts() {
+                        localStorage.removeItem(this.ATTEMPT_KEY);
+                    }
+
+                    async showLoginModal() {
+                        return new Promise((resolve) => {
+                            const lockoutMinutes = this.isLockedOut();
+                            const isLocked = lockoutMinutes !== false;
+
+                            const modal = document.createElement('div');
+                            modal.className = 'fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center z-[20000]';
+                            modal.innerHTML = `
+                                <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md animate-fade-in">
+                                    <div class="text-center mb-8">
+                                        <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                                            <i class="fas fa-lock text-blue-600 text-2xl"></i>
+                                        </div>
+                                        <h2 class="text-2xl font-bold text-slate-800 mb-2">V5 Medical 工作台</h2>
+                                        <p class="text-sm text-slate-500">Internal Use Only</p>
+                                    </div>
+                                    ${isLocked ? `
+                                        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                                            <div class="flex items-center gap-2 text-red-800">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                                <p class="font-bold">账户已锁定</p>
+                                            </div>
+                                            <p class="text-sm text-red-600 mt-1">请等待 ${lockoutMinutes} 分钟后重试</p>
+                                        </div>
+                                    ` : ''}
+                                    <form id="v5-login-form" class="${isLocked ? 'opacity-50 pointer-events-none' : ''}">
+                                        <div class="mb-6">
+                                            <label class="block text-sm font-bold text-slate-700 mb-2">
+                                                <i class="fas fa-key mr-1"></i> 访问密码
+                                            </label>
+                                            <input type="password" id="v5-password-input"
+                                                class="w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+                                                placeholder="请输入密码" ${isLocked ? 'disabled' : ''}>
+                                        </div>
+                                        <div class="mb-4 text-xs text-slate-400 flex items-center gap-1">
+                                            <i class="fas fa-info-circle"></i>
+                                            <span>测试密码: v5admin123</span>
+                                        </div>
+                                        <button type="submit" 
+                                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition"
+                                            ${isLocked ? 'disabled' : ''}>
+                                            ${isLocked ? '账户已锁定' : '解锁工作台 (Enter)'}
+                                        </button>
+                                        <div id="login-error" class="mt-4 text-sm text-red-600 text-center hidden"></div>
+                                    </form>
+                                    <div class="mt-8 pt-6 border-t border-slate-100 text-center">
+                                        <a href="../index.html" class="text-sm text-slate-400 hover:text-blue-600">
+                                            <i class="fas fa-arrow-left mr-1"></i> 返回主站
+                                        </a>
+                                    </div>
+                                </div>
+                            `;
+
+                            document.body.appendChild(modal);
+
+                            if (!isLocked) {
+                                const input = document.getElementById('v5-password-input');
+                                const form = document.getElementById('v5-login-form');
+                                const errorDiv = document.getElementById('login-error');
+
+                                setTimeout(() => input.focus(), 100);
+
+                                form.addEventListener('submit', (e) => {
+                                    e.preventDefault();
+                                    const password = input.value.trim();
+
+                                    if (!password) {
+                                        errorDiv.textContent = '请输入密码';
+                                        errorDiv.classList.remove('hidden');
+                                        return;
+                                    }
+
+                                    if (password === this.VALID_PASSWORD) {
+                                        this.login();
+                                        modal.remove();
+                                        resolve(true);
+                                    } else {
+                                        this.recordLoginAttempt();
+                                        const attempts = this.getLoginAttempts();
+                                        const remaining = this.MAX_ATTEMPTS - attempts.count;
+
+                                        if (remaining > 0) {
+                                            errorDiv.textContent = `密码错误！剩余 ${remaining} 次`;
+                                            errorDiv.classList.remove('hidden');
+                                            input.value = '';
+                                            input.focus();
+                                        } else {
+                                            errorDiv.textContent = '账户已锁定15分钟';
+                                            errorDiv.classList.remove('hidden');
+                                            setTimeout(() => location.reload(), 2000);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    login() {
+                        sessionStorage.setItem(this.SESSION_KEY, JSON.stringify({
+                            loginTime: Date.now(),
+                            lastActivity: Date.now(),
+                            user: 'V5_Team'
+                        }));
+                        this.resetLoginAttempts();
+                    }
+
+                    logout() {
+                        sessionStorage.removeItem(this.SESSION_KEY);
+                        location.reload();
+                    }
+
+                    getSession() {
+                        try {
+                            return JSON.parse(sessionStorage.getItem(this.SESSION_KEY));
+                        } catch { return null; }
+                    }
+                };
+            }
+
+            const auth = new WorkbenchAuth();
+            const isAuthorized = await auth.init();
+            
+            if (!isAuthorized) {
+                throw new Error('Authentication failed');
+            }
+
+            // Step 3: 加载业务模块
+            console.log('📊 Loading business modules...');
+            await loadScript('js/workbench-dashboard.js');
+            await loadScript('js/workbench-orders.js');
+            await loadScript('js/workbench-pricing.js');
+            await loadScript('js/workbench-finance.js');
+
+            // Step 4: 初始化存储
+            const storage = new WorkbenchStorage();
+            await storage.init();
+
+            // Step 5: 渲染界面
+            renderWorkbenchUI();
+
+            // Step 6: 初始化模块
+            const dashboard = new WorkbenchDashboard();
+            const orders = new WorkbenchOrders();
+            const pricing = new WorkbenchPricing();
+            const finance = new WorkbenchFinance();
+
+            // 挂载到全局
+            window.V5Workbench = {
+                auth,
+                storage,
+                dashboard,
+                orders,
+                pricing,
+                finance,
+                version: WorkbenchConfig.VERSION
+            };
+
+            // Step 7: 初始化默认模块
+            await dashboard.init();
+
+            // Step 8: 隐藏加载屏幕
+            setTimeout(() => {
+                const loader = document.getElementById('v5-loader');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 300);
+            }, 500);
+
+            console.log('✅ Workbench initialized successfully');
+
+        } catch (error) {
+            console.error('❌ Workbench initialization failed:', error);
+            const loader = document.getElementById('v5-loader');
+            loader.innerHTML = `
+                <div class="text-center max-w-md">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+                    <p class="text-red-600 font-bold mb-2">工作台加载失败</p>
+                    <p class="text-sm text-slate-500 mb-4">${error.message}</p>
+                    <button onclick="location.reload()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                        重新加载
+                    </button>
+                    <a href="../index.html" class="block mt-4 text-sm text-blue-600 hover:underline">
+                        返回主站
+                    </a>
                 </div>
             `;
-            document.body.appendChild(modal);
         }
+    })();
 
-        // ============================================
-        // 错误处理增强
-        // ============================================
-        window.addEventListener('error', function(event) {
-            console.error('Global error:', event.error);
-            if (window.WorkbenchUtils && window.WorkbenchUtils.toast) {
-                window.WorkbenchUtils.toast.error('系统错误: ' + event.error.message);
-            }
-        });
+    // 渲染主界面框架
+    function renderWorkbenchUI() {
+        const app = document.getElementById('workbench-app');
+        app.innerHTML = `
+            <!-- 顶部导航 -->
+            <header class="fixed top-0 left-0 right-0 bg-white shadow-sm border-b border-slate-200 z-50 h-16">
+                <div class="flex items-center justify-between h-full px-4">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-primary text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold">V5</div>
+                        <div>
+                            <h1 class="font-bold text-lg text-slate-800">工作台 2.0</h1>
+                            <div class="text-xs text-slate-400">Workbench</div>
+                        </div>
+                    </div>
+                    <button onclick="window.V5Workbench.auth.logout()" class="text-sm text-slate-600 hover:text-red-600 flex items-center gap-1">
+                        <i class="fas fa-sign-out-alt"></i> 退出
+                    </button>
+                </div>
+            </header>
 
-        window.addEventListener('unhandledrejection', function(event) {
-            console.error('Unhandled promise rejection:', event.reason);
-            if (window.WorkbenchUtils && window.WorkbenchUtils.toast) {
-                window.WorkbenchUtils.toast.error('系统错误: ' + event.reason.message);
-            }
+            <!-- 侧边导航 -->
+            <nav class="fixed left-0 top-16 bottom-0 w-64 bg-white shadow-sm border-r border-slate-200 z-40 overflow-y-auto">
+                <div class="py-6">
+                    <div class="px-4 mb-4">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase">功能模块</h3>
+                    </div>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="#dashboard" onclick="switchModule('dashboard')" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600">
+                                <i class="fas fa-tachometer-alt w-5"></i>
+                                <span>业绩仪表盘</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#orders" onclick="switchModule('orders')" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600">
+                                <i class="fas fa-file-invoice w-5"></i>
+                                <span>订单管理</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#pricing" onclick="switchModule('pricing')" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600">
+                                <i class="fas fa-calculator w-5"></i>
+                                <span>报价计算</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#finance" onclick="switchModule('finance')" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600">
+                                <i class="fas fa-money-bill-wave w-5"></i>
+                                <span>财务设置</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- 主内容区 -->
+            <main class="pt-20 pl-64 pb-8">
+                <div id="workbench-content" class="max-w-7xl mx-auto px-6 py-8">
+                    <!-- 内容由各模块动态渲染 -->
+                </div>
+            </main>
+        `;
+
+        updateNavActive('dashboard');
+    }
+
+    // 模块切换
+    let currentModule = 'dashboard';
+
+    async function switchModule(moduleName) {
+        if (currentModule === moduleName) return;
+        currentModule = moduleName;
+        updateNavActive(moduleName);
+        
+        const content = document.getElementById('workbench-content');
+        content.innerHTML = `
+            <div class="flex items-center justify-center min-h-[400px]">
+                <div class="text-center">
+                    <div class="loader mx-auto mb-4"></div>
+                    <p class="text-slate-600">正在加载...</p>
+                </div>
+            </div>
+        `;
+        
+        try {
+            await window.V5Workbench[moduleName].init();
+        } catch (error) {
+            content.innerHTML = `
+                <div class="text-center py-12">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+                    <p class="text-red-600 font-bold">模块加载失败</p>
+                    <p class="text-sm text-slate-500 mt-2">${error.message}</p>
+                    <button onclick="switchModule('${moduleName}')" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg">重试</button>
+                </div>
+            `;
+        }
+    }
+
+    function updateNavActive(moduleName) {
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('bg-blue-50', 'text-blue-600', 'font-bold');
         });
+        const activeLink = document.querySelector(`a[href="#${moduleName}"]`);
+        if (activeLink) {
+            activeLink.classList.add('bg-blue-50', 'text-blue-600', 'font-bold');
+        }
+    }
     </script>
 </body>
 </html>
