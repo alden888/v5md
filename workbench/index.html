@@ -4,113 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V5 Medical 工作台</title>
-    <!-- 基础样式（按需引入，如Tailwind/自定义CSS） -->
-    <link rel="stylesheet" href="../css/tailwind.css">
-    <link rel="stylesheet" href="../css/font-awesome.min.css">
-    <!-- 全局工具类（非工作台专属的通用工具） -->
-    <script src="../js/seo-utils.js"></script>
-    <script src="../js/performance-monitor.js"></script>
+    <!-- 复用主站的Tailwind和Font Awesome样式（解决样式缺失） -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 复用主站的全局CSS（保持风格统一） -->
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- 主站的配置文件（复用全局变量） -->
+    <script src="../js/config.js"></script>
 </head>
 <body class="bg-slate-50 min-h-screen">
-    <!-- 工作台容器（初始隐藏，登录后显示） -->
-    <div id="workbench-container" class="hidden container mx-auto px-4 py-8">
-        <!-- 工作台导航栏 -->
+    <!-- 工作台容器（登录后显示） -->
+    <div id="workbench-container" class="container mx-auto px-4 py-8">
+        <!-- 导航栏（复用主站风格） -->
         <nav class="bg-white shadow-sm rounded-lg p-4 mb-6">
             <div class="flex justify-between items-center">
-                <h1 class="text-xl font-bold text-slate-800">V5 Medical 工作台</h1>
-                <button id="logout-btn" class="text-red-600 hover:text-red-700 transition">
-                    <i class="fas fa-sign-out-alt mr-1"></i> 退出登录
+                <!-- 复用主站的Logo风格 -->
+                <div class="flex items-center gap-3">
+                    <div class="bg-primary text-white w-9 h-9 rounded-lg flex items-center justify-center font-bold text-lg shadow-lg shadow-blue-500/30">V5</div>
+                    <h1 class="text-xl font-bold text-slate-800">V5 Medical 工作台</h1>
+                </div>
+                <button id="logout-btn" class="text-red-600 hover:text-red-700 transition flex items-center gap-1">
+                    <i class="fas fa-sign-out-alt"></i> 退出登录
                 </button>
             </div>
         </nav>
 
-        <!-- 功能模块入口（仅渲染入口，逻辑在对应JS） -->
+        <!-- 功能模块（网格布局+卡片样式，和主站保持一致） -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- 订单管理模块 -->
-            <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition">
+            <div class="tool-card p-6">
                 <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center">
                     <i class="fas fa-shopping-cart text-blue-600 mr-2"></i> 订单管理
                 </h2>
-                <button id="clear-all-orders" class="w-full bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 py-2 rounded-lg transition">
+                <button id="clear-all-orders" class="btn-action bg-red-50 text-red-600 border border-red-200 hover:bg-red-100">
                     <i class="fas fa-trash-alt mr-1"></i> 清空所有订单
                 </button>
             </div>
 
-            <!-- 其他功能模块入口（仪表盘/定价/财务等） -->
-            <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition">
+            <!-- 数据仪表盘模块 -->
+            <div class="tool-card p-6">
                 <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center">
                     <i class="fas fa-chart-line text-green-600 mr-2"></i> 数据仪表盘
                 </h2>
-                <button id="open-dashboard" class="w-full bg-green-50 text-green-600 border border-green-200 hover:bg-green-100 py-2 rounded-lg transition">
+                <button id="open-dashboard" class="btn-action bg-green-50 text-green-600 border border-green-200 hover:bg-green-100">
                     <i class="fas fa-eye mr-1"></i> 查看仪表盘
                 </button>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition">
+            <!-- 定价管理模块 -->
+            <div class="tool-card p-6">
                 <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center">
                     <i class="fas fa-dollar-sign text-purple-600 mr-2"></i> 定价管理
                 </h2>
-                <button id="open-pricing" class="w-full bg-purple-50 text-purple-600 border border-purple-200 hover:bg-purple-100 py-2 rounded-lg transition">
+                <button id="open-pricing" class="btn-action bg-purple-50 text-purple-600 border border-purple-200 hover:bg-purple-100">
                     <i class="fas fa-edit mr-1"></i> 编辑定价规则
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- 模块化引入工作台JS（按依赖顺序） -->
+    <!-- 引入工作台模块文件（确保路径正确） -->
     <script src="js/workbench-config.js"></script>
     <script src="js/workbench-auth.js"></script>
     <script src="js/workbench-orders.js"></script>
     <script src="js/workbench-dashboard.js"></script>
     <script src="js/workbench-pricing.js"></script>
-    <script src="js/workbench-finance.js"></script>
 
-    <!-- 工作台核心初始化逻辑（仅入口，无业务逻辑） -->
+    <!-- 初始化逻辑 -->
     <script>
-        // 性能监控初始化
-        window.performanceMonitor = new PerformanceMonitor();
-        window.performanceMonitor.trackNavigationTiming();
-
-        // 工作台实例初始化
-        const workbench = {
-            config: new WorkbenchConfig(),
-            auth: new WorkbenchAuth(),
-            orders: new WorkbenchOrders(),
-            dashboard: new WorkbenchDashboard(),
-            pricing: new WorkbenchPricing(),
-            finance: new WorkbenchFinance()
+        // 复用主站的工具类（如果主站有全局工具）
+        const WorkbenchUtils = {
+            toast: (msg, type = 'success') => {
+                alert(msg); // 后续可替换为主站的toast组件
+            }
         };
 
-        // 登录验证 & 工作台初始化
-        (async () => {
-            // 强制登录验证
-            const isAuthenticated = await workbench.auth.showLoginModal();
-            if (!isAuthenticated) return;
+        // 初始化工作台模块
+        const workbench = {
+            orders: new WorkbenchOrders(),
+            dashboard: new WorkbenchDashboard(),
+            pricing: new WorkbenchPricing()
+        };
 
-            // 登录成功后显示工作台
-            document.getElementById('workbench-container').classList.remove('hidden');
-            
-            // SEO 基础配置
-            window.seoUtils.updatePage({
-                title: 'V5 Medical 工作台 - 内部管理系统',
-                description: 'V5 Medical 内部订单、定价、财务一站式管理工作台'
-            });
-
-            // 绑定功能按钮事件（仅绑定，逻辑在对应模块JS）
-            document.getElementById('clear-all-orders').addEventListener('click', () => {
-                workbench.orders.clearAllOrders();
-            });
-            document.getElementById('open-dashboard').addEventListener('click', () => {
-                workbench.dashboard.open();
-            });
-            document.getElementById('open-pricing').addEventListener('click', () => {
-                workbench.pricing.open();
-            });
-            document.getElementById('logout-btn').addEventListener('click', () => {
-                workbench.auth.logout();
-                location.reload();
-            });
-        })();
+        // 绑定按钮事件
+        document.getElementById('clear-all-orders').addEventListener('click', () => {
+            workbench.orders.clearAllOrders();
+        });
+        document.getElementById('open-dashboard').addEventListener('click', () => {
+            workbench.dashboard.render();
+        });
+        document.getElementById('open-pricing').addEventListener('click', () => {
+            workbench.pricing.openEditor();
+        });
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('workbench_auth');
+            location.href = '../index.html';
+        });
     </script>
 </body>
 </html>
