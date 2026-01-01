@@ -1,9 +1,8 @@
 /**
  * V5 Medical Workbench - Dashboard Module
  * 业绩仪表盘与数据可视化
- * @version 2.0.0
+ * @version 2.0.1
  */
-
 class WorkbenchDashboard {
     constructor() {
         this.config = window.WorkbenchConfig;
@@ -16,8 +15,8 @@ class WorkbenchDashboard {
             pipeline: 0,
             achievement: 0
         };
+        this.chart = null;
     }
-
     /**
      * 初始化仪表盘
      */
@@ -26,7 +25,6 @@ class WorkbenchDashboard {
         this.render();
         this.startAutoRefresh();
     }
-
     /**
      * 加载数据
      */
@@ -41,7 +39,6 @@ class WorkbenchDashboard {
             console.error('[Dashboard] Load data failed:', error);
         }
     }
-
     /**
      * 计算关键指标
      */
@@ -49,7 +46,6 @@ class WorkbenchDashboard {
         let totalSalesRMB = 0;
         let pipelineRMB = 0;
         let pendingCount = 0;
-
         this.data.orders.forEach(order => {
             const amountRMB = order.total * this.currentRate;
             if (order.status === 'Paid') {
@@ -59,7 +55,6 @@ class WorkbenchDashboard {
                 pendingCount++;
             }
         });
-
         this.data.totalSales = totalSalesRMB;
         this.data.pipeline = pipelineRMB;
         this.data.achievement = (totalSalesRMB / this.data.target) * 100;
@@ -72,14 +67,12 @@ class WorkbenchDashboard {
         const daysLeft = Math.ceil((endYear - today) / (1000 * 60 * 60 * 24));
         this.data.dailyNeed = daysLeft > 0 ? (this.data.gap / daysLeft) : 0;
     }
-
     /**
      * 渲染仪表盘
      */
     render() {
         const container = document.getElementById('workbench-content');
         if (!container) return;
-
         container.innerHTML = `
             <!-- 顶部目标设置 -->
             <div class="flex items-center justify-between mb-8">
@@ -97,7 +90,6 @@ class WorkbenchDashboard {
                     </div>
                 </div>
             </div>
-
             <!-- KPI 卡片 -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 ${this.renderKPICard('trophy', '年度达成率', `${this.data.achievement.toFixed(1)}%`, 'primary', this.data.achievement)}
@@ -105,7 +97,6 @@ class WorkbenchDashboard {
                 ${this.renderKPICard('mountain', '距离目标还差', `¥${this.formatNumber(this.data.gap / 10000, 1)}w`, 'red', null, `需每日 ¥${this.formatNumber(this.data.dailyNeed)}`)}
                 ${this.renderKPICard('hourglass-half', '待回款 Pipeline', `¥${this.formatNumber(this.data.pipeline)}`, 'yellow', null, `${this.data.pendingCount} 个订单跟进中`)}
             </div>
-
             <!-- 图表区域 -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                 <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6">
@@ -116,7 +107,6 @@ class WorkbenchDashboard {
                         <canvas id="sales-chart"></canvas>
                     </div>
                 </div>
-
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                     <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
                         <i class="fas fa-clock text-green-600"></i> 全球商机时钟
@@ -124,25 +114,22 @@ class WorkbenchDashboard {
                     <div id="world-clock-container" class="space-y-3"></div>
                 </div>
             </div>
-
             <!-- 最近订单 -->
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="font-bold text-slate-800 flex items-center gap-2">
                         <i class="fas fa-file-invoice text-blue-600"></i> 最近订单记录
                     </h3>
-                    <a href="#orders" class="text-sm text-blue-600 hover:underline">查看全部 →</a>
+                    <a href="#orders" onclick="switchModule('orders')" class="text-sm text-blue-600 hover:underline">查看全部 →</a>
                 </div>
                 <div id="recent-orders-list">
                     ${this.renderRecentOrders()}
                 </div>
             </div>
         `;
-
         this.initWorldClock();
         this.initChart();
     }
-
     /**
      * 渲染 KPI 卡片
      */
@@ -154,7 +141,6 @@ class WorkbenchDashboard {
             yellow: { bg: 'yellow-100', text: 'yellow-600', border: 'yellow-500' }
         };
         const c = colors[color] || colors.primary;
-
         return `
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-${c.border} relative overflow-hidden hover:shadow-md transition">
                 <i class="fas fa-${icon} absolute right-4 top-4 text-4xl text-${c.bg} opacity-50"></i>
@@ -171,7 +157,6 @@ class WorkbenchDashboard {
             </div>
         `;
     }
-
     /**
      * 渲染最近订单
      */
@@ -181,7 +166,6 @@ class WorkbenchDashboard {
         if (recent.length === 0) {
             return '<div class="text-center py-8 text-slate-400">暂无订单记录</div>';
         }
-
         return `
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
@@ -215,15 +199,104 @@ class WorkbenchDashboard {
             </div>
         `;
     }
-
     /**
      * 初始化图表
      */
     initChart() {
-        // 使用 Chart.js 绘制趋势图 (需要先引入库)
-        console.log('[Dashboard] Chart initialized (placeholder)');
+        const ctx = document.getElementById('sales-chart');
+        if (!ctx) return;
+        
+        // 销毁旧图表
+        if (this.chart) {
+            this.chart.destroy();
+        }
+        
+        // 准备图表数据
+        const months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+        const currentMonth = new Date().getMonth();
+        
+        // 生成月度数据
+        const monthlyData = Array(12).fill(0);
+        this.data.orders.forEach(order => {
+            if (order.status === 'Paid') {
+                const orderDate = new Date(order.date);
+                const month = orderDate.getMonth();
+                const amountRMB = order.total * this.currentRate;
+                monthlyData[month] += amountRMB;
+            }
+        });
+        
+        // 计算目标线
+        const monthlyTarget = this.data.target / 12;
+        const targetLine = Array(12).fill(monthlyTarget);
+        
+        // 创建图表
+        this.chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: '实际业绩 (RMB)',
+                    data: monthlyData,
+                    borderColor: '#1e40af',
+                    backgroundColor: 'rgba(30, 64, 175, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: '月度目标 (RMB)',
+                    data: targetLine,
+                    borderColor: '#f59e0b',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    fill: false,
+                    tension: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('zh-CN', { 
+                                        style: 'currency', 
+                                        currency: 'CNY',
+                                        maximumFractionDigits: 0
+                                    }).format(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                if (value >= 10000) {
+                                    return (value / 10000).toFixed(0) + 'w';
+                                }
+                                return value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
-
     /**
      * 初始化全球时钟
      */
@@ -231,7 +304,6 @@ class WorkbenchDashboard {
         const cities = this.config.WORKBENCH.WORLD_CITIES;
         const container = document.getElementById('world-clock-container');
         if (!container) return;
-
         const updateClock = () => {
             container.innerHTML = cities.map(city => {
                 const now = new Date();
@@ -244,7 +316,6 @@ class WorkbenchDashboard {
                 
                 const hour = parseInt(timeString.split(':')[0]);
                 const isWorking = hour >= city.workHours[0] && hour < city.workHours[1];
-
                 return `
                     <div class="flex items-center justify-between p-3 rounded-lg border ${isWorking ? 'bg-green-50 border-green-200' : 'bg-slate-50 border-slate-200'}">
                         <div class="flex items-center gap-2">
@@ -262,11 +333,9 @@ class WorkbenchDashboard {
                 `;
             }).join('');
         };
-
         updateClock();
         setInterval(updateClock, 60000); // 每分钟更新
     }
-
     /**
      * 编辑年度目标
      */
@@ -280,7 +349,6 @@ class WorkbenchDashboard {
             window.WorkbenchUtils.toast.success('年度目标已更新！');
         }
     }
-
     /**
      * 格式化数字
      */
@@ -290,15 +358,14 @@ class WorkbenchDashboard {
             maximumFractionDigits: decimals
         });
     }
-
     /**
      * 自动刷新
      */
     startAutoRefresh() {
         setInterval(() => {
             this.loadData();
+            this.render();
         }, 60000); // 每分钟刷新一次
     }
 }
-
 window.WorkbenchDashboard = WorkbenchDashboard;

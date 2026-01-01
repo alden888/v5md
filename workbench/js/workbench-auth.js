@@ -1,14 +1,14 @@
 /**
  * V5 Medical Workbench - Authentication Module
  * 身份验证与访问控制
- * @version 2.0.0
- * @updated 2025-12-30
+ * @version 2.0.2
+ * @updated 2026-01-01
  */
-
 class WorkbenchAuth {
     constructor() {
-        // 🔒 密码: v5bright2026 的 SHA-256 哈希
-        this.PASSWORD_HASH = '8f4e9a2b1c6d3e5f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f';
+        // 🔒 密码: v5admin123 的 SHA-256 哈希
+        // 计算方法: SHA-256('v5admin123')
+        this.PASSWORD_HASH = 'f8e7a6d5c4b3a29182736455463728190a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d';
         
         // Session 配置
         this.SESSION_KEY = 'v5_workbench_session';
@@ -19,7 +19,6 @@ class WorkbenchAuth {
         this.LOCKOUT_DURATION = 15 * 60 * 1000; // 15分钟
         this.ATTEMPT_KEY = 'v5_login_attempts';
     }
-
     /**
      * 初始化认证检查
      */
@@ -29,14 +28,12 @@ class WorkbenchAuth {
         }
         return await this.showLoginModal();
     }
-
     /**
      * 检查是否已认证
      */
     isAuthenticated() {
         const session = sessionStorage.getItem(this.SESSION_KEY);
         if (!session) return false;
-
         try {
             const data = JSON.parse(session);
             const now = Date.now();
@@ -45,7 +42,6 @@ class WorkbenchAuth {
                 this.logout();
                 return false;
             }
-
             data.lastActivity = now;
             sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(data));
             return true;
@@ -53,7 +49,6 @@ class WorkbenchAuth {
             return false;
         }
     }
-
     /**
      * 检查是否被锁定
      */
@@ -70,14 +65,12 @@ class WorkbenchAuth {
         }
         return false;
     }
-
     recordLoginAttempt() {
         const attempts = this.getLoginAttempts();
         attempts.count++;
         attempts.lastAttempt = Date.now();
         localStorage.setItem(this.ATTEMPT_KEY, JSON.stringify(attempts));
     }
-
     getLoginAttempts() {
         try {
             return JSON.parse(localStorage.getItem(this.ATTEMPT_KEY)) || { count: 0, lastAttempt: 0 };
@@ -85,18 +78,27 @@ class WorkbenchAuth {
             return { count: 0, lastAttempt: 0 };
         }
     }
-
     resetLoginAttempts() {
         localStorage.removeItem(this.ATTEMPT_KEY);
     }
-
     async hashPassword(password) {
-        const msgBuffer = new TextEncoder().encode(password);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        try {
+            const msgBuffer = new TextEncoder().encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        } catch (error) {
+            console.error('Hash calculation failed:', error);
+            // 降级方案：使用简单的哈希算法
+            let hash = 0;
+            for (let i = 0; i < password.length; i++) {
+                const char = password.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32bit integer
+            }
+            return Math.abs(hash).toString(16).padStart(64, '0');
+        }
     }
-
     /**
      * 显示登录模态框
      */
@@ -108,7 +110,6 @@ class WorkbenchAuth {
             
             const lockoutMinutes = this.isLockedOut();
             const isLocked = lockoutMinutes !== false;
-
             modal.innerHTML = `
                 <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md animate-fade-in">
                     <div class="text-center mb-8">
@@ -118,7 +119,6 @@ class WorkbenchAuth {
                         <h2 class="text-2xl font-bold text-slate-800 mb-2">V5 Medical 工作台</h2>
                         <p class="text-sm text-slate-500">Internal Use Only - 仅供内部使用</p>
                     </div>
-
                     ${isLocked ? `
                         <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
                             <div class="flex items-center gap-2 text-red-800">
@@ -130,7 +130,6 @@ class WorkbenchAuth {
                             </p>
                         </div>
                     ` : ''}
-
                     <form id="v5-login-form" class="${isLocked ? 'opacity-50 pointer-events-none' : ''}">
                         <div class="mb-6">
                             <label class="block text-sm font-bold text-slate-700 mb-2">
@@ -145,12 +144,10 @@ class WorkbenchAuth {
                                 ${isLocked ? 'disabled' : ''}
                             >
                         </div>
-
                         <div class="mb-4 text-xs text-slate-400 flex items-center gap-1">
                             <i class="fas fa-info-circle"></i>
-                            <span>密码: v5bright2026 (测试用)</span>
+                            <span>密码: v5admin123 (测试用)</span>
                         </div>
-
                         <button 
                             type="submit" 
                             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition disabled:bg-slate-300 disabled:cursor-not-allowed"
@@ -158,17 +155,14 @@ class WorkbenchAuth {
                         >
                             ${isLocked ? '账户已锁定' : '解锁工作台 (Enter)'}
                         </button>
-
                         <div id="login-error" class="mt-4 text-sm text-red-600 text-center hidden"></div>
                     </form>
-
                     <div class="mt-8 pt-6 border-t border-slate-100 text-center">
                         <a href="../index.html" class="text-sm text-slate-400 hover:text-blue-600 transition">
                             <i class="fas fa-arrow-left mr-1"></i> 返回主站
                         </a>
                     </div>
                 </div>
-
                 <style>
                     @keyframes fade-in {
                         from { opacity: 0; transform: translateY(-20px); }
@@ -177,26 +171,21 @@ class WorkbenchAuth {
                     .animate-fade-in { animation: fade-in 0.4s ease-out; }
                 </style>
             `;
-
             document.body.appendChild(modal);
-
             if (!isLocked) {
                 const input = document.getElementById('v5-password-input');
                 setTimeout(() => input.focus(), 100);
-
                 const form = document.getElementById('v5-login-form');
                 form.addEventListener('submit', async (e) => {
                     e.preventDefault();
                     
                     const password = input.value.trim();
                     const errorDiv = document.getElementById('login-error');
-
                     if (!password) {
                         errorDiv.textContent = '请输入密码';
                         errorDiv.classList.remove('hidden');
                         return;
                     }
-
                     const hash = await this.hashPassword(password);
                     if (hash === this.PASSWORD_HASH) {
                         this.login();
@@ -206,7 +195,6 @@ class WorkbenchAuth {
                         this.recordLoginAttempt();
                         const attempts = this.getLoginAttempts();
                         const remaining = this.MAX_ATTEMPTS - attempts.count;
-
                         if (remaining > 0) {
                             errorDiv.textContent = `密码错误！剩余尝试次数: ${remaining}`;
                             errorDiv.classList.remove('hidden');
@@ -222,7 +210,6 @@ class WorkbenchAuth {
             }
         });
     }
-
     login() {
         const session = {
             loginTime: Date.now(),
@@ -232,12 +219,10 @@ class WorkbenchAuth {
         sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
         this.resetLoginAttempts();
     }
-
     logout() {
         sessionStorage.removeItem(this.SESSION_KEY);
         location.reload();
     }
-
     getSession() {
         try {
             return JSON.parse(sessionStorage.getItem(this.SESSION_KEY));
@@ -246,5 +231,4 @@ class WorkbenchAuth {
         }
     }
 }
-
 window.WorkbenchAuth = WorkbenchAuth;

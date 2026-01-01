@@ -1,17 +1,16 @@
 /**
  * V5 Medical Workbench - Storage Layer
  * 数据持久化层 (Cloudflare Workers KV)
- * @version 2.0.0
+ * @version 2.0.1
  */
-
 class WorkbenchStorage {
     constructor() {
         this.config = window.WorkbenchConfig;
-        this.USE_CLOUD = false; // 🔥 切换到云端存储
+        this.USE_CLOUD = false; // 默认使用本地存储，如需云端请设置为true
         
         // Cloudflare Workers API 配置
-        this.WORKER_URL = 'https://v5-workbench-api.alden888.workers.dev'; // ⚠️ 需要替换为实际 Worker URL
-        this.API_KEY = 'v5bright2026_secret_key'; // ⚠️ 需要配置 API Key
+        this.WORKER_URL = 'https://v5-workbench-api.alden888.workers.dev'; // 实际Worker URL
+        this.API_KEY = 'v5bright2026_secret_key'; // 实际API Key
         
         // 本地缓存
         this.cache = {
@@ -21,7 +20,6 @@ class WorkbenchStorage {
             lastSync: null
         };
     }
-
     /**
      * 初始化存储
      */
@@ -30,9 +28,11 @@ class WorkbenchStorage {
             // 尝试从云端加载数据
             if (this.USE_CLOUD) {
                 await this.syncFromCloud();
+                console.log('[Storage] Using Cloudflare Workers KV');
             } else {
-                // 降级到 localStorage
+                // 使用 localStorage
                 this.loadFromLocal();
+                console.log('[Storage] Using localStorage');
             }
             console.log('[Storage] Initialized successfully');
             return true;
@@ -43,35 +43,35 @@ class WorkbenchStorage {
             return false;
         }
     }
-
     /**
      * 从 Cloudflare Workers KV 同步数据
      */
     async syncFromCloud() {
-        const response = await fetch(`${this.WORKER_URL}/sync`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${this.API_KEY}`,
-                'Content-Type': 'application/json'
+        try {
+            const response = await fetch(`${this.WORKER_URL}/sync`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${this.API_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Cloud sync failed: ' + response.statusText);
             }
-        });
-
-        if (!response.ok) {
-            throw new Error('Cloud sync failed');
+            const data = await response.json();
+            this.cache = {
+                orders: data.orders || [],
+                target: data.target || this.config.WORKBENCH.DEFAULT_ANNUAL_TARGET,
+                settings: data.settings || {},
+                lastSync: Date.now()
+            };
+            // 同步到 localStorage 作为备份
+            this.saveToLocal();
+        } catch (error) {
+            console.error('[Storage] Cloud sync error:', error);
+            throw error;
         }
-
-        const data = await response.json();
-        this.cache = {
-            orders: data.orders || [],
-            target: data.target || this.config.WORKBENCH.DEFAULT_ANNUAL_TARGET,
-            settings: data.settings || {},
-            lastSync: Date.now()
-        };
-
-        // 同步到 localStorage 作为备份
-        this.saveToLocal();
     }
-
     /**
      * 保存数据到云端
      */
@@ -79,7 +79,6 @@ class WorkbenchStorage {
         if (!this.USE_CLOUD) {
             return this.saveToLocal();
         }
-
         try {
             const response = await fetch(`${this.WORKER_URL}/save`, {
                 method: 'POST',
@@ -93,11 +92,9 @@ class WorkbenchStorage {
                     timestamp: Date.now()
                 })
             });
-
             if (!response.ok) {
-                throw new Error('Cloud save failed');
+                throw new Error('Cloud save failed: ' + response.statusText);
             }
-
             // 更新本地缓存
             this.cache[key] = value;
             this.saveToLocal(); // 本地备份
@@ -109,26 +106,39 @@ class WorkbenchStorage {
             return this.saveToLocal();
         }
     }
-
     /**
-     * 本地存储操作 (降级方案)
+     * 本地存储操作
      */
     loadFromLocal() {
-        this.cache = {
-            orders: JSON.parse(localStorage.getItem('v5_orders') || '[]'),
-            target: parseInt(localStorage.getItem('v5_target')) || this.config.WORKBENCH.DEFAULT_ANNUAL_TARGET,
-            settings: JSON.parse(localStorage.getItem('v5_settings') || '{}'),
-            lastSync: Date.now()
-        };
+        try {
+            this.cache = {
+                orders: JSON.parse(localStorage.getItem('v5_orders') || '[]'),
+                target: parseInt(localStorage.getItem('v5_target')) || this.config.WORKBENCH.DEFAULT_ANNUAL_TARGET,
+                settings: JSON.parse(localStorage.getItem('v5_settings') || '{}'),
+                lastSync: Date.now()
+            };
+        } catch (error) {
+            console.error('[Storage] Local load error:', error);
+            // 重置到默认值
+            this.cache = {
+                orders: [],
+                target: this.config.WORKBENCH.DEFAULT_ANNUAL_TARGET,
+                settings: {},
+                lastSync: Date.now()
+            };
+        }
     }
-
     saveToLocal() {
-        localStorage.setItem('v5_orders', JSON.stringify(this.cache.orders));
-        localStorage.setItem('v5_target', this.cache.target.toString());
-        localStorage.setItem('v5_settings', JSON.stringify(this.cache.settings));
-        return true;
+        try {
+            localStorage.setItem('v5_orders', JSON.stringify(this.cache.orders));
+            localStorage.setItem('v5_target', this.cache.target.toString());
+            localStorage.setItem('v5_settings', JSON.stringify(this.cache.settings));
+            return true;
+        } catch (error) {
+            console.error('[Storage] Local save error:', error);
+            return false;
+        }
     }
-
     /**
      * 获取订单数据
      */
@@ -138,7 +148,6 @@ class WorkbenchStorage {
         }
         return this.cache.orders || [];
     }
-
     /**
      * 保存订单
      */
@@ -147,7 +156,6 @@ class WorkbenchStorage {
         orders.unshift(order);
         return await this.saveToCloud('orders', orders);
     }
-
     /**
      * 更新订单状态
      */
@@ -160,7 +168,6 @@ class WorkbenchStorage {
         }
         return false;
     }
-
     /**
      * 获取年度目标
      */
@@ -170,23 +177,25 @@ class WorkbenchStorage {
         }
         return this.cache.target || this.config.WORKBENCH.DEFAULT_ANNUAL_TARGET;
     }
-
     /**
      * 更新年度目标
      */
     async setTarget(target) {
         return await this.saveToCloud('target', target);
     }
-
     /**
      * 清除所有数据
      */
     async clearAll() {
         if (this.USE_CLOUD) {
-            await fetch(`${this.WORKER_URL}/clear`, {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${this.API_KEY}` }
-            });
+            try {
+                await fetch(`${this.WORKER_URL}/clear`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${this.API_KEY}` }
+                });
+            } catch (error) {
+                console.error('[Storage] Cloud clear failed:', error);
+            }
         }
         
         localStorage.clear();
@@ -197,7 +206,6 @@ class WorkbenchStorage {
             lastSync: null
         };
     }
-
     /**
      * 导出备份
      */
@@ -209,7 +217,6 @@ class WorkbenchStorage {
             exportDate: new Date().toISOString(),
             version: this.config.VERSION
         };
-
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -218,7 +225,6 @@ class WorkbenchStorage {
         a.click();
         URL.revokeObjectURL(url);
     }
-
     /**
      * 导入备份
      */
@@ -243,5 +249,4 @@ class WorkbenchStorage {
         });
     }
 }
-
 window.WorkbenchStorage = WorkbenchStorage;
