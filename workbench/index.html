@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V5 Medical 战时指挥台 V13 | SURVIVAL MODE</title>
+    <title>V5 Medical 战时指挥台 V13.1 Hotfix | SURVIVAL MODE - 死锁已修复</title>
     <link rel="icon" type="image/x-icon" href="../images/icons/favicon.ico">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -607,8 +607,17 @@
             <i class="fas fa-fist-raised mr-2"></i> 开始战斗
         </button>
         
+        <!-- 🔥 V13.1 HOTFIX: Emergency Override Button -->
+        <button 
+            onclick="app.survival.emergencyOverride()" 
+            class="mt-4 w-full text-xs text-slate-600 hover:text-slate-400 transition text-center py-2 rounded"
+            style="text-decoration: underline;"
+        >
+            ⚡ 10分钟紧急进入（仅限客户来电等突发情况）
+        </button>
+        
         <p class="text-xs text-center text-slate-600 mt-4">
-            V13 Survival Edition · 债务高压模式 · 强制聚焦
+            V13.1 Hotfix · 死锁已修复 · 30分钟通行证
         </p>
     </div>
 </div>
@@ -623,10 +632,10 @@
                 </div>
                 <div>
                     <h1 class="font-black text-lg leading-tight" id="header-title">
-                        战时指挥台 <span class="text-xs bg-danger text-white px-2 py-0.5 rounded-full">V13</span>
+                        战时指挥台 <span class="text-xs bg-danger text-white px-2 py-0.5 rounded-full">V13.1</span>
                     </h1>
                     <div class="text-[10px] uppercase tracking-wider font-bold" id="header-subtitle">
-                        SURVIVAL MODE · CASH ONLY
+                        HOTFIX · 死锁已修复 · 30分钟通行证
                     </div>
                 </div>
             </div>
@@ -636,6 +645,12 @@
         <div id="critical-warning" class="critical-warning hidden">
             <i class="fas fa-exclamation-triangle text-xl"></i>
             <span id="warning-text">资金链警告</span>
+        </div>
+        
+        <!-- 🔥 V13.1 HOTFIX: Emergency Mode Warning -->
+        <div id="emergency-mode-warning" class="critical-warning hidden" style="background: repeating-linear-gradient(45deg, rgba(0,0,0,0.5), rgba(0,0,0,0.5) 10px, rgba(251,191,36,0.5) 10px, rgba(251,191,36,0.5) 20px);">
+            <i class="fas fa-bolt text-xl text-yellow-300"></i>
+            <span id="emergency-countdown">紧急模式倒计时</span>
         </div>
         
         <div class="flex items-center gap-4">
@@ -1032,7 +1047,9 @@ const app = {
         rate: 7.25,
         feishuWebhook: '',
         todayActions: ['', '', ''], // 🔥 Today's 3 Cash Actions
-        isCritical: false // 🔥 Cash Red Line Status
+        isCritical: false, // 🔥 Cash Red Line Status
+        emergencyMode: false, // 🔥 V13.1: Emergency Mode
+        emergencyEndTime: 0 // 🔥 V13.1: Emergency Mode End Timestamp
     },
     
     charts: {
@@ -1042,7 +1059,7 @@ const app = {
     
     // Initialize
     async init() {
-        console.log('[V13 Survival] Initializing War Time Command Center...');
+        console.log('[V13.1 Hotfix] Initializing War Time Command Center...');
         
         this.loadData();
         this.survival.checkGate(); // 🔥 Check if Iron Curtain should show
@@ -1058,6 +1075,20 @@ const app = {
     // 🔥 SURVIVAL MODULE
     survival: {
         checkGate() {
+            // 🔥 V13.1 HOTFIX: 30分钟通行证机制
+            const unlockTime = localStorage.getItem('v5_iron_curtain_unlock_time');
+            
+            if (unlockTime) {
+                const minutesSinceUnlock = (Date.now() - parseInt(unlockTime)) / (1000 * 60);
+                if (minutesSinceUnlock < 30) {
+                    // 距离上次解锁不足30分钟，跳过铁幕
+                    document.getElementById('iron-curtain').classList.add('hidden');
+                    this.displayActions();
+                    console.log('[Iron Curtain] 通行证有效，剩余: ' + Math.floor(30 - minutesSinceUnlock) + '分钟');
+                    return;
+                }
+            }
+            
             // Show gate if no actions saved for today
             const today = new Date().toDateString();
             const lastDate = localStorage.getItem('v5_actions_date');
@@ -1102,13 +1133,16 @@ const app = {
             localStorage.setItem('v5_actions_date', new Date().toDateString());
             localStorage.setItem('v5_today_actions', JSON.stringify(app.data.todayActions));
             
+            // 🔥 V13.1 HOTFIX: 记录解锁时间，30分钟内免打扰
+            localStorage.setItem('v5_iron_curtain_unlock_time', Date.now().toString());
+            
             // Hide Iron Curtain
             document.getElementById('iron-curtain').classList.add('hidden');
             
             // Display actions in banner
             this.displayActions();
             
-            app.toast('战斗开始！聚焦这三件事！', 'success');
+            app.toast('战斗开始！30分钟通行证已激活', 'success');
         },
         
         displayActions() {
@@ -1206,18 +1240,19 @@ const app = {
         },
         
         lockFeatures() {
-            // Lock "Quick Add" button
+            // 🔥 V13.1 HOTFIX: 移除完全锁定，仅添加视觉警告
+            // 允许用户打开模态框，在保存时进行校验
             const quickAddBtn = document.getElementById('quick-add-inquiry');
             const fullAddBtn = document.getElementById('full-add-btn');
             
             if (quickAddBtn) {
-                quickAddBtn.classList.add('locked');
-                quickAddBtn.onclick = () => app.toast('🔒 先搞定回款！', 'error');
+                quickAddBtn.classList.add('locked'); // 仅视觉提示，不阻止点击
+                // onclick 保持原有功能
             }
             
             if (fullAddBtn) {
-                fullAddBtn.classList.add('feature-locked');
-                fullAddBtn.onclick = () => app.toast('🔒 先搞定回款！', 'error');
+                fullAddBtn.classList.add('feature-locked'); // 仅视觉提示
+                // onclick 保持原有功能
             }
         },
         
@@ -1234,6 +1269,68 @@ const app = {
                 fullAddBtn.classList.remove('feature-locked');
                 fullAddBtn.onclick = () => app.kanban.openFullAddModal();
             }
+        },
+        
+        // 🔥 V13.1 HOTFIX: Emergency Override Function
+        emergencyOverride() {
+            if (!confirm('确认启动紧急模式？\n\n⚠️ 此模式仅用于客户来电等紧急情况\n⏰ 10分钟后将强制返回铁幕')) {
+                return;
+            }
+            
+            // 直接跳过铁幕
+            document.getElementById('iron-curtain').classList.add('hidden');
+            
+            // 激活紧急模式
+            app.data.emergencyMode = true;
+            app.data.emergencyEndTime = Date.now() + (10 * 60 * 1000); // 10分钟后
+            
+            // 修改Header为黑黄警告条纹
+            const header = document.getElementById('main-header');
+            header.style.background = 'repeating-linear-gradient(45deg, #000000, #000000 10px, #fbbf24 10px, #fbbf24 20px)';
+            
+            // 隐藏普通警告，显示紧急模式警告
+            document.getElementById('critical-warning').classList.add('hidden');
+            document.getElementById('emergency-mode-warning').classList.remove('hidden');
+            
+            // 启动倒计时
+            this.startEmergencyCountdown();
+            
+            app.toast('⚡ 紧急模式启动：10分钟倒计时', 'warning');
+        },
+        
+        // 🔥 V13.1 HOTFIX: Emergency Countdown
+        startEmergencyCountdown() {
+            const countdownInterval = setInterval(() => {
+                if (!app.data.emergencyMode) {
+                    clearInterval(countdownInterval);
+                    return;
+                }
+                
+                const remaining = Math.max(0, app.data.emergencyEndTime - Date.now());
+                const minutes = Math.floor(remaining / 60000);
+                const seconds = Math.floor((remaining % 60000) / 1000);
+                
+                // 更新倒计时显示
+                const countdown = document.getElementById('emergency-countdown');
+                if (countdown) {
+                    countdown.textContent = `⚡ 紧急模式 ${minutes}:${seconds.toString().padStart(2, '0')}`;
+                }
+                
+                // 时间到，强制弹出铁幕
+                if (remaining <= 0) {
+                    clearInterval(countdownInterval);
+                    app.data.emergencyMode = false;
+                    
+                    // 恢复Header
+                    const header = document.getElementById('main-header');
+                    header.style.background = '';
+                    document.getElementById('emergency-mode-warning').classList.add('hidden');
+                    
+                    // 弹出铁幕
+                    document.getElementById('iron-curtain').classList.remove('hidden');
+                    app.toast('⏰ 紧急模式结束，请填写今日行动', 'warning');
+                }
+            }, 1000);
         }
     },
     
@@ -1661,10 +1758,7 @@ const app = {
         },
         
         openQuickAdd() {
-            if (app.data.isCritical) {
-                app.toast('🔒 先搞定回款！', 'error');
-                return;
-            }
+            // 🔥 V13.1 HOTFIX: 移除拦截，允许打开，校验在保存时进行
             document.getElementById('quick-add-modal').classList.add('active');
             document.getElementById('quick-customer').focus();
         },
@@ -1681,6 +1775,13 @@ const app = {
             
             if (!customer || !amount) {
                 app.toast('请填写必填项', 'error');
+                return;
+            }
+            
+            // 🔥 V13.1 HOTFIX: Critical Mode校验
+            // 快速新建默认为New Inquiry，无法解除危机
+            if (app.data.isCritical) {
+                app.toast('⚠️ 红色警戒！快速新建默认为【潜在客户】，无法解除危机。\n\n请使用【完整新增】录入【已回款 Paid】订单！', 'error');
                 return;
             }
             
@@ -1709,10 +1810,8 @@ const app = {
         },
         
         openFullAddModal() {
-            if (app.data.isCritical) {
-                app.toast('🔒 先搞定回款！', 'error');
-                return;
-            }
+            // 🔥 V13.1 HOTFIX: 移除拦截，允许打开模态框
+            // 校验在saveFullOrder()中进行
             this.generatePINumber();
             document.getElementById('add-order-modal').classList.add('active');
         },
@@ -1747,6 +1846,20 @@ const app = {
                 return;
             }
             
+            // 🔥 V13.1 HOTFIX: Critical Mode下的条件校验
+            if (app.data.isCritical && status !== 'Paid') {
+                const confirmed = confirm(
+                    '⚠️ 当前处于红色警戒状态！\n\n' +
+                    '只有录入【已回款 (Paid)】订单才能解除危机。\n' +
+                    '您选择的状态是: ' + status + '\n\n' +
+                    '是否仍要继续保存？（不推荐）'
+                );
+                
+                if (!confirmed) {
+                    return; // 用户取消
+                }
+            }
+            
             const order = {
                 id: document.getElementById('new-pi').value,
                 customer,
@@ -1767,7 +1880,12 @@ const app = {
             app.survival.checkCashRedLine();
             this.closeFullAddModal();
             
-            app.toast('订单已创建', 'success');
+            // 🔥 V13.1 HOTFIX: 如果是Paid订单且在Critical Mode，给予鼓励
+            if (app.data.isCritical && status === 'Paid') {
+                app.toast('🎉 已回款订单录入成功！正在检查红色警戒状态...', 'success');
+            } else {
+                app.toast('订单已创建', 'success');
+            }
         }
     },
     
@@ -1802,7 +1920,7 @@ SWIFT: CHASHKHH`;
             feishuWebhook: this.data.feishuWebhook,
             todayActions: this.data.todayActions,
             exportDate: new Date().toISOString(),
-            version: 'V13-Survival'
+            version: 'V13.1-Hotfix'
         };
         
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
