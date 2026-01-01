@@ -1,136 +1,97 @@
 /**
  * V5 Medical Workbench - Dashboard Module
  * 业绩仪表盘与数据可视化
- * @version 2.0.1
- * @author V5 Medical Tech
+ * @version 2.0.1 (Fixed World Clock)
  */
+
 class WorkbenchDashboard {
     constructor() {
-        // 配置与存储引用
-        this.config = window.WorkbenchConfig || {};
-        this.storage = window.V5Workbench?.storage || {};
-        
-        // 默认汇率（USD to CNY）
-        this.currentRate = 7.25;
-        
-        // 核心数据模型
+        this.config = window.WorkbenchConfig;
+        this.storage = window.V5Workbench?.storage;
+        this.currentRate = 7.25; // 默认汇率
+        this.clockInterval = null; // 用于存储定时器ID
         this.data = {
             orders: [],
-            target: 5000000,       // 年度目标默认值
-            totalSales: 0,         // 已回款金额（RMB）
-            pipeline: 0,           // 待回款金额（RMB）
-            achievement: 0,        // 达成率（%）
-            gap: 0,                // 距离目标差额
-            pendingCount: 0,       // 待跟进订单数
-            dailyNeed: 0           // 每日所需进账
+            target: 5000000,
+            totalSales: 0,
+            pipeline: 0,
+            achievement: 0
         };
-        
-        // 图表实例
-        this.chart = null;
-        
-        // 自动刷新定时器
-        this.refreshTimer = null;
-        this.refreshInterval = 5 * 60 * 1000; // 5分钟自动刷新
     }
 
     /**
      * 初始化仪表盘
      */
     async init() {
-        try {
-            await this.loadData();
-            this.render();
-            this.startAutoRefresh();
-            this.bindEditTargetHandler();
-            console.log('[Dashboard] Initialized successfully');
-        } catch (error) {
-            console.error('[Dashboard] Initialization failed:', error);
-            this.showErrorState('初始化失败，请刷新页面重试');
+        // 确保 Config 已加载
+        if (!this.config) {
+            console.warn('[Dashboard] Config not found, retrying...');
+            this.config = window.WorkbenchConfig;
         }
+        
+        await this.loadData();
+        this.render();
+        this.startAutoRefresh();
     }
 
     /**
-     * 加载数据（从存储/API）
+     * 加载数据
      */
     async loadData() {
         try {
-            // 从存储加载核心数据
-            this.data.orders = await this.storage.getOrders() || [];
-            this.data.target = await this.storage.getTarget() || 5000000;
+            if (this.storage) {
+                this.data.orders = await this.storage.getOrders() || [];
+                this.data.target = await this.storage.getTarget() || 5000000;
+            }
+            this.currentRate = parseFloat(localStorage.getItem('v5_usd_rate')) || 7.25;
             
-            // 从本地存储获取汇率（支持用户自定义）
-            const storedRate = localStorage.getItem('v5_usd_rate');
-            this.currentRate = storedRate ? parseFloat(storedRate) : 7.25;
-            
-            // 计算关键指标
             this.calculateMetrics();
         } catch (error) {
             console.error('[Dashboard] Load data failed:', error);
-            throw error;
         }
     }
 
     /**
-     * 计算关键业务指标
+     * 计算关键指标
      */
     calculateMetrics() {
-        if (!Array.isArray(this.data.orders)) {
-            this.data.orders = [];
-        }
-
         let totalSalesRMB = 0;
         let pipelineRMB = 0;
         let pendingCount = 0;
 
-        // 遍历订单计算金额
-        this.data.orders.forEach(order => {
-            if (!order.total || isNaN(order.total)) return;
-            
-            // 转换为人民币金额
-            const amountRMB = order.total * this.currentRate;
-            
-            // 已回款订单
-            if (order.status === 'Paid') {
-                totalSalesRMB += amountRMB;
-            }
-            // 待回款订单
-            else if (order.status === 'Pending') {
-                pipelineRMB += amountRMB;
-                pendingCount++;
-            }
-        });
+        if (Array.isArray(this.data.orders)) {
+            this.data.orders.forEach(order => {
+                const amountRMB = order.total * this.currentRate;
+                if (order.status === 'Paid') {
+                    totalSalesRMB += amountRMB;
+                } else if (order.status === 'Pending') {
+                    pipelineRMB += amountRMB;
+                    pendingCount++;
+                }
+            });
+        }
 
-        // 更新核心数据
         this.data.totalSales = totalSalesRMB;
         this.data.pipeline = pipelineRMB;
+        this.data.achievement = this.data.target > 0 ? (totalSalesRMB / this.data.target) * 100 : 0;
+        this.data.gap = this.data.target - totalSalesRMB;
         this.data.pendingCount = pendingCount;
-        this.data.achievement = this.data.target > 0 
-            ? (totalSalesRMB / this.data.target) * 100 
-            : 0;
-        this.data.gap = Math.max(0, this.data.target - totalSalesRMB);
-
-        // 计算每日所需进账（到年底）
+        
+        // 计算每日所需进账
         const today = new Date();
         const endYear = new Date(today.getFullYear(), 11, 31);
         const daysLeft = Math.ceil((endYear - today) / (1000 * 60 * 60 * 24));
-        this.data.dailyNeed = daysLeft > 0 
-            ? Math.max(0, this.data.gap / daysLeft) 
-            : 0;
+        this.data.dailyNeed = daysLeft > 0 ? (this.data.gap / daysLeft) : 0;
     }
 
     /**
-     * 渲染完整仪表盘
+     * 渲染仪表盘
      */
     render() {
         const container = document.getElementById('workbench-content');
-        if (!container) {
-            console.warn('[Dashboard] Container not found');
-            return;
-        }
+        if (!container) return;
 
-        // 渲染主界面
         container.innerHTML = `
-            <!-- 顶部目标设置 -->
             <div class="flex items-center justify-between mb-8">
                 <div>
                     <h2 class="text-3xl font-bold text-slate-800">2026 战报指挥舱</h2>
@@ -139,7 +100,7 @@ class WorkbenchDashboard {
                 <div class="flex items-center gap-3">
                     <div class="text-right">
                         <div class="text-xs text-slate-500 uppercase tracking-wider">Annual Target</div>
-                        <div class="text-2xl font-bold text-primary cursor-pointer hover:text-blue-700 transition" id="edit-target-btn">
+                        <div class="text-2xl font-bold text-primary cursor-pointer hover:text-blue-700 transition" onclick="window.V5Workbench.dashboard.editTarget()">
                             ¥${this.formatNumber(this.data.target)}
                             <i class="fas fa-pen text-sm ml-1"></i>
                         </div>
@@ -147,42 +108,13 @@ class WorkbenchDashboard {
                 </div>
             </div>
 
-            <!-- KPI 卡片 -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                ${this.renderKPICard(
-                    'trophy', 
-                    '年度达成率', 
-                    `${this.data.achievement.toFixed(1)}%`, 
-                    'primary', 
-                    this.data.achievement
-                )}
-                ${this.renderKPICard(
-                    'coins', 
-                    '已回款金额', 
-                    `¥${this.formatNumber(this.data.totalSales)}`, 
-                    'green', 
-                    null, 
-                    `约 $${this.formatNumber(this.data.totalSales / this.currentRate)}`
-                )}
-                ${this.renderKPICard(
-                    'mountain', 
-                    '距离目标还差', 
-                    `¥${this.formatNumber(this.data.gap / 10000, 1)}w`, 
-                    'red', 
-                    null, 
-                    `需每日 ¥${this.formatNumber(this.data.dailyNeed)}`
-                )}
-                ${this.renderKPICard(
-                    'hourglass-half', 
-                    '待回款 Pipeline', 
-                    `¥${this.formatNumber(this.data.pipeline)}`, 
-                    'yellow', 
-                    null, 
-                    `${this.data.pendingCount} 个订单跟进中`
-                )}
+                ${this.renderKPICard('trophy', '年度达成率', `${this.data.achievement.toFixed(1)}%`, 'primary', this.data.achievement)}
+                ${this.renderKPICard('coins', '已回款金额', `¥${this.formatNumber(this.data.totalSales)}`, 'green', null, `约 $${this.formatNumber(this.data.totalSales / this.currentRate)}`)}
+                ${this.renderKPICard('mountain', '距离目标还差', `¥${this.formatNumber(this.data.gap / 10000, 1)}w`, 'red', null, `需每日 ¥${this.formatNumber(this.data.dailyNeed)}`)}
+                ${this.renderKPICard('hourglass-half', '待回款 Pipeline', `¥${this.formatNumber(this.data.pipeline)}`, 'yellow', null, `${this.data.pendingCount} 个订单跟进中`)}
             </div>
 
-            <!-- 图表区域 -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                 <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                     <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
@@ -190,23 +122,26 @@ class WorkbenchDashboard {
                     </h3>
                     <div class="h-64 flex items-center justify-center text-slate-400">
                         <canvas id="sales-chart"></canvas>
+                        <span class="text-xs italic ml-2">(Chart.js 待集成)</span>
                     </div>
                 </div>
+
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                     <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
                         <i class="fas fa-clock text-green-600"></i> 全球商机时钟
                     </h3>
-                    <div id="world-clock-container" class="space-y-3"></div>
+                    <div id="world-clock-container" class="space-y-3 min-h-[200px]">
+                        <div class="text-center py-10 text-slate-300">Loading Clocks...</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- 最近订单 -->
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="font-bold text-slate-800 flex items-center gap-2">
                         <i class="fas fa-file-invoice text-blue-600"></i> 最近订单记录
                     </h3>
-                    <a href="#orders" onclick="switchModule('orders')" class="text-sm text-blue-600 hover:underline">查看全部 →</a>
+                    <a href="javascript:void(0)" onclick="document.querySelector('a[href=\\'#orders\\']')?.click()" class="text-sm text-blue-600 hover:underline">查看全部 →</a>
                 </div>
                 <div id="recent-orders-list">
                     ${this.renderRecentOrders()}
@@ -214,23 +149,17 @@ class WorkbenchDashboard {
             </div>
         `;
 
-        // 初始化子组件
-        this.initWorldClock();
-        this.initChart();
+        // 延迟一小会儿执行，确保 DOM 完全就绪
+        setTimeout(() => {
+            this.initWorldClock();
+            this.initChart();
+        }, 50);
     }
 
     /**
-     * 渲染KPI卡片
-     * @param {string} icon - FontAwesome图标名称
-     * @param {string} title - 卡片标题
-     * @param {string} value - 主数值
-     * @param {string} color - 颜色主题 (primary/green/red/yellow)
-     * @param {number} progress - 进度值（百分比）
-     * @param {string} subtitle - 副标题/补充信息
-     * @returns {string} HTML字符串
+     * 渲染 KPI 卡片
      */
     renderKPICard(icon, title, value, color, progress = null, subtitle = null) {
-        // 颜色映射配置
         const colors = {
             primary: { bg: 'blue-100', text: 'blue-600', border: 'blue-500' },
             green: { bg: 'green-100', text: 'green-600', border: 'green-500' },
@@ -239,42 +168,32 @@ class WorkbenchDashboard {
         };
         const c = colors[color] || colors.primary;
 
-        // 进度条HTML
-        const progressHtml = progress !== null ? `
-            <div class="mt-3 w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                <div class="bg-${c.text} h-full rounded-full transition-all duration-500" 
-                     style="width: ${Math.min(progress, 100)}%"></div>
-            </div>
-        ` : '';
-
-        // 副标题HTML
-        const subtitleHtml = subtitle ? `<div class="text-xs text-slate-400">${subtitle}</div>` : '';
-
         return `
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-${c.border} 
-                      relative overflow-hidden hover:shadow-md transition">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-${c.border} relative overflow-hidden hover:shadow-md transition">
                 <i class="fas fa-${icon} absolute right-4 top-4 text-4xl text-${c.bg} opacity-50"></i>
                 <div class="relative z-10">
                     <div class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">${title}</div>
                     <div class="text-3xl font-black text-slate-800 mb-1">${value}</div>
-                    ${subtitleHtml}
-                    ${progressHtml}
+                    ${subtitle ? `<div class="text-xs text-slate-400">${subtitle}</div>` : ''}
+                    ${progress !== null ? `
+                        <div class="mt-3 w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                            <div class="bg-${c.text} h-full rounded-full transition-all duration-500" style="width: ${Math.min(progress, 100)}%"></div>
+                        </div>
+                    ` : ''}
                 </div>
             </div>
         `;
     }
 
     /**
-     * 渲染最近订单列表
-     * @returns {string} HTML字符串
+     * 渲染最近订单
      */
     renderRecentOrders() {
-        const recent = this.data.orders.slice(0, 5);
-        
-        if (recent.length === 0) {
+        if (!this.data.orders || this.data.orders.length === 0) {
             return '<div class="text-center py-8 text-slate-400">暂无订单记录</div>';
         }
 
+        const recent = this.data.orders.slice(0, 5);
         return `
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
@@ -288,23 +207,18 @@ class WorkbenchDashboard {
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
-                        ${recent.map(order => `
+                        ${recent.map(o => `
                             <tr class="hover:bg-slate-50 transition">
-                                <td class="px-4 py-3 font-mono font-bold text-slate-800">${order.id || 'N/A'}</td>
-                                <td class="px-4 py-3 text-slate-600">${order.customer || '未知客户'}</td>
-                                <td class="px-4 py-3 text-right font-bold text-blue-600">
-                                    $${order.total ? order.total.toFixed(2) : '0.00'}
-                                </td>
+                                <td class="px-4 py-3 font-mono font-bold text-slate-800">${o.id}</td>
+                                <td class="px-4 py-3 text-slate-600">${o.customer}</td>
+                                <td class="px-4 py-3 text-right font-bold text-blue-600">$${o.total.toFixed(2)}</td>
                                 <td class="px-4 py-3 text-center">
-                                    <span class="px-2 py-1 rounded-full text-xs font-bold 
-                                             ${order.status === 'Paid' 
-                                                ? 'bg-green-100 text-green-700' 
-                                                : 'bg-amber-100 text-amber-700'}">
-                                        ${order.status || 'Unknown'}
+                                    <span class="px-2 py-1 rounded-full text-xs font-bold ${o.status === 'Paid' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">
+                                        ${o.status}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 text-center text-xs text-slate-400">
-                                    ${order.date ? new Date(order.date).toLocaleDateString('zh-CN') : '未知日期'}
+                                    ${new Date(o.date).toLocaleDateString('zh-CN')}
                                 </td>
                             </tr>
                         `).join('')}
@@ -315,263 +229,127 @@ class WorkbenchDashboard {
     }
 
     /**
-     * 初始化全球商机时钟
+     * 初始化图表
      */
-    initWorldClock() {
-        const container = document.getElementById('world-clock-container');
-        if (!container) return;
-
-        // 主要时区配置
-        const timezones = [
-            { name: '中国·上海', timezone: 'Asia/Shanghai', icon: 'cn' },
-            { name: '土耳其·伊斯坦布尔', timezone: 'Europe/Istanbul', icon: 'tr' },
-            { name: '阿联酋·迪拜', timezone: 'Asia/Dubai', icon: 'ae' },
-            { name: '美国·纽约', timezone: 'America/New_York', icon: 'us' },
-            { name: '德国·柏林', timezone: 'Europe/Berlin', icon: 'de' }
-        ];
-
-        // 渲染时钟
-        container.innerHTML = timezones.map(tz => {
-            const now = new Date();
-            const options = { 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                second: '2-digit',
-                timeZone: tz.timezone 
-            };
-            const timeString = now.toLocaleTimeString('zh-CN', options);
-
-            return `
-                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-lg">
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-globe-${tz.icon} text-blue-600"></i>
-                        <span class="font-medium text-slate-700">${tz.name}</span>
-                    </div>
-                    <span class="font-mono text-slate-800">${timeString}</span>
-                </div>
-            `;
-        }).join('');
-
-        // 每秒更新时钟
-        if (this.clockInterval) clearInterval(this.clockInterval);
-        this.clockInterval = setInterval(() => this.initWorldClock(), 1000);
+    initChart() {
+        console.log('[Dashboard] Chart initialized (placeholder)');
     }
 
     /**
-     * 初始化业绩趋势图表
+     * 初始化全球时钟 (修复版)
      */
-    initChart() {
-        const ctx = document.getElementById('sales-chart');
-        if (!ctx || typeof Chart === 'undefined') {
-            ctx?.parentNode?.innerHTML = '<div class="text-slate-500">图表组件未加载</div>';
+    initWorldClock() {
+        // 安全检查：防止 Config 未加载导致崩溃
+        if (!this.config || !this.config.WORKBENCH || !this.config.WORKBENCH.WORLD_CITIES) {
+            console.error('[Dashboard] Config or World Cities missing!');
+            const container = document.getElementById('world-clock-container');
+            if(container) container.innerHTML = '<div class="text-center text-red-400 text-xs py-4">配置加载失败</div>';
             return;
         }
 
-        // 销毁旧图表
-        if (this.chart) {
-            this.chart.destroy();
-        }
+        const cities = this.config.WORKBENCH.WORLD_CITIES;
+        const container = document.getElementById('world-clock-container');
+        if (!container) return;
 
-        // 准备月度数据
-        const months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-        const currentMonth = new Date().getMonth();
-        
-        // 按月份分组订单数据
-        const monthlySales = Array(12).fill(0);
-        this.data.orders.forEach(order => {
-            if (!order.date || order.status !== 'Paid') return;
-            const month = new Date(order.date).getMonth();
-            monthlySales[month] += order.total * this.currentRate;
-        });
+        const updateClock = () => {
+            try {
+                container.innerHTML = cities.map(city => {
+                    try {
+                        const now = new Date();
+                        let timeString = '00:00';
+                        
+                        // 尝试使用 Intl 格式化，如果不被支持则回退
+                        try {
+                            timeString = new Intl.DateTimeFormat('en-US', {
+                                timeZone: city.tz,
+                                hour: 'numeric',
+                                minute: '2-digit',
+                                hour12: false
+                            }).format(now);
+                        } catch (tzError) {
+                            console.warn(`[Dashboard] Timezone error for ${city.name}: ${city.tz}`);
+                            return ''; // 如果时区不支持，跳过该城市
+                        }
 
-        // 创建图表
-        this.chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: months,
-                datasets: [
-                    {
-                        label: '月度回款 (¥)',
-                        data: monthlySales,
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.3,
-                        fill: true,
-                        pointBackgroundColor: '#3b82f6',
-                        pointRadius: 3,
-                        pointHoverRadius: 5
-                    },
-                    {
-                        label: '目标线',
-                        data: Array(12).fill(this.data.target / 12),
-                        borderColor: '#ef4444',
-                        borderWidth: 1,
-                        borderDash: [5, 5],
-                        fill: false,
-                        pointRadius: 0
+                        // 处理可能出现的异常格式
+                        if (!timeString) return '';
+                        
+                        const hour = parseInt(timeString.split(':')[0]);
+                        const isWorking = hour >= city.workHours[0] && hour < city.workHours[1];
+
+                        return `
+                            <div class="flex items-center justify-between p-3 rounded-lg border transition-colors duration-500 ${isWorking ? 'bg-green-50 border-green-200' : 'bg-slate-50 border-slate-200'}">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-lg">${city.icon}</span>
+                                    <div>
+                                        <div class="text-xs font-bold text-slate-700">${city.name}</div>
+                                        <div class="text-lg font-mono font-black text-slate-800 tracking-tight">${timeString}</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="w-2 h-2 rounded-full ${isWorking ? 'bg-green-500 animate-pulse' : 'bg-slate-300'}"></span>
+                                    <span class="text-[10px] font-bold ${isWorking ? 'text-green-600' : 'text-slate-400'}">${isWorking ? 'OPEN' : 'CLOSED'}</span>
+                                </div>
+                            </div>
+                        `;
+                    } catch (itemError) {
+                        console.error(`[Dashboard] Error rendering city ${city.name}`, itemError);
+                        return '';
                     }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            usePointStyle: true,
-                            boxWidth: 6
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: (context) => {
-                                const value = context.raw;
-                                return `${context.dataset.label}: ¥${this.formatNumber(value)}`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: (value) => `¥${this.formatNumber(value / 10000)}w`
-                        }
-                    }
-                },
-                animation: {
-                    duration: 1000,
-                    easing: 'easeOutQuart'
-                }
+                }).join('');
+            } catch (e) {
+                console.error('[Dashboard] Clock update loop failed', e);
             }
-        });
+        };
+
+        // 先清除之前的定时器（防止多次 init 导致重复）
+        if (this.clockInterval) clearInterval(this.clockInterval);
+        
+        // 立即执行一次，然后启动定时器
+        updateClock();
+        this.clockInterval = setInterval(updateClock, 60000); // 每分钟更新
     }
 
     /**
      * 编辑年度目标
      */
     async editTarget() {
-        const newTarget = prompt(
-            '请输入新的年度目标金额（人民币）',
-            this.data.target.toString().replace(/,/g, '')
-        );
-
-        if (newTarget === null) return;
-
-        const parsedTarget = parseFloat(newTarget);
-        if (isNaN(parsedTarget) || parsedTarget <= 0) {
-            alert('请输入有效的正数金额');
-            return;
-        }
-
-        try {
-            // 保存新目标
-            await this.storage.setTarget(parsedTarget);
-            this.data.target = parsedTarget;
-            this.calculateMetrics();
-            this.render();
-            alert('年度目标已更新！');
-        } catch (error) {
-            console.error('[Dashboard] Update target failed:', error);
-            alert('更新目标失败，请重试');
+        const newTarget = prompt('请输入新的年度销售目标 (RMB):', this.data.target);
+        if (newTarget && !isNaN(newTarget)) {
+            this.data.target = parseInt(newTarget);
+            await this.storage.setTarget(this.data.target);
+            await this.loadData();
+            this.render(); // 重新渲染以更新界面
+            if(window.WorkbenchUtils?.toast) {
+                window.WorkbenchUtils.toast.success('年度目标已更新！');
+            }
         }
     }
 
     /**
-     * 格式化数字显示
-     * @param {number} num - 要格式化的数字
-     * @param {number} decimals - 小数位数
-     * @returns {string} 格式化后的字符串
+     * 格式化数字
      */
     formatNumber(num, decimals = 0) {
-        if (isNaN(num)) return '0';
-        
-        return num.toLocaleString('zh-CN', {
+        if (num === undefined || num === null) return '0';
+        return Math.floor(num).toLocaleString('zh-CN', {
             minimumFractionDigits: decimals,
             maximumFractionDigits: decimals
         });
     }
 
     /**
-     * 启动自动刷新
+     * 自动刷新
      */
     startAutoRefresh() {
-        if (this.refreshTimer) clearInterval(this.refreshTimer);
-        
-        this.refreshTimer = setInterval(async () => {
-            try {
-                await this.loadData();
-                this.render();
-            } catch (error) {
-                console.error('[Dashboard] Auto-refresh failed:', error);
-            }
-        }, this.refreshInterval);
-    }
-
-    /**
-     * 绑定编辑目标事件处理器
-     */
-    bindEditTargetHandler() {
-        const btn = document.getElementById('edit-target-btn');
-        if (btn) {
-            btn.addEventListener('click', () => this.editTarget());
-        }
-        
-        // 全局暴露方法
-        window.V5Workbench = window.V5Workbench || {};
-        window.V5Workbench.dashboard = this;
-    }
-
-    /**
-     * 显示错误状态
-     * @param {string} message - 错误信息
-     */
-    showErrorState(message) {
-        const container = document.getElementById('workbench-content');
-        if (container) {
-            container.innerHTML = `
-                <div class="flex flex-col items-center justify-center h-96 text-center p-8">
-                    <div class="text-6xl text-red-300 mb-4">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-2">加载失败</h3>
-                    <p class="text-slate-500 mb-6">${message}</p>
-                    <button onclick="window.V5Workbench.dashboard.init()" 
-                            class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
-                        重试加载
-                    </button>
-                </div>
-            `;
-        }
-    }
-
-    /**
-     * 销毁仪表盘（清理资源）
-     */
-    destroy() {
-        // 清除定时器
-        if (this.refreshTimer) clearInterval(this.refreshTimer);
-        if (this.clockInterval) clearInterval(this.clockInterval);
-        
-        // 销毁图表
-        if (this.chart) {
-            this.chart.destroy();
-            this.chart = null;
-        }
-        
-        console.log('[Dashboard] Destroyed successfully');
+        // 使用一个实例变量来避免重复 Interval
+        if(this.refreshInterval) clearInterval(this.refreshInterval);
+        this.refreshInterval = setInterval(() => {
+            this.loadData().then(() => this.render());
+        }, 60000); // 每分钟刷新一次
     }
 }
 
-// 初始化（如果在工作台页面）
-document.addEventListener('DOMContentLoaded', async () => {
-    if (document.getElementById('workbench-content')) {
-        const dashboard = new WorkbenchDashboard();
-        await dashboard.init();
-        
-        // 窗口关闭时清理资源
-        window.addEventListener('beforeunload', () => dashboard.destroy());
+// 确保挂载到 window
+window.WorkbenchDashboard = WorkbenchDashboard;
     }
 });
