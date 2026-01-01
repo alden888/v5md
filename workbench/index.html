@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V5 Medical 工作台</title>
-    <!-- 直接引入Tailwind（确保样式生效） -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-50 min-h-screen p-4 md:p-8">
-    <!-- 工作台容器 -->
     <div class="max-w-7xl mx-auto">
-        <!-- 导航栏（内联样式） -->
+        <!-- 顶部导航 -->
         <nav class="bg-white shadow-sm rounded-lg p-4 mb-8 flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <div class="bg-[#1e40af] text-white w-9 h-9 rounded-lg flex items-center justify-center font-bold text-lg shadow-lg shadow-blue-500/30">V5</div>
@@ -22,66 +20,75 @@
             </button>
         </nav>
 
-        <!-- 功能模块（网格布局+卡片，全部内联样式） -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- 订单管理卡片 -->
+        <!-- 功能模块网格（增加财务、物流模块） -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- 订单管理 -->
             <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all border border-slate-200">
                 <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center">
                     <i class="fas fa-shopping-cart text-blue-600 mr-2"></i> 订单管理
                 </h2>
-                <button id="clear-all-orders" class="w-full bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 py-2 px-4 rounded-lg transition flex items-center justify-center gap-1">
-                    <i class="fas fa-trash-alt"></i> 清空所有订单
+                <button id="clear-all-orders" class="w-full bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 py-2 px-4 rounded-lg transition">
+                    <i class="fas fa-trash-alt mr-1"></i> 清空所有订单
                 </button>
             </div>
 
-            <!-- 数据仪表盘卡片 -->
+            <!-- 数据仪表盘 -->
             <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all border border-slate-200">
                 <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center">
                     <i class="fas fa-chart-line text-green-600 mr-2"></i> 数据仪表盘
                 </h2>
-                <button id="open-dashboard" class="w-full bg-green-50 text-green-600 border border-green-200 hover:bg-green-100 py-2 px-4 rounded-lg transition flex items-center justify-center gap-1">
-                    <i class="fas fa-eye"></i> 查看仪表盘
+                <button id="open-dashboard" class="w-full bg-green-50 text-green-600 border border-green-200 hover:bg-green-100 py-2 px-4 rounded-lg transition">
+                    <i class="fas fa-eye mr-1"></i> 查看仪表盘
                 </button>
             </div>
 
-            <!-- 定价管理卡片 -->
+            <!-- 定价管理 -->
             <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all border border-slate-200">
                 <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center">
                     <i class="fas fa-dollar-sign text-purple-600 mr-2"></i> 定价管理
                 </h2>
-                <button id="open-pricing" class="w-full bg-purple-50 text-purple-600 border border-purple-200 hover:bg-purple-100 py-2 px-4 rounded-lg transition flex items-center justify-center gap-1">
-                    <i class="fas fa-edit"></i> 编辑定价规则
+                <button id="open-pricing" class="w-full bg-purple-50 text-purple-600 border border-purple-200 hover:bg-purple-100 py-2 px-4 rounded-lg transition">
+                    <i class="fas fa-edit mr-1"></i> 编辑定价规则
+                </button>
+            </div>
+
+            <!-- 财务对账 -->
+            <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all border border-slate-200">
+                <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center">
+                    <i class="fas fa-university text-orange-600 mr-2"></i> 财务对账
+                </h2>
+                <button id="open-finance" class="w-full bg-orange-50 text-orange-600 border border-orange-200 hover:bg-orange-100 py-2 px-4 rounded-lg transition">
+                    <i class="fas fa-file-invoice mr-1"></i> 查看对账记录
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- 工作台模块引入（确保路径正确） -->
-    <script src="js/workbench-config.js"></script>
-    <script src="js/workbench-auth.js"></script>
+    <!-- 模块脚本 -->
     <script src="js/workbench-orders.js"></script>
     <script src="js/workbench-dashboard.js"></script>
     <script src="js/workbench-pricing.js"></script>
+    <script src="js/workbench-finance.js"></script>
 
-    <!-- 初始化逻辑 -->
     <script>
         // 绑定按钮事件
         document.getElementById('clear-all-orders').addEventListener('click', () => {
             if (confirm('确定清空所有订单吗？')) {
-                // 调用orders模块的清空方法
                 window.WorkbenchOrders?.clearAllOrders();
                 alert('订单已清空');
             }
         });
 
         document.getElementById('open-dashboard').addEventListener('click', () => {
-            // 调用仪表盘模块的渲染方法
             window.WorkbenchDashboard?.render();
         });
 
         document.getElementById('open-pricing').addEventListener('click', () => {
-            // 调用定价模块的编辑方法
             window.WorkbenchPricing?.openEditor();
+        });
+
+        document.getElementById('open-finance').addEventListener('click', () => {
+            window.WorkbenchFinance?.openReconciliation();
         });
 
         document.getElementById('logout-btn').addEventListener('click', () => {
