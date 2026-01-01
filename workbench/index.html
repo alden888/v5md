@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V5 Medical 企业级工作台 | Kanban + Finance Analytics</title>
+    <title>V5 Medical 企业级工作台 | Kanban + Finance Analytics (完美版)</title>
     <link rel="icon" type="image/x-icon" href="../images/icons/favicon.ico">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Chart.js for Finance Analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     
     <script>
@@ -79,6 +77,7 @@
             border-radius: 12px;
             padding: 1rem;
             min-height: 500px;
+            position: relative;
         }
         
         .kanban-card {
@@ -90,11 +89,16 @@
             cursor: move;
             transition: all 0.2s ease;
             border-left: 4px solid #e2e8f0;
+            position: relative;
         }
         
         .kanban-card:hover {
             box-shadow: 0 4px 12px rgba(30, 64, 175, 0.15);
             transform: translateY(-2px);
+        }
+        
+        .kanban-card:hover .card-menu-btn {
+            opacity: 1;
         }
         
         .kanban-card.dragging {
@@ -105,6 +109,106 @@
         .kanban-column.drag-over {
             background: rgba(30, 64, 175, 0.05);
             border: 2px dashed #1e40af;
+        }
+        
+        /* Quick Add Button */
+        .quick-add-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(30, 64, 175, 0.3);
+        }
+        
+        .quick-add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.4);
+        }
+        
+        /* Card Menu Button */
+        .card-menu-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+        
+        .card-menu-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        
+        /* Card Context Menu */
+        .card-menu {
+            position: absolute;
+            top: 3rem;
+            right: 0.5rem;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            min-width: 180px;
+            z-index: 100;
+            display: none;
+        }
+        
+        .card-menu.active {
+            display: block;
+            animation: menuSlide 0.2s ease-out;
+        }
+        
+        @keyframes menuSlide {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card-menu-item {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .card-menu-item:hover {
+            background: #f8fafc;
+            color: #1e40af;
+        }
+        
+        .card-menu-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .card-menu-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .card-menu-item i {
+            width: 1rem;
+            text-align: center;
         }
         
         /* Empty State */
@@ -229,9 +333,56 @@
             margin: 1rem 0;
         }
         
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        
         @media (max-width: 768px) {
             .chart-container {
                 height: 250px;
+            }
+            
+            .tab-button {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+            }
+            
+            .kanban-column {
+                min-width: 260px;
+            }
+            
+            .card-menu-btn {
+                opacity: 1; /* Always visible on mobile */
             }
         }
     </style>
@@ -386,8 +537,8 @@
                     <h2 class="text-2xl font-bold text-slate-800 mb-2">订单看板 (Trello Mode)</h2>
                     <p class="text-sm text-slate-500">拖拽卡片更新订单状态 · 实时可视化管理</p>
                 </div>
-                <button onclick="app.kanban.openAddModal()" class="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-bold transition shadow-md flex items-center justify-center gap-2">
-                    <i class="fas fa-plus"></i> 新增订单
+                <button onclick="app.kanban.openFullAddModal()" class="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-bold transition shadow-md flex items-center justify-center gap-2">
+                    <i class="fas fa-plus"></i> 完整新增
                 </button>
             </div>
             
@@ -401,6 +552,11 @@
                                 New Inquiry
                             </h3>
                             <span class="text-xs bg-slate-200 px-2 py-1 rounded-full font-bold" data-count="inquiry">0</span>
+                        </div>
+                        <!-- Quick Add Button -->
+                        <div class="quick-add-btn" onclick="app.kanban.openQuickAdd()">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>快速新建</span>
                         </div>
                         <div class="kanban-cards" id="kanban-inquiry"></div>
                     </div>
@@ -476,7 +632,7 @@
                 
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                     <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                        <i class="fas fa-chart-line text-green-600"></i> 利润趋势
+                        <i class="fas fa-chart-line text-green-600"></i> 利润趋势 (20% 毛利)
                     </h3>
                     <div class="chart-container">
                         <canvas id="profit-chart"></canvas>
@@ -515,7 +671,7 @@
                                 <th>Product</th>
                                 <th>Amount (USD)</th>
                                 <th>Status</th>
-                                <th>Profit</th>
+                                <th>Profit (20%)</th>
                                 <th>Date</th>
                             </tr>
                         </thead>
@@ -573,19 +729,51 @@
     </div>
 </main>
 
-<!-- Add Order Modal -->
-<div id="add-order-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
+<!-- Quick Add Modal (Simplified) -->
+<div id="quick-add-modal" class="modal-overlay">
+    <div class="modal-content p-6">
         <div class="flex items-center justify-between mb-6">
-            <h3 class="text-xl font-bold text-slate-800">新增订单</h3>
-            <button onclick="app.kanban.closeAddModal()" class="text-slate-400 hover:text-slate-600">
+            <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                <i class="fas fa-bolt text-blue-600"></i> 快速新建
+            </h3>
+            <button onclick="app.kanban.closeQuickAdd()" class="text-slate-400 hover:text-slate-600 transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-bold text-slate-600 mb-1">Client Name *</label>
+                <input type="text" id="quick-customer" class="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="ABC Medical Co.">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-600 mb-1">Estimated Amount (USD) *</label>
+                <input type="number" id="quick-amount" class="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="1000.00" step="0.01">
+            </div>
+        </div>
+        <div class="mt-6 flex gap-3">
+            <button onclick="app.kanban.saveQuickOrder()" class="flex-1 bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded-lg transition">
+                <i class="fas fa-zap mr-2"></i> 快速创建
+            </button>
+            <button onclick="app.kanban.closeQuickAdd()" class="px-6 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-lg transition">
+                取消
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Full Add Order Modal -->
+<div id="add-order-modal" class="modal-overlay">
+    <div class="modal-content p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-slate-800">完整新增订单</h3>
+            <button onclick="app.kanban.closeFullAddModal()" class="text-slate-400 hover:text-slate-600">
                 <i class="fas fa-times text-xl"></i>
             </button>
         </div>
         <div class="space-y-4">
             <div>
                 <label class="block text-sm font-bold text-slate-600 mb-1">PI Number</label>
-                <input type="text" id="new-pi" class="w-full px-3 py-2 border border-slate-300 rounded-lg" readonly>
+                <input type="text" id="new-pi" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-50" readonly>
             </div>
             <div>
                 <label class="block text-sm font-bold text-slate-600 mb-1">Customer *</label>
@@ -611,10 +799,10 @@
             </div>
         </div>
         <div class="mt-6 flex gap-3">
-            <button onclick="app.kanban.saveOrder()" class="flex-1 bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded-lg transition">
+            <button onclick="app.kanban.saveFullOrder()" class="flex-1 bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded-lg transition">
                 <i class="fas fa-save mr-2"></i> 保存
             </button>
-            <button onclick="app.kanban.closeAddModal()" class="px-6 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-lg transition">
+            <button onclick="app.kanban.closeFullAddModal()" class="px-6 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-lg transition">
                 取消
             </button>
         </div>
@@ -634,8 +822,8 @@
 
 <script>
 // ============================================
-// V5 Medical Enterprise Workbench
-// Kanban + Finance Analytics
+// V5 Medical Enterprise Workbench - Perfect Version
+// Features: Auto-Status Sync + Mobile Menu + Quick Add + Real-time Charts
 // ============================================
 
 const app = {
@@ -650,9 +838,11 @@ const app = {
         profit: null
     },
     
+    activeCardMenu: null, // Track active menu for closing
+    
     // Initialize
     async init() {
-        console.log('[App] Initializing Enterprise Workbench...');
+        console.log('[App] Initializing Enterprise Workbench (Perfect Version)...');
         
         this.loadData();
         this.initTabs();
@@ -660,8 +850,24 @@ const app = {
         this.updateDashboard();
         this.kanban.init();
         this.finance.init();
+        this.initGlobalClickHandler();
         
-        this.toast('工作台启动成功', 'success');
+        this.toast('工作台启动成功 (完美版)', 'success');
+    },
+    
+    // Global click handler to close menus
+    initGlobalClickHandler() {
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.card-menu-btn') && !e.target.closest('.card-menu')) {
+                this.closeAllMenus();
+            }
+        });
+    },
+    
+    closeAllMenus() {
+        document.querySelectorAll('.card-menu.active').forEach(menu => {
+            menu.classList.remove('active');
+        });
     },
     
     // Load Data
@@ -781,7 +987,7 @@ const app = {
         setInterval(update, 60000);
     },
     
-    // Update Dashboard
+    // Update Dashboard (WITH AUTO-SYNC)
     updateDashboard() {
         let totalSales = 0;
         let pipeline = 0;
@@ -789,9 +995,13 @@ const app = {
         
         this.data.orders.forEach(order => {
             const amountRMB = order.total * this.data.rate;
+            
+            // 🔥 KEY FEATURE: Auto-sync status based on kanbanStatus
             if (order.kanbanStatus === 'Paid') {
+                order.status = 'Paid'; // Sync to legacy field
                 totalSales += amountRMB;
             } else {
+                order.status = 'Pending'; // Sync to legacy field
                 pipeline += amountRMB;
                 pendingCount++;
             }
@@ -813,6 +1023,9 @@ const app = {
         this.setText('kpi-daily', this.formatNumber(dailyNeed));
         this.setText('kpi-pipeline', '¥' + this.formatNumber(pipeline));
         this.setText('kpi-pending', pendingCount);
+        
+        // Save synced data
+        this.saveData();
     },
     
     // Kanban Module
@@ -820,7 +1033,6 @@ const app = {
         init() {
             this.render();
             this.initDragAndDrop();
-            this.generatePINumber();
         },
         
         render() {
@@ -883,17 +1095,45 @@ const app = {
             div.dataset.status = order.kanbanStatus;
             
             const statusColors = {
-                'New Inquiry': 'blue',
-                'PI Sent': 'yellow',
-                'Production': 'purple',
-                'Shipped': 'blue',
-                'Paid': 'green'
+                'New Inquiry': '#3b82f6',
+                'PI Sent': '#f59e0b',
+                'Production': '#a855f7',
+                'Shipped': '#3b82f6',
+                'Paid': '#10b981'
             };
             
-            const color = statusColors[order.kanbanStatus] || 'slate';
-            div.style.borderLeftColor = `var(--tw-${color}-500)`;
+            div.style.borderLeftColor = statusColors[order.kanbanStatus] || '#e2e8f0';
             
             div.innerHTML = `
+                <!-- Mobile Menu Button -->
+                <div class="card-menu-btn" onclick="app.kanban.toggleCardMenu(event, '${order.id}')">
+                    <i class="fas fa-ellipsis-v text-slate-400"></i>
+                </div>
+                
+                <!-- Context Menu -->
+                <div class="card-menu" id="menu-${order.id}">
+                    <div class="card-menu-item" onclick="app.kanban.moveCard('${order.id}', 'New Inquiry')">
+                        <i class="fas fa-circle" style="color: #3b82f6"></i>
+                        <span>New Inquiry</span>
+                    </div>
+                    <div class="card-menu-item" onclick="app.kanban.moveCard('${order.id}', 'PI Sent')">
+                        <i class="fas fa-circle" style="color: #f59e0b"></i>
+                        <span>PI Sent</span>
+                    </div>
+                    <div class="card-menu-item" onclick="app.kanban.moveCard('${order.id}', 'Production')">
+                        <i class="fas fa-circle" style="color: #a855f7"></i>
+                        <span>Production</span>
+                    </div>
+                    <div class="card-menu-item" onclick="app.kanban.moveCard('${order.id}', 'Shipped')">
+                        <i class="fas fa-circle" style="color: #3b82f6"></i>
+                        <span>Shipped</span>
+                    </div>
+                    <div class="card-menu-item" onclick="app.kanban.moveCard('${order.id}', 'Paid')">
+                        <i class="fas fa-circle" style="color: #10b981"></i>
+                        <span>Paid/Completed</span>
+                    </div>
+                </div>
+                
                 <div class="flex items-start justify-between mb-2">
                     <div class="font-mono text-xs font-bold text-slate-600">${order.id}</div>
                     <span class="status-badge status-${order.kanbanStatus.toLowerCase().replace(' ', '-').replace('/', '-')}">
@@ -909,6 +1149,43 @@ const app = {
             `;
             
             return div;
+        },
+        
+        // Toggle card menu (for mobile)
+        toggleCardMenu(event, orderId) {
+            event.stopPropagation();
+            const menu = document.getElementById('menu-' + orderId);
+            
+            // Close all other menus
+            app.closeAllMenus();
+            
+            // Toggle this menu
+            menu.classList.toggle('active');
+        },
+        
+        // Move card via menu
+        moveCard(orderId, newStatus) {
+            const order = app.data.orders.find(o => o.id === orderId);
+            if (order) {
+                const oldStatus = order.kanbanStatus;
+                order.kanbanStatus = newStatus;
+                
+                // 🔥 AUTO-SYNC: Update legacy status field
+                if (newStatus === 'Paid') {
+                    order.status = 'Paid';
+                } else {
+                    order.status = 'Pending';
+                }
+                
+                app.saveData();
+                app.kanban.render();
+                app.updateDashboard(); // Re-calculate KPIs
+                app.finance.render(); // Update charts
+                
+                app.toast(`订单已从 ${oldStatus} 移至 ${newStatus}`, 'success');
+            }
+            
+            app.closeAllMenus();
         },
         
         initDragAndDrop() {
@@ -951,7 +1228,7 @@ const app = {
                             const oldStatus = order.kanbanStatus;
                             order.kanbanStatus = newStatus;
                             
-                            // Also update legacy status for compatibility
+                            // 🔥 AUTO-SYNC: Update legacy status field
                             if (newStatus === 'Paid') {
                                 order.status = 'Paid';
                             } else {
@@ -960,8 +1237,8 @@ const app = {
                             
                             app.saveData();
                             app.kanban.render();
-                            app.updateDashboard();
-                            app.finance.render();
+                            app.updateDashboard(); // Re-calculate KPIs
+                            app.finance.render(); // Update charts
                             
                             app.toast(`订单已从 ${oldStatus} 移至 ${newStatus}`, 'success');
                         }
@@ -970,13 +1247,60 @@ const app = {
             });
         },
         
-        openAddModal() {
-            this.generatePINumber();
-            document.getElementById('add-order-modal').classList.remove('hidden');
+        // Quick Add (Simplified Modal)
+        openQuickAdd() {
+            document.getElementById('quick-add-modal').classList.add('active');
+            document.getElementById('quick-customer').focus();
         },
         
-        closeAddModal() {
-            document.getElementById('add-order-modal').classList.add('hidden');
+        closeQuickAdd() {
+            document.getElementById('quick-add-modal').classList.remove('active');
+            document.getElementById('quick-customer').value = '';
+            document.getElementById('quick-amount').value = '';
+        },
+        
+        saveQuickOrder() {
+            const customer = document.getElementById('quick-customer').value.trim();
+            const amount = parseFloat(document.getElementById('quick-amount').value);
+            
+            if (!customer || !amount) {
+                app.toast('请填写必填项', 'error');
+                return;
+            }
+            
+            const piNo = this.generatePINumber();
+            
+            const order = {
+                id: piNo,
+                customer,
+                product: 'Medical Consumables',
+                total: amount,
+                kanbanStatus: 'New Inquiry',
+                status: 'Pending',
+                profit: amount * 0.2,
+                term: 'FOB Shanghai',
+                notes: '',
+                date: new Date().toISOString()
+            };
+            
+            app.data.orders.unshift(order);
+            app.saveData();
+            app.kanban.render();
+            app.updateDashboard();
+            app.finance.render();
+            this.closeQuickAdd();
+            
+            app.toast('订单已快速创建', 'success');
+        },
+        
+        // Full Add Modal
+        openFullAddModal() {
+            this.generatePINumber();
+            document.getElementById('add-order-modal').classList.add('active');
+        },
+        
+        closeFullAddModal() {
+            document.getElementById('add-order-modal').classList.remove('active');
             document.getElementById('new-customer').value = '';
             document.getElementById('new-product').value = '';
             document.getElementById('new-amount').value = '';
@@ -989,11 +1313,12 @@ const app = {
             const day = date.getDate().toString().padStart(2, '0');
             const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
             const piNo = `PI-${year}${month}${day}-${random}`;
-            document.getElementById('new-pi').value = piNo;
+            const el = document.getElementById('new-pi');
+            if (el) el.value = piNo;
             return piNo;
         },
         
-        saveOrder() {
+        saveFullOrder() {
             const customer = document.getElementById('new-customer').value.trim();
             const amount = parseFloat(document.getElementById('new-amount').value);
             const product = document.getElementById('new-product').value.trim() || 'Medical Consumables';
@@ -1011,7 +1336,7 @@ const app = {
                 total: amount,
                 kanbanStatus: status,
                 status: status === 'Paid' ? 'Paid' : 'Pending',
-                profit: amount * 0.2, // 20% default margin
+                profit: amount * 0.2,
                 term: 'FOB Shanghai',
                 notes: '',
                 date: new Date().toISOString()
@@ -1022,7 +1347,7 @@ const app = {
             app.kanban.render();
             app.updateDashboard();
             app.finance.render();
-            app.kanban.closeAddModal();
+            this.closeFullAddModal();
             
             app.toast('订单已创建', 'success');
         }
@@ -1037,12 +1362,15 @@ const app = {
         
         render() {
             this.renderTable();
-            this.updateCharts();
+            this.updateCharts(); // 🔥 Real-time chart update
         },
         
         renderTable() {
             const tbody = document.getElementById('finance-table-body');
             const filter = document.getElementById('filter-status')?.value || '';
+            
+            // 🔥 REAL-TIME: Always read from localStorage
+            app.loadData();
             
             let orders = app.data.orders;
             if (filter) {
@@ -1072,7 +1400,7 @@ const app = {
                             ${o.kanbanStatus}
                         </span>
                     </td>
-                    <td class="font-bold text-green-600">$${(o.profit || o.total * 0.2).toFixed(2)}</td>
+                    <td class="font-bold text-green-600">$${(o.total * 0.2).toFixed(2)}</td>
                     <td class="text-xs text-slate-400">${new Date(o.date).toLocaleDateString('zh-CN')}</td>
                 </tr>
             `).join('');
@@ -1119,7 +1447,7 @@ const app = {
                 data: {
                     labels: [],
                     datasets: [{
-                        label: 'Profit (USD)',
+                        label: 'Profit (USD, 20% margin)',
                         data: [],
                         borderColor: 'rgba(16, 185, 129, 1)',
                         backgroundColor: 'rgba(16, 185, 129, 0.1)',
@@ -1146,7 +1474,10 @@ const app = {
         updateCharts() {
             if (!app.charts.revenue || !app.charts.profit) return;
             
-            // Group by month
+            // 🔥 REAL-TIME: Always read from localStorage
+            app.loadData();
+            
+            // Group by month (ONLY Paid orders)
             const monthlyData = {};
             app.data.orders.forEach(order => {
                 if (order.kanbanStatus === 'Paid') {
@@ -1155,7 +1486,7 @@ const app = {
                         monthlyData[month] = { revenue: 0, profit: 0 };
                     }
                     monthlyData[month].revenue += order.total;
-                    monthlyData[month].profit += (order.profit || order.total * 0.2);
+                    monthlyData[month].profit += (order.total * 0.2); // 🔥 20% margin
                 }
             });
             
@@ -1206,14 +1537,14 @@ SWIFT: CHASHKHH`;
         },
         
         exportCSV() {
-            const headers = ['PI Number', 'Customer', 'Product', 'Amount (USD)', 'Status', 'Profit', 'Date'];
+            const headers = ['PI Number', 'Customer', 'Product', 'Amount (USD)', 'Status', 'Profit (20%)', 'Date'];
             const rows = app.data.orders.map(o => [
                 o.id,
                 o.customer,
                 o.product || 'Medical Consumables',
                 o.total.toFixed(2),
                 o.kanbanStatus,
-                (o.profit || o.total * 0.2).toFixed(2),
+                (o.total * 0.2).toFixed(2),
                 new Date(o.date).toLocaleDateString('zh-CN')
             ]);
             
@@ -1241,7 +1572,7 @@ SWIFT: CHASHKHH`;
             orders: this.data.orders,
             target: this.data.target,
             exportDate: new Date().toISOString(),
-            version: '3.0'
+            version: '3.0-perfect'
         };
         
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
