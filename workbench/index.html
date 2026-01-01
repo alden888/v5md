@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V5 Medical 企业级工作台 | Kanban + Finance Analytics (完美版)</title>
+    <title>V5 Medical 战时指挥台 V13 | SURVIVAL MODE</title>
     <link rel="icon" type="image/x-icon" href="../images/icons/favicon.ico">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -20,11 +20,15 @@
                         'primary-light': '#3b82f6',
                         secondary: '#10b981',
                         accent: '#2563eb',
-                        sidebar: '#0f172a',
-                        'sidebar-hover': '#1e293b'
+                        danger: '#dc2626',
+                        'danger-dark': '#991b1b',
+                        warning: '#ea580c',
+                        feishu: '#0078ff',
+                        survival: '#0a0a0a'
                     },
                     fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Courier New', 'monospace']
                     }
                 }
             }
@@ -32,27 +36,187 @@
     </script>
     
     <style>
-        * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        /* ============================================ */
+        /* V13 SURVIVAL MODE - HARDENED UI */
+        /* ============================================ */
         
-        /* Tab Navigation */
+        * { 
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* 🔥 IRON CURTAIN - Full Screen Survival Gate */
+        .iron-curtain {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 100%);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        
+        .iron-curtain.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .survival-gate {
+            max-width: 600px;
+            width: 90%;
+            background: #1a1a1a;
+            border: 2px solid #dc2626;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            box-shadow: 0 0 60px rgba(220, 38, 38, 0.4);
+        }
+        
+        .survival-input {
+            width: 100%;
+            background: #0a0a0a;
+            border: 2px solid #404040;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .survival-input:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+        }
+        
+        .survival-input::placeholder {
+            color: #666;
+        }
+        
+        .survival-input.filled {
+            border-color: #10b981;
+        }
+        
+        .battle-start-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            font-weight: 900;
+            font-size: 1.125rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.4);
+        }
+        
+        .battle-start-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(220, 38, 38, 0.5);
+        }
+        
+        .battle-start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* 🔥 CASH RED LINE - Critical Header */
+        .header-normal {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .header-critical {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            border-bottom: 2px solid #7f1d1d;
+            animation: pulseRed 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulseRed {
+            0%, 100% { box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4); }
+            50% { box-shadow: 0 4px 30px rgba(220, 38, 38, 0.7); }
+        }
+        
+        .critical-warning {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            color: white;
+            font-weight: 700;
+            font-size: 0.875rem;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* 🔥 TODAY'S 3 CASH ACTIONS - Sticky Banner */
+        .cash-actions-banner {
+            position: sticky;
+            top: 70px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-bottom: 3px solid #dc2626;
+            padding: 1.5rem;
+            z-index: 40;
+        }
+        
+        .action-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            background: rgba(220, 38, 38, 0.1);
+            border-left: 4px solid #dc2626;
+            border-radius: 0.5rem;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .action-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            background: #dc2626;
+            color: white;
+            border-radius: 50%;
+            font-weight: 900;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+        
+        /* Tab Navigation - Survival Style */
         .tab-button {
             position: relative;
             padding: 0.875rem 1.5rem;
-            font-weight: 600;
-            color: #64748b;
+            font-weight: 700;
+            color: #9ca3af;
             transition: all 0.3s ease;
             border-bottom: 3px solid transparent;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
         }
         
         .tab-button:hover {
-            color: #1e40af;
-            background: rgba(30, 64, 175, 0.05);
+            color: #dc2626;
+            background: rgba(220, 38, 38, 0.05);
         }
         
         .tab-button.active {
-            color: #1e40af;
-            border-bottom-color: #1e40af;
-            background: rgba(30, 64, 175, 0.05);
+            color: #dc2626;
+            border-bottom-color: #dc2626;
+            background: rgba(220, 38, 38, 0.05);
         }
         
         /* Tab Content */
@@ -70,48 +234,78 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Kanban Board Styles */
+        /* 🔥 CASH FLOW VIEW - Survival Dashboard */
+        .cash-metric {
+            background: #1a1a1a;
+            border: 2px solid #404040;
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .cash-metric:hover {
+            border-color: #dc2626;
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.2);
+        }
+        
+        .cash-metric-value {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .cash-metric-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Kanban Board - Minimal Style */
         .kanban-column {
             min-width: 280px;
-            background: #f8fafc;
-            border-radius: 12px;
+            background: #1a1a1a;
+            border: 2px solid #404040;
+            border-radius: 0.75rem;
             padding: 1rem;
             min-height: 500px;
             position: relative;
         }
         
         .kanban-card {
-            background: white;
-            border-radius: 8px;
+            background: #0a0a0a;
+            border-radius: 0.5rem;
             padding: 1rem;
             margin-bottom: 0.75rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #404040;
+            position: relative;
             cursor: move;
             transition: all 0.2s ease;
-            border-left: 4px solid #e2e8f0;
-            position: relative;
         }
         
         .kanban-card:hover {
-            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.15);
-            transform: translateY(-2px);
+            border-left-color: #dc2626;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+            transform: translateX(4px);
         }
         
-        .kanban-card:hover .card-menu-btn {
+        .kanban-card:hover .card-feishu-btn {
             opacity: 1;
         }
         
         .kanban-card.dragging {
             opacity: 0.5;
-            transform: rotate(2deg);
         }
         
         .kanban-column.drag-over {
-            background: rgba(30, 64, 175, 0.05);
-            border: 2px dashed #1e40af;
+            background: rgba(220, 38, 38, 0.1);
+            border-color: #dc2626;
         }
         
-        /* Quick Add Button */
+        /* Quick Add Button - Locked State */
         .quick-add-btn {
             display: flex;
             align-items: center;
@@ -119,23 +313,30 @@
             gap: 0.5rem;
             padding: 0.75rem;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
             color: white;
-            border-radius: 8px;
-            font-weight: 600;
+            border-radius: 0.5rem;
+            font-weight: 700;
             font-size: 0.875rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(30, 64, 175, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         
-        .quick-add-btn:hover {
+        .quick-add-btn:hover:not(.locked) {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.4);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
         }
         
-        /* Card Menu Button */
-        .card-menu-btn {
+        .quick-add-btn.locked {
+            background: #404040;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        /* Feishu Push Button */
+        .card-feishu-btn {
             position: absolute;
             top: 0.5rem;
             right: 0.5rem;
@@ -144,71 +345,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
+            background: linear-gradient(135deg, #0078ff 0%, #0060d9 100%);
+            border: none;
+            border-radius: 0.375rem;
             cursor: pointer;
             opacity: 0;
             transition: all 0.2s ease;
             z-index: 10;
+            color: white;
         }
         
-        .card-menu-btn:hover {
-            background: #f1f5f9;
-            border-color: #cbd5e1;
-        }
-        
-        /* Card Context Menu */
-        .card-menu {
-            position: absolute;
-            top: 3rem;
-            right: 0.5rem;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            min-width: 180px;
-            z-index: 100;
-            display: none;
-        }
-        
-        .card-menu.active {
-            display: block;
-            animation: menuSlide 0.2s ease-out;
-        }
-        
-        @keyframes menuSlide {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .card-menu-item {
-            padding: 0.75rem 1rem;
-            font-size: 0.875rem;
-            color: #475569;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .card-menu-item:hover {
-            background: #f8fafc;
-            color: #1e40af;
-        }
-        
-        .card-menu-item:first-child {
-            border-radius: 8px 8px 0 0;
-        }
-        
-        .card-menu-item:last-child {
-            border-radius: 0 0 8px 8px;
-        }
-        
-        .card-menu-item i {
-            width: 1rem;
-            text-align: center;
+        .card-feishu-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 120, 255, 0.4);
         }
         
         /* Empty State */
@@ -219,74 +368,38 @@
             justify-content: center;
             padding: 3rem 1.5rem;
             text-align: center;
-            color: #94a3b8;
+            color: #666;
         }
         
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.3;
-        }
-        
-        /* Notion-style Table */
-        .notion-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-        
-        .notion-table thead {
-            position: sticky;
-            top: 0;
-            background: #f8fafc;
-            z-index: 10;
-        }
-        
-        .notion-table th {
-            padding: 0.75rem 1rem;
-            text-align: left;
-            font-weight: 600;
+        /* Status Badges - High Contrast */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.375rem;
             font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
-            color: #64748b;
-            border-bottom: 2px solid #e2e8f0;
+            letter-spacing: 0.05em;
         }
         
-        .notion-table td {
-            padding: 0.875rem 1rem;
-            border-bottom: 1px solid #f1f5f9;
-        }
+        .status-inquiry { background: #1e3a8a; color: #93c5fd; }
+        .status-pi, .status-sent { background: #92400e; color: #fde68a; }
+        .status-production { background: #6b21a8; color: #e9d5ff; }
+        .status-shipped { background: #065f46; color: #6ee7b7; }
+        .status-paid { background: #065f46; color: #6ee7b7; }
         
-        .notion-table tbody tr:hover {
-            background: #f8fafc;
-        }
-        
-        /* Mobile Scrolling */
-        .horizontal-scroll {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin;
-        }
-        
-        .horizontal-scroll::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .horizontal-scroll::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        
-        /* Toast Notification */
+        /* Toast - Survival Style */
         .toast {
             position: fixed;
             bottom: 2rem;
             right: 2rem;
             z-index: 9999;
-            background: white;
+            background: #1a1a1a;
+            border: 2px solid #404040;
             padding: 1rem 1.5rem;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+            border-radius: 0.5rem;
             transform: translateX(120%);
             transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
@@ -295,49 +408,21 @@
             transform: translateX(0);
         }
         
-        /* Loading Spinner */
-        .spinner {
-            width: 2rem;
-            height: 2rem;
-            border: 3px solid #e5e7eb;
-            border-top-color: #3b82f6;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+        .toast.error {
+            border-color: #dc2626;
+            background: #1a0000;
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .toast.success {
+            border-color: #10b981;
+            background: #001a0a;
         }
         
-        /* Status Badges */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.375rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        
-        .status-inquiry { background: #eff6ff; color: #1e40af; }
-        .status-pi { background: #fef3c7; color: #92400e; }
-        .status-production { background: #f3e8ff; color: #6b21a8; }
-        .status-shipped { background: #dbeafe; color: #1e40af; }
-        .status-paid { background: #d1fae5; color: #065f46; }
-        
-        /* Chart Container */
-        .chart-container {
-            position: relative;
-            height: 300px;
-            margin: 1rem 0;
-        }
-        
-        /* Modal Overlay */
+        /* Modal - Survival Style */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.85);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -354,9 +439,9 @@
         }
         
         .modal-content {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            background: #1a1a1a;
+            border: 2px solid #404040;
+            border-radius: 0.75rem;
             max-width: 500px;
             width: 100%;
             transform: scale(0.9);
@@ -367,178 +452,343 @@
             transform: scale(1);
         }
         
+        /* Horizontal Scroll */
+        .horizontal-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+        }
+        
+        .horizontal-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .horizontal-scroll::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        .horizontal-scroll::-webkit-scrollbar-thumb {
+            background: #404040;
+            border-radius: 4px;
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            width: 2rem;
+            height: 2rem;
+            border: 3px solid #404040;
+            border-top-color: #dc2626;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 🔥 LAST INCOME CARD */
+        .last-income-card {
+            background: linear-gradient(135deg, #065f46 0%, #064e3b 100%);
+            border: 2px solid #10b981;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+        }
+        
+        .last-income-card.danger {
+            background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+            border-color: #dc2626;
+            box-shadow: 0 0 30px rgba(220, 38, 38, 0.3);
+            animation: pulseRed 2s ease-in-out infinite;
+        }
+        
+        /* 🔥 LOCKED FEATURE OVERLAY */
+        .feature-locked {
+            position: relative;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .feature-locked::after {
+            content: '🔒 先搞定回款！';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(220, 38, 38, 0.95);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            z-index: 10;
+        }
+        
         @media (max-width: 768px) {
-            .chart-container {
-                height: 250px;
+            .cash-metric-value {
+                font-size: 2.5rem;
             }
             
-            .tab-button {
-                padding: 0.75rem 1rem;
-                font-size: 0.875rem;
+            .survival-gate {
+                padding: 1.5rem;
             }
             
             .kanban-column {
                 min-width: 260px;
             }
             
-            .card-menu-btn {
-                opacity: 1; /* Always visible on mobile */
+            .card-feishu-btn {
+                opacity: 1;
             }
         }
     </style>
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-black text-white">
 
-<!-- Fixed Header -->
-<header class="fixed top-0 left-0 right-0 bg-white shadow-md border-b border-gray-100 z-50 h-[70px]">
+<!-- 🔥 IRON CURTAIN - Survival Gate -->
+<div id="iron-curtain" class="iron-curtain">
+    <div class="survival-gate">
+        <div class="text-center mb-8">
+            <div class="text-6xl mb-4">⚔️</div>
+            <h1 class="text-3xl font-black mb-2 text-red-500">SURVIVAL MODE</h1>
+            <p class="text-slate-400 text-sm">战时指挥台 · 现金为王 · 没有退路</p>
+        </div>
+        
+        <div class="mb-6">
+            <p class="text-white font-bold mb-4 text-center">
+                今天唯一能带回<span class="text-red-500 text-xl">现金</span>的三件事是什么？
+            </p>
+            <p class="text-xs text-slate-500 text-center mb-6">
+                (只有填完，才能进入主界面)
+            </p>
+        </div>
+        
+        <div class="space-y-4 mb-8">
+            <div>
+                <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">Action #1</label>
+                <input 
+                    type="text" 
+                    id="action-1" 
+                    class="survival-input" 
+                    placeholder="例: 催 ABC Medical 签 PI-250101 (5000$)"
+                    oninput="app.survival.checkInputs()"
+                />
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">Action #2</label>
+                <input 
+                    type="text" 
+                    id="action-2" 
+                    class="survival-input" 
+                    placeholder="例: 跟进土耳其客户确认付款时间"
+                    oninput="app.survival.checkInputs()"
+                />
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">Action #3</label>
+                <input 
+                    type="text" 
+                    id="action-3" 
+                    class="survival-input" 
+                    placeholder="例: 联系 Stripe 催账"
+                    oninput="app.survival.checkInputs()"
+                />
+            </div>
+        </div>
+        
+        <button 
+            id="battle-start-btn" 
+            class="battle-start-btn" 
+            disabled
+            onclick="app.survival.startBattle()"
+        >
+            <i class="fas fa-fist-raised mr-2"></i> 开始战斗
+        </button>
+        
+        <p class="text-xs text-center text-slate-600 mt-4">
+            V13 Survival Edition · 债务高压模式 · 强制聚焦
+        </p>
+    </div>
+</div>
+
+<!-- Fixed Header (Dynamic Color) -->
+<header id="main-header" class="fixed top-0 left-0 right-0 header-normal z-50 h-[70px] transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
         <div class="flex items-center gap-4">
             <div class="flex items-center gap-3">
-                <div class="bg-primary text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg shadow-md">
-                    V5
+                <div class="bg-danger text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg shadow-md border-2 border-white">
+                    ⚔️
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg text-slate-800 leading-tight">企业级工作台</h1>
-                    <div class="text-[10px] text-slate-500 uppercase tracking-wider">
-                        Kanban + Finance Analytics
+                    <h1 class="font-black text-lg leading-tight" id="header-title">
+                        战时指挥台 <span class="text-xs bg-danger text-white px-2 py-0.5 rounded-full">V13</span>
+                    </h1>
+                    <div class="text-[10px] uppercase tracking-wider font-bold" id="header-subtitle">
+                        SURVIVAL MODE · CASH ONLY
                     </div>
                 </div>
             </div>
         </div>
         
+        <!-- Critical Warning (Hidden by default) -->
+        <div id="critical-warning" class="critical-warning hidden">
+            <i class="fas fa-exclamation-triangle text-xl"></i>
+            <span id="warning-text">资金链警告</span>
+        </div>
+        
         <div class="flex items-center gap-4">
-            <button onclick="app.exportData()" class="hidden md:block text-sm text-slate-600 hover:text-primary px-3 py-1.5 rounded-lg hover:bg-blue-50 transition-colors">
+            <button onclick="app.feishu.openSettings()" class="text-sm px-3 py-1.5 rounded-lg hover:bg-red-900 transition-colors font-bold" id="settings-btn">
+                <i class="fas fa-cog mr-1"></i><span class="hidden md:inline">设置</span>
+            </button>
+            <button onclick="app.exportData()" class="hidden md:block text-sm px-3 py-1.5 rounded-lg hover:bg-red-900 transition-colors font-bold">
                 <i class="fas fa-download mr-1"></i> 备份
             </button>
-            <a href="../index.html" class="text-sm text-slate-600 hover:text-primary px-3 py-1.5 rounded-lg hover:bg-blue-50 transition-colors">
-                <i class="fas fa-external-link-alt mr-1"></i> 主站
-            </a>
         </div>
     </div>
 </header>
 
+<!-- 🔥 TODAY'S 3 CASH ACTIONS Banner -->
+<div id="cash-actions-banner" class="cash-actions-banner" style="top: 70px;">
+    <div class="max-w-7xl mx-auto">
+        <h3 class="text-sm font-black text-red-500 mb-3 uppercase tracking-wider flex items-center gap-2">
+            <i class="fas fa-bullseye"></i> Today's 3 Cash Actions
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="actions-display">
+            <!-- Will be populated by JS -->
+        </div>
+    </div>
+</div>
+
 <!-- Tab Navigation -->
-<nav class="fixed top-[70px] left-0 right-0 bg-white border-b border-gray-200 z-40">
+<nav class="fixed top-[70px] left-0 right-0 bg-black border-b border-gray-800 z-40" style="margin-top: 0;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex gap-2 overflow-x-auto horizontal-scroll">
             <button class="tab-button active" data-tab="dashboard">
-                <i class="fas fa-tachometer-alt mr-2"></i> 战报指挥舱
+                <i class="fas fa-crosshairs mr-2"></i> 现金流
             </button>
             <button class="tab-button" data-tab="kanban">
-                <i class="fas fa-columns mr-2"></i> 订单看板
-            </button>
-            <button class="tab-button" data-tab="finance">
-                <i class="fas fa-chart-line mr-2"></i> 财务分析
+                <i class="fas fa-columns mr-2"></i> 订单战场
             </button>
         </div>
     </div>
 </nav>
 
 <!-- Main Content Area -->
-<main class="pt-[140px] pb-8 px-4 sm:px-6">
+<main class="pb-8 px-4 sm:px-6" style="padding-top: calc(70px + 130px + 55px);">
     <div class="max-w-7xl mx-auto">
         
-        <!-- Dashboard Tab -->
+        <!-- Dashboard Tab - CASH FLOW VIEW -->
         <div id="tab-dashboard" class="tab-content active">
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-slate-800 mb-2">战报指挥舱</h2>
-                <p class="text-sm text-slate-500">实时业绩监控与全球商机追踪</p>
+                <h2 class="text-2xl font-black mb-2 text-red-500 uppercase">现金流视图</h2>
+                <p class="text-sm text-slate-500">生存指标 · 实时监控 · 无情数据</p>
             </div>
             
-            <!-- KPI Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-blue-500">
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="text-sm font-bold text-slate-500 uppercase">年度达成率</div>
-                        <i class="fas fa-trophy text-blue-100 text-3xl"></i>
+            <!-- 🔥 SURVIVAL METRICS -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <!-- Target vs Actual -->
+                <div class="cash-metric">
+                    <div class="cash-metric-label">年度目标 vs 实际</div>
+                    <div class="flex items-baseline gap-4 mb-4">
+                        <div class="cash-metric-value text-red-500" id="cash-actual">¥0</div>
+                        <div class="text-2xl text-slate-600">/</div>
+                        <div class="text-3xl font-bold text-slate-500" id="cash-target">¥500w</div>
                     </div>
-                    <div class="text-4xl font-black text-slate-800 mb-3">
-                        <span id="kpi-percent">0.0</span><span class="text-xl">%</span>
+                    <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
+                        <div id="cash-progress" class="bg-gradient-to-r from-red-600 to-red-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
-                    <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                        <div id="kpi-progress" class="bg-gradient-to-r from-blue-600 to-blue-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                    <div class="text-right mt-2">
+                        <span class="text-sm font-bold text-slate-400">达成率: </span>
+                        <span class="text-lg font-black text-red-500" id="cash-percent">0.0%</span>
                     </div>
                 </div>
                 
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-green-500">
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="text-sm font-bold text-slate-500 uppercase">已回款金额</div>
-                        <i class="fas fa-coins text-green-100 text-3xl"></i>
+                <!-- Gap & Daily Need -->
+                <div class="cash-metric">
+                    <div class="cash-metric-label">缺口 & 日均需求</div>
+                    <div class="cash-metric-value text-orange-500 mb-4" id="cash-gap">¥500w</div>
+                    <div class="flex items-center gap-2 p-3 bg-black border border-slate-700 rounded-lg">
+                        <i class="fas fa-calendar-day text-orange-500"></i>
+                        <div>
+                            <div class="text-xs text-slate-500 uppercase">每日必须回款</div>
+                            <div class="text-xl font-black text-orange-500" id="daily-need">¥0</div>
+                        </div>
                     </div>
-                    <div class="text-4xl font-black text-green-600 mb-1" id="kpi-sales">¥0</div>
-                    <div class="text-xs text-slate-400">折合约 $<span id="kpi-sales-usd">0</span></div>
+                    <div class="mt-3 text-xs text-slate-500 text-center">
+                        距离年底还剩 <span class="font-bold text-white" id="days-left">0</span> 天
+                    </div>
                 </div>
                 
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-red-500">
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="text-sm font-bold text-slate-500 uppercase">距离目标还差</div>
-                        <i class="fas fa-mountain text-red-100 text-3xl"></i>
+                <!-- Last Income (Critical Indicator) -->
+                <div id="last-income-card" class="last-income-card">
+                    <div class="cash-metric-label text-white">最近一笔回款</div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <i class="fas fa-money-bill-wave text-4xl" id="income-icon"></i>
+                        <div>
+                            <div class="text-2xl font-black text-white" id="last-income-amount">$0</div>
+                            <div class="text-xs text-slate-300" id="last-income-customer">暂无数据</div>
+                        </div>
                     </div>
-                    <div class="text-4xl font-black text-red-500 mb-1" id="kpi-gap">¥500.0w</div>
-                    <div class="text-xs text-slate-400">需每日 ¥<span id="kpi-daily">0</span></div>
-                </div>
-                
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-yellow-500">
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="text-sm font-bold text-slate-500 uppercase">待回款 Pipeline</div>
-                        <i class="fas fa-hourglass-half text-yellow-100 text-3xl"></i>
+                    <div class="p-3 bg-black bg-opacity-30 rounded-lg">
+                        <div class="text-xs text-slate-300 mb-1">距今天数</div>
+                        <div class="text-3xl font-black" id="days-since-income">0</div>
+                        <div class="text-xs text-slate-400 mt-1" id="income-status">等待数据...</div>
                     </div>
-                    <div class="text-4xl font-black text-yellow-600 mb-1" id="kpi-pipeline">¥0</div>
-                    <div class="text-xs text-slate-400"><span id="kpi-pending">0</span> 个订单跟进中</div>
                 </div>
             </div>
             
-            <!-- World Clock -->
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
-                <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                    <i class="fas fa-globe-asia text-primary"></i> 全球商机时钟
+            <!-- 🔥 SURVIVAL TOOLS -->
+            <div class="bg-gray-900 border-2 border-gray-800 rounded-xl p-6 mb-6">
+                <h3 class="font-black text-white mb-4 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fas fa-wrench text-red-500"></i> 生存工具
                 </h3>
-                <div id="world-clock" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3"></div>
-            </div>
-            
-            <!-- Quick Links -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <a href="https://mail.google.com" target="_blank" class="bg-white rounded-lg p-4 border border-slate-200 hover:border-blue-300 hover:shadow-md transition flex items-center gap-3">
-                    <i class="fas fa-envelope text-red-500 text-xl"></i>
-                    <div>
-                        <div class="font-bold text-sm">Gmail</div>
-                        <div class="text-xs text-slate-500">邮箱</div>
-                    </div>
-                </a>
-                <a href="https://web.whatsapp.com" target="_blank" class="bg-white rounded-lg p-4 border border-slate-200 hover:border-green-300 hover:shadow-md transition flex items-center gap-3">
-                    <i class="fab fa-whatsapp text-green-500 text-xl"></i>
-                    <div>
-                        <div class="font-bold text-sm">WhatsApp</div>
-                        <div class="text-xs text-slate-500">客服</div>
-                    </div>
-                </a>
-                <a href="https://buy.stripe.com/3cI00bbH55gK8BP1J84ko01" target="_blank" class="bg-white rounded-lg p-4 border border-slate-200 hover:border-purple-300 hover:shadow-md transition flex items-center gap-3">
-                    <i class="fab fa-stripe text-purple-500 text-xl"></i>
-                    <div>
-                        <div class="font-bold text-sm">Stripe</div>
-                        <div class="text-xs text-slate-500">收款</div>
-                    </div>
-                </a>
-                <a href="https://www.17track.net" target="_blank" class="bg-white rounded-lg p-4 border border-slate-200 hover:border-blue-300 hover:shadow-md transition flex items-center gap-3">
-                    <i class="fas fa-shipping-fast text-blue-500 text-xl"></i>
-                    <div>
-                        <div class="font-bold text-sm">17Track</div>
-                        <div class="text-xs text-slate-500">物流</div>
-                    </div>
-                </a>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <a href="lark://app.feishu.cn/todo" class="flex items-center gap-3 p-4 bg-black border border-slate-700 rounded-lg hover:border-red-500 transition">
+                        <i class="fas fa-check-square text-blue-500 text-xl"></i>
+                        <div>
+                            <div class="font-bold text-xs text-white">飞书待办</div>
+                            <div class="text-[10px] text-slate-500">To-Do</div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://buy.stripe.com/3cI00bbH55gK8BP1J84ko01" target="_blank" class="flex items-center gap-3 p-4 bg-black border border-slate-700 rounded-lg hover:border-purple-500 transition">
+                        <i class="fab fa-stripe text-purple-500 text-xl"></i>
+                        <div>
+                            <div class="font-bold text-xs text-white">Stripe</div>
+                            <div class="text-[10px] text-slate-500">收款</div>
+                        </div>
+                    </a>
+                    
+                    <button onclick="app.finance.showXTransferInfo()" class="flex items-center gap-3 p-4 bg-black border border-slate-700 rounded-lg hover:border-red-500 transition text-left">
+                        <i class="fas fa-university text-red-500 text-xl"></i>
+                        <div>
+                            <div class="font-bold text-xs text-white">XTransfer</div>
+                            <div class="text-[10px] text-slate-500">账户</div>
+                        </div>
+                    </button>
+                    
+                    <button onclick="app.feishu.sendQuickTodo()" class="flex items-center gap-3 p-4 bg-black border border-slate-700 rounded-lg hover:border-blue-500 transition text-left">
+                        <i class="fas fa-rocket text-blue-500 text-xl"></i>
+                        <div>
+                            <div class="font-bold text-xs text-white">飞书推送</div>
+                            <div class="text-[10px] text-slate-500">通知</div>
+                        </div>
+                    </button>
+                </div>
             </div>
         </div>
         
-        <!-- Kanban Tab -->
+        <!-- Kanban Tab - ORDER BATTLEFIELD -->
         <div id="tab-kanban" class="tab-content">
             <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h2 class="text-2xl font-bold text-slate-800 mb-2">订单看板 (Trello Mode)</h2>
-                    <p class="text-sm text-slate-500">拖拽卡片更新订单状态 · 实时可视化管理</p>
+                    <h2 class="text-2xl font-black mb-2 text-red-500 uppercase">订单战场</h2>
+                    <p class="text-sm text-slate-500">拖拽更新 · 飞书推送 · 聚焦回款</p>
                 </div>
-                <button onclick="app.kanban.openFullAddModal()" class="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-bold transition shadow-md flex items-center justify-center gap-2">
-                    <i class="fas fa-plus"></i> 完整新增
+                <button id="full-add-btn" onclick="app.kanban.openFullAddModal()" class="bg-danger hover:bg-danger-dark text-white px-6 py-3 rounded-lg font-bold transition shadow-md flex items-center justify-center gap-2 uppercase">
+                    <i class="fas fa-plus"></i> 新增订单
                 </button>
             </div>
             
@@ -547,14 +797,14 @@
                     <!-- New Inquiry Column -->
                     <div class="kanban-column" data-status="New Inquiry">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-bold text-sm text-slate-700 flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-blue-400"></span>
+                            <h3 class="font-bold text-sm text-slate-400 flex items-center gap-2 uppercase">
+                                <span class="w-3 h-3 rounded-full bg-blue-500"></span>
                                 New Inquiry
                             </h3>
-                            <span class="text-xs bg-slate-200 px-2 py-1 rounded-full font-bold" data-count="inquiry">0</span>
+                            <span class="text-xs bg-slate-800 px-2 py-1 rounded-full font-bold text-white" data-count="inquiry">0</span>
                         </div>
-                        <!-- Quick Add Button -->
-                        <div class="quick-add-btn" onclick="app.kanban.openQuickAdd()">
+                        <!-- Quick Add Button (Can be locked) -->
+                        <div id="quick-add-inquiry" class="quick-add-btn" onclick="app.kanban.openQuickAdd()">
                             <i class="fas fa-plus-circle"></i>
                             <span>快速新建</span>
                         </div>
@@ -564,11 +814,11 @@
                     <!-- PI Sent Column -->
                     <div class="kanban-column" data-status="PI Sent">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-bold text-sm text-slate-700 flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+                            <h3 class="font-bold text-sm text-slate-400 flex items-center gap-2 uppercase">
+                                <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
                                 PI Sent
                             </h3>
-                            <span class="text-xs bg-slate-200 px-2 py-1 rounded-full font-bold" data-count="pi">0</span>
+                            <span class="text-xs bg-slate-800 px-2 py-1 rounded-full font-bold text-white" data-count="pi">0</span>
                         </div>
                         <div class="kanban-cards" id="kanban-pi"></div>
                     </div>
@@ -576,11 +826,11 @@
                     <!-- Production Column -->
                     <div class="kanban-column" data-status="Production">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-bold text-sm text-slate-700 flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-purple-400"></span>
+                            <h3 class="font-bold text-sm text-slate-400 flex items-center gap-2 uppercase">
+                                <span class="w-3 h-3 rounded-full bg-purple-500"></span>
                                 Production
                             </h3>
-                            <span class="text-xs bg-slate-200 px-2 py-1 rounded-full font-bold" data-count="production">0</span>
+                            <span class="text-xs bg-slate-800 px-2 py-1 rounded-full font-bold text-white" data-count="production">0</span>
                         </div>
                         <div class="kanban-cards" id="kanban-production"></div>
                     </div>
@@ -588,11 +838,11 @@
                     <!-- Shipped Column -->
                     <div class="kanban-column" data-status="Shipped">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-bold text-sm text-slate-700 flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-blue-500"></span>
+                            <h3 class="font-bold text-sm text-slate-400 flex items-center gap-2 uppercase">
+                                <span class="w-3 h-3 rounded-full bg-blue-600"></span>
                                 Shipped
                             </h3>
-                            <span class="text-xs bg-slate-200 px-2 py-1 rounded-full font-bold" data-count="shipped">0</span>
+                            <span class="text-xs bg-slate-800 px-2 py-1 rounded-full font-bold text-white" data-count="shipped">0</span>
                         </div>
                         <div class="kanban-cards" id="kanban-shipped"></div>
                     </div>
@@ -600,127 +850,13 @@
                     <!-- Paid Column -->
                     <div class="kanban-column" data-status="Paid">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-bold text-sm text-slate-700 flex items-center gap-2">
+                            <h3 class="font-bold text-sm text-slate-400 flex items-center gap-2 uppercase">
                                 <span class="w-3 h-3 rounded-full bg-green-500"></span>
-                                Paid/Completed
+                                Paid (收款)
                             </h3>
-                            <span class="text-xs bg-slate-200 px-2 py-1 rounded-full font-bold" data-count="paid">0</span>
+                            <span class="text-xs bg-slate-800 px-2 py-1 rounded-full font-bold text-white" data-count="paid">0</span>
                         </div>
                         <div class="kanban-cards" id="kanban-paid"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Finance Tab -->
-        <div id="tab-finance" class="tab-content">
-            <div class="mb-6">
-                <h2 class="text-2xl font-bold text-slate-800 mb-2">财务分析 (Notion Mode)</h2>
-                <p class="text-sm text-slate-500">数据驱动决策 · 利润可视化 · 智能报价</p>
-            </div>
-            
-            <!-- Charts Row -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                        <i class="fas fa-chart-bar text-blue-600"></i> 月度销售额
-                    </h3>
-                    <div class="chart-container">
-                        <canvas id="revenue-chart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                        <i class="fas fa-chart-line text-green-600"></i> 利润趋势 (20% 毛利)
-                    </h3>
-                    <div class="chart-container">
-                        <canvas id="profit-chart"></canvas>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Notion-style Database Table -->
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 mb-6">
-                <div class="p-6 border-b border-slate-200">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <h3 class="font-bold text-slate-800 flex items-center gap-2">
-                            <i class="fas fa-database text-purple-600"></i> 订单数据库
-                        </h3>
-                        <div class="flex gap-2">
-                            <select id="filter-status" class="px-3 py-2 border border-slate-300 rounded-lg text-sm" onchange="app.finance.filterTable()">
-                                <option value="">All Status</option>
-                                <option value="New Inquiry">New Inquiry</option>
-                                <option value="PI Sent">PI Sent</option>
-                                <option value="Production">Production</option>
-                                <option value="Shipped">Shipped</option>
-                                <option value="Paid">Paid</option>
-                            </select>
-                            <button onclick="app.finance.exportCSV()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-sm font-bold transition">
-                                <i class="fas fa-file-csv mr-1"></i> Export CSV
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="notion-table">
-                        <thead>
-                            <tr>
-                                <th>PI Number</th>
-                                <th>Customer</th>
-                                <th>Product</th>
-                                <th>Amount (USD)</th>
-                                <th>Status</th>
-                                <th>Profit (20%)</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="finance-table-body">
-                            <tr>
-                                <td colspan="7" class="text-center py-8 text-slate-400">
-                                    <i class="fas fa-inbox text-4xl mb-3 block opacity-30"></i>
-                                    暂无订单数据
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <!-- FOB Calculator & Bank Info -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                        <i class="fas fa-calculator text-blue-600"></i> FOB 计算器
-                    </h3>
-                    <div class="space-y-3 mb-4">
-                        <input type="number" id="calc-cost" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="工厂含税价 (CNY)">
-                        <div class="grid grid-cols-2 gap-3">
-                            <input type="number" id="calc-rate" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="汇率" value="7.25">
-                            <input type="number" id="calc-margin" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="利润率 %" value="20">
-                        </div>
-                    </div>
-                    <button onclick="app.finance.calculate()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">
-                        <i class="fas fa-search-dollar mr-2"></i> 计算报价
-                    </button>
-                    <div id="calc-result" class="hidden mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                        <div class="text-sm text-slate-600 mb-1">建议 FOB 报价:</div>
-                        <div class="text-3xl font-black text-blue-600" id="fob-price">$0.00</div>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                        <i class="fas fa-university text-red-600"></i> XTransfer 账户
-                    </h3>
-                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 font-mono text-xs space-y-1 relative group">
-                        <button onclick="app.finance.copyBankInfo()" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-xs bg-white border px-2 py-1 rounded hover:bg-blue-50 transition">
-                            <i class="fas fa-copy"></i> 复制
-                        </button>
-                        <p><span class="text-slate-400">Beneficiary:</span> Kunshan Vvohoo Industry Co., Ltd</p>
-                        <p><span class="text-slate-400">Bank:</span> JPMorgan Chase Bank N.A.</p>
-                        <p><span class="text-slate-400">Account:</span> 63007935038</p>
-                        <p><span class="text-slate-400">SWIFT:</span> CHASHKHH</p>
                     </div>
                 </div>
             </div>
@@ -729,32 +865,32 @@
     </div>
 </main>
 
-<!-- Quick Add Modal (Simplified) -->
+<!-- Quick Add Modal -->
 <div id="quick-add-modal" class="modal-overlay">
     <div class="modal-content p-6">
         <div class="flex items-center justify-between mb-6">
-            <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                <i class="fas fa-bolt text-blue-600"></i> 快速新建
+            <h3 class="text-xl font-black text-white uppercase">
+                <i class="fas fa-bolt text-red-500 mr-2"></i> 快速新建
             </h3>
-            <button onclick="app.kanban.closeQuickAdd()" class="text-slate-400 hover:text-slate-600 transition">
+            <button onclick="app.kanban.closeQuickAdd()" class="text-slate-400 hover:text-white transition">
                 <i class="fas fa-times text-xl"></i>
             </button>
         </div>
         <div class="space-y-4">
             <div>
-                <label class="block text-sm font-bold text-slate-600 mb-1">Client Name *</label>
-                <input type="text" id="quick-customer" class="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="ABC Medical Co.">
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Client Name *</label>
+                <input type="text" id="quick-customer" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" placeholder="ABC Medical Co.">
             </div>
             <div>
-                <label class="block text-sm font-bold text-slate-600 mb-1">Estimated Amount (USD) *</label>
-                <input type="number" id="quick-amount" class="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="1000.00" step="0.01">
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Amount (USD) *</label>
+                <input type="number" id="quick-amount" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" placeholder="1000.00" step="0.01">
             </div>
         </div>
         <div class="mt-6 flex gap-3">
-            <button onclick="app.kanban.saveQuickOrder()" class="flex-1 bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded-lg transition">
-                <i class="fas fa-zap mr-2"></i> 快速创建
+            <button onclick="app.kanban.saveQuickOrder()" class="flex-1 bg-danger hover:bg-danger-dark text-white font-black py-3 rounded-lg transition uppercase">
+                <i class="fas fa-zap mr-2"></i> 创建
             </button>
-            <button onclick="app.kanban.closeQuickAdd()" class="px-6 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-lg transition">
+            <button onclick="app.kanban.closeQuickAdd()" class="px-6 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-lg transition">
                 取消
             </button>
         </div>
@@ -765,31 +901,31 @@
 <div id="add-order-modal" class="modal-overlay">
     <div class="modal-content p-6">
         <div class="flex items-center justify-between mb-6">
-            <h3 class="text-xl font-bold text-slate-800">完整新增订单</h3>
-            <button onclick="app.kanban.closeFullAddModal()" class="text-slate-400 hover:text-slate-600">
+            <h3 class="text-xl font-black text-white uppercase">完整新增订单</h3>
+            <button onclick="app.kanban.closeFullAddModal()" class="text-slate-400 hover:text-white">
                 <i class="fas fa-times text-xl"></i>
             </button>
         </div>
         <div class="space-y-4">
             <div>
-                <label class="block text-sm font-bold text-slate-600 mb-1">PI Number</label>
-                <input type="text" id="new-pi" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-50" readonly>
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">PI Number</label>
+                <input type="text" id="new-pi" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white" readonly>
             </div>
             <div>
-                <label class="block text-sm font-bold text-slate-600 mb-1">Customer *</label>
-                <input type="text" id="new-customer" class="w-full px-3 py-2 border border-slate-300 rounded-lg">
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Customer *</label>
+                <input type="text" id="new-customer" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none">
             </div>
             <div>
-                <label class="block text-sm font-bold text-slate-600 mb-1">Product</label>
-                <input type="text" id="new-product" class="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="PGA Sutures, Surgical Packs...">
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Product</label>
+                <input type="text" id="new-product" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" placeholder="PGA Sutures, Surgical Packs...">
             </div>
             <div>
-                <label class="block text-sm font-bold text-slate-600 mb-1">Amount (USD) *</label>
-                <input type="number" id="new-amount" class="w-full px-3 py-2 border border-slate-300 rounded-lg" step="0.01">
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Amount (USD) *</label>
+                <input type="number" id="new-amount" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" step="0.01">
             </div>
             <div>
-                <label class="block text-sm font-bold text-slate-600 mb-1">Status</label>
-                <select id="new-status" class="w-full px-3 py-2 border border-slate-300 rounded-lg">
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Status</label>
+                <select id="new-status" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none">
                     <option value="New Inquiry">New Inquiry</option>
                     <option value="PI Sent">PI Sent</option>
                     <option value="Production">Production</option>
@@ -799,13 +935,77 @@
             </div>
         </div>
         <div class="mt-6 flex gap-3">
-            <button onclick="app.kanban.saveFullOrder()" class="flex-1 bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded-lg transition">
+            <button onclick="app.kanban.saveFullOrder()" class="flex-1 bg-danger hover:bg-danger-dark text-white font-black py-3 rounded-lg transition uppercase">
                 <i class="fas fa-save mr-2"></i> 保存
             </button>
-            <button onclick="app.kanban.closeFullAddModal()" class="px-6 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-lg transition">
+            <button onclick="app.kanban.closeFullAddModal()" class="px-6 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-lg transition">
                 取消
             </button>
         </div>
+    </div>
+</div>
+
+<!-- Feishu Settings Modal -->
+<div id="feishu-settings-modal" class="modal-overlay">
+    <div class="modal-content p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-black text-white uppercase">
+                <i class="fas fa-cog text-red-500 mr-2"></i> 飞书配置
+            </h3>
+            <button onclick="app.feishu.closeSettings()" class="text-slate-400 hover:text-white">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <div class="mb-6">
+            <label class="block text-sm font-bold text-slate-400 mb-2 uppercase">
+                <i class="fas fa-robot mr-1"></i> Webhook URL
+            </label>
+            <input 
+                type="text" 
+                id="feishu-webhook-input" 
+                class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white font-mono text-sm focus:border-red-500 focus:outline-none" 
+                placeholder="https://open.feishu.cn/open-apis/bot/v2/hook/..."
+            />
+            <p class="text-xs text-slate-500 mt-2">
+                <i class="fas fa-info-circle"></i> 
+                在飞书群聊中添加自定义机器人，复制 Webhook 地址
+            </p>
+        </div>
+        
+        <div class="flex gap-3">
+            <button onclick="app.feishu.saveSettings()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-black py-3 rounded-lg transition uppercase">
+                <i class="fas fa-save mr-2"></i> 保存
+            </button>
+            <button onclick="app.feishu.testWebhook()" class="px-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">
+                <i class="fas fa-vial mr-2"></i> 测试
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- XTransfer Info Modal -->
+<div id="xtransfer-modal" class="modal-overlay">
+    <div class="modal-content p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-black text-white uppercase">
+                <i class="fas fa-university text-red-500 mr-2"></i> XTransfer 账户
+            </h3>
+            <button onclick="app.finance.closeXTransferInfo()" class="text-slate-400 hover:text-white">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <div class="p-4 bg-black border-2 border-slate-700 rounded-lg font-mono text-sm space-y-2 text-white">
+            <p><span class="text-slate-500">Beneficiary:</span> Kunshan Vvohoo Industry Co., Ltd</p>
+            <p><span class="text-slate-500">Bank:</span> JPMorgan Chase Bank N.A.</p>
+            <p><span class="text-slate-500">Account:</span> 63007935038</p>
+            <p><span class="text-slate-500">SWIFT:</span> CHASHKHH</p>
+        </div>
+        
+        <button onclick="app.finance.copyBankInfo()" class="w-full mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition">
+            <i class="fas fa-copy mr-2"></i> 复制账户信息
+        </button>
     </div>
 </div>
 
@@ -814,7 +1014,7 @@
     <div class="flex items-center gap-3">
         <i id="toast-icon" class="fas fa-check-circle text-green-500 text-xl"></i>
         <div>
-            <div class="font-bold text-sm text-slate-800" id="toast-message">操作成功</div>
+            <div class="font-bold text-sm text-white" id="toast-message">操作成功</div>
             <div class="text-xs text-slate-500" id="toast-time"></div>
         </div>
     </div>
@@ -822,15 +1022,17 @@
 
 <script>
 // ============================================
-// V5 Medical Enterprise Workbench - Perfect Version
-// Features: Auto-Status Sync + Mobile Menu + Quick Add + Real-time Charts
+// V13 SURVIVAL MODE - WAR TIME COMMAND CENTER
 // ============================================
 
 const app = {
     data: {
         orders: [],
         target: 5000000,
-        rate: 7.25
+        rate: 7.25,
+        feishuWebhook: '',
+        todayActions: ['', '', ''], // 🔥 Today's 3 Cash Actions
+        isCritical: false // 🔥 Cash Red Line Status
     },
     
     charts: {
@@ -838,36 +1040,201 @@ const app = {
         profit: null
     },
     
-    activeCardMenu: null, // Track active menu for closing
-    
     // Initialize
     async init() {
-        console.log('[App] Initializing Enterprise Workbench (Perfect Version)...');
+        console.log('[V13 Survival] Initializing War Time Command Center...');
         
         this.loadData();
+        this.survival.checkGate(); // 🔥 Check if Iron Curtain should show
         this.initTabs();
-        this.initWorldClock();
         this.updateDashboard();
+        this.survival.checkCashRedLine(); // 🔥 Check critical status
         this.kanban.init();
-        this.finance.init();
-        this.initGlobalClickHandler();
+        this.feishu.init();
         
-        this.toast('工作台启动成功 (完美版)', 'success');
+        this.toast('战时指挥台启动 (V13 Survival)', 'success');
     },
     
-    // Global click handler to close menus
-    initGlobalClickHandler() {
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.card-menu-btn') && !e.target.closest('.card-menu')) {
-                this.closeAllMenus();
+    // 🔥 SURVIVAL MODULE
+    survival: {
+        checkGate() {
+            // Show gate if no actions saved for today
+            const today = new Date().toDateString();
+            const lastDate = localStorage.getItem('v5_actions_date');
+            
+            if (lastDate !== today || !app.data.todayActions[0]) {
+                // Reset actions for new day
+                app.data.todayActions = ['', '', ''];
+                document.getElementById('iron-curtain').classList.remove('hidden');
+            } else {
+                document.getElementById('iron-curtain').classList.add('hidden');
+                this.displayActions();
             }
-        });
-    },
-    
-    closeAllMenus() {
-        document.querySelectorAll('.card-menu.active').forEach(menu => {
-            menu.classList.remove('active');
-        });
+        },
+        
+        checkInputs() {
+            const input1 = document.getElementById('action-1').value.trim();
+            const input2 = document.getElementById('action-2').value.trim();
+            const input3 = document.getElementById('action-3').value.trim();
+            
+            const btn = document.getElementById('battle-start-btn');
+            
+            // Update visual feedback
+            document.getElementById('action-1').classList.toggle('filled', input1.length > 0);
+            document.getElementById('action-2').classList.toggle('filled', input2.length > 0);
+            document.getElementById('action-3').classList.toggle('filled', input3.length > 0);
+            
+            // Enable button only if all 3 are filled
+            if (input1 && input2 && input3) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+        },
+        
+        startBattle() {
+            const action1 = document.getElementById('action-1').value.trim();
+            const action2 = document.getElementById('action-2').value.trim();
+            const action3 = document.getElementById('action-3').value.trim();
+            
+            // Save actions
+            app.data.todayActions = [action1, action2, action3];
+            localStorage.setItem('v5_actions_date', new Date().toDateString());
+            localStorage.setItem('v5_today_actions', JSON.stringify(app.data.todayActions));
+            
+            // Hide Iron Curtain
+            document.getElementById('iron-curtain').classList.add('hidden');
+            
+            // Display actions in banner
+            this.displayActions();
+            
+            app.toast('战斗开始！聚焦这三件事！', 'success');
+        },
+        
+        displayActions() {
+            const container = document.getElementById('actions-display');
+            container.innerHTML = app.data.todayActions.map((action, idx) => `
+                <div class="action-item">
+                    <div class="action-number">${idx + 1}</div>
+                    <div class="flex-1 text-sm">${action}</div>
+                </div>
+            `).join('');
+        },
+        
+        // 🔥 CASH RED LINE MECHANISM
+        checkCashRedLine() {
+            const paidOrders = app.data.orders.filter(o => o.kanbanStatus === 'Paid');
+            
+            if (paidOrders.length === 0) {
+                this.activateCriticalMode('暂无回款记录');
+                return;
+            }
+            
+            // Find most recent paid order
+            const sortedPaid = paidOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const lastPaid = sortedPaid[0];
+            const lastPaidDate = new Date(lastPaid.date);
+            const now = new Date();
+            const hoursSince = (now - lastPaidDate) / (1000 * 60 * 60);
+            const daysSince = Math.floor(hoursSince / 24);
+            
+            // 🔥 CRITICAL: More than 72 hours (3 days) without payment
+            if (hoursSince > 72) {
+                const daysUntilCrash = this.calculateDaysUntilCrash();
+                this.activateCriticalMode(`${daysSince}天未进账 · 距断裂 ${daysUntilCrash} 天`);
+            } else {
+                this.deactivateCriticalMode();
+            }
+        },
+        
+        calculateDaysUntilCrash() {
+            // Simple calculation: Gap / Daily Need = Days until crash
+            let totalSales = 0;
+            app.data.orders.forEach(order => {
+                if (order.kanbanStatus === 'Paid') {
+                    totalSales += order.total * app.data.rate;
+                }
+            });
+            
+            const gap = app.data.target - totalSales;
+            const today = new Date();
+            const endYear = new Date(today.getFullYear(), 11, 31);
+            const daysLeft = Math.ceil((endYear - today) / (1000 * 60 * 60 * 24));
+            const dailyNeed = daysLeft > 0 ? gap / daysLeft : 0;
+            
+            // Assuming current burn rate, calculate crash date
+            const daysUntilCrash = dailyNeed > 0 ? Math.floor(gap / dailyNeed) : 999;
+            return Math.max(0, daysUntilCrash);
+        },
+        
+        activateCriticalMode(message) {
+            app.data.isCritical = true;
+            
+            // Change header to RED
+            const header = document.getElementById('main-header');
+            header.classList.remove('header-normal');
+            header.classList.add('header-critical');
+            
+            // Update header text
+            document.getElementById('header-title').style.color = 'white';
+            document.getElementById('header-subtitle').style.color = 'rgba(255, 255, 255, 0.8)';
+            document.getElementById('settings-btn').style.color = 'white';
+            
+            // Show critical warning
+            const warning = document.getElementById('critical-warning');
+            warning.classList.remove('hidden');
+            document.getElementById('warning-text').textContent = message;
+            
+            // 🔥 LOCK NON-CASH FEATURES
+            this.lockFeatures();
+        },
+        
+        deactivateCriticalMode() {
+            app.data.isCritical = false;
+            
+            const header = document.getElementById('main-header');
+            header.classList.remove('header-critical');
+            header.classList.add('header-normal');
+            
+            document.getElementById('header-title').style.color = '';
+            document.getElementById('header-subtitle').style.color = '';
+            document.getElementById('settings-btn').style.color = '';
+            
+            document.getElementById('critical-warning').classList.add('hidden');
+            
+            this.unlockFeatures();
+        },
+        
+        lockFeatures() {
+            // Lock "Quick Add" button
+            const quickAddBtn = document.getElementById('quick-add-inquiry');
+            const fullAddBtn = document.getElementById('full-add-btn');
+            
+            if (quickAddBtn) {
+                quickAddBtn.classList.add('locked');
+                quickAddBtn.onclick = () => app.toast('🔒 先搞定回款！', 'error');
+            }
+            
+            if (fullAddBtn) {
+                fullAddBtn.classList.add('feature-locked');
+                fullAddBtn.onclick = () => app.toast('🔒 先搞定回款！', 'error');
+            }
+        },
+        
+        unlockFeatures() {
+            const quickAddBtn = document.getElementById('quick-add-inquiry');
+            const fullAddBtn = document.getElementById('full-add-btn');
+            
+            if (quickAddBtn) {
+                quickAddBtn.classList.remove('locked');
+                quickAddBtn.onclick = () => app.kanban.openQuickAdd();
+            }
+            
+            if (fullAddBtn) {
+                fullAddBtn.classList.remove('feature-locked');
+                fullAddBtn.onclick = () => app.kanban.openFullAddModal();
+            }
+        }
     },
     
     // Load Data
@@ -876,12 +1243,16 @@ const app = {
             const ordersData = localStorage.getItem('v5_orders');
             const targetData = localStorage.getItem('v5_target');
             const rateData = localStorage.getItem('v5_usd_rate');
+            const webhookData = localStorage.getItem('v5_feishu_webhook');
+            const actionsData = localStorage.getItem('v5_today_actions');
             
             this.data.orders = ordersData ? JSON.parse(ordersData) : [];
             this.data.target = targetData ? parseInt(targetData) : 5000000;
             this.data.rate = rateData ? parseFloat(rateData) : 7.25;
+            this.data.feishuWebhook = webhookData || '';
+            this.data.todayActions = actionsData ? JSON.parse(actionsData) : ['', '', ''];
             
-            // Migrate old data: map 'Pending' to 'PI Sent'
+            // Migrate old data
             this.data.orders = this.data.orders.map(order => {
                 if (!order.kanbanStatus) {
                     if (order.status === 'Paid') {
@@ -893,14 +1264,14 @@ const app = {
                     }
                 }
                 if (!order.product) order.product = 'Medical Consumables';
-                if (!order.profit) order.profit = order.total * 0.2; // 20% default margin
+                if (!order.profit) order.profit = order.total * 0.2;
                 return order;
             });
             
             this.saveData();
-            console.log('[App] Data loaded:', this.data.orders.length, 'orders');
+            console.log('[V13] Data loaded:', this.data.orders.length, 'orders');
         } catch (error) {
-            console.error('[App] Load data failed:', error);
+            console.error('[V13] Load data failed:', error);
         }
     },
     
@@ -910,8 +1281,10 @@ const app = {
             localStorage.setItem('v5_orders', JSON.stringify(this.data.orders));
             localStorage.setItem('v5_target', this.data.target.toString());
             localStorage.setItem('v5_usd_rate', this.data.rate.toString());
+            localStorage.setItem('v5_feishu_webhook', this.data.feishuWebhook);
+            localStorage.setItem('v5_today_actions', JSON.stringify(this.data.todayActions));
         } catch (error) {
-            console.error('[App] Save data failed:', error);
+            console.error('[V13] Save data failed:', error);
         }
     },
     
@@ -922,88 +1295,33 @@ const app = {
             btn.addEventListener('click', () => {
                 const tabId = btn.dataset.tab;
                 
-                // Update buttons
                 tabButtons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 
-                // Update content
                 document.querySelectorAll('.tab-content').forEach(content => {
                     content.classList.remove('active');
                 });
                 document.getElementById('tab-' + tabId).classList.add('active');
                 
-                // Refresh if needed
                 if (tabId === 'kanban') this.kanban.render();
-                if (tabId === 'finance') this.finance.render();
             });
         });
     },
     
-    // World Clock
-    initWorldClock() {
-        const cities = [
-            { name: 'Beijing', tz: 'Asia/Shanghai', icon: '🇨🇳', hours: [9, 18] },
-            { name: 'Istanbul', tz: 'Europe/Istanbul', icon: '🇹🇷', hours: [9, 18] },
-            { name: 'Manila', tz: 'Asia/Manila', icon: '🇵🇭', hours: [9, 18] },
-            { name: 'London', tz: 'Europe/London', icon: '🇬🇧', hours: [9, 17] },
-            { name: 'New York', tz: 'America/New_York', icon: '🇺🇸', hours: [9, 17] },
-            { name: 'Dubai', tz: 'Asia/Dubai', icon: '🇦🇪', hours: [8, 17] }
-        ];
-        
-        const container = document.getElementById('world-clock');
-        
-        const update = () => {
-            container.innerHTML = cities.map(city => {
-                const now = new Date();
-                const timeString = new Intl.DateTimeFormat('en-US', {
-                    timeZone: city.tz,
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    hour12: false
-                }).format(now);
-                
-                const hour = parseInt(timeString.split(':')[0]);
-                const isWorking = hour >= city.hours[0] && hour < city.hours[1];
-                
-                return `
-                    <div class="p-3 rounded-lg border transition ${isWorking ? 'bg-green-50 border-green-200' : 'bg-slate-50 border-slate-200'}">
-                        <div class="flex items-center justify-between mb-2">
-                            <div class="flex items-center gap-2">
-                                <span class="text-lg">${city.icon}</span>
-                                <span class="text-xs font-bold text-slate-700">${city.name}</span>
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <span class="w-2 h-2 rounded-full ${isWorking ? 'bg-green-500 animate-pulse' : 'bg-slate-300'}"></span>
-                                <span class="text-[10px] font-bold ${isWorking ? 'text-green-600' : 'text-slate-400'}">${isWorking ? 'OPEN' : 'OFF'}</span>
-                            </div>
-                        </div>
-                        <div class="text-xl font-mono font-black text-slate-800">${timeString}</div>
-                    </div>
-                `;
-            }).join('');
-        };
-        
-        update();
-        setInterval(update, 60000);
-    },
-    
-    // Update Dashboard (WITH AUTO-SYNC)
+    // 🔥 UPDATE DASHBOARD - SURVIVAL METRICS
     updateDashboard() {
         let totalSales = 0;
         let pipeline = 0;
-        let pendingCount = 0;
         
         this.data.orders.forEach(order => {
             const amountRMB = order.total * this.data.rate;
             
-            // 🔥 KEY FEATURE: Auto-sync status based on kanbanStatus
             if (order.kanbanStatus === 'Paid') {
-                order.status = 'Paid'; // Sync to legacy field
+                order.status = 'Paid';
                 totalSales += amountRMB;
             } else {
-                order.status = 'Pending'; // Sync to legacy field
+                order.status = 'Pending';
                 pipeline += amountRMB;
-                pendingCount++;
             }
         });
         
@@ -1015,17 +1333,188 @@ const app = {
         const daysLeft = Math.ceil((endYear - today) / (1000 * 60 * 60 * 24));
         const dailyNeed = daysLeft > 0 ? gap / daysLeft : 0;
         
-        this.setText('kpi-percent', achievement.toFixed(1));
-        this.setProgress('kpi-progress', achievement);
-        this.setText('kpi-sales', '¥' + this.formatNumber(totalSales));
-        this.setText('kpi-sales-usd', this.formatNumber(totalSales / this.data.rate));
-        this.setText('kpi-gap', '¥' + this.formatNumber(gap / 10000, 1) + 'w');
-        this.setText('kpi-daily', this.formatNumber(dailyNeed));
-        this.setText('kpi-pipeline', '¥' + this.formatNumber(pipeline));
-        this.setText('kpi-pending', pendingCount);
+        // Update Cash Flow View
+        this.setText('cash-actual', '¥' + this.formatNumber(totalSales / 10000, 1) + 'w');
+        this.setText('cash-target', '¥' + this.formatNumber(this.data.target / 10000, 1) + 'w');
+        this.setText('cash-percent', achievement.toFixed(1) + '%');
+        this.setProgress('cash-progress', achievement);
         
-        // Save synced data
+        this.setText('cash-gap', '¥' + this.formatNumber(gap / 10000, 1) + 'w');
+        this.setText('daily-need', '¥' + this.formatNumber(dailyNeed));
+        this.setText('days-left', daysLeft);
+        
+        // 🔥 Last Income Card
+        this.updateLastIncomeCard();
+        
         this.saveData();
+    },
+    
+    updateLastIncomeCard() {
+        const paidOrders = this.data.orders.filter(o => o.kanbanStatus === 'Paid');
+        const card = document.getElementById('last-income-card');
+        
+        if (paidOrders.length === 0) {
+            this.setText('last-income-amount', '$0');
+            this.setText('last-income-customer', '暂无回款');
+            this.setText('days-since-income', 'N/A');
+            this.setText('income-status', '等待首笔订单');
+            card.classList.add('danger');
+            return;
+        }
+        
+        const sortedPaid = paidOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const lastPaid = sortedPaid[0];
+        const lastPaidDate = new Date(lastPaid.date);
+        const now = new Date();
+        const daysSince = Math.floor((now - lastPaidDate) / (1000 * 60 * 60 * 24));
+        
+        this.setText('last-income-amount', '$' + lastPaid.total.toFixed(2));
+        this.setText('last-income-customer', lastPaid.customer);
+        this.setText('days-since-income', daysSince);
+        
+        // 🔥 Critical Status
+        if (daysSince >= 3) {
+            card.classList.add('danger');
+            this.setText('income-status', '⚠️ 超过72小时未进账');
+        } else {
+            card.classList.remove('danger');
+            this.setText('income-status', '✅ 正常回款节奏');
+        }
+    },
+    
+    // 🔥 FEISHU MODULE
+    feishu: {
+        init() {
+            // Feishu initialization if needed
+        },
+        
+        openSettings() {
+            document.getElementById('feishu-webhook-input').value = app.data.feishuWebhook;
+            document.getElementById('feishu-settings-modal').classList.add('active');
+        },
+        
+        closeSettings() {
+            document.getElementById('feishu-settings-modal').classList.remove('active');
+        },
+        
+        saveSettings() {
+            const webhook = document.getElementById('feishu-webhook-input').value.trim();
+            app.data.feishuWebhook = webhook;
+            app.saveData();
+            this.closeSettings();
+            app.toast('飞书配置已保存', 'success');
+        },
+        
+        async testWebhook() {
+            if (!app.data.feishuWebhook) {
+                app.toast('请先输入 Webhook 地址', 'error');
+                return;
+            }
+            
+            const payload = {
+                msg_type: "text",
+                content: {
+                    text: "🎯 V13 Survival 战时指挥台测试成功！\n时间: " + new Date().toLocaleString('zh-CN')
+                }
+            };
+            
+            try {
+                const response = await fetch(app.data.feishuWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (response.ok) {
+                    app.toast('测试消息已发送', 'success');
+                } else {
+                    app.toast('Webhook 请求失败', 'error');
+                }
+            } catch (error) {
+                app.toast('网络错误', 'error');
+            }
+        },
+        
+        async sendQuickTodo() {
+            const text = prompt('输入待办事项:');
+            if (!text || !text.trim()) return;
+            
+            if (!app.data.feishuWebhook) {
+                app.toast('请先配置 Webhook', 'error');
+                return;
+            }
+            
+            const payload = {
+                msg_type: "text",
+                content: {
+                    text: `⚔️ 战时待办\n${text}\n\n来自: V13 Survival\n时间: ${new Date().toLocaleString('zh-CN')}`
+                }
+            };
+            
+            try {
+                const response = await fetch(app.data.feishuWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (response.ok) {
+                    app.toast('待办已推送', 'success');
+                } else {
+                    app.toast('推送失败', 'error');
+                }
+            } catch (error) {
+                app.toast('网络错误', 'error');
+            }
+        },
+        
+        async pushOrderToFeishu(orderId) {
+            if (!app.data.feishuWebhook) {
+                app.toast('请先配置 Webhook', 'error');
+                return;
+            }
+            
+            const order = app.data.orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            const statusEmoji = {
+                'New Inquiry': '🆕',
+                'PI Sent': '📨',
+                'Production': '⚙️',
+                'Shipped': '🚢',
+                'Paid': '✅'
+            };
+            
+            const payload = {
+                msg_type: "text",
+                content: {
+                    text: `${statusEmoji[order.kanbanStatus] || '📋'} 订单通知\n\n` +
+                          `PI: ${order.id}\n` +
+                          `客户: ${order.customer}\n` +
+                          `产品: ${order.product || 'Medical Consumables'}\n` +
+                          `金额: $${order.total.toFixed(2)}\n` +
+                          `状态: ${order.kanbanStatus}\n\n` +
+                          `来自: V13 Survival\n` +
+                          `时间: ${new Date().toLocaleString('zh-CN')}`
+                }
+            };
+            
+            try {
+                const response = await fetch(app.data.feishuWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (response.ok) {
+                    app.toast('订单已推送', 'success');
+                } else {
+                    app.toast('推送失败', 'error');
+                }
+            } catch (error) {
+                app.toast('网络错误', 'error');
+            }
+        }
     },
     
     // Kanban Module
@@ -1044,21 +1533,12 @@ const app = {
                 'Paid': 'paid'
             };
             
-            // Clear all columns
             Object.values(statusMap).forEach(id => {
                 document.getElementById('kanban-' + id).innerHTML = '';
             });
             
-            // Count by status
-            const counts = {
-                inquiry: 0,
-                pi: 0,
-                production: 0,
-                shipped: 0,
-                paid: 0
-            };
+            const counts = { inquiry: 0, pi: 0, production: 0, shipped: 0, paid: 0 };
             
-            // Render cards
             app.data.orders.forEach(order => {
                 const statusId = statusMap[order.kanbanStatus] || 'inquiry';
                 counts[statusId]++;
@@ -1067,19 +1547,17 @@ const app = {
                 document.getElementById('kanban-' + statusId).appendChild(card);
             });
             
-            // Update counts
             Object.keys(counts).forEach(id => {
                 const el = document.querySelector(`[data-count="${id}"]`);
                 if (el) el.textContent = counts[id];
             });
             
-            // Show empty states
             Object.values(statusMap).forEach(id => {
                 const container = document.getElementById('kanban-' + id);
                 if (container.children.length === 0) {
                     container.innerHTML = `
                         <div class="empty-state">
-                            <i class="fas fa-inbox"></i>
+                            <i class="fas fa-inbox text-4xl mb-2 opacity-20"></i>
                             <p class="text-xs">暂无订单</p>
                         </div>
                     `;
@@ -1102,90 +1580,28 @@ const app = {
                 'Paid': '#10b981'
             };
             
-            div.style.borderLeftColor = statusColors[order.kanbanStatus] || '#e2e8f0';
+            div.style.borderLeftColor = statusColors[order.kanbanStatus] || '#404040';
             
             div.innerHTML = `
-                <!-- Mobile Menu Button -->
-                <div class="card-menu-btn" onclick="app.kanban.toggleCardMenu(event, '${order.id}')">
-                    <i class="fas fa-ellipsis-v text-slate-400"></i>
-                </div>
-                
-                <!-- Context Menu -->
-                <div class="card-menu" id="menu-${order.id}">
-                    <div class="card-menu-item" onclick="app.kanban.moveCard('${order.id}', 'New Inquiry')">
-                        <i class="fas fa-circle" style="color: #3b82f6"></i>
-                        <span>New Inquiry</span>
-                    </div>
-                    <div class="card-menu-item" onclick="app.kanban.moveCard('${order.id}', 'PI Sent')">
-                        <i class="fas fa-circle" style="color: #f59e0b"></i>
-                        <span>PI Sent</span>
-                    </div>
-                    <div class="card-menu-item" onclick="app.kanban.moveCard('${order.id}', 'Production')">
-                        <i class="fas fa-circle" style="color: #a855f7"></i>
-                        <span>Production</span>
-                    </div>
-                    <div class="card-menu-item" onclick="app.kanban.moveCard('${order.id}', 'Shipped')">
-                        <i class="fas fa-circle" style="color: #3b82f6"></i>
-                        <span>Shipped</span>
-                    </div>
-                    <div class="card-menu-item" onclick="app.kanban.moveCard('${order.id}', 'Paid')">
-                        <i class="fas fa-circle" style="color: #10b981"></i>
-                        <span>Paid/Completed</span>
-                    </div>
+                <div class="card-feishu-btn" onclick="app.feishu.pushOrderToFeishu('${order.id}')" title="推送到飞书">
+                    <i class="fas fa-paper-plane"></i>
                 </div>
                 
                 <div class="flex items-start justify-between mb-2">
-                    <div class="font-mono text-xs font-bold text-slate-600">${order.id}</div>
+                    <div class="font-mono text-xs font-bold text-slate-500">${order.id}</div>
                     <span class="status-badge status-${order.kanbanStatus.toLowerCase().replace(' ', '-').replace('/', '-')}">
                         ${order.kanbanStatus}
                     </span>
                 </div>
-                <div class="font-bold text-sm text-slate-800 mb-2">${order.customer}</div>
-                <div class="text-xs text-slate-500 mb-3 line-clamp-2">${order.product || 'Medical Consumables'}</div>
-                <div class="flex items-center justify-between pt-3 border-t border-slate-100">
-                    <div class="text-lg font-bold text-primary">$${order.total.toFixed(2)}</div>
-                    <div class="text-xs text-slate-400">${new Date(order.date).toLocaleDateString('zh-CN')}</div>
+                <div class="font-bold text-sm text-white mb-2">${order.customer}</div>
+                <div class="text-xs text-slate-500 mb-3">${order.product || 'Medical Consumables'}</div>
+                <div class="flex items-center justify-between pt-3 border-t border-slate-800">
+                    <div class="text-lg font-black text-red-500">$${order.total.toFixed(2)}</div>
+                    <div class="text-xs text-slate-600">${new Date(order.date).toLocaleDateString('zh-CN')}</div>
                 </div>
             `;
             
             return div;
-        },
-        
-        // Toggle card menu (for mobile)
-        toggleCardMenu(event, orderId) {
-            event.stopPropagation();
-            const menu = document.getElementById('menu-' + orderId);
-            
-            // Close all other menus
-            app.closeAllMenus();
-            
-            // Toggle this menu
-            menu.classList.toggle('active');
-        },
-        
-        // Move card via menu
-        moveCard(orderId, newStatus) {
-            const order = app.data.orders.find(o => o.id === orderId);
-            if (order) {
-                const oldStatus = order.kanbanStatus;
-                order.kanbanStatus = newStatus;
-                
-                // 🔥 AUTO-SYNC: Update legacy status field
-                if (newStatus === 'Paid') {
-                    order.status = 'Paid';
-                } else {
-                    order.status = 'Pending';
-                }
-                
-                app.saveData();
-                app.kanban.render();
-                app.updateDashboard(); // Re-calculate KPIs
-                app.finance.render(); // Update charts
-                
-                app.toast(`订单已从 ${oldStatus} 移至 ${newStatus}`, 'success');
-            }
-            
-            app.closeAllMenus();
         },
         
         initDragAndDrop() {
@@ -1222,13 +1638,10 @@ const app = {
                         const newStatus = column.dataset.status;
                         const orderId = draggedCard.dataset.orderId;
                         
-                        // Update order status
                         const order = app.data.orders.find(o => o.id === orderId);
                         if (order) {
-                            const oldStatus = order.kanbanStatus;
                             order.kanbanStatus = newStatus;
                             
-                            // 🔥 AUTO-SYNC: Update legacy status field
                             if (newStatus === 'Paid') {
                                 order.status = 'Paid';
                             } else {
@@ -1237,18 +1650,21 @@ const app = {
                             
                             app.saveData();
                             app.kanban.render();
-                            app.updateDashboard(); // Re-calculate KPIs
-                            app.finance.render(); // Update charts
+                            app.updateDashboard();
+                            app.survival.checkCashRedLine(); // 🔥 Re-check critical status
                             
-                            app.toast(`订单已从 ${oldStatus} 移至 ${newStatus}`, 'success');
+                            app.toast(`订单已移至 ${newStatus}`, 'success');
                         }
                     }
                 });
             });
         },
         
-        // Quick Add (Simplified Modal)
         openQuickAdd() {
+            if (app.data.isCritical) {
+                app.toast('🔒 先搞定回款！', 'error');
+                return;
+            }
             document.getElementById('quick-add-modal').classList.add('active');
             document.getElementById('quick-customer').focus();
         },
@@ -1287,14 +1703,16 @@ const app = {
             app.saveData();
             app.kanban.render();
             app.updateDashboard();
-            app.finance.render();
             this.closeQuickAdd();
             
-            app.toast('订单已快速创建', 'success');
+            app.toast('订单已创建', 'success');
         },
         
-        // Full Add Modal
         openFullAddModal() {
+            if (app.data.isCritical) {
+                app.toast('🔒 先搞定回款！', 'error');
+                return;
+            }
             this.generatePINumber();
             document.getElementById('add-order-modal').classList.add('active');
         },
@@ -1346,7 +1764,7 @@ const app = {
             app.saveData();
             app.kanban.render();
             app.updateDashboard();
-            app.finance.render();
+            app.survival.checkCashRedLine();
             this.closeFullAddModal();
             
             app.toast('订单已创建', 'success');
@@ -1355,174 +1773,12 @@ const app = {
     
     // Finance Module
     finance: {
-        init() {
-            this.render();
-            this.initCharts();
+        showXTransferInfo() {
+            document.getElementById('xtransfer-modal').classList.add('active');
         },
         
-        render() {
-            this.renderTable();
-            this.updateCharts(); // 🔥 Real-time chart update
-        },
-        
-        renderTable() {
-            const tbody = document.getElementById('finance-table-body');
-            const filter = document.getElementById('filter-status')?.value || '';
-            
-            // 🔥 REAL-TIME: Always read from localStorage
-            app.loadData();
-            
-            let orders = app.data.orders;
-            if (filter) {
-                orders = orders.filter(o => o.kanbanStatus === filter);
-            }
-            
-            if (orders.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="text-center py-8 text-slate-400">
-                            <i class="fas fa-inbox text-4xl mb-3 block opacity-30"></i>
-                            暂无订单数据
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            tbody.innerHTML = orders.map(o => `
-                <tr>
-                    <td class="font-mono text-sm font-bold text-slate-700">${o.id}</td>
-                    <td class="text-slate-700">${o.customer}</td>
-                    <td class="text-slate-600 text-sm">${o.product || 'Medical Consumables'}</td>
-                    <td class="font-bold text-primary">$${o.total.toFixed(2)}</td>
-                    <td>
-                        <span class="status-badge status-${o.kanbanStatus.toLowerCase().replace(' ', '-').replace('/', '-')}">
-                            ${o.kanbanStatus}
-                        </span>
-                    </td>
-                    <td class="font-bold text-green-600">$${(o.total * 0.2).toFixed(2)}</td>
-                    <td class="text-xs text-slate-400">${new Date(o.date).toLocaleDateString('zh-CN')}</td>
-                </tr>
-            `).join('');
-        },
-        
-        filterTable() {
-            this.renderTable();
-        },
-        
-        initCharts() {
-            const revenueCtx = document.getElementById('revenue-chart');
-            const profitCtx = document.getElementById('profit-chart');
-            
-            if (!revenueCtx || !profitCtx) return;
-            
-            // Revenue Chart
-            app.charts.revenue = new Chart(revenueCtx, {
-                type: 'bar',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        label: 'Revenue (USD)',
-                        data: [],
-                        backgroundColor: 'rgba(30, 64, 175, 0.8)',
-                        borderColor: 'rgba(30, 64, 175, 1)',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
-                }
-            });
-            
-            // Profit Chart
-            app.charts.profit = new Chart(profitCtx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        label: 'Profit (USD, 20% margin)',
-                        data: [],
-                        borderColor: 'rgba(16, 185, 129, 1)',
-                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
-                }
-            });
-            
-            this.updateCharts();
-        },
-        
-        updateCharts() {
-            if (!app.charts.revenue || !app.charts.profit) return;
-            
-            // 🔥 REAL-TIME: Always read from localStorage
-            app.loadData();
-            
-            // Group by month (ONLY Paid orders)
-            const monthlyData = {};
-            app.data.orders.forEach(order => {
-                if (order.kanbanStatus === 'Paid') {
-                    const month = new Date(order.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short' });
-                    if (!monthlyData[month]) {
-                        monthlyData[month] = { revenue: 0, profit: 0 };
-                    }
-                    monthlyData[month].revenue += order.total;
-                    monthlyData[month].profit += (order.total * 0.2); // 🔥 20% margin
-                }
-            });
-            
-            const months = Object.keys(monthlyData).sort();
-            const revenues = months.map(m => monthlyData[m].revenue);
-            const profits = months.map(m => monthlyData[m].profit);
-            
-            // Update charts
-            app.charts.revenue.data.labels = months;
-            app.charts.revenue.data.datasets[0].data = revenues;
-            app.charts.revenue.update();
-            
-            app.charts.profit.data.labels = months;
-            app.charts.profit.data.datasets[0].data = profits;
-            app.charts.profit.update();
-        },
-        
-        calculate() {
-            const cost = parseFloat(document.getElementById('calc-cost').value) || 0;
-            const rate = parseFloat(document.getElementById('calc-rate').value) || 7.25;
-            const margin = parseFloat(document.getElementById('calc-margin').value) || 20;
-            
-            if (cost <= 0 || rate <= 0) {
-                app.toast('请输入有效的工厂价和汇率', 'error');
-                return;
-            }
-            
-            const costBase = cost / 1.13;
-            const taxRefund = costBase * 0.13;
-            const realCost = cost - taxRefund;
-            const fobPrice = (realCost / (1 - margin / 100)) / rate;
-            
-            document.getElementById('fob-price').textContent = '$' + fobPrice.toFixed(2);
-            document.getElementById('calc-result').classList.remove('hidden');
-            
-            app.toast('计算完成', 'success');
+        closeXTransferInfo() {
+            document.getElementById('xtransfer-modal').classList.remove('active');
         },
         
         copyBankInfo() {
@@ -1532,37 +1788,9 @@ Account: 63007935038
 SWIFT: CHASHKHH`;
             
             navigator.clipboard.writeText(text).then(() => {
-                app.toast('银行信息已复制', 'success');
+                app.toast('账户信息已复制', 'success');
+                this.closeXTransferInfo();
             });
-        },
-        
-        exportCSV() {
-            const headers = ['PI Number', 'Customer', 'Product', 'Amount (USD)', 'Status', 'Profit (20%)', 'Date'];
-            const rows = app.data.orders.map(o => [
-                o.id,
-                o.customer,
-                o.product || 'Medical Consumables',
-                o.total.toFixed(2),
-                o.kanbanStatus,
-                (o.total * 0.2).toFixed(2),
-                new Date(o.date).toLocaleDateString('zh-CN')
-            ]);
-            
-            const BOM = '\uFEFF';
-            let csv = BOM + headers.join(',') + '\n';
-            rows.forEach(row => {
-                csv += row.map(cell => `"${cell}"`).join(',') + '\n';
-            });
-            
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `V5_Orders_${new Date().toISOString().split('T')[0]}.csv`;
-            a.click();
-            URL.revokeObjectURL(url);
-            
-            app.toast('CSV 已导出', 'success');
         }
     },
     
@@ -1571,19 +1799,21 @@ SWIFT: CHASHKHH`;
         const data = {
             orders: this.data.orders,
             target: this.data.target,
+            feishuWebhook: this.data.feishuWebhook,
+            todayActions: this.data.todayActions,
             exportDate: new Date().toISOString(),
-            version: '3.0-perfect'
+            version: 'V13-Survival'
         };
         
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `V5_Backup_${new Date().toISOString().split('T')[0]}.json`;
+        a.download = `V13_Survival_Backup_${new Date().toISOString().split('T')[0]}.json`;
         a.click();
         URL.revokeObjectURL(url);
         
-        this.toast('数据已导出', 'success');
+        this.toast('数据已备份', 'success');
     },
     
     // Toast
@@ -1598,6 +1828,10 @@ SWIFT: CHASHKHH`;
             error: 'fa-times-circle text-red-500',
             warning: 'fa-exclamation-triangle text-yellow-500'
         };
+        
+        toast.className = 'toast';
+        if (type === 'error') toast.classList.add('error');
+        if (type === 'success') toast.classList.add('success');
         
         icon.className = `fas ${icons[type]} text-xl`;
         messageEl.textContent = message;
