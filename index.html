@@ -466,6 +466,133 @@
         <span class="text-gray-500 mr-2">Region/Language:</span>
         <span id="google_translate_element" class="inline-block align-middle"></span>
     </div>
+<!-- 在主站 index.html 的 </body> 前添加错误处理 -->
 
+<script>
+// ============================================
+// Cloudflare 部署错误处理（修复版）
+// ============================================
+
+// 1. 全局错误捕获
+window.addEventListener('error', function(e) {
+    console.error('🔴 Main Site Error:', e.error || e.message);
+    
+    // 如果是关键脚本加载失败，显示友好提示
+    if (e.filename && (e.filename.includes('layout.js') || e.filename.includes('config.js'))) {
+        console.warn('⚠️ Critical script failed, attempting recovery...');
+        
+        // 尝试使用备用CDN加载（如果有的话）
+        const failedScript = e.filename.split('/').pop();
+        console.log(`Attempting to reload: ${failedScript}`);
+    }
+}, true);
+
+// 2. Promise 错误捕获
+window.addEventListener('unhandledrejection', function(e) {
+    console.error('🔴 Unhandled Promise Rejection:', e.reason);
+});
+
+// 3. 模块加载顺序检查（在所有脚本加载后执行）
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('✅ DOM Content Loaded');
+    
+    // 检查关键对象是否加载
+    const checkTimeout = setTimeout(() => {
+        if (!window.V5Config) {
+            console.error('❌ V5Config not loaded');
+            showLoadError('配置文件加载失败 (config.js)');
+            return;
+        }
+        
+        if (!window.V5Layout) {
+            console.error('❌ V5Layout not loaded');
+            showLoadError('布局引擎加载失败 (layout.js)');
+            return;
+        }
+        
+        console.log('✅ All core modules loaded successfully');
+    }, 2000);
+});
+
+// 4. 显示加载错误（友好提示）
+function showLoadError(message) {
+    const loader = document.getElementById('loader');
+    if (loader) {
+        loader.style.display = 'flex';
+        loader.style.opacity = '1';
+        loader.innerHTML = `
+            <div class="text-center max-w-md p-8 bg-white rounded-2xl shadow-2xl">
+                <i class="fas fa-exclamation-triangle text-yellow-500 text-5xl mb-4"></i>
+                <h2 class="text-xl font-bold text-slate-800 mb-2">加载遇到问题</h2>
+                <p class="text-sm text-slate-600 mb-4">${message}</p>
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 text-left">
+                    <p class="text-xs text-blue-800">
+                        <strong>可能原因：</strong><br>
+                        • CDN 资源加载缓慢<br>
+                        • 网络连接不稳定<br>
+                        • 浏览器缓存问题
+                    </p>
+                </div>
+                <button onclick="location.reload()" class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-bold mb-2">
+                    <i class="fas fa-redo mr-2"></i> 重新加载
+                </button>
+                <button onclick="clearCacheAndReload()" class="w-full bg-slate-100 text-slate-700 px-6 py-3 rounded-lg hover:bg-slate-200 font-bold">
+                    <i class="fas fa-trash mr-2"></i> 清除缓存并重载
+                </button>
+            </div>
+        `;
+    }
+}
+
+// 5. 清除缓存并重新加载
+function clearCacheAndReload() {
+    console.log('🗑️ Clearing cache...');
+    
+    // 清除 localStorage
+    localStorage.clear();
+    
+    // 清除 sessionStorage
+    sessionStorage.clear();
+    
+    // 强制刷新（跳过缓存）
+    location.reload(true);
+}
+
+// 6. 性能监控（可选）
+if (window.performance && window.performance.timing) {
+    window.addEventListener('load', function() {
+        setTimeout(() => {
+            const perfData = window.performance.timing;
+            const loadTime = perfData.loadEventEnd - perfData.navigationStart;
+            console.log(`📊 Page Load Time: ${loadTime}ms`);
+            
+            if (loadTime > 5000) {
+                console.warn('⚠️ Slow page load detected');
+            }
+        }, 0);
+    });
+}
+</script>
+
+<!-- 脚本加载顺序（关键修复）-->
+<script src="js/config.js?v=2.7.1" defer onerror="showLoadError('config.js 加载失败')"></script>
+<script src="js/layout.js?v=4.8.4" defer onerror="showLoadError('layout.js 加载失败')"></script>
+<script src="js/main.js?v=2.2.1" defer></script>
+<script src="js/seo-utils.js?v=3.0.1" defer></script>
+<script src="js/performance-monitor.js?v=2.0.1" defer></script>
+
+<!-- Google Translate（异步加载）-->
+<div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
+<script>
+function googleTranslateElementInit() {
+    if (window.google && window.google.translate) {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+}
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
 </body>
 </html>
