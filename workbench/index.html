@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V5 Medical 战时指挥台 V13.1 Hotfix | SURVIVAL MODE - 死锁已修复</title>
+    <title>V5 Medical 战时指挥台 V14.0 ERP | 供应链·财务·真实利润</title>
     <link rel="icon" type="image/x-icon" href="../images/icons/favicon.ico">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -292,7 +292,8 @@
             transform: translateX(4px);
         }
         
-        .kanban-card:hover .card-feishu-btn {
+        .kanban-card:hover .card-feishu-btn,
+        .kanban-card:hover .card-edit-btn {
             opacity: 1;
         }
         
@@ -358,6 +359,31 @@
         .card-feishu-btn:hover {
             transform: scale(1.1);
             box-shadow: 0 4px 12px rgba(0, 120, 255, 0.4);
+        }
+        
+        /* 🆕 V13.4: Edit Button */
+        .card-edit-btn {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s ease;
+            z-index: 10;
+            color: white;
+        }
+        
+        .card-edit-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
         }
         
         /* Empty State */
@@ -617,7 +643,7 @@
         </button>
         
         <p class="text-xs text-center text-slate-600 mt-4">
-            V13.1 Hotfix · 死锁已修复 · 30分钟通行证
+            V14.0 ERP Edition · 供应链管理 · 财务核算 · 真实利润
         </p>
     </div>
 </div>
@@ -632,10 +658,10 @@
                 </div>
                 <div>
                     <h1 class="font-black text-lg leading-tight" id="header-title">
-                        战时指挥台 <span class="text-xs bg-danger text-white px-2 py-0.5 rounded-full">V13.1</span>
+                        战时指挥台 <span class="text-xs bg-danger text-white px-2 py-0.5 rounded-full">V14.0</span>
                     </h1>
                     <div class="text-[10px] uppercase tracking-wider font-bold" id="header-subtitle">
-                        HOTFIX · 死锁已修复 · 30分钟通行证
+                        ERP EDITION · 供应链 · 财务 · 真实利润
                     </div>
                 </div>
             </div>
@@ -686,6 +712,9 @@
             <button class="tab-button" data-tab="kanban">
                 <i class="fas fa-columns mr-2"></i> 订单战场
             </button>
+            <button class="tab-button" data-tab="crm">
+                <i class="fas fa-users mr-2"></i> 客户档案
+            </button>
         </div>
     </div>
 </nav>
@@ -720,19 +749,27 @@
                     </div>
                 </div>
                 
-                <!-- Gap & Daily Need -->
+                <!-- 🆕 V13.4: Monthly Gap & Big Deal Progress -->
                 <div class="cash-metric">
-                    <div class="cash-metric-label">缺口 & 日均需求</div>
-                    <div class="cash-metric-value text-orange-500 mb-4" id="cash-gap">¥500w</div>
-                    <div class="flex items-center gap-2 p-3 bg-black border border-slate-700 rounded-lg">
-                        <i class="fas fa-calendar-day text-orange-500"></i>
-                        <div>
-                            <div class="text-xs text-slate-500 uppercase">每日必须回款</div>
-                            <div class="text-xl font-black text-orange-500" id="daily-need">¥0</div>
+                    <div class="cash-metric-label">本月缺口 & 大单进度</div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="cash-metric-value text-orange-500" id="monthly-gap">¥0w</div>
+                        <div class="text-sm text-slate-500">/月</div>
+                    </div>
+                    <div class="flex items-center gap-2 p-3 bg-black border border-slate-700 rounded-lg mb-3">
+                        <i class="fas fa-calendar-alt text-orange-500"></i>
+                        <div class="flex-1">
+                            <div class="text-xs text-slate-500 uppercase">剩余月数</div>
+                            <div class="text-lg font-black text-orange-500" id="months-left">11</div>
                         </div>
                     </div>
-                    <div class="mt-3 text-xs text-slate-500 text-center">
-                        距离年底还剩 <span class="font-bold text-white" id="days-left">0</span> 天
+                    <div class="p-3 bg-blue-900 bg-opacity-30 border border-blue-700 rounded-lg">
+                        <div class="text-xs text-blue-300 uppercase mb-1">🚢 大单进行中</div>
+                        <div class="flex items-center gap-2">
+                            <div class="text-2xl font-black text-blue-400" id="big-deals-count">0</div>
+                            <div class="text-xs text-blue-500">笔</div>
+                        </div>
+                        <div class="text-xs text-blue-400 mt-1" id="big-deals-value">价值 ¥0</div>
                     </div>
                 </div>
                 
@@ -877,6 +914,24 @@
             </div>
         </div>
         
+        <!-- 🆕 V13.5: CRM Tab -->
+        <div id="tab-crm" class="tab-content">
+            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-black mb-2 text-green-500 uppercase">客户档案 (CRM)</h2>
+                    <p class="text-sm text-slate-500">客户管理 · 一键开单 · 智能联想</p>
+                </div>
+                <button onclick="app.crm.openCustomerModal()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-bold transition shadow-md flex items-center justify-center gap-2 uppercase">
+                    <i class="fas fa-user-plus"></i> 新增客户
+                </button>
+            </div>
+            
+            <!-- Customer Grid -->
+            <div id="customer-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Customer cards will be rendered here -->
+            </div>
+        </div>
+        
     </div>
 </main>
 
@@ -894,11 +949,67 @@
         <div class="space-y-4">
             <div>
                 <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Client Name *</label>
-                <input type="text" id="quick-customer" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" placeholder="ABC Medical Co.">
+                <input type="text" id="quick-customer" list="customer-datalist" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" placeholder="ABC Medical Co.">
+                <datalist id="customer-datalist"></datalist>
             </div>
+            
+            <!-- 🆕 V13.3: Status Selector -->
             <div>
-                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Amount (USD) *</label>
-                <input type="number" id="quick-amount" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" placeholder="1000.00" step="0.01">
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Status *</label>
+                <select id="quick-status" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none">
+                    <option value="New Inquiry">New Inquiry (潜在客户)</option>
+                    <option value="PI Sent">PI Sent (已报价)</option>
+                    <option value="Production">Production (生产中)</option>
+                    <option value="Shipped">Shipped (已发货)</option>
+                    <option value="Paid">✅ Paid (已回款 - 可解除红屏)</option>
+                </select>
+                <p class="text-xs text-slate-500 mt-1">💡 红色警戒时，选择 Paid 可直接解除危机</p>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3">
+                <!-- 🆕 V13.3: Currency Selector -->
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Currency</label>
+                    <select id="quick-currency" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" onchange="app.kanban.updateQuickRate()">
+                        <option value="USD">USD 美元</option>
+                        <option value="EUR">EUR 欧元</option>
+                        <option value="GBP">GBP 英镑</option>
+                        <option value="CNY">CNY 人民币</option>
+                    </select>
+                </div>
+                
+                <!-- 🆕 V13.3: Exchange Rate -->
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">汇率</label>
+                    <input type="number" id="quick-rate" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" step="0.0001" placeholder="6.9800">
+                    <p class="text-xs text-slate-500 mt-1">CNY自动为1</p>
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Amount *</label>
+                <input type="number" id="quick-amount" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" placeholder="1000.00" step="0.01" onchange="app.kanban.calculateQuickProfit()">
+            </div>
+            
+            <!-- 🆕 V14.0: Cost & Supplier -->
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Supplier (供应商)</label>
+                <select id="quick-supplier" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none">
+                    <option value="">未指定</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Cost (采购成本)</label>
+                <input type="number" id="quick-cost" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" placeholder="0.00" step="0.01" onchange="app.kanban.calculateQuickProfit()">
+                <p class="text-xs text-slate-500 mt-1">默认与销售额同币种</p>
+            </div>
+            
+            <!-- 🆕 V14.0: Profit Indicator -->
+            <div id="quick-profit-indicator" class="p-3 bg-slate-900 border border-slate-700 rounded-lg text-sm">
+                <span class="text-slate-400">预计毛利:</span>
+                <span class="text-green-400 font-bold ml-2" id="quick-profit-value">¥0</span>
+                <span class="text-slate-500 ml-2" id="quick-margin-value">(0%)</span>
             </div>
         </div>
         <div class="mt-6 flex gap-3">
@@ -928,16 +1039,39 @@
             </div>
             <div>
                 <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Customer *</label>
-                <input type="text" id="new-customer" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none">
+                <input type="text" id="new-customer" list="customer-datalist-full" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none">
+                <datalist id="customer-datalist-full"></datalist>
             </div>
             <div>
                 <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Product</label>
                 <input type="text" id="new-product" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" placeholder="PGA Sutures, Surgical Packs...">
             </div>
-            <div>
-                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Amount (USD) *</label>
-                <input type="number" id="new-amount" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" step="0.01">
+            
+            <div class="grid grid-cols-3 gap-3">
+                <!-- 🆕 V13.3: Currency -->
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Currency</label>
+                    <select id="new-currency" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" onchange="app.kanban.updateFullRate()">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="CNY">CNY</option>
+                    </select>
+                </div>
+                
+                <!-- 🆕 V13.3: Amount -->
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Amount *</label>
+                    <input type="number" id="new-amount" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" step="0.01">
+                </div>
+                
+                <!-- 🆕 V13.3: Exchange Rate -->
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">汇率</label>
+                    <input type="number" id="new-rate" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none" step="0.0001">
+                </div>
             </div>
+            
             <div>
                 <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Status</label>
                 <select id="new-status" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-red-500 focus:outline-none">
@@ -945,7 +1079,7 @@
                     <option value="PI Sent">PI Sent</option>
                     <option value="Production">Production</option>
                     <option value="Shipped">Shipped</option>
-                    <option value="Paid">Paid</option>
+                    <option value="Paid">✅ Paid (已回款)</option>
                 </select>
             </div>
         </div>
@@ -954,6 +1088,75 @@
                 <i class="fas fa-save mr-2"></i> 保存
             </button>
             <button onclick="app.kanban.closeFullAddModal()" class="px-6 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-lg transition">
+                取消
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 🆕 V13.4: Edit Order Modal -->
+<div id="edit-order-modal" class="modal-overlay">
+    <div class="modal-content p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-black text-white uppercase">
+                <i class="fas fa-pen text-yellow-500 mr-2"></i> 编辑订单
+            </h3>
+            <button onclick="app.kanban.closeEditModal()" class="text-slate-400 hover:text-white">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">PI Number</label>
+                <input type="text" id="edit-pi" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white" readonly>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Customer *</label>
+                <input type="text" id="edit-customer" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-yellow-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Product</label>
+                <input type="text" id="edit-product" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-yellow-500 focus:outline-none">
+            </div>
+            
+            <div class="grid grid-cols-3 gap-3">
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Currency</label>
+                    <select id="edit-currency" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-yellow-500 focus:outline-none" onchange="app.kanban.updateEditRate()">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="CNY">CNY</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Amount *</label>
+                    <input type="number" id="edit-amount" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-yellow-500 focus:outline-none" step="0.01">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">汇率</label>
+                    <input type="number" id="edit-rate" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-yellow-500 focus:outline-none" step="0.0001">
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">Status</label>
+                <select id="edit-status" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-yellow-500 focus:outline-none">
+                    <option value="New Inquiry">New Inquiry</option>
+                    <option value="PI Sent">PI Sent</option>
+                    <option value="Production">Production</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Paid">✅ Paid (已回款)</option>
+                </select>
+            </div>
+        </div>
+        <div class="mt-6 flex gap-3">
+            <button onclick="app.kanban.saveEditOrder()" class="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white font-black py-3 rounded-lg transition uppercase">
+                <i class="fas fa-check mr-2"></i> 保存修改
+            </button>
+            <button onclick="app.kanban.closeEditModal()" class="px-6 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-lg transition">
                 取消
             </button>
         </div>
@@ -1024,6 +1227,77 @@
     </div>
 </div>
 
+<!-- 🆕 V13.5: Customer Modal -->
+<div id="customer-modal" class="modal-overlay">
+    <div class="modal-content p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-black text-white uppercase">
+                <i class="fas fa-user-plus text-green-500 mr-2"></i> <span id="customer-modal-title">新增客户</span>
+            </h3>
+            <button onclick="app.crm.closeCustomerModal()" class="text-slate-400 hover:text-white">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <input type="hidden" id="customer-id" />
+            
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">公司名称 *</label>
+                <input type="text" id="customer-name" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-green-500 focus:outline-none" placeholder="ABC Medical Co., Ltd">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">联系人</label>
+                <input type="text" id="customer-contact" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-green-500 focus:outline-none" placeholder="John Doe">
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">国家/地区</label>
+                    <select id="customer-country" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-green-500 focus:outline-none">
+                        <option value="">选择国家</option>
+                        <option value="Turkey">🇹🇷 Turkey</option>
+                        <option value="Finland">🇫🇮 Finland</option>
+                        <option value="USA">🇺🇸 USA</option>
+                        <option value="Germany">🇩🇪 Germany</option>
+                        <option value="UK">🇬🇧 UK</option>
+                        <option value="China">🇨🇳 China</option>
+                        <option value="France">🇫🇷 France</option>
+                        <option value="Italy">🇮🇹 Italy</option>
+                        <option value="Spain">🇪🇸 Spain</option>
+                        <option value="India">🇮🇳 India</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">偏好币种</label>
+                    <select id="customer-currency" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-green-500 focus:outline-none">
+                        <option value="USD">USD 美元</option>
+                        <option value="EUR">EUR 欧元</option>
+                        <option value="GBP">GBP 英镑</option>
+                        <option value="CNY">CNY 人民币</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1 uppercase">备注</label>
+                <textarea id="customer-notes" class="w-full px-3 py-2 bg-black border-2 border-slate-700 rounded-lg text-white focus:border-green-500 focus:outline-none resize-none" rows="3" placeholder="客户特殊要求、付款条件等..."></textarea>
+            </div>
+        </div>
+        
+        <div class="mt-6 flex gap-3">
+            <button onclick="app.crm.saveCustomer()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-black py-3 rounded-lg transition uppercase">
+                <i class="fas fa-check mr-2"></i> 保存
+            </button>
+            <button onclick="app.crm.closeCustomerModal()" class="px-6 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-lg transition">
+                取消
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- Toast -->
 <div id="toast" class="toast">
     <div class="flex items-center gap-3">
@@ -1043,8 +1317,11 @@
 const app = {
     data: {
         orders: [],
+        customers: [], // 🆕 V13.5: Customer Archive
+        suppliers: [], // 🆕 V14.0: Supplier Archive
+        expenses: [],  // 🆕 V14.0: Operating Expenses
         target: 5000000,
-        rate: 7.25,
+        rate: 6.98,
         feishuWebhook: '',
         todayActions: ['', '', ''], // 🔥 Today's 3 Cash Actions
         isCritical: false, // 🔥 Cash Red Line Status
@@ -1059,7 +1336,7 @@ const app = {
     
     // Initialize
     async init() {
-        console.log('[V13.1 Hotfix] Initializing War Time Command Center...');
+        console.log('[V14.0 ERP] Initializing Supply Chain & Finance System...');
         
         this.loadData();
         this.survival.checkGate(); // 🔥 Check if Iron Curtain should show
@@ -1068,8 +1345,10 @@ const app = {
         this.survival.checkCashRedLine(); // 🔥 Check critical status
         this.kanban.init();
         this.feishu.init();
+        this.crm.renderCustomers(); // 🆕 V13.5: Render customer list
+        this.crm.updateDatalist(); // 🆕 V13.5: Update auto-complete datalist
         
-        this.toast('战时指挥台启动 (V13 Survival)', 'success');
+        this.toast('战时指挥台启动 (V14.0 ERP)', 'success');
     },
     
     // 🔥 SURVIVAL MODULE
@@ -1156,29 +1435,116 @@ const app = {
         },
         
         // 🔥 CASH RED LINE MECHANISM
+        // 🔥 V13.5: CRITICAL FIX - 红屏解除逻辑（强化版）
         checkCashRedLine() {
-            const paidOrders = app.data.orders.filter(o => o.kanbanStatus === 'Paid');
+            console.log('[V13.5 CRITICAL] ========== Red Line Check START ==========');
             
+            // 🔥 FIX 1: 严格过滤 + 验证date字段
+            const paidOrders = app.data.orders.filter(o => {
+                const isPaid = o.kanbanStatus === 'Paid' || o.status === 'Paid';
+                const hasDate = o.date && o.date !== '';
+                
+                if (isPaid && !hasDate) {
+                    console.warn('[V13.5] Paid order missing date:', o.id, o.customer);
+                }
+                
+                return isPaid && hasDate;
+            });
+            
+            console.log('[V13.5 CRITICAL] Total Paid orders:', paidOrders.length);
+            
+            // 🔥 FIX 2: 无Paid订单 → 立即激活红屏
             if (paidOrders.length === 0) {
+                console.log('[V13.5] ❌ No paid orders found, activating critical mode');
                 this.activateCriticalMode('暂无回款记录');
                 return;
             }
             
-            // Find most recent paid order
-            const sortedPaid = paidOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+            // 🔥 FIX 3: 强制按date降序排列（最新在前）
+            const sortedPaid = paidOrders.sort((a, b) => {
+                const dateA = new Date(a.date).getTime();
+                const dateB = new Date(b.date).getTime();
+                
+                // 验证时间戳有效
+                if (isNaN(dateA)) {
+                    console.error('[V13.5] Invalid dateA:', a.date, 'for order:', a.id);
+                    return 1;
+                }
+                if (isNaN(dateB)) {
+                    console.error('[V13.5] Invalid dateB:', b.date, 'for order:', b.id);
+                    return -1;
+                }
+                
+                return dateB - dateA; // 降序
+            });
+            
             const lastPaid = sortedPaid[0];
+            
+            // 🔥 FIX 4: 双重验证数据完整性
+            if (!lastPaid) {
+                console.error('[V13.5] ❌ lastPaid is null/undefined');
+                this.activateCriticalMode('数据异常');
+                return;
+            }
+            
+            if (!lastPaid.date) {
+                console.error('[V13.5] ❌ lastPaid.date is missing:', lastPaid);
+                this.activateCriticalMode('数据异常');
+                return;
+            }
+            
+            // 🔥 FIX 5: 严格计算时间差
             const lastPaidDate = new Date(lastPaid.date);
+            const lastPaidTimestamp = lastPaidDate.getTime();
+            
+            if (isNaN(lastPaidTimestamp)) {
+                console.error('[V13.5] ❌ Invalid date format:', lastPaid.date);
+                this.activateCriticalMode('日期格式错误');
+                return;
+            }
+            
             const now = new Date();
-            const hoursSince = (now - lastPaidDate) / (1000 * 60 * 60);
+            const nowTimestamp = now.getTime();
+            const millisSince = nowTimestamp - lastPaidTimestamp;
+            const hoursSince = millisSince / (1000 * 60 * 60);
             const daysSince = Math.floor(hoursSince / 24);
             
-            // 🔥 CRITICAL: More than 72 hours (3 days) without payment
+            // 🔥 FIX 6: 超详细日志（包含所有Paid订单）
+            console.log('[V13.5 CRITICAL CHECK] Last Paid Order:', {
+                id: lastPaid.id,
+                customer: lastPaid.customer,
+                currency: lastPaid.currency || 'USD',
+                amount: lastPaid.total,
+                paidDate: lastPaidDate.toISOString(),
+                paidTimestamp: lastPaidTimestamp,
+                currentTime: now.toISOString(),
+                currentTimestamp: nowTimestamp,
+                millisSince,
+                hoursSince: hoursSince.toFixed(4),
+                daysSince,
+                threshold: 72
+            });
+            
+            // 打印所有Paid订单供调试
+            console.log('[V13.5] All Paid Orders:', paidOrders.map(o => ({
+                id: o.id,
+                customer: o.customer,
+                date: o.date,
+                currency: o.currency,
+                amount: o.total
+            })));
+            
+            // 🔥 FIX 7: 清晰的判断逻辑
             if (hoursSince > 72) {
+                console.log('[V13.5] ❌ CRITICAL: More than 72 hours since last payment');
                 const daysUntilCrash = this.calculateDaysUntilCrash();
                 this.activateCriticalMode(`${daysSince}天未进账 · 距断裂 ${daysUntilCrash} 天`);
             } else {
+                console.log('[V13.5] ✅ OK: Payment within 72 hours (' + hoursSince.toFixed(2) + 'h ago)');
                 this.deactivateCriticalMode();
             }
+            
+            console.log('[V13.5 CRITICAL] ========== Red Line Check END ==========');
         },
         
         calculateDaysUntilCrash() {
@@ -1338,14 +1704,16 @@ const app = {
     loadData() {
         try {
             const ordersData = localStorage.getItem('v5_orders');
+            const customersData = localStorage.getItem('v5_customers'); // 🆕 V13.5
             const targetData = localStorage.getItem('v5_target');
             const rateData = localStorage.getItem('v5_usd_rate');
             const webhookData = localStorage.getItem('v5_feishu_webhook');
             const actionsData = localStorage.getItem('v5_today_actions');
             
             this.data.orders = ordersData ? JSON.parse(ordersData) : [];
+            this.data.customers = customersData ? JSON.parse(customersData) : []; // 🆕 V13.5
             this.data.target = targetData ? parseInt(targetData) : 5000000;
-            this.data.rate = rateData ? parseFloat(rateData) : 7.25;
+            this.data.rate = rateData ? parseFloat(rateData) : 6.98;
             this.data.feishuWebhook = webhookData || '';
             this.data.todayActions = actionsData ? JSON.parse(actionsData) : ['', '', ''];
             
@@ -1360,15 +1728,50 @@ const app = {
                         order.kanbanStatus = 'New Inquiry';
                     }
                 }
+                
+                // 🆕 V13.3: Migrate currency and exchangeRate
+                if (!order.currency) {
+                    order.currency = 'USD';
+                    order.exchangeRate = 7.25;
+                }
+                
                 if (!order.product) order.product = 'Medical Consumables';
                 if (!order.profit) order.profit = order.total * 0.2;
                 return order;
             });
             
+            // 🆕 V13.5: Auto-migrate customers from orders
+            if (this.data.customers.length === 0 && this.data.orders.length > 0) {
+                console.log('[V13.5] Auto-migrating customers from orders...');
+                const uniqueCustomers = new Set();
+                
+                this.data.orders.forEach(order => {
+                    if (order.customer && !uniqueCustomers.has(order.customer)) {
+                        uniqueCustomers.add(order.customer);
+                        
+                        const newCustomer = {
+                            id: 'CUST-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9),
+                            name: order.customer,
+                            contact: '',
+                            country: '',
+                            currency: order.currency || 'USD',
+                            notes: '从订单自动导入',
+                            createdDate: new Date().toISOString(),
+                            totalOrders: 0,
+                            totalRevenue: 0
+                        };
+                        
+                        this.data.customers.push(newCustomer);
+                    }
+                });
+                
+                console.log('[V13.5] Migrated', this.data.customers.length, 'customers');
+            }
+            
             this.saveData();
-            console.log('[V13] Data loaded:', this.data.orders.length, 'orders');
+            console.log('[V13.5 CRM Strategic] Data loaded:', this.data.orders.length, 'orders,', this.data.customers.length, 'customers');
         } catch (error) {
-            console.error('[V13] Load data failed:', error);
+            console.error('[V13.5] Load data failed:', error);
         }
     },
     
@@ -1376,12 +1779,13 @@ const app = {
     saveData() {
         try {
             localStorage.setItem('v5_orders', JSON.stringify(this.data.orders));
+            localStorage.setItem('v5_customers', JSON.stringify(this.data.customers)); // 🆕 V13.5
             localStorage.setItem('v5_target', this.data.target.toString());
             localStorage.setItem('v5_usd_rate', this.data.rate.toString());
             localStorage.setItem('v5_feishu_webhook', this.data.feishuWebhook);
             localStorage.setItem('v5_today_actions', JSON.stringify(this.data.todayActions));
         } catch (error) {
-            console.error('[V13] Save data failed:', error);
+            console.error('[V13.5] Save data failed:', error);
         }
     },
     
@@ -1401,17 +1805,21 @@ const app = {
                 document.getElementById('tab-' + tabId).classList.add('active');
                 
                 if (tabId === 'kanban') this.kanban.render();
+                if (tabId === 'crm') this.crm.renderCustomers(); // 🆕 V13.5
             });
         });
     },
     
-    // 🔥 UPDATE DASHBOARD - SURVIVAL METRICS
+    // 🔥 UPDATE DASHBOARD - SURVIVAL METRICS (V13.4 Commander Edition)
     updateDashboard() {
         let totalSales = 0;
         let pipeline = 0;
         
         this.data.orders.forEach(order => {
-            const amountRMB = order.total * this.data.rate;
+            // 🆕 V13.3: 使用订单自身的汇率计算人民币金额
+            const currency = order.currency || 'USD'; // 默认USD兼容旧数据
+            const rate = order.exchangeRate || this.data.rate; // 默认全局汇率
+            const amountRMB = currency === 'CNY' ? order.total : order.total * rate;
             
             if (order.kanbanStatus === 'Paid') {
                 order.status = 'Paid';
@@ -1425,10 +1833,22 @@ const app = {
         const achievement = this.data.target > 0 ? (totalSales / this.data.target) * 100 : 0;
         const gap = this.data.target - totalSales;
         
+        // 🆕 V13.4: 本月缺口计算（B2B脉冲式）
         const today = new Date();
-        const endYear = new Date(today.getFullYear(), 11, 31);
-        const daysLeft = Math.ceil((endYear - today) / (1000 * 60 * 60 * 24));
-        const dailyNeed = daysLeft > 0 ? gap / daysLeft : 0;
+        const currentMonth = today.getMonth(); // 0-11
+        const monthsLeft = 12 - currentMonth; // 剩余月数
+        const monthlyGap = monthsLeft > 0 ? gap / monthsLeft : 0;
+        
+        // 🆕 V13.4: 大单进度（Production + Shipped）
+        const bigDeals = this.data.orders.filter(o => {
+            const amountRMB = o.currency === 'CNY' ? o.total : o.total * (o.exchangeRate || this.data.rate);
+            return (o.kanbanStatus === 'Production' || o.kanbanStatus === 'Shipped') && amountRMB >= 10000;
+        });
+        
+        const bigDealsValue = bigDeals.reduce((sum, o) => {
+            const amountRMB = o.currency === 'CNY' ? o.total : o.total * (o.exchangeRate || this.data.rate);
+            return sum + amountRMB;
+        }, 0);
         
         // Update Cash Flow View
         this.setText('cash-actual', '¥' + this.formatNumber(totalSales / 10000, 1) + 'w');
@@ -1436,9 +1856,11 @@ const app = {
         this.setText('cash-percent', achievement.toFixed(1) + '%');
         this.setProgress('cash-progress', achievement);
         
-        this.setText('cash-gap', '¥' + this.formatNumber(gap / 10000, 1) + 'w');
-        this.setText('daily-need', '¥' + this.formatNumber(dailyNeed));
-        this.setText('days-left', daysLeft);
+        // 🆕 V13.4: 本月缺口 & 大单进度
+        this.setText('monthly-gap', this.formatNumber(monthlyGap / 10000, 1) + 'w');
+        this.setText('months-left', monthsLeft);
+        this.setText('big-deals-count', bigDeals.length);
+        this.setText('big-deals-value', '价值 ¥' + this.formatNumber(bigDealsValue / 10000, 1) + 'w');
         
         // 🔥 Last Income Card
         this.updateLastIncomeCard();
@@ -1679,7 +2101,24 @@ const app = {
             
             div.style.borderLeftColor = statusColors[order.kanbanStatus] || '#404040';
             
+            // 🆕 V13.3: 格式化币种显示
+            const currency = order.currency || 'USD';
+            const currencySymbols = {
+                'USD': '$',
+                'EUR': '€',
+                'GBP': '£',
+                'CNY': '¥'
+            };
+            const symbol = currencySymbols[currency] || '$';
+            const rate = order.exchangeRate || app.data.rate;
+            const rmbAmount = currency === 'CNY' ? order.total : order.total * rate;
+            
             div.innerHTML = `
+                <!-- 🆕 V13.4: Edit Button -->
+                <div class="card-edit-btn" onclick="app.kanban.openEditModal('${order.id}')" title="编辑订单">
+                    <i class="fas fa-pen"></i>
+                </div>
+                
                 <div class="card-feishu-btn" onclick="app.feishu.pushOrderToFeishu('${order.id}')" title="推送到飞书">
                     <i class="fas fa-paper-plane"></i>
                 </div>
@@ -1693,7 +2132,10 @@ const app = {
                 <div class="font-bold text-sm text-white mb-2">${order.customer}</div>
                 <div class="text-xs text-slate-500 mb-3">${order.product || 'Medical Consumables'}</div>
                 <div class="flex items-center justify-between pt-3 border-t border-slate-800">
-                    <div class="text-lg font-black text-red-500">$${order.total.toFixed(2)}</div>
+                    <div>
+                        <div class="text-lg font-black text-red-500">${symbol}${order.total.toFixed(2)}</div>
+                        <div class="text-xs text-slate-600">${currency === 'CNY' ? '' : '≈ ¥' + app.formatNumber(rmbAmount, 0)}</div>
+                    </div>
                     <div class="text-xs text-slate-600">${new Date(order.date).toLocaleDateString('zh-CN')}</div>
                 </div>
             `;
@@ -1761,6 +2203,9 @@ const app = {
             // 🔥 V13.1 HOTFIX: 移除拦截，允许打开，校验在保存时进行
             document.getElementById('quick-add-modal').classList.add('active');
             document.getElementById('quick-customer').focus();
+            
+            // 🆕 V13.3: 初始化汇率
+            this.updateQuickRate();
         },
         
         closeQuickAdd() {
@@ -1772,17 +2217,25 @@ const app = {
         saveQuickOrder() {
             const customer = document.getElementById('quick-customer').value.trim();
             const amount = parseFloat(document.getElementById('quick-amount').value);
+            const status = document.getElementById('quick-status').value; // 🆕 V13.3
+            const currency = document.getElementById('quick-currency').value; // 🆕 V13.3
+            const rate = parseFloat(document.getElementById('quick-rate').value); // 🆕 V13.3
             
             if (!customer || !amount) {
                 app.toast('请填写必填项', 'error');
                 return;
             }
             
-            // 🔥 V13.1 HOTFIX: Critical Mode校验
-            // 快速新建默认为New Inquiry，无法解除危机
-            if (app.data.isCritical) {
-                app.toast('⚠️ 红色警戒！快速新建默认为【潜在客户】，无法解除危机。\n\n请使用【完整新增】录入【已回款 Paid】订单！', 'error');
-                return;
+            // 🆕 V13.3: 移除Critical Mode强制拦截
+            // 允许用户选择Paid状态直接解除危机
+            if (app.data.isCritical && status !== 'Paid') {
+                const proceed = confirm(
+                    '⚠️ 当前处于红色警戒！\n\n' +
+                    '您选择的状态是: ' + status + '\n' +
+                    '建议选择【Paid】状态以解除危机。\n\n' +
+                    '是否仍要继续？'
+                );
+                if (!proceed) return;
             }
             
             const piNo = this.generatePINumber();
@@ -1792,8 +2245,10 @@ const app = {
                 customer,
                 product: 'Medical Consumables',
                 total: amount,
-                kanbanStatus: 'New Inquiry',
-                status: 'Pending',
+                currency: currency, // 🆕 V13.3
+                exchangeRate: rate, // 🆕 V13.3
+                kanbanStatus: status, // 🆕 V13.3: 用户选择的状态
+                status: status === 'Paid' ? 'Paid' : 'Pending',
                 profit: amount * 0.2,
                 term: 'FOB Shanghai',
                 notes: '',
@@ -1804,9 +2259,15 @@ const app = {
             app.saveData();
             app.kanban.render();
             app.updateDashboard();
+            app.survival.checkCashRedLine(); // 🆕 重新检查红线状态
             this.closeQuickAdd();
             
-            app.toast('订单已创建', 'success');
+            // 🆕 V13.3: 鼓励反馈
+            if (app.data.isCritical && status === 'Paid') {
+                app.toast('🎉 Paid订单已录入！正在解除红色警戒...', 'success');
+            } else {
+                app.toast('订单已创建', 'success');
+            }
         },
         
         openFullAddModal() {
@@ -1814,6 +2275,9 @@ const app = {
             // 校验在saveFullOrder()中进行
             this.generatePINumber();
             document.getElementById('add-order-modal').classList.add('active');
+            
+            // 🆕 V13.3: 初始化汇率
+            this.updateFullRate();
         },
         
         closeFullAddModal() {
@@ -1840,6 +2304,8 @@ const app = {
             const amount = parseFloat(document.getElementById('new-amount').value);
             const product = document.getElementById('new-product').value.trim() || 'Medical Consumables';
             const status = document.getElementById('new-status').value;
+            const currency = document.getElementById('new-currency').value; // 🆕 V13.3
+            const rate = parseFloat(document.getElementById('new-rate').value); // 🆕 V13.3
             
             if (!customer || !amount) {
                 app.toast('请填写必填项', 'error');
@@ -1865,6 +2331,8 @@ const app = {
                 customer,
                 product,
                 total: amount,
+                currency: currency, // 🆕 V13.3
+                exchangeRate: rate, // 🆕 V13.3
                 kanbanStatus: status,
                 status: status === 'Paid' ? 'Paid' : 'Pending',
                 profit: amount * 0.2,
@@ -1886,6 +2354,118 @@ const app = {
             } else {
                 app.toast('订单已创建', 'success');
             }
+        },
+        
+        // 🆕 V13.3: 汇率自动填充 - Quick Add
+        updateQuickRate() {
+            const currency = document.getElementById('quick-currency').value;
+            const rateInput = document.getElementById('quick-rate');
+            
+            if (currency === 'CNY') {
+                rateInput.value = 1;
+                rateInput.disabled = true;
+                rateInput.style.opacity = '0.5';
+            } else {
+                rateInput.disabled = false;
+                rateInput.style.opacity = '1';
+                rateInput.value = app.data.rate; // 全局参考汇率
+            }
+        },
+        
+        // 🆕 V13.3: 汇率自动填充 - Full Add
+        updateFullRate() {
+            const currency = document.getElementById('new-currency').value;
+            const rateInput = document.getElementById('new-rate');
+            
+            if (currency === 'CNY') {
+                rateInput.value = 1;
+                rateInput.disabled = true;
+                rateInput.style.opacity = '0.5';
+            } else {
+                rateInput.disabled = false;
+                rateInput.style.opacity = '1';
+                rateInput.value = app.data.rate;
+            }
+        },
+        
+        // 🆕 V13.4: Edit Order Functions
+        openEditModal(orderId) {
+            const order = app.data.orders.find(o => o.id === orderId);
+            if (!order) {
+                app.toast('订单未找到', 'error');
+                return;
+            }
+            
+            // 填充表单
+            document.getElementById('edit-pi').value = order.id;
+            document.getElementById('edit-customer').value = order.customer;
+            document.getElementById('edit-product').value = order.product || '';
+            document.getElementById('edit-currency').value = order.currency || 'USD';
+            document.getElementById('edit-amount').value = order.total;
+            document.getElementById('edit-rate').value = order.exchangeRate || app.data.rate;
+            document.getElementById('edit-status').value = order.kanbanStatus;
+            
+            // 初始化汇率
+            this.updateEditRate();
+            
+            // 显示模态框
+            document.getElementById('edit-order-modal').classList.add('active');
+        },
+        
+        closeEditModal() {
+            document.getElementById('edit-order-modal').classList.remove('active');
+        },
+        
+        updateEditRate() {
+            const currency = document.getElementById('edit-currency').value;
+            const rateInput = document.getElementById('edit-rate');
+            
+            if (currency === 'CNY') {
+                rateInput.value = 1;
+                rateInput.disabled = true;
+                rateInput.style.opacity = '0.5';
+            } else {
+                rateInput.disabled = false;
+                rateInput.style.opacity = '1';
+                // 保持当前值，不自动覆盖
+            }
+        },
+        
+        saveEditOrder() {
+            const orderId = document.getElementById('edit-pi').value;
+            const order = app.data.orders.find(o => o.id === orderId);
+            
+            if (!order) {
+                app.toast('订单未找到', 'error');
+                return;
+            }
+            
+            const customer = document.getElementById('edit-customer').value.trim();
+            const amount = parseFloat(document.getElementById('edit-amount').value);
+            
+            if (!customer || !amount) {
+                app.toast('请填写必填项', 'error');
+                return;
+            }
+            
+            // 🔥 V13.4: 更新订单字段
+            order.customer = customer;
+            order.product = document.getElementById('edit-product').value.trim() || 'Medical Consumables';
+            order.total = amount;
+            order.currency = document.getElementById('edit-currency').value;
+            order.exchangeRate = parseFloat(document.getElementById('edit-rate').value);
+            order.kanbanStatus = document.getElementById('edit-status').value;
+            order.status = order.kanbanStatus === 'Paid' ? 'Paid' : 'Pending';
+            order.profit = amount * 0.2;
+            
+            // 🔥 CRITICAL: 立即重算所有指标
+            app.saveData();
+            app.kanban.render();
+            app.updateDashboard();
+            app.survival.checkCashRedLine();
+            
+            this.closeEditModal();
+            app.toast('订单已更新 ✅', 'success');
         }
     },
     
@@ -1912,6 +2492,208 @@ SWIFT: CHASHKHH`;
         }
     },
     
+    // 🆕 V13.5: CRM Module
+    crm: {
+        renderCustomers() {
+            const grid = document.getElementById('customer-grid');
+            
+            if (!grid) return;
+            
+            if (app.data.customers.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <i class="fas fa-users text-6xl text-slate-700 mb-4"></i>
+                        <p class="text-slate-500">暂无客户档案</p>
+                        <p class="text-sm text-slate-600 mt-2">点击"新增客户"开始建立客户库</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = app.data.customers.map(customer => `
+                <div class="bg-black border-2 border-slate-700 border-l-4 border-l-green-500 rounded-xl p-4 hover:border-l-red-500 hover:shadow-lg hover:-translate-y-1 transition-all">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex-1">
+                            <h3 class="font-bold text-white text-lg mb-1">${customer.name}</h3>
+                            ${customer.country ? `<span class="inline-block text-xs bg-blue-900 bg-opacity-30 border border-blue-700 text-blue-400 px-2 py-0.5 rounded">${customer.country}</span>` : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 text-sm mb-4">
+                        ${customer.contact ? `<div class="text-slate-400"><i class="fas fa-user text-slate-600 w-4"></i> ${customer.contact}</div>` : ''}
+                        <div class="text-slate-400"><i class="fas fa-money-bill text-slate-600 w-4"></i> ${customer.currency || 'USD'}</div>
+                        ${customer.notes ? `<div class="text-slate-500 text-xs italic">${customer.notes.substring(0, 50)}${customer.notes.length > 50 ? '...' : ''}</div>` : ''}
+                    </div>
+                    
+                    <div class="flex gap-2">
+                        <button onclick="app.crm.quickOrder('${customer.id}')" class="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm font-bold py-2 rounded-lg transition">
+                            <i class="fas fa-bolt mr-1"></i> 开单
+                        </button>
+                        <button onclick="app.crm.editCustomer('${customer.id}')" class="bg-yellow-600 hover:bg-yellow-700 text-white text-sm font-bold px-3 py-2 rounded-lg transition">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                        <button onclick="app.crm.deleteCustomer('${customer.id}')" class="bg-red-600 hover:bg-red-700 text-white text-sm font-bold px-3 py-2 rounded-lg transition">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        },
+        
+        openCustomerModal(customerId = null) {
+            if (customerId) {
+                // Edit mode
+                const customer = app.data.customers.find(c => c.id === customerId);
+                if (!customer) return;
+                
+                document.getElementById('customer-modal-title').textContent = '编辑客户';
+                document.getElementById('customer-id').value = customer.id;
+                document.getElementById('customer-name').value = customer.name;
+                document.getElementById('customer-contact').value = customer.contact || '';
+                document.getElementById('customer-country').value = customer.country || '';
+                document.getElementById('customer-currency').value = customer.currency || 'USD';
+                document.getElementById('customer-notes').value = customer.notes || '';
+            } else {
+                // New mode
+                document.getElementById('customer-modal-title').textContent = '新增客户';
+                document.getElementById('customer-id').value = '';
+                document.getElementById('customer-name').value = '';
+                document.getElementById('customer-contact').value = '';
+                document.getElementById('customer-country').value = '';
+                document.getElementById('customer-currency').value = 'USD';
+                document.getElementById('customer-notes').value = '';
+            }
+            
+            document.getElementById('customer-modal').classList.add('active');
+        },
+        
+        closeCustomerModal() {
+            document.getElementById('customer-modal').classList.remove('active');
+        },
+        
+        saveCustomer() {
+            const customerId = document.getElementById('customer-id').value;
+            const name = document.getElementById('customer-name').value.trim();
+            
+            if (!name) {
+                app.toast('请填写公司名称', 'error');
+                return;
+            }
+            
+            const customerData = {
+                name,
+                contact: document.getElementById('customer-contact').value.trim(),
+                country: document.getElementById('customer-country').value,
+                currency: document.getElementById('customer-currency').value,
+                notes: document.getElementById('customer-notes').value.trim()
+            };
+            
+            if (customerId) {
+                // Update existing
+                const customer = app.data.customers.find(c => c.id === customerId);
+                if (customer) {
+                    Object.assign(customer, customerData);
+                    app.toast('客户信息已更新', 'success');
+                }
+            } else {
+                // Create new
+                const newCustomer = {
+                    id: 'CUST-' + Date.now(),
+                    ...customerData,
+                    createdDate: new Date().toISOString(),
+                    totalOrders: 0,
+                    totalRevenue: 0
+                };
+                app.data.customers.push(newCustomer);
+                app.toast('客户已添加', 'success');
+            }
+            
+            app.saveData();
+            this.renderCustomers();
+            this.updateDatalist();
+            this.closeCustomerModal();
+        },
+        
+        editCustomer(customerId) {
+            this.openCustomerModal(customerId);
+        },
+        
+        deleteCustomer(customerId) {
+            const customer = app.data.customers.find(c => c.id === customerId);
+            if (!customer) return;
+            
+            if (!confirm(`确定删除客户 "${customer.name}" 吗？`)) return;
+            
+            app.data.customers = app.data.customers.filter(c => c.id !== customerId);
+            app.saveData();
+            this.renderCustomers();
+            this.updateDatalist();
+            app.toast('客户已删除', 'success');
+        },
+        
+        quickOrder(customerId) {
+            const customer = app.data.customers.find(c => c.id === customerId);
+            if (!customer) return;
+            
+            // Open Full Add modal
+            app.kanban.openFullAddModal();
+            
+            // Auto-fill customer name and currency
+            document.getElementById('new-customer').value = customer.name;
+            document.getElementById('new-currency').value = customer.currency || 'USD';
+            app.kanban.updateFullRate();
+            
+            app.toast(`正在为 ${customer.name} 开单...`, 'info');
+        },
+        
+        updateDatalist() {
+            // Update Quick Add datalist
+            const quickDatalist = document.getElementById('customer-datalist');
+            if (quickDatalist) {
+                quickDatalist.innerHTML = app.data.customers.map(c => 
+                    `<option value="${c.name}">`
+                ).join('');
+            }
+            
+            // Update Full Add datalist
+            const fullDatalist = document.getElementById('customer-datalist-full');
+            if (fullDatalist) {
+                fullDatalist.innerHTML = app.data.customers.map(c => 
+                    `<option value="${c.name}">`
+                ).join('');
+            }
+        },
+        
+        autoAddCustomer(customerName, currency) {
+            // Check if already exists
+            const exists = app.data.customers.find(c => c.name.toLowerCase() === customerName.toLowerCase());
+            if (exists) return false;
+            
+            // Ask user
+            const shouldAdd = confirm(`是否将 "${customerName}" 加入客户库？`);
+            if (!shouldAdd) return false;
+            
+            const newCustomer = {
+                id: 'CUST-' + Date.now(),
+                name: customerName,
+                contact: '',
+                country: '',
+                currency: currency || 'USD',
+                notes: '从订单自动导入',
+                createdDate: new Date().toISOString(),
+                totalOrders: 1,
+                totalRevenue: 0
+            };
+            
+            app.data.customers.push(newCustomer);
+            app.saveData();
+            this.updateDatalist();
+            app.toast(`${customerName} 已加入客户库`, 'success');
+            
+            return true;
+        }
+    },
+    
     // Export Data
     exportData() {
         const data = {
@@ -1920,7 +2702,7 @@ SWIFT: CHASHKHH`;
             feishuWebhook: this.data.feishuWebhook,
             todayActions: this.data.todayActions,
             exportDate: new Date().toISOString(),
-            version: 'V13.1-Hotfix'
+            version: 'V14.0-ERP'
         };
         
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
