@@ -5,12 +5,12 @@
 
 // 🔴 请替换为您在 Firebase 后台复制的真实配置
 const firebaseConfig = {
-  apiKey: "AIzaSyBVV_GTqIe-Wu7D10h2P_Ti8q-MbUK-qiY", // 替换
-  authDomain: "v5-erp.firebaseapp.com",   // 替换
-  projectId: "v5-erp",                    // 替换
-  storageBucket: "v5-erp.firebasestorage.app",    // 替换
-  messagingSenderId: "551027305578",         // 替换
-  appId: "1:551027305578:web:0e78a2fba1e41d4532ee13"    // 替换
+  apiKey: "AIzaSyDBb8AtMjSzjgh1SDmIQNJPHUPxk6tLhQQ", // 替换
+  authDomain: "v5merp.firebaseapp.com",   // 替换
+  projectId: "v5merp",                    // 替换
+  storageBucket: "v5merp.firebasestorage.app",    // 替换
+  messagingSenderId: "393124793142",         // 替换
+  appId: "1:393124793142:web:f669fb0287683970d38197"    // 替换
 };
 
 // 初始化 Firebase
