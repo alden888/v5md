@@ -270,11 +270,6 @@ const WorkbenchUtils = {
         return WorkbenchConfig.CURRENCIES[currency]?.symbol || currency;
     }
 };
-// ============================================
-// js/workbench-utils.js - 末尾添加
-// ============================================
 
-// ... (所有现有代码保持不变) ...
-
-// 🔥 FIX: 显式挂载到window对象
+// 🔥 FIX: 显式挂载到 window 对象
 window.WorkbenchUtils = WorkbenchUtils;

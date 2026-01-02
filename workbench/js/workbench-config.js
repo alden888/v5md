@@ -92,3 +92,9 @@ const WorkbenchConfig = {
     // Toast Duration
     TOAST_DURATION: 3000
 };
+
+// 🔥 FIX: 显式挂载到window对象
+window.WorkbenchConfig = WorkbenchConfig;
+
+// 🔥 FIX: 显式挂载到 window 对象（确保全局可访问）
+window.WorkbenchConfig = WorkbenchConfig;
