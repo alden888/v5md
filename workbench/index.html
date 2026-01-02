@@ -185,7 +185,7 @@
 <!-- Toast -->
 <div id="toast" class="fixed bottom-8 right-8 z-[9999] hidden"></div>
 
-<!-- 🔥 CRITICAL FIX: 正确的模块加载顺序 -->
+<!-- 🔥 按顺序加载所有模块 -->
 <script src="js/workbench-config.js"></script>
 <script src="js/workbench-utils.js"></script>
 <script src="js/workbench-storage.js"></script>
@@ -194,61 +194,93 @@
 <script src="js/workbench-suppliers.js"></script>
 <script src="js/workbench-finance.js"></script>
 
+<!-- 🔥 初始化脚本 -->
 <script>
-// ========== V14.0 INITIALIZATION ========== 
 (function() {
     'use strict';
     
-    console.log('[V14.0] Starting initialization...');
+    console.log('[V14.0] === INITIALIZATION START ===');
     
-    // 等待 DOM 完全加载
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
-    
-    async function init() {
-        console.log('[V14.0] DOM Ready, checking modules...');
+    // Toast 函数
+    function showToast(message, type = 'info') {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
         
-        // 1️⃣ 检查所有模块是否已加载
-        const requiredModules = {
-            'WorkbenchConfig': window.WorkbenchConfig,
-            'WorkbenchUtils': window.WorkbenchUtils,
-            'WorkbenchStorage': window.WorkbenchStorage,
-            'WorkbenchDashboard': window.WorkbenchDashboard,
-            'WorkbenchOrders': window.WorkbenchOrders,
-            'WorkbenchSuppliers': window.WorkbenchSuppliers,
-            'WorkbenchFinance': window.WorkbenchFinance
+        const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+        const colors = { 
+            success: 'bg-green-600', 
+            error: 'bg-red-600', 
+            warning: 'bg-yellow-600', 
+            info: 'bg-blue-600' 
         };
         
-        const missingModules = Object.keys(requiredModules).filter(name => !requiredModules[name]);
+        toast.innerHTML = `
+            <div class="${colors[type]} text-white px-6 py-3 rounded-lg shadow-xl flex items-center gap-3">
+                <span class="text-2xl">${icons[type]}</span>
+                <span>${message}</span>
+            </div>
+        `;
         
-        if (missingModules.length > 0) {
-            const errorMsg = '系统加载失败：核心模块缺失 - ' + missingModules.join(', ');
-            console.error('[CRITICAL]', errorMsg);
-            console.error('[DEBUG] Window object:', Object.keys(window).filter(k => k.startsWith('Workbench')));
-            alert(errorMsg + '\n\n请检查浏览器控制台获取详细信息');
-            return;
-        }
+        toast.classList.remove('hidden');
         
-        console.log('[V14.0] ✅ All modules loaded successfully');
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 3000);
+    }
+    
+    // 等待所有脚本加载完成
+    function waitForModules() {
+        return new Promise((resolve) => {
+            const checkModules = () => {
+                const required = [
+                    'WorkbenchConfig',
+                    'WorkbenchUtils',
+                    'WorkbenchStorage',
+                    'WorkbenchDashboard',
+                    'WorkbenchOrders',
+                    'WorkbenchSuppliers',
+                    'WorkbenchFinance'
+                ];
+                
+                const loaded = required.filter(name => window[name]);
+                console.log(`[V14.0] Modules loaded: ${loaded.length}/${required.length}`);
+                console.log('[V14.0] Loaded:', loaded);
+                
+                if (loaded.length === required.length) {
+                    console.log('[V14.0] ✅ All modules ready');
+                    resolve(true);
+                } else {
+                    const missing = required.filter(name => !window[name]);
+                    console.log('[V14.0] Missing:', missing);
+                    setTimeout(checkModules, 100);
+                }
+            };
+            
+            checkModules();
+        });
+    }
+    
+    // 主初始化函数
+    async function init() {
+        console.log('[V14.0] Waiting for modules...');
         
-        // 2️⃣ 初始化各模块
+        await waitForModules();
+        
+        console.log('[V14.0] Initializing modules...');
+        
         try {
-            console.log('[V14.0] Initializing modules...');
             await WorkbenchDashboard.init();
             WorkbenchOrders.init();
             WorkbenchSuppliers.init();
             WorkbenchFinance.init();
             console.log('[V14.0] ✅ Modules initialized');
         } catch (error) {
-            console.error('[V14.0] Module initialization failed:', error);
-            alert('系统初始化失败：' + error.message + '\n\n请刷新页面重试');
+            console.error('[V14.0] ❌ Initialization error:', error);
+            showToast('初始化失败：' + error.message, 'error');
             return;
         }
         
-        // 3️⃣ 构建全局 app 对象
+        // 构建 app 对象
         window.app = {
             survival: {
                 checkInputs: function() {
@@ -278,17 +310,14 @@
                         return;
                     }
                     
-                    // 保存数据
                     localStorage.setItem('v14_today_actions', JSON.stringify(actions));
                     localStorage.setItem('v14_unlock_time', Date.now().toString());
                     
-                    // 隐藏铁幕
                     const curtain = document.getElementById('iron-curtain');
                     if (curtain) {
                         curtain.classList.add('hidden');
                     }
                     
-                    // 显示行动
                     const display = document.getElementById('actions-display');
                     if (display) {
                         display.innerHTML = actions.map((action, i) => `
@@ -343,32 +372,37 @@
             }
         };
         
-        // 4️⃣ 绑定事件
         console.log('[V14.0] Binding events...');
         
-        // 生存模式输入框
+        // 绑定生存模式输入框
         ['action-1', 'action-2', 'action-3'].forEach(id => {
             const input = document.getElementById(id);
             if (input) {
                 input.addEventListener('input', () => window.app.survival.checkInputs());
+            } else {
+                console.error(`[V14.0] Input ${id} not found!`);
             }
         });
         
-        // 开始战斗按钮
+        // 绑定开始战斗按钮
         const battleBtn = document.getElementById('battle-start-btn');
         if (battleBtn) {
-            battleBtn.addEventListener('click', () => window.app.survival.startBattle());
+            battleBtn.addEventListener('click', () => {
+                console.log('[V14.0] Battle button clicked');
+                window.app.survival.startBattle();
+            });
+            console.log('[V14.0] Battle button bound');
         } else {
             console.error('[V14.0] battle-start-btn not found!');
         }
         
-        // 紧急模式按钮
+        // 绑定紧急模式按钮
         const emergencyBtn = document.getElementById('emergency-override-btn');
         if (emergencyBtn) {
             emergencyBtn.addEventListener('click', () => window.app.survival.emergencyOverride());
         }
         
-        // Tab 切换
+        // 绑定 Tab 切换
         document.querySelectorAll('.tab-button').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
@@ -384,41 +418,21 @@
             });
         });
         
-        // 5️⃣ 生存模式检查
+        // 生存模式检查
         window.app.survival.initCheck();
         
-        console.log('[V14.0] ✅ Initialization complete!');
-        console.log('[V14.0] App object:', window.app);
-        
+        console.log('[V14.0] === INITIALIZATION COMPLETE ===');
         showToast('战时指挥台启动 V14.0 ERP', 'success');
     }
     
-    // Toast 辅助函数
-    function showToast(message, type = 'info') {
-        const toast = document.getElementById('toast');
-        if (!toast) return;
-        
-        const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
-        const colors = { 
-            success: 'bg-green-600', 
-            error: 'bg-red-600', 
-            warning: 'bg-yellow-600', 
-            info: 'bg-blue-600' 
-        };
-        
-        toast.innerHTML = `
-            <div class="${colors[type]} text-white px-6 py-3 rounded-lg shadow-xl flex items-center gap-3">
-                <span class="text-2xl">${icons[type]}</span>
-                <span>${message}</span>
-            </div>
-        `;
-        
-        toast.classList.remove('hidden');
-        
-        setTimeout(() => {
-            toast.classList.add('hidden');
-        }, 3000);
+    // 在 DOM 加载完成后初始化
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        // DOM 已经加载完成，延迟一下确保所有脚本都执行了
+        setTimeout(init, 100);
     }
+    
 })();
 </script>
 
