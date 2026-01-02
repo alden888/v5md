@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V5 Medical 战时指挥台 V14.0 ERP</title>
+    <title>V5 Medical 战时指挥台 V14.1 | 供应链·财务·真实利润</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/workbench-v14.css">
 </head>
+
 <body class="bg-black text-white">
 
-<!-- 🔥 IRON CURTAIN -->
 <div id="iron-curtain" class="iron-curtain">
     <div class="survival-gate">
         <div class="text-center mb-8">
@@ -18,66 +19,43 @@
             <h1 class="text-3xl font-black mb-2 text-red-500">SURVIVAL MODE</h1>
             <p class="text-slate-400 text-sm">战时指挥台 · 现金为王 · 没有退路</p>
         </div>
-        
         <div class="mb-6">
-            <p class="text-white font-bold mb-4 text-center">
-                今天唯一能带回<span class="text-red-500 text-xl">现金</span>的三件事是什么？
-            </p>
+            <p class="text-white font-bold mb-4 text-center">今天唯一能带回<span class="text-red-500 text-xl">现金</span>的三件事是什么？</p>
         </div>
-        
         <div class="space-y-4 mb-8">
-            <div>
-                <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">Action #1</label>
-                <input type="text" id="action-1" class="survival-input" 
-                       placeholder="例: 催 ABC Medical 签 PI-250101 (5000$)">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">Action #2</label>
-                <input type="text" id="action-2" class="survival-input" 
-                       placeholder="例: 跟进土耳其客户确认付款时间">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">Action #3</label>
-                <input type="text" id="action-3" class="survival-input" 
-                       placeholder="例: 联系 Stripe 催账">
-            </div>
+            <input type="text" id="action-1" class="survival-input" placeholder="Action #1: 催 Mikki 尾款..." oninput="app.survival.checkInputs()" />
+            <input type="text" id="action-2" class="survival-input" placeholder="Action #2: 确认 Turhan 订单..." oninput="app.survival.checkInputs()" />
+            <input type="text" id="action-3" class="survival-input" placeholder="Action #3: ..." oninput="app.survival.checkInputs()" />
         </div>
-        
-        <button id="battle-start-btn" class="battle-start-btn" disabled>
+        <button id="battle-start-btn" class="battle-start-btn" disabled onclick="app.survival.startBattle()">
             <i class="fas fa-fist-raised mr-2"></i> 开始战斗
         </button>
-        
-        <button id="emergency-override-btn" 
-                class="mt-4 w-full text-xs text-slate-600 hover:text-slate-400 transition text-center py-2 rounded"
-                style="text-decoration: underline;">
-            ⚡ 10分钟紧急进入（仅限客户来电等突发情况）
+        <button onclick="app.survival.emergencyOverride()" class="mt-4 w-full text-xs text-slate-600 hover:text-slate-400 transition text-center py-2 rounded underline">
+            ⚡ 10分钟紧急进入
         </button>
     </div>
 </div>
 
-<!-- Header -->
 <header id="main-header" class="fixed top-0 left-0 right-0 header-normal z-50 h-[70px]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
-        <div class="flex items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="bg-red-600 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg">
-                    ⚔️
-                </div>
-                <div>
-                    <h1 class="font-black text-lg leading-tight" id="header-title">
-                        战时指挥台 <span class="text-xs bg-red-600 text-white px-2 py-0.5 rounded-full">V14.0</span>
-                    </h1>
-                    <div class="text-[10px] uppercase tracking-wider font-bold" id="header-subtitle">
-                        ERP EDITION · 供应链 · 财务 · 真实利润
-                    </div>
-                </div>
+        <div class="flex items-center gap-3">
+            <div class="bg-red-600 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg">⚔️</div>
+            <div>
+                <h1 class="font-black text-lg leading-tight">战时指挥台 <span class="text-xs bg-red-600 px-2 rounded-full">V14.1</span></h1>
+                <div class="text-[10px] uppercase tracking-wider font-bold">ERP EDITION · B2B 专用</div>
             </div>
+        </div>
+        <div id="emergency-mode-warning" class="hidden px-4 py-2 bg-yellow-900 text-yellow-300 rounded font-bold animate-pulse">
+            ⚠️ 紧急模式运行中
+        </div>
+        <div class="flex items-center gap-4">
+            <button onclick="app.feishu.openSettings()" class="text-sm px-3 py-1.5 rounded hover:bg-gray-800"><i class="fas fa-cog"></i> 设置</button>
+            <button onclick="app.exportData()" class="text-sm px-3 py-1.5 rounded hover:bg-gray-800"><i class="fas fa-download"></i> 备份</button>
         </div>
     </div>
 </header>
 
-<!-- Actions Banner -->
-<div id="cash-actions-banner" class="cash-actions-banner" style="top: 70px;">
+<div class="cash-actions-banner" style="top: 70px;">
     <div class="max-w-7xl mx-auto">
         <h3 class="text-sm font-black text-red-500 mb-3 uppercase tracking-wider flex items-center gap-2">
             <i class="fas fa-bullseye"></i> Today's 3 Cash Actions
@@ -86,354 +64,387 @@
     </div>
 </div>
 
-<!-- Tabs -->
 <nav class="fixed top-[70px] left-0 right-0 bg-black border-b border-gray-800 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="flex gap-2 overflow-x-auto horizontal-scroll">
-            <button class="tab-button active" data-tab="dashboard">
-                <i class="fas fa-crosshairs mr-2"></i> 现金流
-            </button>
-            <button class="tab-button" data-tab="kanban">
-                <i class="fas fa-columns mr-2"></i> 订单战场
-            </button>
-            <button class="tab-button" data-tab="crm">
-                <i class="fas fa-users mr-2"></i> 客户档案
-            </button>
+        <div class="flex gap-2 overflow-x-auto">
+            <button class="tab-button active" data-tab="dashboard"><i class="fas fa-crosshairs mr-2"></i> 现金流</button>
+            <button class="tab-button" data-tab="kanban"><i class="fas fa-columns mr-2"></i> 订单战场</button>
+            <button class="tab-button" data-tab="crm"><i class="fas fa-users mr-2"></i> 客户档案</button>
+            <button class="tab-button" data-tab="suppliers"><i class="fas fa-industry mr-2"></i> 供应商</button>
+            <button class="tab-button" data-tab="expenses"><i class="fas fa-file-invoice-dollar mr-2"></i> 运营支出</button>
         </div>
     </div>
 </nav>
 
-<!-- Main Content -->
 <main class="pb-8 px-4 sm:px-6" style="padding-top: calc(70px + 130px + 55px);">
     <div class="max-w-7xl mx-auto">
         
-        <!-- Dashboard Tab -->
         <div id="tab-dashboard" class="tab-content active">
-            <div class="mb-6">
-                <h2 class="text-2xl font-black mb-2 text-red-500 uppercase">现金流视图</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="cash-metric">
-                    <div class="cash-metric-label">年度目标 vs 实际</div>
-                    <div class="flex items-baseline gap-4 mb-4">
-                        <div class="cash-metric-value text-red-500" id="cash-actual">¥0</div>
-                        <div class="text-2xl text-slate-600">/</div>
-                        <div class="text-3xl font-bold text-slate-500" id="cash-target">¥500w</div>
-                    </div>
-                    <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
-                        <div id="cash-progress" class="bg-gradient-to-r from-red-600 to-red-400 h-full" style="width: 0%"></div>
-                    </div>
-                    <div class="text-right mt-2">
-                        <span class="text-sm font-bold text-slate-400">达成率: </span>
-                        <span class="text-lg font-black text-red-500" id="cash-percent">0.0%</span>
-                    </div>
-                </div>
-                
-                <div class="cash-metric">
-                    <div class="cash-metric-label">本月缺口 & 大单进度</div>
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="cash-metric-value text-orange-500" id="monthly-gap">¥0w</div>
-                    </div>
-                    <div class="flex items-center gap-2 p-3 bg-black border border-slate-700 rounded-lg mb-3">
-                        <i class="fas fa-calendar-alt text-orange-500"></i>
-                        <div class="flex-1">
-                            <div class="text-xs text-slate-500 uppercase">剩余月数</div>
-                            <div class="text-lg font-black text-orange-500" id="months-left">11</div>
-                        </div>
-                    </div>
-                    <div class="p-3 bg-blue-900 bg-opacity-30 border border-blue-700 rounded-lg">
-                        <div class="text-xs text-blue-300 uppercase mb-1">🚢 大单进行中</div>
-                        <div class="flex items-center gap-2">
-                            <div class="text-2xl font-black text-blue-400" id="big-deals-count">0</div>
-                        </div>
-                        <div class="text-xs text-blue-400 mt-1" id="big-deals-value">价值 ¥0</div>
-                    </div>
-                </div>
-                
-                <div id="last-income-card" class="last-income-card">
-                    <div class="cash-metric-label text-white">最近一笔回款</div>
-                    <div class="flex items-center gap-3 mb-3">
-                        <i class="fas fa-money-bill-wave text-4xl"></i>
-                        <div>
-                            <div class="text-2xl font-black text-white" id="last-income-amount">$0</div>
-                            <div class="text-xs text-slate-300" id="last-income-customer">暂无数据</div>
-                        </div>
-                    </div>
-                    <div class="p-3 bg-black bg-opacity-30 rounded-lg">
-                        <div class="text-xs text-slate-300 mb-1">距今天数</div>
-                        <div class="text-3xl font-black" id="days-since-income">0</div>
-                        <div class="text-xs text-slate-400 mt-1" id="income-status">等待数据...</div>
-                    </div>
-                </div>
-            </div>
+            <div id="dashboard-container"></div>
         </div>
         
-        <!-- Kanban Tab -->
         <div id="tab-kanban" class="tab-content">
-            <div class="text-center text-slate-400 py-12">订单看板加载中...</div>
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-2xl font-black text-red-500 uppercase">订单战场</h2>
+                <button onclick="app.kanban.openFullAddModal()" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-bold">
+                    <i class="fas fa-plus mr-2"></i> 新增订单
+                </button>
+            </div>
+            <div class="flex gap-4 overflow-x-auto pb-4">
+                <div class="kanban-column min-w-[300px]" data-status="New Inquiry">
+                    <div class="mb-4 font-bold text-blue-400">New Inquiry <span class="text-xs bg-gray-800 px-2 py-1 rounded ml-2" data-count="inquiry">0</span></div>
+                    <div class="quick-add-btn mb-4 cursor-pointer text-center py-2 border border-dashed border-gray-700 hover:border-blue-500 rounded text-gray-500" onclick="app.kanban.openQuickAdd()">+ 快速新建</div>
+                    <div id="kanban-inquiry" class="space-y-3"></div>
+                </div>
+                <div class="kanban-column min-w-[300px]" data-status="PI Sent">
+                    <div class="mb-4 font-bold text-yellow-400">PI Sent <span class="text-xs bg-gray-800 px-2 py-1 rounded ml-2" data-count="pi">0</span></div>
+                    <div id="kanban-pi" class="space-y-3"></div>
+                </div>
+                <div class="kanban-column min-w-[300px]" data-status="Production">
+                    <div class="mb-4 font-bold text-purple-400">Production <span class="text-xs bg-gray-800 px-2 py-1 rounded ml-2" data-count="production">0</span></div>
+                    <div id="kanban-production" class="space-y-3"></div>
+                </div>
+                <div class="kanban-column min-w-[300px]" data-status="Shipped">
+                    <div class="mb-4 font-bold text-blue-600">Shipped <span class="text-xs bg-gray-800 px-2 py-1 rounded ml-2" data-count="shipped">0</span></div>
+                    <div id="kanban-shipped" class="space-y-3"></div>
+                </div>
+                <div class="kanban-column min-w-[300px]" data-status="Paid">
+                    <div class="mb-4 font-bold text-green-500">Paid (已回款) <span class="text-xs bg-gray-800 px-2 py-1 rounded ml-2" data-count="paid">0</span></div>
+                    <div id="kanban-paid" class="space-y-3"></div>
+                </div>
+            </div>
         </div>
         
-        <!-- CRM Tab -->
         <div id="tab-crm" class="tab-content">
-            <div class="text-center text-slate-400 py-12">客户档案加载中...</div>
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-2xl font-black text-green-500 uppercase">客户档案</h2>
+                <button onclick="app.crm.openCustomerModal()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-bold">
+                    <i class="fas fa-user-plus mr-2"></i> 新增客户
+                </button>
+            </div>
+            <div id="customer-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                </div>
+        </div>
+        
+        <div id="tab-suppliers" class="tab-content">
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-2xl font-black text-blue-500 uppercase">供应商管理</h2>
+                <button onclick="app.suppliers.openAddModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded font-bold">
+                    <i class="fas fa-plus mr-2"></i> 新增供应商
+                </button>
+            </div>
+            <div id="suppliers-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+        
+        <div id="tab-expenses" class="tab-content">
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-2xl font-black text-purple-500 uppercase">运营支出</h2>
+                <button onclick="app.expenses.openAddModal()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded font-bold">
+                    <i class="fas fa-plus mr-2"></i> 新增支出
+                </button>
+            </div>
+            <div class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-800 text-slate-400">
+                        <tr>
+                            <th class="p-4">日期</th>
+                            <th class="p-4">类别</th>
+                            <th class="p-4">金额</th>
+                            <th class="p-4">关联客户</th>
+                            <th class="p-4">备注</th>
+                            <th class="p-4 text-center">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expense-list" class="divide-y divide-gray-800"></tbody>
+                </table>
+            </div>
         </div>
         
     </div>
 </main>
 
-<!-- Toast -->
-<div id="toast" class="fixed bottom-8 right-8 z-[9999] hidden"></div>
+<div id="customer-modal" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+    <div class="modal-content bg-gray-900 border border-gray-700 p-6 rounded-xl w-full max-w-lg">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-green-500">新增客户档案</h3>
+            <button onclick="app.crm.closeCustomerModal()" class="text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">公司名称 *</label>
+                <input type="text" id="customer-name" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="Mikki Hospital Ltd.">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1">联系人</label>
+                    <input type="text" id="customer-contact" class="w-full p-2 bg-black border border-gray-700 rounded text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1">WhatsApp</label>
+                    <input type="text" id="customer-whatsapp" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="+63 ...">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1">国家/地区</label>
+                    <select id="customer-country" class="w-full p-2 bg-black border border-gray-700 rounded text-white">
+                        <option value="">请选择...</option>
+                        <option value="Philippines">🇵🇭 Philippines (菲律宾)</option>
+                        <option value="Netherlands">🇳🇱 Netherlands (荷兰)</option>
+                        <option value="Turkey">🇹🇷 Turkey (土耳其)</option>
+                        <option value="China">🇨🇳 China (中国)</option>
+                        <option value="USA">🇺🇸 USA (美国)</option>
+                        <option value="UK">🇬🇧 UK (英国)</option>
+                        <option value="Germany">🇩🇪 Germany (德国)</option>
+                        <option value="Other">🌍 Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1">偏好币种</label>
+                    <select id="customer-currency" class="w-full p-2 bg-black border border-gray-700 rounded text-white">
+                        <option value="USD">USD</option>
+                        <option value="CNY">CNY</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">收货地址 (Shipping Address)</label>
+                <textarea id="customer-address" rows="3" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="用于发给货代..."></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">备注</label>
+                <textarea id="customer-notes" rows="2" class="w-full p-2 bg-black border border-gray-700 rounded text-white"></textarea>
+            </div>
+        </div>
+        <div class="mt-6 flex gap-3">
+            <button onclick="app.crm.saveCustomer()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded">保存档案</button>
+            <button onclick="app.crm.closeCustomerModal()" class="px-6 bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 rounded">取消</button>
+        </div>
+    </div>
+</div>
 
-<!-- 🔥 按顺序加载所有模块 -->
 <script src="js/workbench-config.js"></script>
 <script src="js/workbench-utils.js"></script>
 <script src="js/workbench-storage.js"></script>
+<script src="js/workbench-auth.js"></script>
 <script src="js/workbench-dashboard.js"></script>
 <script src="js/workbench-orders.js"></script>
 <script src="js/workbench-suppliers.js"></script>
 <script src="js/workbench-finance.js"></script>
 
-<!-- 🔥 初始化脚本 -->
 <script>
-(function() {
-    'use strict';
-    
-    console.log('[V14.0] === INITIALIZATION START ===');
-    
-    // Toast 函数
-    function showToast(message, type = 'info') {
-        const toast = document.getElementById('toast');
-        if (!toast) return;
-        
-        const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
-        const colors = { 
-            success: 'bg-green-600', 
-            error: 'bg-red-600', 
-            warning: 'bg-yellow-600', 
-            info: 'bg-blue-600' 
-        };
-        
-        toast.innerHTML = `
-            <div class="${colors[type]} text-white px-6 py-3 rounded-lg shadow-xl flex items-center gap-3">
-                <span class="text-2xl">${icons[type]}</span>
-                <span>${message}</span>
-            </div>
-        `;
-        
-        toast.classList.remove('hidden');
-        
-        setTimeout(() => {
-            toast.classList.add('hidden');
-        }, 3000);
-    }
-    
-    // 等待所有脚本加载完成
-    function waitForModules() {
-        return new Promise((resolve) => {
-            const checkModules = () => {
-                const required = [
-                    'WorkbenchConfig',
-                    'WorkbenchUtils',
-                    'WorkbenchStorage',
-                    'WorkbenchDashboard',
-                    'WorkbenchOrders',
-                    'WorkbenchSuppliers',
-                    'WorkbenchFinance'
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('[V14.1 ERP] System Initializing...');
+
+    // 1. 初始化模块
+    if (typeof WorkbenchDashboard.init === 'function') await WorkbenchDashboard.init();
+    if (typeof WorkbenchOrders.init === 'function') WorkbenchOrders.init();
+    if (typeof WorkbenchSuppliers.init === 'function') WorkbenchSuppliers.init();
+    if (typeof WorkbenchFinance.init === 'function') WorkbenchFinance.init();
+
+    // 2. 全局 APP 对象
+    window.app = {
+        // 生存模式
+        survival: {
+            checkInputs: () => {
+                const a1 = document.getElementById('action-1').value;
+                const a2 = document.getElementById('action-2').value;
+                const a3 = document.getElementById('action-3').value;
+                document.getElementById('battle-start-btn').disabled = !(a1 && a2 && a3);
+            },
+            startBattle: () => {
+                const actions = [
+                    document.getElementById('action-1').value,
+                    document.getElementById('action-2').value,
+                    document.getElementById('action-3').value
                 ];
-                
-                const loaded = required.filter(name => window[name]);
-                console.log(`[V14.0] Modules loaded: ${loaded.length}/${required.length}`);
-                console.log('[V14.0] Loaded:', loaded);
-                
-                if (loaded.length === required.length) {
-                    console.log('[V14.0] ✅ All modules ready');
-                    resolve(true);
+                localStorage.setItem('v14_today_actions', JSON.stringify(actions));
+                localStorage.setItem('v14_unlock_time', Date.now());
+                document.getElementById('iron-curtain').classList.add('hidden');
+                WorkbenchDashboard.renderTodayActions(actions);
+                WorkbenchUtils.toast('战斗开始！', 'success');
+            },
+            emergencyOverride: () => {
+                if(confirm("确定启用紧急模式？")) {
+                    document.getElementById('iron-curtain').classList.add('hidden');
+                    document.getElementById('emergency-mode-warning').classList.remove('hidden');
+                    setTimeout(() => location.reload(), 10 * 60 * 1000);
+                }
+            },
+            initCheck: () => {
+                const lastUnlock = localStorage.getItem('v14_unlock_time');
+                const now = Date.now();
+                if (!lastUnlock || (now - lastUnlock > 30 * 60 * 1000)) {
+                    document.getElementById('iron-curtain').classList.remove('hidden');
                 } else {
-                    const missing = required.filter(name => !window[name]);
-                    console.log('[V14.0] Missing:', missing);
-                    setTimeout(checkModules, 100);
-                }
-            };
-            
-            checkModules();
-        });
-    }
-    
-    // 主初始化函数
-    async function init() {
-        console.log('[V14.0] Waiting for modules...');
-        
-        await waitForModules();
-        
-        console.log('[V14.0] Initializing modules...');
-        
-        try {
-            await WorkbenchDashboard.init();
-            WorkbenchOrders.init();
-            WorkbenchSuppliers.init();
-            WorkbenchFinance.init();
-            console.log('[V14.0] ✅ Modules initialized');
-        } catch (error) {
-            console.error('[V14.0] ❌ Initialization error:', error);
-            showToast('初始化失败：' + error.message, 'error');
-            return;
-        }
-        
-        // 构建 app 对象
-        window.app = {
-            survival: {
-                checkInputs: function() {
-                    const a1 = document.getElementById('action-1')?.value.trim();
-                    const a2 = document.getElementById('action-2')?.value.trim();
-                    const a3 = document.getElementById('action-3')?.value.trim();
-                    const btn = document.getElementById('battle-start-btn');
-                    
-                    if (a1 && a2 && a3) {
-                        btn?.removeAttribute('disabled');
-                    } else {
-                        btn?.setAttribute('disabled', 'true');
-                    }
-                },
-                
-                startBattle: function() {
-                    console.log('[Survival] Starting battle...');
-                    
-                    const actions = [
-                        document.getElementById('action-1')?.value || '',
-                        document.getElementById('action-2')?.value || '',
-                        document.getElementById('action-3')?.value || ''
-                    ];
-                    
-                    if (!actions[0] || !actions[1] || !actions[2]) {
-                        showToast('请填完三件事！', 'warning');
-                        return;
-                    }
-                    
-                    localStorage.setItem('v14_today_actions', JSON.stringify(actions));
-                    localStorage.setItem('v14_unlock_time', Date.now().toString());
-                    
-                    const curtain = document.getElementById('iron-curtain');
-                    if (curtain) {
-                        curtain.classList.add('hidden');
-                    }
-                    
-                    const display = document.getElementById('actions-display');
-                    if (display) {
-                        display.innerHTML = actions.map((action, i) => `
-                            <div class="action-item">
-                                <div class="action-number">${i + 1}</div>
-                                <div class="flex-1">${action}</div>
-                            </div>
-                        `).join('');
-                    }
-                    
-                    showToast('战斗开始！聚焦现金流！', 'success');
-                },
-                
-                emergencyOverride: function() {
-                    if (confirm("确定启用10分钟紧急模式？")) {
-                        const curtain = document.getElementById('iron-curtain');
-                        if (curtain) {
-                            curtain.classList.add('hidden');
-                        }
-                        
-                        localStorage.setItem('v14_unlock_time', Date.now().toString());
-                        showToast('紧急模式已激活（10分钟）', 'warning');
-                        
-                        setTimeout(() => {
-                            alert('紧急模式已结束，页面将刷新');
-                            location.reload();
-                        }, 10 * 60 * 1000);
-                    }
-                },
-                
-                initCheck: function() {
-                    const lastUnlock = localStorage.getItem('v14_unlock_time');
-                    const now = Date.now();
-                    const curtain = document.getElementById('iron-curtain');
-                    
-                    if (!lastUnlock || (now - parseInt(lastUnlock) > 30 * 60 * 1000)) {
-                        curtain?.classList.remove('hidden');
-                    } else {
-                        curtain?.classList.add('hidden');
-                        const savedActions = JSON.parse(localStorage.getItem('v14_today_actions') || '["","",""]');
-                        const display = document.getElementById('actions-display');
-                        if (display && savedActions[0]) {
-                            display.innerHTML = savedActions.map((action, i) => `
-                                <div class="action-item">
-                                    <div class="action-number">${i + 1}</div>
-                                    <div class="flex-1">${action}</div>
-                                </div>
-                            `).join('');
-                        }
-                    }
+                    document.getElementById('iron-curtain').classList.add('hidden');
+                    const savedActions = JSON.parse(localStorage.getItem('v14_today_actions') || '[]');
+                    WorkbenchDashboard.renderTodayActions(savedActions);
                 }
             }
-        };
-        
-        console.log('[V14.0] Binding events...');
-        
-        // 绑定生存模式输入框
-        ['action-1', 'action-2', 'action-3'].forEach(id => {
-            const input = document.getElementById(id);
-            if (input) {
-                input.addEventListener('input', () => window.app.survival.checkInputs());
-            } else {
-                console.error(`[V14.0] Input ${id} not found!`);
+        },
+
+        // 看板 (Orders)
+        kanban: {
+            openQuickAdd: () => window.WorkbenchOrders && WorkbenchOrders.openQuickAdd(),
+            closeQuickAdd: () => window.WorkbenchOrders && WorkbenchOrders.closeQuickAdd(),
+            saveQuickOrder: () => window.WorkbenchOrders && WorkbenchOrders.saveQuickOrder(),
+            openFullAddModal: () => window.WorkbenchOrders && WorkbenchOrders.openFullAddModal(),
+            closeFullAddModal: () => window.WorkbenchOrders && WorkbenchOrders.closeFullAddModal(),
+            saveFullOrder: () => window.WorkbenchOrders && WorkbenchOrders.saveFullOrder()
+        },
+
+        // 供应商 (Suppliers)
+        suppliers: {
+            openAddModal: () => window.WorkbenchSuppliers && WorkbenchSuppliers.openAddModal(),
+            closeSupplierModal: () => window.WorkbenchSuppliers && WorkbenchSuppliers.closeSupplierModal(),
+            saveSupplier: () => window.WorkbenchSuppliers && WorkbenchSuppliers.saveSupplier()
+        },
+
+        // 运营支出 (Expenses)
+        expenses: {
+            openAddModal: () => {
+                const modal = document.getElementById('expense-modal');
+                if(modal) { modal.classList.remove('hidden'); modal.classList.add('active'); }
+                else { alert("支出弹窗代码未找到，请检查 HTML 结构"); }
+            },
+            closeExpenseModal: () => {
+                const modal = document.getElementById('expense-modal');
+                if(modal) { modal.classList.add('hidden'); modal.classList.remove('active'); }
+            },
+            // ... (复用之前的 saveExpense 逻辑)
+            renderExpenseList: () => { /* ...复用之前的 render ... */ } 
+        },
+
+        // CRM (客户档案) - 🔥 重写逻辑支持新字段
+        crm: {
+            openCustomerModal: () => {
+                const modal = document.getElementById('customer-modal');
+                modal.classList.remove('hidden');
+                // 清空表单
+                document.getElementById('customer-name').value = '';
+                document.getElementById('customer-contact').value = '';
+                document.getElementById('customer-whatsapp').value = '';
+                document.getElementById('customer-country').value = '';
+                document.getElementById('customer-address').value = '';
+                document.getElementById('customer-notes').value = '';
+            },
+            closeCustomerModal: () => {
+                document.getElementById('customer-modal').classList.add('hidden');
+            },
+            saveCustomer: () => {
+                const name = document.getElementById('customer-name').value.trim();
+                if (!name) return alert("请输入公司名称");
+
+                const newCustomer = {
+                    id: 'CUST-' + Date.now(),
+                    company: name,
+                    contact: document.getElementById('customer-contact').value,
+                    whatsapp: document.getElementById('customer-whatsapp').value, // 新字段
+                    country: document.getElementById('customer-country').value,
+                    currency: document.getElementById('customer-currency').value,
+                    address: document.getElementById('customer-address').value, // 新字段
+                    notes: document.getElementById('customer-notes').value,
+                    createdAt: new Date().toISOString()
+                };
+
+                // 获取现有客户列表
+                const customers = WorkbenchDashboard.data.customers || [];
+                customers.push(newCustomer);
+                WorkbenchDashboard.data.customers = customers; // 更新内存
+                WorkbenchStorage.save('v5_customers', customers); // 保存到存储
+
+                WorkbenchUtils.toast('客户档案已保存', 'success');
+                app.crm.closeCustomerModal();
+                app.crm.render(); // 刷新列表
+            },
+            render: () => {
+                const container = document.getElementById('customer-grid');
+                if (!container) return;
+                container.innerHTML = '';
+                
+                const customers = WorkbenchDashboard.data.customers || [];
+                if (customers.length === 0) {
+                    container.innerHTML = '<div class="text-slate-500 col-span-3 text-center py-8">暂无客户档案</div>';
+                    return;
+                }
+
+                customers.forEach(c => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-gray-900 border border-gray-700 p-4 rounded-xl hover:border-green-500 transition relative group';
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg text-white">${c.company}</h3>
+                            <span class="text-xs bg-gray-800 px-2 py-1 rounded text-slate-300">${c.country || '未设置'}</span>
+                        </div>
+                        <div class="space-y-1 text-sm text-slate-400">
+                            <p><i class="fas fa-user w-5"></i> ${c.contact || '-'}</p>
+                            <p><i class="fab fa-whatsapp w-5 text-green-500"></i> ${c.whatsapp || '-'}</p>
+                            <p class="truncate"><i class="fas fa-map-marker-alt w-5 text-red-500"></i> ${c.address || '-'}</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-800 flex gap-2">
+                            <button onclick="app.crm.copyAddress('${c.id}')" class="flex-1 bg-gray-800 hover:bg-gray-700 py-1.5 rounded text-xs text-white">
+                                <i class="fas fa-copy"></i> 复制发货信息
+                            </button>
+                            <button onclick="alert('开发中: 直接开单')" class="px-3 bg-green-900 hover:bg-green-800 py-1.5 rounded text-xs text-green-300">
+                                开单
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            },
+            copyAddress: (id) => {
+                const c = WorkbenchDashboard.data.customers.find(x => x.id === id);
+                if (c) {
+                    const text = `TO: ${c.company}\nATTN: ${c.contact}\nTEL: ${c.whatsapp}\nADD: ${c.address}\nCOUNTRY: ${c.country}`;
+                    navigator.clipboard.writeText(text);
+                    WorkbenchUtils.toast('发货信息已复制！', 'success');
+                }
             }
-        });
+        },
         
-        // 绑定开始战斗按钮
-        const battleBtn = document.getElementById('battle-start-btn');
-        if (battleBtn) {
-            battleBtn.addEventListener('click', () => {
-                console.log('[V14.0] Battle button clicked');
-                window.app.survival.startBattle();
-            });
-            console.log('[V14.0] Battle button bound');
-        } else {
-            console.error('[V14.0] battle-start-btn not found!');
-        }
-        
-        // 绑定紧急模式按钮
-        const emergencyBtn = document.getElementById('emergency-override-btn');
-        if (emergencyBtn) {
-            emergencyBtn.addEventListener('click', () => window.app.survival.emergencyOverride());
-        }
-        
-        // 绑定 Tab 切换
-        document.querySelectorAll('.tab-button').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        // Tab 切换逻辑
+        ui: {
+            switchTab: (tabId) => {
+                document.querySelectorAll('.tab-content').forEach(el => {
+                    el.style.display = 'none';
+                    el.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
                 
-                e.currentTarget.classList.add('active');
-                const tabName = e.currentTarget.dataset.tab;
-                const content = document.getElementById(`tab-${tabName}`);
-                
+                const content = document.getElementById(`tab-${tabId}`);
                 if (content) {
+                    content.style.display = 'block';
                     content.classList.add('active');
                 }
-            });
-        });
-        
-        // 生存模式检查
-        window.app.survival.initCheck();
-        
-        console.log('[V14.0] === INITIALIZATION COMPLETE ===');
-        showToast('战时指挥台启动 V14.0 ERP', 'success');
-    }
+                
+                const btn = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+                if(btn) btn.classList.add('active');
+
+                // 触发渲染
+                if(tabId === 'kanban' && window.WorkbenchOrders) WorkbenchOrders.render();
+                if(tabId === 'suppliers' && window.WorkbenchSuppliers) WorkbenchSuppliers.render();
+                if(tabId === 'crm') app.crm.render();
+                if(tabId === 'expenses') app.expenses.renderExpenseList();
+            }
+        }
+    };
+
+    // 绑定 Tab 点击
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.onclick = function() { app.ui.switchTab(this.dataset.tab); };
+    });
+
+    // 初始化检查
+    app.survival.initCheck();
     
-    // 在 DOM 加载完成后初始化
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        // DOM 已经加载完成，延迟一下确保所有脚本都执行了
-        setTimeout(init, 100);
-    }
-    
-})();
+    // 首次渲染 CRM (如果有数据)
+    app.crm.render();
+
+    console.log('[V14.1] System Online');
+});
 </script>
 
 </body>
