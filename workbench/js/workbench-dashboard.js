@@ -1,355 +1,448 @@
-/**
- * V5 Medical Workbench - Dashboard Module
- * 业绩仪表盘与数据可视化
- * @version 2.0.1 (Fixed World Clock)
- */
+// ============================================
+// V14.0 ERP - DASHBOARD & SURVIVAL MODE
+// ============================================
 
-class WorkbenchDashboard {
-    constructor() {
-        this.config = window.WorkbenchConfig;
-        this.storage = window.V5Workbench?.storage;
-        this.currentRate = 7.25; // 默认汇率
-        this.clockInterval = null; // 用于存储定时器ID
-        this.data = {
-            orders: [],
-            target: 5000000,
-            totalSales: 0,
-            pipeline: 0,
-            achievement: 0
-        };
-    }
-
+const WorkbenchDashboard = {
+    data: {
+        orders: [],
+        customers: [],
+        suppliers: [],
+        expenses: [],
+        target: 5000000,
+        rate: 6.98,
+        feishuWebhook: '',
+        todayActions: ['', '', ''],
+        isCritical: false,
+        emergencyMode: false,
+        emergencyEndTime: 0
+    },
+    
     /**
-     * 初始化仪表盘
+     * 初始化Dashboard
      */
     async init() {
-        // 确保 Config 已加载
-        if (!this.config) {
-            console.warn('[Dashboard] Config not found, retrying...');
-            this.config = window.WorkbenchConfig;
-        }
+        console.log('[Dashboard] Initializing V14.0 ERP Dashboard...');
         
+        // 加载数据
         await this.loadData();
-        this.render();
-        this.startAutoRefresh();
-    }
-
+        
+        // 检查红线状态
+        this.checkCashRedLine();
+        
+        // 更新Dashboard
+        this.updateDashboard();
+        
+        // 启动时钟
+        this.startClock();
+        
+        // 定时检查红线 (每5分钟)
+        setInterval(() => this.checkCashRedLine(), 5 * 60 * 1000);
+        
+        return this;
+    },
+    
     /**
      * 加载数据
      */
     async loadData() {
-        try {
-            if (this.storage) {
-                this.data.orders = await this.storage.getOrders() || [];
-                this.data.target = await this.storage.getTarget() || 5000000;
-            }
-            this.currentRate = parseFloat(localStorage.getItem('v5_usd_rate')) || 7.25;
-            
-            this.calculateMetrics();
-        } catch (error) {
-            console.error('[Dashboard] Load data failed:', error);
-        }
-    }
-
-    /**
-     * 计算关键指标
-     */
-    calculateMetrics() {
-        let totalSalesRMB = 0;
-        let pipelineRMB = 0;
-        let pendingCount = 0;
-
-        if (Array.isArray(this.data.orders)) {
-            this.data.orders.forEach(order => {
-                const amountRMB = order.total * this.currentRate;
-                if (order.status === 'Paid') {
-                    totalSalesRMB += amountRMB;
-                } else if (order.status === 'Pending') {
-                    pipelineRMB += amountRMB;
-                    pendingCount++;
-                }
-            });
-        }
-
-        this.data.totalSales = totalSalesRMB;
-        this.data.pipeline = pipelineRMB;
-        this.data.achievement = this.data.target > 0 ? (totalSalesRMB / this.data.target) * 100 : 0;
-        this.data.gap = this.data.target - totalSalesRMB;
-        this.data.pendingCount = pendingCount;
+        console.log('[Dashboard] Loading data from storage...');
         
-        // 计算每日所需进账
-        const today = new Date();
-        const endYear = new Date(today.getFullYear(), 11, 31);
-        const daysLeft = Math.ceil((endYear - today) / (1000 * 60 * 60 * 24));
-        this.data.dailyNeed = daysLeft > 0 ? (this.data.gap / daysLeft) : 0;
-    }
-
-    /**
-     * 渲染仪表盘
-     */
-    render() {
-        const container = document.getElementById('workbench-content');
-        if (!container) return;
-
-        container.innerHTML = `
-            <div class="flex items-center justify-between mb-8">
-                <div>
-                    <h2 class="text-3xl font-bold text-slate-800">2026 战报指挥舱</h2>
-                    <p class="text-sm text-slate-500 mt-1">实时业绩监控与目标达成追踪</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="text-right">
-                        <div class="text-xs text-slate-500 uppercase tracking-wider">Annual Target</div>
-                        <div class="text-2xl font-bold text-primary cursor-pointer hover:text-blue-700 transition" onclick="window.V5Workbench.dashboard.editTarget()">
-                            ¥${this.formatNumber(this.data.target)}
-                            <i class="fas fa-pen text-sm ml-1"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                ${this.renderKPICard('trophy', '年度达成率', `${this.data.achievement.toFixed(1)}%`, 'primary', this.data.achievement)}
-                ${this.renderKPICard('coins', '已回款金额', `¥${this.formatNumber(this.data.totalSales)}`, 'green', null, `约 $${this.formatNumber(this.data.totalSales / this.currentRate)}`)}
-                ${this.renderKPICard('mountain', '距离目标还差', `¥${this.formatNumber(this.data.gap / 10000, 1)}w`, 'red', null, `需每日 ¥${this.formatNumber(this.data.dailyNeed)}`)}
-                ${this.renderKPICard('hourglass-half', '待回款 Pipeline', `¥${this.formatNumber(this.data.pipeline)}`, 'yellow', null, `${this.data.pendingCount} 个订单跟进中`)}
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                        <i class="fas fa-chart-line text-blue-600"></i> 月度业绩趋势
-                    </h3>
-                    <div class="h-64 flex items-center justify-center text-slate-400">
-                        <canvas id="sales-chart"></canvas>
-                        <span class="text-xs italic ml-2">(Chart.js 待集成)</span>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                        <i class="fas fa-clock text-green-600"></i> 全球商机时钟
-                    </h3>
-                    <div id="world-clock-container" class="space-y-3 min-h-[200px]">
-                        <div class="text-center py-10 text-slate-300">Loading Clocks...</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-bold text-slate-800 flex items-center gap-2">
-                        <i class="fas fa-file-invoice text-blue-600"></i> 最近订单记录
-                    </h3>
-                    <a href="javascript:void(0)" onclick="document.querySelector('a[href=\\'#orders\\']')?.click()" class="text-sm text-blue-600 hover:underline">查看全部 →</a>
-                </div>
-                <div id="recent-orders-list">
-                    ${this.renderRecentOrders()}
-                </div>
-            </div>
-        `;
-
-        // 延迟一小会儿执行，确保 DOM 完全就绪
-        setTimeout(() => {
-            this.initWorldClock();
-            this.initChart();
-        }, 50);
-    }
-
-    /**
-     * 渲染 KPI 卡片
-     */
-    renderKPICard(icon, title, value, color, progress = null, subtitle = null) {
-        const colors = {
-            primary: { bg: 'blue-100', text: 'blue-600', border: 'blue-500' },
-            green: { bg: 'green-100', text: 'green-600', border: 'green-500' },
-            red: { bg: 'red-100', text: 'red-600', border: 'red-500' },
-            yellow: { bg: 'yellow-100', text: 'yellow-600', border: 'yellow-500' }
-        };
-        const c = colors[color] || colors.primary;
-
-        return `
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-${c.border} relative overflow-hidden hover:shadow-md transition">
-                <i class="fas fa-${icon} absolute right-4 top-4 text-4xl text-${c.bg} opacity-50"></i>
-                <div class="relative z-10">
-                    <div class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">${title}</div>
-                    <div class="text-3xl font-black text-slate-800 mb-1">${value}</div>
-                    ${subtitle ? `<div class="text-xs text-slate-400">${subtitle}</div>` : ''}
-                    ${progress !== null ? `
-                        <div class="mt-3 w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                            <div class="bg-${c.text} h-full rounded-full transition-all duration-500" style="width: ${Math.min(progress, 100)}%"></div>
-                        </div>
-                    ` : ''}
-                </div>
-            </div>
-        `;
-    }
-
-    /**
-     * 渲染最近订单
-     */
-    renderRecentOrders() {
-        if (!this.data.orders || this.data.orders.length === 0) {
-            return '<div class="text-center py-8 text-slate-400">暂无订单记录</div>';
+        this.data.orders = await WorkbenchStorage.load(
+            WorkbenchConfig.STORAGE_KEYS.ORDERS, []
+        );
+        this.data.customers = await WorkbenchStorage.load(
+            WorkbenchConfig.STORAGE_KEYS.CUSTOMERS, []
+        );
+        this.data.suppliers = await WorkbenchStorage.load(
+            WorkbenchConfig.STORAGE_KEYS.SUPPLIERS, []
+        );
+        this.data.expenses = await WorkbenchStorage.load(
+            WorkbenchConfig.STORAGE_KEYS.EXPENSES, []
+        );
+        this.data.target = await WorkbenchStorage.load(
+            WorkbenchConfig.STORAGE_KEYS.TARGET, 5000000
+        );
+        this.data.rate = await WorkbenchStorage.load(
+            WorkbenchConfig.STORAGE_KEYS.USD_RATE, 6.98
+        );
+        this.data.feishuWebhook = await WorkbenchStorage.load(
+            WorkbenchConfig.STORAGE_KEYS.FEISHU_WEBHOOK, ''
+        );
+        this.data.todayActions = await WorkbenchStorage.load(
+            WorkbenchConfig.STORAGE_KEYS.TODAY_ACTIONS, ['', '', '']
+        );
+        
+        // 🆕 V14.0: 数据迁移 - 为旧订单添加成本字段
+        this.data.orders = this.data.orders.map(order => {
+            if (order.cost === undefined) {
+                order.cost = 0;
+                order.supplier = '';
+                order.costCurrency = order.currency || 'USD';
+                order.costExchangeRate = order.exchangeRate || this.data.rate;
+                order._needsCostUpdate = true;
+            }
+            return order;
+        });
+        
+        // 🆕 V13.5: 自动提取客户档案
+        if (this.data.customers.length === 0 && this.data.orders.length > 0) {
+            this.extractCustomersFromOrders();
         }
-
-        const recent = this.data.orders.slice(0, 5);
-        return `
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead class="bg-slate-50 text-xs text-slate-500 uppercase">
-                        <tr>
-                            <th class="px-4 py-3 text-left">PI No.</th>
-                            <th class="px-4 py-3 text-left">客户</th>
-                            <th class="px-4 py-3 text-right">金额</th>
-                            <th class="px-4 py-3 text-center">状态</th>
-                            <th class="px-4 py-3 text-center">日期</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        ${recent.map(o => `
-                            <tr class="hover:bg-slate-50 transition">
-                                <td class="px-4 py-3 font-mono font-bold text-slate-800">${o.id}</td>
-                                <td class="px-4 py-3 text-slate-600">${o.customer}</td>
-                                <td class="px-4 py-3 text-right font-bold text-blue-600">$${o.total.toFixed(2)}</td>
-                                <td class="px-4 py-3 text-center">
-                                    <span class="px-2 py-1 rounded-full text-xs font-bold ${o.status === 'Paid' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">
-                                        ${o.status}
-                                    </span>
-                                </td>
-                                <td class="px-4 py-3 text-center text-xs text-slate-400">
-                                    ${new Date(o.date).toLocaleDateString('zh-CN')}
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            </div>
-        `;
-    }
-
+        
+        console.log('[Dashboard] Data loaded:', {
+            orders: this.data.orders.length,
+            customers: this.data.customers.length,
+            suppliers: this.data.suppliers.length,
+            expenses: this.data.expenses.length
+        });
+    },
+    
     /**
-     * 初始化图表
+     * 从订单中提取客户档案
      */
-    initChart() {
-        console.log('[Dashboard] Chart initialized (placeholder)');
-    }
-
+    extractCustomersFromOrders() {
+        const uniqueCustomers = {};
+        
+        this.data.orders.forEach(order => {
+            if (!uniqueCustomers[order.customer]) {
+                uniqueCustomers[order.customer] = {
+                    id: WorkbenchUtils.generateId('CUST'),
+                    company: order.customer,
+                    contact: '',
+                    country: '',
+                    currency: order.currency || 'USD',
+                    notes: '自动提取',
+                    createdAt: order.date,
+                    totalOrders: 0,
+                    totalSales: 0
+                };
+            }
+        });
+        
+        this.data.customers = Object.values(uniqueCustomers);
+        WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.CUSTOMERS, this.data.customers);
+        
+        console.log('[Dashboard] Extracted', this.data.customers.length, 'customers from orders');
+    },
+    
     /**
-     * 初始化全球时钟 (修复版)
+     * 🔥 V13.5强化: 检查现金红线 (72小时未进账)
      */
-    initWorldClock() {
-        // 安全检查：防止 Config 未加载导致崩溃
-        if (!this.config || !this.config.WORKBENCH || !this.config.WORKBENCH.WORLD_CITIES) {
-            console.error('[Dashboard] Config or World Cities missing!');
-            const container = document.getElementById('world-clock-container');
-            if(container) container.innerHTML = '<div class="text-center text-red-400 text-xs py-4">配置加载失败</div>';
+    checkCashRedLine() {
+        console.log('[V14.0 CRITICAL] ========== RED LINE CHECK START ==========');
+        
+        // STEP 1: Triple-check Paid orders
+        const paidOrders = this.data.orders.filter(o => {
+            const isPaid = o.kanbanStatus === 'Paid' || o.status === 'Paid';
+            if (isPaid) {
+                console.log(`  ✅ Paid Order Found: ${o.id} | ${o.customer} | ${o.currency} ${o.total} | Date: ${o.date}`);
+            }
+            return isPaid;
+        });
+        
+        console.log(`[V14.0] Total Paid Orders: ${paidOrders.length}`);
+        
+        if (paidOrders.length === 0) {
+            console.log('[V14.0] ❌ No Paid orders - ACTIVATE CRITICAL MODE');
+            this.activateCriticalMode('无Paid订单');
+            console.log('[V14.0 CRITICAL] ========== RED LINE CHECK END ==========');
             return;
         }
-
-        const cities = this.config.WORKBENCH.WORLD_CITIES;
-        const container = document.getElementById('world-clock-container');
-        if (!container) return;
-
+        
+        // STEP 2: Force sort using getTime() for millisecond precision
+        const sortedPaid = [...paidOrders].sort((a, b) => {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            const diff = dateB.getTime() - dateA.getTime(); // Descending
+            console.log(`  Sort Compare: ${a.id}(${dateA.toISOString()}) vs ${b.id}(${dateB.toISOString()}) diff=${diff}ms`);
+            return diff;
+        });
+        
+        const lastPaid = sortedPaid[0];
+        console.log(`[V14.0] Most Recent Paid Order: ${lastPaid.id}`);
+        
+        // STEP 3: Strict date field validation
+        if (!lastPaid.date) {
+            console.error('[V14.0 ERROR] ❌ lastPaid.date is MISSING!', lastPaid);
+            this.activateCriticalMode('数据异常：缺少日期字段');
+            console.log('[V14.0 CRITICAL] ========== RED LINE CHECK END ==========');
+            return;
+        }
+        
+        // STEP 4: Millisecond-level time calculation
+        const lastPaidDate = new Date(lastPaid.date);
+        const now = new Date();
+        const millisSince = now.getTime() - lastPaidDate.getTime();
+        const hoursSince = millisSince / (1000 * 60 * 60);
+        const daysSince = Math.floor(hoursSince / 24);
+        
+        console.log('[V14.0] TIME CALCULATION:');
+        console.log(`  Last Paid Date: ${lastPaidDate.toISOString()} (${lastPaidDate.getTime()})`);
+        console.log(`  Current Time:   ${now.toISOString()} (${now.getTime()})`);
+        console.log(`  Milliseconds Since: ${millisSince}`);
+        console.log(`  Hours Since: ${hoursSince.toFixed(2)}`);
+        console.log(`  Days Since: ${daysSince}`);
+        
+        // STEP 5: 72-hour threshold check
+        const THRESHOLD = WorkbenchConfig.CASH_RED_LINE_HOURS;
+        if (hoursSince > THRESHOLD) {
+            console.log(`[V14.0] ❌ ${hoursSince.toFixed(2)}h > ${THRESHOLD}h - ACTIVATE CRITICAL MODE`);
+            this.activateCriticalMode(`${daysSince}天未进账`);
+        } else {
+            console.log(`[V14.0] ✅ ${hoursSince.toFixed(2)}h <= ${THRESHOLD}h - DEACTIVATE CRITICAL MODE`);
+            this.deactivateCriticalMode();
+        }
+        
+        console.log('[V14.0 CRITICAL] ========== RED LINE CHECK END ==========');
+    },
+    
+    /**
+     * 激活生存模式 (红屏)
+     */
+    activateCriticalMode(reason = '现金流告急') {
+        if (this.data.isCritical) return; // 已经是红屏状态
+        
+        console.log('[Dashboard] 🔴 ACTIVATING CRITICAL MODE:', reason);
+        
+        this.data.isCritical = true;
+        
+        // 红屏效果
+        const header = document.getElementById('header');
+        if (header) {
+            header.classList.remove('bg-slate-900');
+            header.classList.add('bg-danger');
+        }
+        
+        // 修改标题
+        const title = document.getElementById('header-title');
+        if (title) {
+            title.innerHTML = `
+                <span class="text-white">⚠️ 战时指挥台</span>
+                <span class="text-xs bg-white text-danger px-2 py-0.5 rounded-full">生存模式</span>
+            `;
+        }
+        
+        // 修改副标题
+        const subtitle = document.getElementById('header-subtitle');
+        if (subtitle) {
+            subtitle.textContent = `SURVIVAL MODE · ${reason}`;
+        }
+        
+        // 🔥 CRITICAL FIX: 隐藏非核心功能（使用.survival-hidden类）
+        const nonCriticalModules = [
+            'tools-section',
+            'logistics-section', 
+            'global-clock-section'
+        ];
+        
+        nonCriticalModules.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.classList.add('survival-hidden');
+            }
+        });
+        
+        WorkbenchUtils.toast(`🔴 生存模式激活: ${reason}`, 'error', 5000);
+    },
+    
+    /**
+     * 🔥 CRITICAL FIX: 解除生存模式 (移除.survival-hidden类)
+     */
+    deactivateCriticalMode() {
+        if (!this.data.isCritical) return; // 本来就不是红屏状态
+        
+        console.log('[Dashboard] ✅ DEACTIVATING CRITICAL MODE');
+        
+        this.data.isCritical = false;
+        
+        // 恢复正常Header
+        const header = document.getElementById('header');
+        if (header) {
+            header.classList.remove('bg-danger');
+            header.classList.add('bg-slate-900');
+        }
+        
+        // 恢复标题
+        const title = document.getElementById('header-title');
+        if (title) {
+            title.innerHTML = `
+                战时指挥台 <span class="text-xs bg-danger text-white px-2 py-0.5 rounded-full">V14.0</span>
+            `;
+        }
+        
+        // 恢复副标题
+        const subtitle = document.getElementById('header-subtitle');
+        if (subtitle) {
+            subtitle.textContent = 'ERP EDITION · 供应链 · 财务 · 真实利润';
+        }
+        
+        // 🔥 CRITICAL FIX: 显示所有功能模块（移除.survival-hidden类）
+        const allModules = [
+            'tools-section',
+            'logistics-section',
+            'global-clock-section'
+        ];
+        
+        allModules.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.classList.remove('survival-hidden');
+            }
+        });
+        
+        WorkbenchUtils.toast('✅ 生存模式解除 - 全功能恢复', 'success', 5000);
+    },
+    
+    /**
+     * 更新Dashboard数据
+     */
+    updateDashboard() {
+        console.log('[Dashboard] Updating dashboard metrics...');
+        
+        // 🆕 V14.0: 财务指标计算
+        let totalRevenue = 0;
+        let totalCost = 0;
+        let totalGrossProfit = 0;
+        
+        this.data.orders.forEach(order => {
+            if (order.kanbanStatus === 'Paid' || order.status === 'Paid') {
+                const rate = order.currency === 'CNY' ? 1 : (order.exchangeRate || this.data.rate);
+                const revenueRMB = order.total * rate;
+                const costRMB = (order.cost || 0) * (order.costCurrency === 'CNY' ? 1 : (order.costExchangeRate || rate));
+                
+                totalRevenue += revenueRMB;
+                totalCost += costRMB;
+                totalGrossProfit += (revenueRMB - costRMB);
+            }
+        });
+        
+        // 运营支出
+        const totalExpenses = this.data.expenses.reduce((sum, exp) => {
+            const expRMB = exp.currency === 'CNY' ? exp.amount : exp.amount * this.data.rate;
+            return sum + expRMB;
+        }, 0);
+        
+        // 净利润
+        const netProfit = totalGrossProfit - totalExpenses;
+        
+        // 目标缺口
+        const gap = this.data.target - totalRevenue;
+        const progress = (totalRevenue / this.data.target * 100).toFixed(1);
+        
+        // 更新显示
+        WorkbenchUtils.setText('total-revenue', '¥' + WorkbenchUtils.formatNumber(totalRevenue / 10000, 1) + 'w');
+        WorkbenchUtils.setText('total-cost', '¥' + WorkbenchUtils.formatNumber(totalCost / 10000, 1) + 'w');
+        WorkbenchUtils.setText('gross-profit', '¥' + WorkbenchUtils.formatNumber(totalGrossProfit / 10000, 1) + 'w');
+        WorkbenchUtils.setText('total-expenses', '¥' + WorkbenchUtils.formatNumber(totalExpenses / 10000, 1) + 'w');
+        WorkbenchUtils.setText('net-profit', '¥' + WorkbenchUtils.formatNumber(netProfit / 10000, 1) + 'w');
+        WorkbenchUtils.setText('target-amount', '¥' + WorkbenchUtils.formatNumber(this.data.target / 10000, 0) + 'w');
+        WorkbenchUtils.setText('gap-amount', '¥' + WorkbenchUtils.formatNumber(gap / 10000, 0) + 'w');
+        WorkbenchUtils.setText('progress-percent', progress + '%');
+        
+        // 更新进度条
+        const progressBar = document.getElementById('progress-bar');
+        if (progressBar) {
+            progressBar.style.width = Math.min(progress, 100) + '%';
+        }
+        
+        console.log('[Dashboard] Metrics updated:', {
+            revenue: totalRevenue,
+            cost: totalCost,
+            grossProfit: totalGrossProfit,
+            expenses: totalExpenses,
+            netProfit: netProfit
+        });
+    },
+    
+    /**
+     * 启动时钟
+     */
+    startClock() {
         const updateClock = () => {
+            // 本地时间
+            const now = new Date();
+            WorkbenchUtils.setText('local-time', WorkbenchUtils.formatDate(now, 'HH:mm:ss'));
+            WorkbenchUtils.setText('local-date', WorkbenchUtils.formatDate(now, 'YYYY-MM-DD'));
+            
+            // 全球时钟
+            WorkbenchConfig.TIMEZONES.forEach(tz => {
+                try {
+                    const time = new Intl.DateTimeFormat('en-US', {
+                        timeZone: tz.timezone,
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: false
+                    }).format(now);
+                    
+                    WorkbenchUtils.setText(`clock-${tz.city.toLowerCase().replace(' ', '-')}`, time);
+                } catch (error) {
+                    console.error(`Clock error for ${tz.city}:`, error);
+                }
+            });
+        };
+        
+        updateClock();
+        setInterval(updateClock, 1000);
+    },
+    
+    /**
+     * 保存今日行动
+     */
+    async saveTodayActions() {
+        this.data.todayActions = [
+            document.getElementById('action-1')?.value || '',
+            document.getElementById('action-2')?.value || '',
+            document.getElementById('action-3')?.value || ''
+        ];
+        
+        await WorkbenchStorage.save(
+            WorkbenchConfig.STORAGE_KEYS.TODAY_ACTIONS,
+            this.data.todayActions
+        );
+        
+        WorkbenchUtils.toast('今日行动已保存', 'success');
+    },
+    
+    /**
+     * 导出数据
+     */
+    exportData() {
+        const backup = WorkbenchStorage.exportAll();
+        const filename = `V14.0_ERP_Backup_${WorkbenchUtils.formatDate(new Date(), 'YYYY-MM-DD')}.json`;
+        WorkbenchUtils.downloadJSON(backup, filename);
+        WorkbenchUtils.toast('数据导出成功', 'success');
+    },
+    
+    /**
+     * 导入数据
+     */
+    async importData() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        
+        input.onchange = async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
             try {
-                container.innerHTML = cities.map(city => {
-                    try {
-                        const now = new Date();
-                        let timeString = '00:00';
-                        
-                        // 尝试使用 Intl 格式化，如果不被支持则回退
-                        try {
-                            timeString = new Intl.DateTimeFormat('en-US', {
-                                timeZone: city.tz,
-                                hour: 'numeric',
-                                minute: '2-digit',
-                                hour12: false
-                            }).format(now);
-                        } catch (tzError) {
-                            console.warn(`[Dashboard] Timezone error for ${city.name}: ${city.tz}`);
-                            return ''; // 如果时区不支持，跳过该城市
-                        }
-
-                        // 处理可能出现的异常格式
-                        if (!timeString) return '';
-                        
-                        const hour = parseInt(timeString.split(':')[0]);
-                        const isWorking = hour >= city.workHours[0] && hour < city.workHours[1];
-
-                        return `
-                            <div class="flex items-center justify-between p-3 rounded-lg border transition-colors duration-500 ${isWorking ? 'bg-green-50 border-green-200' : 'bg-slate-50 border-slate-200'}">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-lg">${city.icon}</span>
-                                    <div>
-                                        <div class="text-xs font-bold text-slate-700">${city.name}</div>
-                                        <div class="text-lg font-mono font-black text-slate-800 tracking-tight">${timeString}</div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <span class="w-2 h-2 rounded-full ${isWorking ? 'bg-green-500 animate-pulse' : 'bg-slate-300'}"></span>
-                                    <span class="text-[10px] font-bold ${isWorking ? 'text-green-600' : 'text-slate-400'}">${isWorking ? 'OPEN' : 'CLOSED'}</span>
-                                </div>
-                            </div>
-                        `;
-                    } catch (itemError) {
-                        console.error(`[Dashboard] Error rendering city ${city.name}`, itemError);
-                        return '';
-                    }
-                }).join('');
-            } catch (e) {
-                console.error('[Dashboard] Clock update loop failed', e);
+                const text = await file.text();
+                const data = JSON.parse(text);
+                
+                const success = await WorkbenchStorage.importAll(data);
+                if (success) {
+                    WorkbenchUtils.toast('数据导入成功，页面即将刷新', 'success');
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    WorkbenchUtils.toast('数据导入失败', 'error');
+                }
+            } catch (error) {
+                console.error('Import error:', error);
+                WorkbenchUtils.toast('文件格式错误', 'error');
             }
         };
-
-        // 先清除之前的定时器（防止多次 init 导致重复）
-        if (this.clockInterval) clearInterval(this.clockInterval);
         
-        // 立即执行一次，然后启动定时器
-        updateClock();
-        this.clockInterval = setInterval(updateClock, 60000); // 每分钟更新
+        input.click();
     }
-
-    /**
-     * 编辑年度目标
-     */
-    async editTarget() {
-        const newTarget = prompt('请输入新的年度销售目标 (RMB):', this.data.target);
-        if (newTarget && !isNaN(newTarget)) {
-            this.data.target = parseInt(newTarget);
-            await this.storage.setTarget(this.data.target);
-            await this.loadData();
-            this.render(); // 重新渲染以更新界面
-            if(window.WorkbenchUtils?.toast) {
-                window.WorkbenchUtils.toast.success('年度目标已更新！');
-            }
-        }
-    }
-
-    /**
-     * 格式化数字
-     */
-    formatNumber(num, decimals = 0) {
-        if (num === undefined || num === null) return '0';
-        return Math.floor(num).toLocaleString('zh-CN', {
-            minimumFractionDigits: decimals,
-            maximumFractionDigits: decimals
-        });
-    }
-
-    /**
-     * 自动刷新
-     */
-    startAutoRefresh() {
-        // 使用一个实例变量来避免重复 Interval
-        if(this.refreshInterval) clearInterval(this.refreshInterval);
-        this.refreshInterval = setInterval(() => {
-            this.loadData().then(() => this.render());
-        }, 60000); // 每分钟刷新一次
-    }
-}
-
-// 确保挂载到 window
-window.WorkbenchDashboard = WorkbenchDashboard;
-    }
-});
+};

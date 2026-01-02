@@ -1,274 +1,495 @@
-/**
- * V5 Medical Workbench - 订单管理模块
- * 优化点：完善依赖校验、全流程错误处理、数据兜底、DOM 安全操作
- * @version 2.1.0
- */
-class WorkbenchOrders {
-    constructor() {
-        // 初始化存储层 & 工具类（增加兜底）
-        this.storage = window.V5Workbench?.storage || {
-            getOrders: async () => [],
-            saveToCloud: async (key, data) => Promise.reject('Storage not initialized'),
-            getLocalOrders: async () => JSON.parse(localStorage.getItem('v5_orders') || '[]')
-        };
-        this.utils = window.WorkbenchUtils || {
-            toast: {
-                success: (msg) => alert(`成功：${msg}`),
-                error: (msg) => alert(`错误：${msg}`),
-                warn: (msg) => alert(`警告：${msg}`)
-            }
-        };
-        this.currentRate = 7.25; // 默认汇率
-        this.data = { orders: [] };
-        // DOM 节点缓存（避免重复查询）
-        this.domCache = {
-            orderList: null,
-            emptyState: null,
-            loadingState: null
-        };
-    }
+// ============================================
+// V14.0 ERP - ORDERS MANAGEMENT MODULE
+// ============================================
 
+const WorkbenchOrders = {
     /**
-     * 初始化订单模块（入口方法）
+     * 初始化订单模块
      */
-    async init() {
-        try {
-            // 1. 校验 DOM 节点
-            this._cacheDOM();
-            if (!this.domCache.orderList) {
-                throw new Error('核心DOM节点缺失：#recent-orders-list');
-            }
-
-            // 2. 显示加载状态
-            this._toggleLoading(true);
-
-            // 3. 加载订单数据（云存储优先，本地兜底）
-            await this.loadOrders();
-
-            // 4. 渲染订单列表
-            this.renderOrders();
-
-            // 5. 绑定事件（如清空订单按钮）
-            this.bindEvents();
-
-            this._toggleLoading(false);
-            this.utils.toast.success('订单模块加载成功');
-        } catch (error) {
-            this._toggleLoading(false);
-            this.utils.toast.error(`订单模块加载失败：${error.message}`);
-            console.error('[Orders Module] Init failed:', error);
-            // 渲染空状态（友好提示）
-            this._renderEmptyState('加载失败，请刷新页面重试');
-        }
-    }
-
-    /**
-     * 缓存 DOM 节点（安全获取）
-     */
-    _cacheDOM() {
-        this.domCache.orderList = document.getElementById('recent-orders-list');
-        this.domCache.emptyState = document.getElementById('orders-empty-state');
-        this.domCache.loadingState = document.getElementById('orders-loading-state');
-        // 兼容未定义的节点（避免后续判断报错）
-        Object.keys(this.domCache).forEach(key => {
-            if (!this.domCache[key]) {
-                this.domCache[key] = document.createElement('div');
-                this.domCache[key].id = key;
-            }
-        });
-    }
-
-    /**
-     * 加载订单数据（云存储 + 本地兜底）
-     */
-    async loadOrders() {
-        try {
-            // 优先从云存储加载
-            const cloudOrders = await this.storage.getOrders();
-            // 校验数据格式（必须是数组）
-            this.data.orders = Array.isArray(cloudOrders) ? cloudOrders : [];
-            
-            // 若云存储无数据，从本地缓存兜底
-            if (this.data.orders.length === 0) {
-                const localOrders = await this.storage.getLocalOrders();
-                this.data.orders = Array.isArray(localOrders) ? localOrders : [];
-                this.utils.toast.warn('云存储无订单数据，已加载本地缓存');
-            }
-
-            // 校验汇率有效性
-            this.currentRate = parseFloat(localStorage.getItem('v5_usd_rate')) || 7.25;
-            if (isNaN(this.currentRate) || this.currentRate <= 0) {
-                this.currentRate = 7.25;
-                this.utils.toast.warn('汇率异常，已重置为默认值 7.25');
-            }
-
-        } catch (cloudError) {
-            // 云存储加载失败，降级到本地缓存
-            console.error('[Orders] Load cloud orders failed:', cloudError);
-            const localOrders = await this.storage.getLocalOrders().catch(() => []);
-            this.data.orders = Array.isArray(localOrders) ? localOrders : [];
-            this.utils.toast.warn('云存储访问失败，已加载本地订单数据');
-        }
-    }
-
-    /**
-     * 渲染订单列表（安全处理边界情况）
-     */
-    renderOrders() {
-        const { orders } = this.data;
-        // 空数据处理
-        if (!orders || orders.length === 0) {
-            this._renderEmptyState('暂无订单记录');
-            return;
-        }
-
-        // 截取前5条（安全处理数组）
-        const recentOrders = Array.isArray(orders) ? orders.slice(0, 5) : [];
+    init() {
+        console.log('[Orders] Initializing orders management module...');
         
-        // 渲染订单表格
-        this.domCache.orderList.innerHTML = `
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead class="bg-slate-50 text-xs text-slate-500 uppercase">
-                        <tr>
-                            <th class="px-4 py-3 text-left">PI No.</th>
-                            <th class="px-4 py-3 text-left">客户</th>
-                            <th class="px-4 py-3 text-right">金额</th>
-                            <th class="px-4 py-3 text-center">状态</th>
-                            <th class="px-4 py-3 text-center">日期</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        ${recentOrders.map(o => this._renderOrderRow(o)).join('')}
-                    </tbody>
-                </table>
-            </div>
-        `;
-
-        // 隐藏空状态
-        if (this.domCache.emptyState) {
-            this.domCache.emptyState.classList.add('hidden');
-        }
-    }
-
+        // 绑定事件
+        this.bindEvents();
+        
+        // 更新看板
+        this.updateKanban();
+        
+        return this;
+    },
+    
     /**
-     * 渲染单个订单行（状态兜底 + 数据校验）
-     */
-    _renderOrderRow(order) {
-        // 订单数据兜底
-        const o = {
-            id: order?.id || '未知订单号',
-            customer: order?.customer || '未知客户',
-            total: parseFloat(order?.total) || 0,
-            status: order?.status || 'Unknown',
-            date: order?.date || new Date().toISOString()
-        };
-
-        // 金额格式化（避免 NaN）
-        const amountUSD = o.total.toFixed(2);
-        const amountRMB = (o.total * this.currentRate).toFixed(2);
-
-        // 状态样式兜底
-        const statusClass = o.status === 'Paid' 
-            ? 'bg-green-100 text-green-700' 
-            : o.status === 'Pending' 
-                ? 'bg-amber-100 text-amber-700' 
-                : 'bg-slate-100 text-slate-700';
-
-        // 日期格式化（容错）
-        let orderDate = '未知日期';
-        try {
-            orderDate = new Date(o.date).toLocaleDateString('zh-CN');
-        } catch (e) {}
-
-        return `
-            <tr class="hover:bg-slate-50 transition">
-                <td class="px-4 py-3 font-mono font-bold text-slate-800">${o.id}</td>
-                <td class="px-4 py-3 text-slate-600">${o.customer}</td>
-                <td class="px-4 py-3 text-right font-bold text-blue-600">$${amountUSD}</td>
-                <td class="px-4 py-3 text-center">
-                    <span class="px-2 py-1 rounded-full text-xs font-bold ${statusClass}">
-                        ${o.status}
-                    </span>
-                </td>
-                <td class="px-4 py-3 text-center text-xs text-slate-400">
-                    ${orderDate}
-                </td>
-            </tr>
-        `;
-    }
-
-    /**
-     * 渲染空状态
-     */
-    _renderEmptyState(text) {
-        this.domCache.orderList.innerHTML = `<div class="text-center py-8 text-slate-400">${text}</div>`;
-        if (this.domCache.emptyState) {
-            this.domCache.emptyState.classList.remove('hidden');
-        }
-    }
-
-    /**
-     * 切换加载状态
-     */
-    _toggleLoading(show) {
-        if (this.domCache.loadingState) {
-            this.domCache.loadingState.classList.toggle('hidden', !show);
-        }
-    }
-
-    /**
-     * 绑定订单相关事件（如清空订单）
+     * 绑定事件
      */
     bindEvents() {
-        const clearBtn = document.getElementById('clear-orders-btn');
-        if (clearBtn) {
-            clearBtn.addEventListener('click', () => this.clearAllOrders());
+        // Quick Add按钮
+        const quickAddBtn = document.getElementById('quick-add-btn');
+        if (quickAddBtn) {
+            quickAddBtn.addEventListener('click', () => this.openQuickAdd());
         }
-    }
-
+        
+        // Full Add按钮
+        const fullAddBtn = document.getElementById('full-add-btn');
+        if (fullAddBtn) {
+            fullAddBtn.addEventListener('click', () => this.openFullAdd());
+        }
+    },
+    
     /**
-     * 清空所有订单（优化版：完善校验 + 错误处理 + 用户提示）
+     * 打开Quick Add模态框
      */
-    async clearAllOrders() {
-        // 1. 二次确认（增强用户体验）
-        const confirmMsg = '⚠️ 确定清空所有订单记录？\n此操作不可恢复！\n\n当前将清空云存储+本地缓存的订单数据。';
-        if (!confirm(confirmMsg)) {
+    openQuickAdd() {
+        WorkbenchUtils.toggle('quick-add-modal', true);
+        
+        // 预填充默认值
+        document.getElementById('quick-currency').value = 'USD';
+        document.getElementById('quick-rate').value = WorkbenchDashboard.data.rate;
+        document.getElementById('quick-status').value = 'Paid';
+        
+        // 清空表单
+        document.getElementById('quick-customer').value = '';
+        document.getElementById('quick-amount').value = '';
+        document.getElementById('quick-supplier').value = '';
+        document.getElementById('quick-cost').value = '';
+        
+        // 更新供应商下拉
+        this.updateSupplierOptions('quick-supplier');
+        
+        // 聚焦到客户名称输入框
+        setTimeout(() => document.getElementById('quick-customer').focus(), 100);
+    },
+    
+    /**
+     * 打开Full Add模态框
+     */
+    openFullAdd() {
+        WorkbenchUtils.toggle('full-add-modal', true);
+        
+        // 预填充默认值
+        document.getElementById('new-currency').value = 'USD';
+        document.getElementById('new-rate').value = WorkbenchDashboard.data.rate;
+        document.getElementById('new-status').value = 'Inquiry';
+        document.getElementById('new-date').value = WorkbenchUtils.formatDate(new Date(), 'YYYY-MM-DD');
+        
+        // 清空表单
+        document.getElementById('new-customer').value = '';
+        document.getElementById('new-amount').value = '';
+        document.getElementById('new-product').value = '';
+        document.getElementById('new-notes').value = '';
+        document.getElementById('new-supplier').value = '';
+        document.getElementById('new-cost').value = '';
+        
+        // 更新供应商下拉
+        this.updateSupplierOptions('new-supplier');
+        
+        // 聚焦到客户名称输入框
+        setTimeout(() => document.getElementById('new-customer').focus(), 100);
+    },
+    
+    /**
+     * 更新供应商下拉选项
+     */
+    updateSupplierOptions(selectId) {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+        
+        // 清空现有选项
+        select.innerHTML = '<option value="">未指定</option>';
+        
+        // 添加供应商选项
+        WorkbenchDashboard.data.suppliers.forEach(supplier => {
+            const option = document.createElement('option');
+            option.value = supplier.id;
+            option.textContent = supplier.company;
+            select.appendChild(option);
+        });
+    },
+    
+    /**
+     * 🆕 V14.0: 计算Quick Add利润
+     */
+    calculateQuickProfit() {
+        const amount = parseFloat(document.getElementById('quick-amount').value) || 0;
+        const cost = parseFloat(document.getElementById('quick-cost').value) || 0;
+        const currency = document.getElementById('quick-currency').value;
+        const rate = parseFloat(document.getElementById('quick-rate').value) || WorkbenchDashboard.data.rate;
+        
+        // 统一转为RMB计算
+        const revenueRMB = currency === 'CNY' ? amount : amount * rate;
+        const costRMB = currency === 'CNY' ? cost : cost * rate;
+        const profit = revenueRMB - costRMB;
+        const margin = revenueRMB > 0 ? (profit / revenueRMB * 100) : 0;
+        
+        // 更新显示
+        const profitValue = document.getElementById('quick-profit-value');
+        const marginValue = document.getElementById('quick-margin-value');
+        
+        if (profitValue && marginValue) {
+            profitValue.textContent = '¥' + WorkbenchUtils.formatNumber(profit, 0);
+            marginValue.textContent = '(' + margin.toFixed(1) + '%)';
+            
+            // 负毛利红色警告
+            if (profit < 0) {
+                profitValue.className = 'text-red-400 font-bold ml-2';
+            } else {
+                profitValue.className = 'text-green-400 font-bold ml-2';
+            }
+        }
+    },
+    
+    /**
+     * 保存Quick Add订单
+     */
+    async saveQuickOrder() {
+        const customer = document.getElementById('quick-customer').value.trim();
+        const amount = parseFloat(document.getElementById('quick-amount').value);
+        const currency = document.getElementById('quick-currency').value;
+        const rate = parseFloat(document.getElementById('quick-rate').value);
+        const status = document.getElementById('quick-status').value;
+        const supplier = document.getElementById('quick-supplier').value;
+        const cost = parseFloat(document.getElementById('quick-cost').value) || 0;
+        
+        // 验证
+        if (!customer || !amount) {
+            WorkbenchUtils.toast('请填写客户名称和金额', 'warning');
             return;
         }
-
-        try {
-            // 2. 显示加载状态
-            this._toggleLoading(true);
-
-            // 3. 清空云存储订单
-            await this.storage.saveToCloud('orders', []);
+        
+        // 🆕 V13.5: 检查客户是否在档案库
+        const existingCustomer = WorkbenchDashboard.data.customers.find(c => c.company === customer);
+        if (!existingCustomer) {
+            const addToArchive = confirm(`"${customer}" 不在客户库中。\n\n是否添加到客户档案？`);
             
-            // 4. 清空本地缓存订单
-            localStorage.setItem('v5_orders', JSON.stringify([]));
-            
-            // 5. 重新加载数据并渲染
-            await this.loadOrders();
-            this.renderOrders();
-
-            // 6. 提示成功
-            this.utils.toast.success('订单记录已清空（云存储+本地缓存）');
-        } catch (error) {
-            // 7. 错误处理（区分云存储/本地缓存失败）
-            console.error('[Orders] Clear failed:', error);
-            this.utils.toast.error(`清空失败：${error.message}\n已尝试保留本地缓存数据`);
-        } finally {
-            // 8. 隐藏加载状态（无论成功/失败）
-            this._toggleLoading(false);
+            if (addToArchive) {
+                WorkbenchDashboard.data.customers.push({
+                    id: WorkbenchUtils.generateId('CUST'),
+                    company: customer,
+                    contact: '',
+                    country: '',
+                    currency: currency,
+                    notes: '快速新建时添加',
+                    createdAt: new Date().toISOString(),
+                    totalOrders: 0,
+                    totalSales: 0
+                });
+                
+                await WorkbenchStorage.save(
+                    WorkbenchConfig.STORAGE_KEYS.CUSTOMERS,
+                    WorkbenchDashboard.data.customers
+                );
+            }
         }
+        
+        // 🆕 V14.0: 计算毛利
+        const revenueRMB = currency === 'CNY' ? amount : amount * rate;
+        const costRMB = currency === 'CNY' ? cost : cost * rate;
+        const grossProfit = revenueRMB - costRMB;
+        const grossMargin = revenueRMB > 0 ? (grossProfit / revenueRMB * 100) : 0;
+        
+        // 创建订单
+        const order = {
+            id: WorkbenchUtils.generatePINumber(),
+            customer: customer,
+            total: amount,
+            currency: currency,
+            exchangeRate: rate,
+            kanbanStatus: status,
+            status: status,
+            date: new Date().toISOString(),
+            product: '',
+            notes: '',
+            // 🆕 V14.0: 成本和利润字段
+            supplier: supplier,
+            cost: cost,
+            costCurrency: currency,
+            costExchangeRate: rate,
+            grossProfit: grossProfit,
+            grossMargin: grossMargin
+        };
+        
+        // 保存订单
+        WorkbenchDashboard.data.orders.push(order);
+        await WorkbenchStorage.save(
+            WorkbenchConfig.STORAGE_KEYS.ORDERS,
+            WorkbenchDashboard.data.orders
+        );
+        
+        // 🔥 V13: 如果是Paid订单，立即检查红线
+        if (status === 'Paid') {
+            WorkbenchUtils.toast('🎉 Paid订单已录入！正在检查红屏状态...', 'success');
+            setTimeout(() => {
+                WorkbenchDashboard.checkCashRedLine();
+                WorkbenchDashboard.updateDashboard();
+            }, 500);
+        } else {
+            WorkbenchUtils.toast('订单创建成功', 'success');
+        }
+        
+        // 关闭模态框
+        WorkbenchUtils.toggle('quick-add-modal', false);
+        
+        // 更新看板和Dashboard
+        this.updateKanban();
+        WorkbenchDashboard.updateDashboard();
+    },
+    
+    /**
+     * 保存Full Add订单
+     */
+    async saveFullOrder() {
+        const customer = document.getElementById('new-customer').value.trim();
+        const amount = parseFloat(document.getElementById('new-amount').value);
+        const currency = document.getElementById('new-currency').value;
+        const rate = parseFloat(document.getElementById('new-rate').value);
+        const status = document.getElementById('new-status').value;
+        const date = document.getElementById('new-date').value;
+        const product = document.getElementById('new-product').value.trim();
+        const notes = document.getElementById('new-notes').value.trim();
+        const supplier = document.getElementById('new-supplier').value;
+        const cost = parseFloat(document.getElementById('new-cost').value) || 0;
+        
+        // 验证
+        if (!customer || !amount) {
+            WorkbenchUtils.toast('请填写必填项', 'warning');
+            return;
+        }
+        
+        // 计算毛利
+        const revenueRMB = currency === 'CNY' ? amount : amount * rate;
+        const costRMB = currency === 'CNY' ? cost : cost * rate;
+        const grossProfit = revenueRMB - costRMB;
+        const grossMargin = revenueRMB > 0 ? (grossProfit / revenueRMB * 100) : 0;
+        
+        // 创建订单
+        const order = {
+            id: WorkbenchUtils.generatePINumber(),
+            customer: customer,
+            total: amount,
+            currency: currency,
+            exchangeRate: rate,
+            kanbanStatus: status,
+            status: status,
+            date: date ? new Date(date).toISOString() : new Date().toISOString(),
+            product: product,
+            notes: notes,
+            supplier: supplier,
+            cost: cost,
+            costCurrency: currency,
+            costExchangeRate: rate,
+            grossProfit: grossProfit,
+            grossMargin: grossMargin
+        };
+        
+        // 保存订单
+        WorkbenchDashboard.data.orders.push(order);
+        await WorkbenchStorage.save(
+            WorkbenchConfig.STORAGE_KEYS.ORDERS,
+            WorkbenchDashboard.data.orders
+        );
+        
+        if (status === 'Paid') {
+            WorkbenchUtils.toast('🎉 Paid订单已录入！正在检查红屏状态...', 'success');
+            setTimeout(() => {
+                WorkbenchDashboard.checkCashRedLine();
+                WorkbenchDashboard.updateDashboard();
+            }, 500);
+        } else {
+            WorkbenchUtils.toast('订单创建成功', 'success');
+        }
+        
+        // 关闭模态框
+        WorkbenchUtils.toggle('full-add-modal', false);
+        
+        // 更新看板和Dashboard
+        this.updateKanban();
+        WorkbenchDashboard.updateDashboard();
+    },
+    
+    /**
+     * 更新看板显示
+     */
+    updateKanban() {
+        console.log('[Orders] Updating kanban...');
+        
+        // 按状态分组订单
+        const columns = {
+            'Inquiry': [],
+            'Quotation': [],
+            'Negotiation': [],
+            'Paid': [],
+            'Production': [],
+            'Shipped': [],
+            'Delivered': []
+        };
+        
+        WorkbenchDashboard.data.orders.forEach(order => {
+            const status = order.kanbanStatus || order.status || 'Inquiry';
+            if (columns[status]) {
+                columns[status].push(order);
+            }
+        });
+        
+        // 更新每列
+        Object.keys(columns).forEach(status => {
+            const columnId = `kanban-${status.toLowerCase()}`;
+            const column = document.getElementById(columnId);
+            
+            if (column) {
+                // 清空现有卡片
+                column.innerHTML = '';
+                
+                // 添加订单卡片
+                columns[status].forEach(order => {
+                    const card = this.createOrderCard(order);
+                    column.appendChild(card);
+                });
+                
+                // 显示数量
+                const countBadge = document.getElementById(`count-${status.toLowerCase()}`);
+                if (countBadge) {
+                    countBadge.textContent = columns[status].length;
+                }
+            }
+        });
+    },
+    
+    /**
+     * 创建订单卡片
+     */
+    createOrderCard(order) {
+        const card = document.createElement('div');
+        card.className = 'kanban-card bg-slate-800 p-3 rounded-lg border border-slate-700 cursor-pointer hover:border-blue-500';
+        card.onclick = () => this.editOrder(order.id);
+        
+        // 🆕 V14.0: 显示利润信息
+        const profitHTML = order.cost > 0 ? `
+            <div class="text-xs mt-2 pt-2 border-t border-slate-700">
+                <div class="flex justify-between">
+                    <span class="text-slate-400">毛利:</span>
+                    <span class="${order.grossProfit >= 0 ? 'text-green-400' : 'text-red-400'}">
+                        ¥${WorkbenchUtils.formatNumber(order.grossProfit, 0)}
+                        (${order.grossMargin.toFixed(1)}%)
+                    </span>
+                </div>
+            </div>
+        ` : '';
+        
+        card.innerHTML = `
+            <div class="text-sm font-bold text-white">${order.id}</div>
+            <div class="text-xs text-slate-300 mt-1">${order.customer}</div>
+            ${order.product ? `<div class="text-xs text-slate-400 mt-1">${order.product}</div>` : ''}
+            <div class="text-sm font-bold text-blue-400 mt-2">
+                ${WorkbenchUtils.getCurrencySymbol(order.currency)}${WorkbenchUtils.formatNumber(order.total, 2)}
+            </div>
+            ${profitHTML}
+            <div class="text-xs text-slate-500 mt-2">
+                ${WorkbenchUtils.formatDate(order.date, 'YYYY-MM-DD')}
+            </div>
+        `;
+        
+        return card;
+    },
+    
+    /**
+     * 编辑订单
+     */
+    editOrder(orderId) {
+        const order = WorkbenchDashboard.data.orders.find(o => o.id === orderId);
+        if (!order) return;
+        
+        // 填充编辑表单
+        document.getElementById('edit-id').value = order.id;
+        document.getElementById('edit-customer').value = order.customer;
+        document.getElementById('edit-amount').value = order.total;
+        document.getElementById('edit-currency').value = order.currency;
+        document.getElementById('edit-rate').value = order.exchangeRate;
+        document.getElementById('edit-status').value = order.kanbanStatus || order.status;
+        document.getElementById('edit-date').value = WorkbenchUtils.formatDate(order.date, 'YYYY-MM-DD');
+        document.getElementById('edit-product').value = order.product || '';
+        document.getElementById('edit-notes').value = order.notes || '';
+        document.getElementById('edit-supplier').value = order.supplier || '';
+        document.getElementById('edit-cost').value = order.cost || 0;
+        
+        // 更新供应商下拉
+        this.updateSupplierOptions('edit-supplier');
+        
+        // 如果订单缺少成本数据，显示提示
+        if (order._needsCostUpdate) {
+            WorkbenchUtils.toast('⚠️ 该订单缺少成本数据，请补录', 'warning');
+        }
+        
+        // 打开编辑模态框
+        WorkbenchUtils.toggle('edit-modal', true);
+    },
+    
+    /**
+     * 更新订单
+     */
+    async updateOrder() {
+        const id = document.getElementById('edit-id').value;
+        const order = WorkbenchDashboard.data.orders.find(o => o.id === id);
+        if (!order) return;
+        
+        // 更新字段
+        order.customer = document.getElementById('edit-customer').value.trim();
+        order.total = parseFloat(document.getElementById('edit-amount').value);
+        order.currency = document.getElementById('edit-currency').value;
+        order.exchangeRate = parseFloat(document.getElementById('edit-rate').value);
+        order.kanbanStatus = document.getElementById('edit-status').value;
+        order.status = document.getElementById('edit-status').value;
+        order.date = new Date(document.getElementById('edit-date').value).toISOString();
+        order.product = document.getElementById('edit-product').value.trim();
+        order.notes = document.getElementById('edit-notes').value.trim();
+        order.supplier = document.getElementById('edit-supplier').value;
+        order.cost = parseFloat(document.getElementById('edit-cost').value) || 0;
+        
+        // 重新计算毛利
+        const revenueRMB = order.currency === 'CNY' ? order.total : order.total * order.exchangeRate;
+        const costRMB = order.currency === 'CNY' ? order.cost : order.cost * order.exchangeRate;
+        order.grossProfit = revenueRMB - costRMB;
+        order.grossMargin = revenueRMB > 0 ? (order.grossProfit / revenueRMB * 100) : 0;
+        order._needsCostUpdate = false; // 清除标记
+        
+        // 保存
+        await WorkbenchStorage.save(
+            WorkbenchConfig.STORAGE_KEYS.ORDERS,
+            WorkbenchDashboard.data.orders
+        );
+        
+        WorkbenchUtils.toast('订单已更新', 'success');
+        WorkbenchUtils.toggle('edit-modal', false);
+        
+        // 如果是Paid订单，检查红线
+        if (order.kanbanStatus === 'Paid') {
+            WorkbenchDashboard.checkCashRedLine();
+        }
+        
+        this.updateKanban();
+        WorkbenchDashboard.updateDashboard();
+    },
+    
+    /**
+     * 删除订单
+     */
+    async deleteOrder() {
+        const id = document.getElementById('edit-id').value;
+        
+        if (!confirm('确定要删除这个订单吗？')) {
+            return;
+        }
+        
+        WorkbenchDashboard.data.orders = WorkbenchDashboard.data.orders.filter(o => o.id !== id);
+        
+        await WorkbenchStorage.save(
+            WorkbenchConfig.STORAGE_KEYS.ORDERS,
+            WorkbenchDashboard.data.orders
+        );
+        
+        WorkbenchUtils.toast('订单已删除', 'success');
+        WorkbenchUtils.toggle('edit-modal', false);
+        
+        this.updateKanban();
+        WorkbenchDashboard.updateDashboard();
+        WorkbenchDashboard.checkCashRedLine();
     }
-}
-
-// 初始化调用（确保 DOM 加载完成后执行）
-document.addEventListener('DOMContentLoaded', async () => {
-    const ordersModule = new WorkbenchOrders();
-    await ordersModule.init();
-    // 挂载到全局，方便其他模块调用
-    window.V5Workbench = window.V5Workbench || {};
-    window.V5Workbench.orders = ordersModule;
-});
+};
