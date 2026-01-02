@@ -299,3 +299,11 @@ const WorkbenchDashboard = {
         `).join('');
     }
 };
+// ============================================
+// js/workbench-dashboard.js - 末尾添加
+// ============================================
+
+// ... (所有现有代码保持不变) ...
+
+// 🔥 FIX: 显式挂载到window对象
+window.WorkbenchDashboard = WorkbenchDashboard;
