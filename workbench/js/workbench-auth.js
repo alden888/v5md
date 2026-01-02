@@ -1,19 +1,16 @@
 // ============================================
-// V14.0 ERP - AUTHENTICATION MODULE
+// V14.1 ERP - AUTHENTICATION MODULE
 // ============================================
 
 const WorkbenchAuth = {
     init() {
-        console.log('[Auth] Initializing authentication...');
-        // Simplified auth - can be extended
+        console.log('[Auth] Initializing...');
         return this;
     },
     
     checkAuth() {
-        // Simple check - can be extended with real auth
-        return true;
+        return true; // 简化版：总是通过
     }
 };
 
-// 🔥 FIX: 显式挂载到 window 对象
 window.WorkbenchAuth = WorkbenchAuth;

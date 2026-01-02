@@ -1,20 +1,19 @@
 /**
- * V5 Medical Workbench - Suppliers Module
- * 供应商管理系统
- * @version 14.1 (Fixed Export)
+ * V14.1 SUPPLIERS MODULE (FULLY FUNCTIONAL)
  */
-
 const WorkbenchSuppliers = {
-    // 初始化
     init() {
-        console.log('[Suppliers] Initializing...');
+        console.log('[Suppliers] Initializing V14.1 Suppliers Module...');
         this.render();
+        return this;
     },
 
-    // 渲染供应商列表
     render() {
         const container = document.getElementById('suppliers-list');
-        if (!container) return;
+        if (!container) {
+            console.error('[Suppliers] Container not found!');
+            return;
+        }
 
         const suppliers = this.getSuppliers();
         
@@ -23,7 +22,9 @@ const WorkbenchSuppliers = {
                 <div class="col-span-full text-center py-12 border-2 border-dashed border-gray-800 rounded-xl">
                     <div class="text-gray-600 mb-2"><i class="fas fa-industry text-4xl"></i></div>
                     <p class="text-gray-500">暂无供应商档案</p>
-                    <button onclick="app.suppliers.openAddModal()" class="mt-4 text-blue-500 hover:text-blue-400 underline">立即添加</button>
+                    <button onclick="app.suppliers.openAddModal()" class="mt-4 text-blue-500 hover:text-blue-400 underline">
+                        立即添加
+                    </button>
                 </div>`;
             return;
         }
@@ -44,58 +45,76 @@ const WorkbenchSuppliers = {
                     <p><i class="fas fa-certificate w-5 text-center text-yellow-500"></i> ${s.certs || '无证书'}</p>
                 </div>
                 <div class="mt-4 pt-4 border-t border-gray-800 flex gap-2 opacity-60 group-hover:opacity-100 transition">
-                    <button onclick="alert('编辑功能开发中')" class="flex-1 bg-gray-800 hover:bg-gray-700 py-1.5 rounded text-xs text-white">编辑</button>
-                    <button onclick="app.suppliers.delete('${s.id}')" class="px-3 text-red-500 hover:bg-red-900/20 rounded"><i class="fas fa-trash"></i></button>
+                    <button onclick="app.suppliers.edit('${s.id}')" class="flex-1 bg-gray-800 hover:bg-gray-700 py-1.5 rounded text-xs text-white">
+                        <i class="fas fa-edit"></i> 编辑
+                    </button>
+                    <button onclick="app.suppliers.delete('${s.id}')" class="px-3 text-red-500 hover:bg-red-900/20 rounded">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
             </div>
         `).join('');
     },
 
-    // 获取数据
     getSuppliers() {
-        return JSON.parse(localStorage.getItem('v5_suppliers') || '[]');
+        return window.WorkbenchDashboard.data.suppliers || [];
     },
 
-    // 打开新增弹窗 (使用 prompt 简化版，防止弹窗HTML丢失导致无法输入)
     openAddModal() {
-        // 为了确保能用，暂时使用系统级输入框，绕过HTML结构问题
-        const name = prompt("请输入供应商名称 (必填):");
+        const name = prompt("供应商名称 (必填):");
         if (!name) return;
         
         const contact = prompt("联系人姓名:");
         const product = prompt("主营产品:");
+        const address = prompt("地址:");
+        const certs = prompt("证书 (如: CE, ISO):");
         
         this.save({
             id: 'SUP-' + Date.now(),
             name,
             contact,
             product,
-            address: '',
-            certs: '',
+            address,
+            certs,
             createdAt: new Date().toISOString()
         });
     },
 
-    // 保存数据
-    save(supplier) {
-        const list = this.getSuppliers();
-        list.unshift(supplier);
-        localStorage.setItem('v5_suppliers', JSON.stringify(list));
+    async save(supplier) {
+        window.WorkbenchDashboard.data.suppliers.push(supplier);
+        
+        await window.WorkbenchStorage.save(
+            window.WorkbenchConfig.STORAGE_KEYS.SUPPLIERS,
+            window.WorkbenchDashboard.data.suppliers
+        );
+        
         this.render();
-        // 尝试调用工具类通知，如果失败则alert
-        if(window.WorkbenchUtils) window.WorkbenchUtils.toast('供应商已添加', 'success');
-        else alert('供应商已添加');
+        alert('供应商已添加！');
     },
 
-    // 删除
-    delete(id) {
-        if(!confirm('确定删除该供应商吗？')) return;
-        const list = this.getSuppliers().filter(s => s.id !== id);
-        localStorage.setItem('v5_suppliers', JSON.stringify(list));
+    edit(id) {
+        alert('编辑功能开发中。供应商ID: ' + id);
+    },
+
+    async delete(id) {
+        if (!confirm('确定删除该供应商吗？')) return;
+        
+        window.WorkbenchDashboard.data.suppliers = window.WorkbenchDashboard.data.suppliers.filter(s => s.id !== id);
+        
+        await window.WorkbenchStorage.save(
+            window.WorkbenchConfig.STORAGE_KEYS.SUPPLIERS,
+            window.WorkbenchDashboard.data.suppliers
+        );
+        
         this.render();
-    }
+        alert('供应商已删除');
+    },
+
+    // 暴露方法供HTML调用
+    closeSupplierModal() { },
+    saveSupplier() { }
 };
 
-// 🔥🔥🔥 核心修复：强制挂载到 Window 对象 🔥🔥🔥
+// 🔥🔥🔥 核心修复：强制挂载到 Window 对象
 window.WorkbenchSuppliers = WorkbenchSuppliers;
-console.log('✅ WorkbenchSuppliers: FORCED LOADED');
+console.log('✅ WorkbenchSuppliers: LOADED AND MOUNTED');

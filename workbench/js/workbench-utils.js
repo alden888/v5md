@@ -1,14 +1,58 @@
 // ============================================
-// V14.0 ERP - UTILITIES MODULE
+// V14.1 ERP - UTILITIES MODULE (ENHANCED)
 // ============================================
 
 const WorkbenchUtils = {
     /**
-     * 格式化数字 (千分位)
+     * 显示Toast通知
+     */
+    toast(message, type = 'info', duration = 3000) {
+        const container = document.getElementById('toast-container');
+        if (!container) {
+            console.warn('[Utils] Toast container not found');
+            return;
+        }
+        
+        const icons = {
+            success: '✅',
+            error: '❌',
+            warning: '⚠️',
+            info: 'ℹ️'
+        };
+        
+        const colors = {
+            success: 'bg-green-600 border-green-500',
+            error: 'bg-red-600 border-red-500',
+            warning: 'bg-yellow-600 border-yellow-500',
+            info: 'bg-blue-600 border-blue-500'
+        };
+        
+        const toast = document.createElement('div');
+        toast.className = `${colors[type]} border-2 text-white px-6 py-3 rounded-lg shadow-2xl mb-3 flex items-center gap-3 animate-slide-in`;
+        toast.innerHTML = `
+            <span class="text-2xl">${icons[type]}</span>
+            <span class="flex-1">${message}</span>
+            <button onclick="this.parentElement.remove()" class="text-white/70 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        
+        container.appendChild(toast);
+        
+        // 自动移除
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(400px)';
+            setTimeout(() => toast.remove(), 300);
+        }, duration);
+    },
+    
+    /**
+     * 格式化数字（千分位）
      */
     formatNumber(num, decimals = 0) {
         if (isNaN(num)) return '0';
-        return Number(num).toLocaleString('en-US', {
+        return Number(num).toLocaleString('zh-CN', {
             minimumFractionDigits: decimals,
             maximumFractionDigits: decimals
         });
@@ -18,7 +62,7 @@ const WorkbenchUtils = {
      * 格式化货币
      */
     formatCurrency(amount, currency = 'CNY') {
-        const config = WorkbenchConfig.CURRENCIES[currency];
+        const config = window.WorkbenchConfig?.CURRENCIES[currency];
         if (!config) return `${amount}`;
         
         return `${config.symbol}${this.formatNumber(amount, 2)}`;
@@ -30,7 +74,7 @@ const WorkbenchUtils = {
     convertToRMB(amount, currency, exchangeRate = null) {
         if (currency === 'CNY') return amount;
         
-        const rate = exchangeRate || WorkbenchConfig.CURRENCIES[currency]?.rate || 1;
+        const rate = exchangeRate || window.WorkbenchConfig?.CURRENCIES[currency]?.rate || 1;
         return amount * rate;
     },
     
@@ -79,48 +123,13 @@ const WorkbenchUtils = {
     },
     
     /**
-     * 计算时间差 (小时)
+     * 计算时间差（小时）
      */
     getHoursDiff(date1, date2 = new Date()) {
         const d1 = new Date(date1);
         const d2 = new Date(date2);
         const diff = Math.abs(d2.getTime() - d1.getTime());
         return diff / (1000 * 60 * 60);
-    },
-    
-    /**
-     * 显示Toast消息
-     */
-    toast(message, type = 'info', duration = 3000) {
-        const toast = document.getElementById('toast');
-        if (!toast) return;
-        
-        const icons = {
-            success: '✅',
-            error: '❌',
-            warning: '⚠️',
-            info: 'ℹ️'
-        };
-        
-        const colors = {
-            success: 'bg-green-500',
-            error: 'bg-red-500',
-            warning: 'bg-yellow-500',
-            info: 'bg-blue-500'
-        };
-        
-        toast.innerHTML = `
-            <div class="${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3">
-                <span class="text-2xl">${icons[type]}</span>
-                <span>${message}</span>
-            </div>
-        `;
-        
-        toast.classList.remove('hidden');
-        
-        setTimeout(() => {
-            toast.classList.add('hidden');
-        }, duration);
     },
     
     /**
@@ -205,9 +214,24 @@ const WorkbenchUtils = {
             this.toast('已复制到剪贴板', 'success');
             return true;
         } catch (error) {
-            console.error('Copy failed:', error);
-            this.toast('复制失败', 'error');
-            return false;
+            console.error('[Utils] Copy failed:', error);
+            // 降级方案
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                this.toast('已复制到剪贴板', 'success');
+                return true;
+            } catch (e) {
+                this.toast('复制失败', 'error');
+                return false;
+            } finally {
+                document.body.removeChild(textarea);
+            }
         }
     },
     
@@ -260,16 +284,60 @@ const WorkbenchUtils = {
      * 获取国家信息
      */
     getCountry(code) {
-        return WorkbenchConfig.COUNTRIES.find(c => c.code === code);
+        return window.WorkbenchConfig?.COUNTRIES.find(c => c.code === code);
     },
     
     /**
      * 获取货币符号
      */
     getCurrencySymbol(currency) {
-        return WorkbenchConfig.CURRENCIES[currency]?.symbol || currency;
+        return window.WorkbenchConfig?.CURRENCIES[currency]?.symbol || currency;
+    },
+    
+    /**
+     * 确认对话框（带样式）
+     */
+    confirm(message, title = '确认操作') {
+        return window.confirm(`${title}\n\n${message}`);
+    },
+    
+    /**
+     * 安全地调用函数
+     */
+    safeCall(func, ...args) {
+        try {
+            if (typeof func === 'function') {
+                return func(...args);
+            }
+        } catch (error) {
+            console.error('[Utils] Safe call failed:', error);
+            return null;
+        }
     }
 };
 
-// 🔥 FIX: 显式挂载到 window 对象
+// 添加slide-in动画到样式
+if (!document.getElementById('utils-animations')) {
+    const style = document.createElement('style');
+    style.id = 'utils-animations';
+    style.textContent = `
+        @keyframes slide-in {
+            from {
+                opacity: 0;
+                transform: translateX(400px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .animate-slide-in {
+            animation: slide-in 0.3s ease-out;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// 🔥 挂载到Window
 window.WorkbenchUtils = WorkbenchUtils;
