@@ -8,10 +8,7 @@ const WorkbenchSuppliers = {
      */
     init() {
         console.log('[Suppliers] Initializing suppliers management module...');
-        
-        // 绑定Tab点击事件
         this.bindEvents();
-        
         return this;
     },
     
@@ -19,7 +16,6 @@ const WorkbenchSuppliers = {
      * 绑定事件
      */
     bindEvents() {
-        // 🔥 FIX: 确保供应商Tab点击事件正确绑定
         const suppliersTab = document.querySelector('[data-tab="suppliers"]');
         if (suppliersTab) {
             suppliersTab.addEventListener('click', () => {
@@ -28,7 +24,6 @@ const WorkbenchSuppliers = {
             });
         }
         
-        // 新增供应商按钮
         const addBtn = document.getElementById('add-supplier-btn');
         if (addBtn) {
             addBtn.addEventListener('click', () => this.openAddSupplier());
@@ -36,17 +31,15 @@ const WorkbenchSuppliers = {
     },
     
     /**
-     * 🔥 FIX: 显示供应商列表（使用正确的元素ID）
+     * 显示供应商列表
      */
     showSuppliers() {
         console.log('[Suppliers] Showing suppliers tab');
         
-        // 隐藏其他Tab
         document.querySelectorAll('.tab-content').forEach(tab => {
             tab.classList.remove('active');
         });
         
-        // 显示供应商Tab - 🔥 FIX: 正确的ID是 tab-suppliers，不是 suppliers-tab
         const suppliersContent = document.getElementById('tab-suppliers');
         if (suppliersContent) {
             suppliersContent.classList.add('active');
@@ -55,7 +48,6 @@ const WorkbenchSuppliers = {
             console.error('[Suppliers] tab-suppliers element not found!');
         }
         
-        // 更新供应商列表
         this.render();
     },
     
@@ -90,7 +82,7 @@ const WorkbenchSuppliers = {
     },
     
     /**
-     * 更新供应商列表（已废弃，使用 render 代替）
+     * 更新供应商列表
      */
     updateSuppliersList() {
         console.warn('[Suppliers] updateSuppliersList is deprecated, use render() instead');
@@ -193,14 +185,12 @@ const WorkbenchSuppliers = {
         };
         
         if (id) {
-            // 更新现有供应商
             const supplier = WorkbenchDashboard.data.suppliers.find(s => s.id === id);
             if (supplier) {
                 Object.assign(supplier, supplierData);
             }
             WorkbenchUtils.toast('供应商已更新', 'success');
         } else {
-            // 新增供应商
             WorkbenchDashboard.data.suppliers.push({
                 id: WorkbenchUtils.generateId('SUPP'),
                 ...supplierData,
@@ -239,5 +229,4 @@ const WorkbenchSuppliers = {
     }
 };
 
-// 🔥 FIX: 显式挂载到 window 对象
 window.WorkbenchSuppliers = WorkbenchSuppliers;
