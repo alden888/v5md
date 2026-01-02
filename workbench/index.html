@@ -3,21 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V5 Medical 战时指挥台 V14.0 ERP | 供应链·财务·真实利润</title>
-    
-    <!-- Tailwind CSS CDN -->
+    <title>V5 Medical 战时指挥台 V14.0 ERP</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- 🆕 V14.0: Modular CSS -->
     <link rel="stylesheet" href="css/workbench-v14.css">
 </head>
-
 <body class="bg-black text-white">
 
-<!-- 🔥 IRON CURTAIN - Survival Gate -->
+<!-- 🔥 IRON CURTAIN -->
 <div id="iron-curtain" class="iron-curtain">
     <div class="survival-gate">
         <div class="text-center mb-8">
@@ -30,75 +23,49 @@
             <p class="text-white font-bold mb-4 text-center">
                 今天唯一能带回<span class="text-red-500 text-xl">现金</span>的三件事是什么？
             </p>
-            <p class="text-xs text-slate-500 text-center mb-6">
-                (只有填完，才能进入主界面)
-            </p>
         </div>
         
         <div class="space-y-4 mb-8">
             <div>
                 <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">Action #1</label>
-                <input 
-                    type="text" 
-                    id="action-1" 
-                    class="survival-input" 
-                    placeholder="例: 催 ABC Medical 签 PI-250101 (5000$)"
-                />
+                <input type="text" id="action-1" class="survival-input" 
+                       placeholder="例: 催 ABC Medical 签 PI-250101 (5000$)">
             </div>
             <div>
                 <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">Action #2</label>
-                <input 
-                    type="text" 
-                    id="action-2" 
-                    class="survival-input" 
-                    placeholder="例: 跟进土耳其客户确认付款时间"
-                />
+                <input type="text" id="action-2" class="survival-input" 
+                       placeholder="例: 跟进土耳其客户确认付款时间">
             </div>
             <div>
                 <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">Action #3</label>
-                <input 
-                    type="text" 
-                    id="action-3" 
-                    class="survival-input" 
-                    placeholder="例: 联系 Stripe 催账"
-                />
+                <input type="text" id="action-3" class="survival-input" 
+                       placeholder="例: 联系 Stripe 催账">
             </div>
         </div>
         
-        <button 
-            id="battle-start-btn" 
-            class="battle-start-btn" 
-            disabled
-        >
+        <button id="battle-start-btn" class="battle-start-btn" disabled>
             <i class="fas fa-fist-raised mr-2"></i> 开始战斗
         </button>
         
-        <!-- 🔥 V13.1 HOTFIX: Emergency Override Button -->
-        <button 
-            id="emergency-override-btn"
-            class="mt-4 w-full text-xs text-slate-600 hover:text-slate-400 transition text-center py-2 rounded"
-            style="text-decoration: underline;"
-        >
+        <button id="emergency-override-btn" 
+                class="mt-4 w-full text-xs text-slate-600 hover:text-slate-400 transition text-center py-2 rounded"
+                style="text-decoration: underline;">
             ⚡ 10分钟紧急进入（仅限客户来电等突发情况）
         </button>
-        
-        <p class="text-xs text-center text-slate-600 mt-4">
-            V14.0 ERP Edition · 供应链管理 · 财务核算 · 真实利润
-        </p>
     </div>
 </div>
 
-<!-- Fixed Header (Dynamic Color) -->
-<header id="main-header" class="fixed top-0 left-0 right-0 header-normal z-50 h-[70px] transition-all duration-300">
+<!-- Header -->
+<header id="main-header" class="fixed top-0 left-0 right-0 header-normal z-50 h-[70px]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
         <div class="flex items-center gap-4">
             <div class="flex items-center gap-3">
-                <div class="bg-danger text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg shadow-md border-2 border-white">
+                <div class="bg-red-600 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg">
                     ⚔️
                 </div>
                 <div>
                     <h1 class="font-black text-lg leading-tight" id="header-title">
-                        战时指挥台 <span class="text-xs bg-danger text-white px-2 py-0.5 rounded-full">V14.0</span>
+                        战时指挥台 <span class="text-xs bg-red-600 text-white px-2 py-0.5 rounded-full">V14.0</span>
                     </h1>
                     <div class="text-[10px] uppercase tracking-wider font-bold" id="header-subtitle">
                         ERP EDITION · 供应链 · 财务 · 真实利润
@@ -106,37 +73,20 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Critical Warning (Hidden by default) -->
-        <div id="critical-warning" class="critical-warning hidden">
-            <i class="fas fa-exclamation-triangle text-xl"></i>
-            <span id="warning-text">资金链警告</span>
-        </div>
-        
-        <div class="flex items-center gap-4">
-            <button onclick="app.feishu.openSettings()" class="text-sm px-3 py-1.5 rounded-lg hover:bg-red-900 transition-colors font-bold" id="settings-btn">
-                <i class="fas fa-cog mr-1"></i><span class="hidden md:inline">设置</span>
-            </button>
-            <button onclick="app.exportData()" class="hidden md:block text-sm px-3 py-1.5 rounded-lg hover:bg-red-900 transition-colors font-bold">
-                <i class="fas fa-download mr-1"></i> 备份
-            </button>
-        </div>
     </div>
 </header>
 
-<!-- 🔥 TODAY'S 3 CASH ACTIONS Banner -->
+<!-- Actions Banner -->
 <div id="cash-actions-banner" class="cash-actions-banner" style="top: 70px;">
     <div class="max-w-7xl mx-auto">
         <h3 class="text-sm font-black text-red-500 mb-3 uppercase tracking-wider flex items-center gap-2">
             <i class="fas fa-bullseye"></i> Today's 3 Cash Actions
         </h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="actions-display">
-            <!-- Will be populated by JS -->
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="actions-display"></div>
     </div>
 </div>
 
-<!-- Tab Navigation -->
+<!-- Tabs -->
 <nav class="fixed top-[70px] left-0 right-0 bg-black border-b border-gray-800 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex gap-2 overflow-x-auto horizontal-scroll">
@@ -153,7 +103,7 @@
     </div>
 </nav>
 
-<!-- Main Content Area -->
+<!-- Main Content -->
 <main class="pb-8 px-4 sm:px-6" style="padding-top: calc(70px + 130px + 55px);">
     <div class="max-w-7xl mx-auto">
         
@@ -161,10 +111,9 @@
         <div id="tab-dashboard" class="tab-content active">
             <div class="mb-6">
                 <h2 class="text-2xl font-black mb-2 text-red-500 uppercase">现金流视图</h2>
-                <p class="text-sm text-slate-500">生存指标 · 实时监控 · 无情数据</p>
             </div>
             
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="cash-metric">
                     <div class="cash-metric-label">年度目标 vs 实际</div>
                     <div class="flex items-baseline gap-4 mb-4">
@@ -173,7 +122,7 @@
                         <div class="text-3xl font-bold text-slate-500" id="cash-target">¥500w</div>
                     </div>
                     <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
-                        <div id="cash-progress" class="bg-gradient-to-r from-red-600 to-red-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                        <div id="cash-progress" class="bg-gradient-to-r from-red-600 to-red-400 h-full" style="width: 0%"></div>
                     </div>
                     <div class="text-right mt-2">
                         <span class="text-sm font-bold text-slate-400">达成率: </span>
@@ -185,7 +134,6 @@
                     <div class="cash-metric-label">本月缺口 & 大单进度</div>
                     <div class="flex items-center gap-2 mb-4">
                         <div class="cash-metric-value text-orange-500" id="monthly-gap">¥0w</div>
-                        <div class="text-sm text-slate-500">/月</div>
                     </div>
                     <div class="flex items-center gap-2 p-3 bg-black border border-slate-700 rounded-lg mb-3">
                         <i class="fas fa-calendar-alt text-orange-500"></i>
@@ -198,7 +146,6 @@
                         <div class="text-xs text-blue-300 uppercase mb-1">🚢 大单进行中</div>
                         <div class="flex items-center gap-2">
                             <div class="text-2xl font-black text-blue-400" id="big-deals-count">0</div>
-                            <div class="text-xs text-blue-500">笔</div>
                         </div>
                         <div class="text-xs text-blue-400 mt-1" id="big-deals-value">价值 ¥0</div>
                     </div>
@@ -207,7 +154,7 @@
                 <div id="last-income-card" class="last-income-card">
                     <div class="cash-metric-label text-white">最近一笔回款</div>
                     <div class="flex items-center gap-3 mb-3">
-                        <i class="fas fa-money-bill-wave text-4xl" id="income-icon"></i>
+                        <i class="fas fa-money-bill-wave text-4xl"></i>
                         <div>
                             <div class="text-2xl font-black text-white" id="last-income-amount">$0</div>
                             <div class="text-xs text-slate-300" id="last-income-customer">暂无数据</div>
@@ -224,41 +171,21 @@
         
         <!-- Kanban Tab -->
         <div id="tab-kanban" class="tab-content">
-            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                    <h2 class="text-2xl font-black mb-2 text-red-500 uppercase">订单战场</h2>
-                    <p class="text-sm text-slate-500">拖拽更新 · 飞书推送 · 聚焦回款</p>
-                </div>
-                <button id="full-add-btn" class="bg-danger hover:bg-danger-dark text-white px-6 py-3 rounded-lg font-bold transition shadow-md flex items-center justify-center gap-2 uppercase">
-                    <i class="fas fa-plus"></i> 新增订单
-                </button>
-            </div>
-            
             <div class="text-center text-slate-400 py-12">订单看板加载中...</div>
         </div>
         
         <!-- CRM Tab -->
         <div id="tab-crm" class="tab-content">
-            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                    <h2 class="text-2xl font-black mb-2 text-green-500 uppercase">客户档案 (CRM)</h2>
-                    <p class="text-sm text-slate-500">客户管理 · 一键开单 · 智能联想</p>
-                </div>
-            </div>
-            
-            <div id="customer-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="text-center text-slate-400 py-12">客户档案加载中...</div>
-            </div>
+            <div class="text-center text-slate-400 py-12">客户档案加载中...</div>
         </div>
         
     </div>
 </main>
 
-<!-- Modals and Toast go here (keeping them compact) -->
-<div id="toast" class="toast"></div>
+<!-- Toast -->
+<div id="toast" class="fixed bottom-8 right-8 z-[9999] hidden"></div>
 
-<!-- ========== V14.0 MODULAR JAVASCRIPT ========== -->
-<!-- 🔥 FIX: 正确的加载顺序，移除不存在的 auth.js -->
+<!-- 🔥 CRITICAL FIX: 正确的模块加载顺序 -->
 <script src="js/workbench-config.js"></script>
 <script src="js/workbench-utils.js"></script>
 <script src="js/workbench-storage.js"></script>
@@ -268,185 +195,231 @@
 <script src="js/workbench-finance.js"></script>
 
 <script>
-// ========== V14.0: GLOBAL APP INITIALIZATION ========== 
-document.addEventListener('DOMContentLoaded', async function() {
-    console.log('[V14.0 ERP] Initializing...');
+// ========== V14.0 INITIALIZATION ========== 
+(function() {
+    'use strict';
     
-    // 1️⃣ 检查核心模块
-    const requiredModules = [
-        'WorkbenchConfig', 'WorkbenchUtils', 'WorkbenchStorage', 
-        'WorkbenchDashboard', 'WorkbenchOrders', 'WorkbenchSuppliers', 'WorkbenchFinance'
-    ];
+    console.log('[V14.0] Starting initialization...');
     
-    const missingModules = requiredModules.filter(mod => !window[mod]);
-    if (missingModules.length > 0) {
-        console.error('[CRITICAL] Missing modules:', missingModules);
-        alert('系统加载失败：核心模块缺失 - ' + missingModules.join(', '));
-        return;
+    // 等待 DOM 完全加载
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
     }
     
-    console.log('[V14.0 ERP] ✅ All modules loaded');
-    
-    // 2️⃣ 初始化模块
-    try {
-        await WorkbenchDashboard.init();
-        WorkbenchOrders.init();
-        WorkbenchSuppliers.init();
-        WorkbenchFinance.init();
-    } catch (error) {
-        console.error('[V14.0 ERP] Initialization error:', error);
-        alert('系统初始化失败：' + error.message);
-        return;
-    }
-    
-    // 3️⃣ 构建全局 app 对象
-    window.app = {
-        survival: {
-            checkInputs: () => {
-                const a1 = document.getElementById('action-1')?.value.trim();
-                const a2 = document.getElementById('action-2')?.value.trim();
-                const a3 = document.getElementById('action-3')?.value.trim();
-                const btn = document.getElementById('battle-start-btn');
+    async function init() {
+        console.log('[V14.0] DOM Ready, checking modules...');
+        
+        // 1️⃣ 检查所有模块是否已加载
+        const requiredModules = {
+            'WorkbenchConfig': window.WorkbenchConfig,
+            'WorkbenchUtils': window.WorkbenchUtils,
+            'WorkbenchStorage': window.WorkbenchStorage,
+            'WorkbenchDashboard': window.WorkbenchDashboard,
+            'WorkbenchOrders': window.WorkbenchOrders,
+            'WorkbenchSuppliers': window.WorkbenchSuppliers,
+            'WorkbenchFinance': window.WorkbenchFinance
+        };
+        
+        const missingModules = Object.keys(requiredModules).filter(name => !requiredModules[name]);
+        
+        if (missingModules.length > 0) {
+            const errorMsg = '系统加载失败：核心模块缺失 - ' + missingModules.join(', ');
+            console.error('[CRITICAL]', errorMsg);
+            console.error('[DEBUG] Window object:', Object.keys(window).filter(k => k.startsWith('Workbench')));
+            alert(errorMsg + '\n\n请检查浏览器控制台获取详细信息');
+            return;
+        }
+        
+        console.log('[V14.0] ✅ All modules loaded successfully');
+        
+        // 2️⃣ 初始化各模块
+        try {
+            console.log('[V14.0] Initializing modules...');
+            await WorkbenchDashboard.init();
+            WorkbenchOrders.init();
+            WorkbenchSuppliers.init();
+            WorkbenchFinance.init();
+            console.log('[V14.0] ✅ Modules initialized');
+        } catch (error) {
+            console.error('[V14.0] Module initialization failed:', error);
+            alert('系统初始化失败：' + error.message + '\n\n请刷新页面重试');
+            return;
+        }
+        
+        // 3️⃣ 构建全局 app 对象
+        window.app = {
+            survival: {
+                checkInputs: function() {
+                    const a1 = document.getElementById('action-1')?.value.trim();
+                    const a2 = document.getElementById('action-2')?.value.trim();
+                    const a3 = document.getElementById('action-3')?.value.trim();
+                    const btn = document.getElementById('battle-start-btn');
+                    
+                    if (a1 && a2 && a3) {
+                        btn?.removeAttribute('disabled');
+                    } else {
+                        btn?.setAttribute('disabled', 'true');
+                    }
+                },
                 
-                if (a1 && a2 && a3) {
-                    btn?.removeAttribute('disabled');
-                } else {
-                    btn?.setAttribute('disabled', 'true');
-                }
-            },
-            
-            startBattle: () => {
-                const actions = [
-                    document.getElementById('action-1')?.value || '',
-                    document.getElementById('action-2')?.value || '',
-                    document.getElementById('action-3')?.value || ''
-                ];
-                
-                if (!actions[0] || !actions[1] || !actions[2]) {
-                    WorkbenchUtils.toast('请填完三件事！', 'warning');
-                    return;
-                }
-                
-                localStorage.setItem('v14_today_actions', JSON.stringify(actions));
-                localStorage.setItem('v14_unlock_time', Date.now().toString());
-                
-                const curtain = document.getElementById('iron-curtain');
-                if (curtain) {
-                    curtain.classList.add('hidden');
-                }
-                
-                // 渲染今日行动
-                const display = document.getElementById('actions-display');
-                if (display) {
-                    display.innerHTML = actions.map((action, i) => `
-                        <div class="action-item">
-                            <div class="action-number">${i + 1}</div>
-                            <div class="flex-1">${action}</div>
-                        </div>
-                    `).join('');
-                }
-                
-                WorkbenchUtils.toast('战斗开始！聚焦现金流！', 'success');
-            },
-            
-            emergencyOverride: () => {
-                if (confirm("确定启用10分钟紧急模式？")) {
+                startBattle: function() {
+                    console.log('[Survival] Starting battle...');
+                    
+                    const actions = [
+                        document.getElementById('action-1')?.value || '',
+                        document.getElementById('action-2')?.value || '',
+                        document.getElementById('action-3')?.value || ''
+                    ];
+                    
+                    if (!actions[0] || !actions[1] || !actions[2]) {
+                        showToast('请填完三件事！', 'warning');
+                        return;
+                    }
+                    
+                    // 保存数据
+                    localStorage.setItem('v14_today_actions', JSON.stringify(actions));
+                    localStorage.setItem('v14_unlock_time', Date.now().toString());
+                    
+                    // 隐藏铁幕
                     const curtain = document.getElementById('iron-curtain');
                     if (curtain) {
                         curtain.classList.add('hidden');
                     }
                     
-                    localStorage.setItem('v14_unlock_time', Date.now().toString());
-                    WorkbenchUtils.toast('紧急模式已激活（10分钟）', 'warning');
-                    
-                    setTimeout(() => {
-                        alert('紧急模式已结束，页面将刷新');
-                        location.reload();
-                    }, 10 * 60 * 1000);
-                }
-            },
-            
-            initCheck: () => {
-                const lastUnlock = localStorage.getItem('v14_unlock_time');
-                const now = Date.now();
-                const curtain = document.getElementById('iron-curtain');
-                
-                if (!lastUnlock || (now - parseInt(lastUnlock) > 30 * 60 * 1000)) {
-                    curtain?.classList.remove('hidden');
-                } else {
-                    curtain?.classList.add('hidden');
-                    const savedActions = JSON.parse(localStorage.getItem('v14_today_actions') || '["","",""]');
+                    // 显示行动
                     const display = document.getElementById('actions-display');
-                    if (display && savedActions[0]) {
-                        display.innerHTML = savedActions.map((action, i) => `
+                    if (display) {
+                        display.innerHTML = actions.map((action, i) => `
                             <div class="action-item">
                                 <div class="action-number">${i + 1}</div>
                                 <div class="flex-1">${action}</div>
                             </div>
                         `).join('');
                     }
+                    
+                    showToast('战斗开始！聚焦现金流！', 'success');
+                },
+                
+                emergencyOverride: function() {
+                    if (confirm("确定启用10分钟紧急模式？")) {
+                        const curtain = document.getElementById('iron-curtain');
+                        if (curtain) {
+                            curtain.classList.add('hidden');
+                        }
+                        
+                        localStorage.setItem('v14_unlock_time', Date.now().toString());
+                        showToast('紧急模式已激活（10分钟）', 'warning');
+                        
+                        setTimeout(() => {
+                            alert('紧急模式已结束，页面将刷新');
+                            location.reload();
+                        }, 10 * 60 * 1000);
+                    }
+                },
+                
+                initCheck: function() {
+                    const lastUnlock = localStorage.getItem('v14_unlock_time');
+                    const now = Date.now();
+                    const curtain = document.getElementById('iron-curtain');
+                    
+                    if (!lastUnlock || (now - parseInt(lastUnlock) > 30 * 60 * 1000)) {
+                        curtain?.classList.remove('hidden');
+                    } else {
+                        curtain?.classList.add('hidden');
+                        const savedActions = JSON.parse(localStorage.getItem('v14_today_actions') || '["","",""]');
+                        const display = document.getElementById('actions-display');
+                        if (display && savedActions[0]) {
+                            display.innerHTML = savedActions.map((action, i) => `
+                                <div class="action-item">
+                                    <div class="action-number">${i + 1}</div>
+                                    <div class="flex-1">${action}</div>
+                                </div>
+                            `).join('');
+                        }
+                    }
                 }
             }
-        },
+        };
         
-        kanban: {
-            openQuickAdd: () => WorkbenchOrders?.openQuickAdd(),
-            openFullAddModal: () => WorkbenchOrders?.openFullAdd()
-        },
+        // 4️⃣ 绑定事件
+        console.log('[V14.0] Binding events...');
         
-        feishu: {
-            openSettings: () => WorkbenchUtils.toast('飞书设置功能开发中', 'info')
-        },
-        
-        exportData: () => {
-            const backup = WorkbenchStorage.exportAll();
-            const filename = `V14_Backup_${new Date().toISOString().split('T')[0]}.json`;
-            WorkbenchUtils.downloadJSON(backup, filename);
-            WorkbenchUtils.toast('数据导出成功', 'success');
-        }
-    };
-    
-    // 4️⃣ 绑定生存模式事件
-    const inputs = ['action-1', 'action-2', 'action-3'];
-    inputs.forEach(id => {
-        const input = document.getElementById(id);
-        if (input) {
-            input.addEventListener('input', () => app.survival.checkInputs());
-        }
-    });
-    
-    const battleBtn = document.getElementById('battle-start-btn');
-    if (battleBtn) {
-        battleBtn.addEventListener('click', () => app.survival.startBattle());
-    }
-    
-    const emergencyBtn = document.getElementById('emergency-override-btn');
-    if (emergencyBtn) {
-        emergencyBtn.addEventListener('click', () => app.survival.emergencyOverride());
-    }
-    
-    // 5️⃣ Tab 切换
-    document.querySelectorAll('.tab-button').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            e.currentTarget.classList.add('active');
-            const tabName = e.currentTarget.dataset.tab;
-            const content = document.getElementById(`tab-${tabName}`);
-            
-            if (content) {
-                content.classList.add('active');
+        // 生存模式输入框
+        ['action-1', 'action-2', 'action-3'].forEach(id => {
+            const input = document.getElementById(id);
+            if (input) {
+                input.addEventListener('input', () => window.app.survival.checkInputs());
             }
         });
-    });
+        
+        // 开始战斗按钮
+        const battleBtn = document.getElementById('battle-start-btn');
+        if (battleBtn) {
+            battleBtn.addEventListener('click', () => window.app.survival.startBattle());
+        } else {
+            console.error('[V14.0] battle-start-btn not found!');
+        }
+        
+        // 紧急模式按钮
+        const emergencyBtn = document.getElementById('emergency-override-btn');
+        if (emergencyBtn) {
+            emergencyBtn.addEventListener('click', () => window.app.survival.emergencyOverride());
+        }
+        
+        // Tab 切换
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                e.currentTarget.classList.add('active');
+                const tabName = e.currentTarget.dataset.tab;
+                const content = document.getElementById(`tab-${tabName}`);
+                
+                if (content) {
+                    content.classList.add('active');
+                }
+            });
+        });
+        
+        // 5️⃣ 生存模式检查
+        window.app.survival.initCheck();
+        
+        console.log('[V14.0] ✅ Initialization complete!');
+        console.log('[V14.0] App object:', window.app);
+        
+        showToast('战时指挥台启动 V14.0 ERP', 'success');
+    }
     
-    // 6️⃣ 生存模式检查
-    app.survival.initCheck();
-    
-    console.log('[V14.0 ERP] ✅ Initialization complete');
-    WorkbenchUtils.toast('战时指挥台启动 (V14.0 ERP)', 'success');
-});
+    // Toast 辅助函数
+    function showToast(message, type = 'info') {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        
+        const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+        const colors = { 
+            success: 'bg-green-600', 
+            error: 'bg-red-600', 
+            warning: 'bg-yellow-600', 
+            info: 'bg-blue-600' 
+        };
+        
+        toast.innerHTML = `
+            <div class="${colors[type]} text-white px-6 py-3 rounded-lg shadow-xl flex items-center gap-3">
+                <span class="text-2xl">${icons[type]}</span>
+                <span>${message}</span>
+            </div>
+        `;
+        
+        toast.classList.remove('hidden');
+        
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 3000);
+    }
+})();
 </script>
 
 </body>
