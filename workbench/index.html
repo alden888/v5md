@@ -12,6 +12,9 @@
 
 <body class="bg-black text-white">
 
+<!-- ========================================= -->
+<!-- 铁幕登录界面 -->
+<!-- ========================================= -->
 <div id="iron-curtain" class="iron-curtain">
     <div class="survival-gate">
         <div class="text-center mb-8">
@@ -23,11 +26,11 @@
             <p class="text-white font-bold mb-4 text-center">今天唯一能带回<span class="text-red-500 text-xl">现金</span>的三件事是什么？</p>
         </div>
         <div class="space-y-4 mb-8">
-            <input type="text" id="action-1" class="survival-input" placeholder="Action #1: 催 Mikki 尾款..." oninput="app.survival.checkInputs()" />
-            <input type="text" id="action-2" class="survival-input" placeholder="Action #2: 确认 Turhan 订单..." oninput="app.survival.checkInputs()" />
-            <input type="text" id="action-3" class="survival-input" placeholder="Action #3: ..." oninput="app.survival.checkInputs()" />
+            <input type="text" id="action-1" class="survival-input" placeholder="Action #1: 催 Mikki 尾款..." />
+            <input type="text" id="action-2" class="survival-input" placeholder="Action #2: 确认 Turhan 订单..." />
+            <input type="text" id="action-3" class="survival-input" placeholder="Action #3: ..." />
         </div>
-        <button id="battle-start-btn" class="battle-start-btn" disabled onclick="app.survival.startBattle()">
+        <button id="battle-start-btn" class="battle-start-btn" disabled>
             <i class="fas fa-fist-raised mr-2"></i> 开始战斗
         </button>
         <button onclick="app.survival.emergencyOverride()" class="mt-4 w-full text-xs text-slate-600 hover:text-slate-400 transition text-center py-2 rounded underline">
@@ -36,25 +39,31 @@
     </div>
 </div>
 
-<header id="main-header" class="fixed top-0 left-0 right-0 header-normal z-50 h-[70px]">
+<!-- ========================================= -->
+<!-- 主Header -->
+<!-- ========================================= -->
+<header id="main-header" class="fixed top-0 left-0 right-0 bg-gradient-to-r from-blue-900 to-blue-800 z-50 h-[70px] border-b border-blue-700">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
         <div class="flex items-center gap-3">
             <div class="bg-red-600 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg">⚔️</div>
             <div>
-                <h1 class="font-black text-lg leading-tight">战时指挥台 <span class="text-xs bg-red-600 px-2 rounded-full">V14.1</span></h1>
-                <div class="text-[10px] uppercase tracking-wider font-bold">ERP EDITION · B2B 专用</div>
+                <h1 class="font-black text-lg leading-tight text-white">战时指挥台 <span class="text-xs bg-red-600 px-2 rounded-full">V14.1</span></h1>
+                <div class="text-[10px] uppercase tracking-wider font-bold text-blue-200">ERP EDITION · B2B 专用</div>
             </div>
         </div>
         <div id="emergency-mode-warning" class="hidden px-4 py-2 bg-yellow-900 text-yellow-300 rounded font-bold animate-pulse">
             ⚠️ 紧急模式运行中
         </div>
         <div class="flex items-center gap-4">
-            <button onclick="app.feishu.openSettings()" class="text-sm px-3 py-1.5 rounded hover:bg-gray-800"><i class="fas fa-cog"></i> 设置</button>
-            <button onclick="app.exportData()" class="text-sm px-3 py-1.5 rounded hover:bg-gray-800"><i class="fas fa-download"></i> 备份</button>
+            <button onclick="app.openSettings()" class="text-sm px-3 py-1.5 rounded hover:bg-blue-800 text-white"><i class="fas fa-cog"></i> 设置</button>
+            <button onclick="app.exportData()" class="text-sm px-3 py-1.5 rounded hover:bg-blue-800 text-white"><i class="fas fa-download"></i> 备份</button>
         </div>
     </div>
 </header>
 
+<!-- ========================================= -->
+<!-- 今日三件事Banner -->
+<!-- ========================================= -->
 <div class="cash-actions-banner" style="top: 70px;">
     <div class="max-w-7xl mx-auto">
         <h3 class="text-sm font-black text-red-500 mb-3 uppercase tracking-wider flex items-center gap-2">
@@ -64,7 +73,10 @@
     </div>
 </div>
 
-<nav class="fixed top-[70px] left-0 right-0 bg-black border-b border-gray-800 z-40">
+<!-- ========================================= -->
+<!-- Tab导航 -->
+<!-- ========================================= -->
+<nav class="fixed left-0 right-0 bg-black border-b border-gray-800 z-40" style="top: 70px;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex gap-2 overflow-x-auto">
             <button class="tab-button active" data-tab="dashboard"><i class="fas fa-crosshairs mr-2"></i> 现金流</button>
@@ -76,24 +88,104 @@
     </div>
 </nav>
 
+<!-- ========================================= -->
+<!-- 主内容区 -->
+<!-- ========================================= -->
 <main class="pb-8 px-4 sm:px-6" style="padding-top: calc(70px + 130px + 55px);">
     <div class="max-w-7xl mx-auto">
         
-        <div id="tab-dashboard" class="tab-content active">
-            <div id="dashboard-container"></div>
+        <!-- ========== Dashboard Tab ========== -->
+        <div id="tab-dashboard" class="tab-content">
+            <!-- 财务指标 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="cash-metric">
+                    <div class="cash-metric-label">总营收</div>
+                    <div id="dashboard-revenue" class="cash-metric-value text-green-400">¥0</div>
+                </div>
+                <div class="cash-metric">
+                    <div class="cash-metric-label">总成本</div>
+                    <div id="dashboard-cost" class="cash-metric-value text-red-400">¥0</div>
+                </div>
+                <div class="cash-metric">
+                    <div class="cash-metric-label">毛利润</div>
+                    <div id="dashboard-gross" class="cash-metric-value text-blue-400">¥0</div>
+                </div>
+                <div class="cash-metric">
+                    <div class="cash-metric-label">净利润</div>
+                    <div id="dashboard-net" class="cash-metric-value text-yellow-400">¥0</div>
+                </div>
+            </div>
+            
+            <!-- 最后回款 + 时钟 + 进度 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <!-- 最后回款 -->
+                <div id="last-income-card" class="bg-gray-900 p-6 rounded-xl border-2 border-gray-700">
+                    <h3 class="font-bold text-lg mb-4 text-green-400">📊 最后回款</h3>
+                    <div id="lastIncomeInfo" class="text-sm text-gray-400 mb-2">暂无数据</div>
+                    <div class="flex items-end gap-2">
+                        <div id="hoursSinceIncome" class="text-4xl font-black text-green-400">--</div>
+                        <div class="text-sm text-gray-500 mb-2">小时前</div>
+                    </div>
+                </div>
+                
+                <!-- 本地时间 -->
+                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800">
+                    <h3 class="font-bold text-lg mb-4">🕐 本地时间</h3>
+                    <div id="local-time" class="text-4xl font-mono text-green-400 mb-2">--:--:--</div>
+                    <div id="local-date" class="text-gray-400">----/--/--</div>
+                </div>
+                
+                <!-- 年度进度 -->
+                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800">
+                    <h3 class="font-bold text-lg mb-4">🎯 年度进度</h3>
+                    <div id="dashboard-progress" class="text-4xl font-bold text-blue-400 mb-2">0%</div>
+                    <div class="text-sm text-gray-400">毛利率: <span id="dashboard-margin" class="font-bold">0%</span></div>
+                </div>
+            </div>
+            
+            <!-- 快捷工具区 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="quick-tools-section">
+                <div class="bg-gray-900 border border-gray-700 p-6 rounded-xl hover:border-blue-500 transition">
+                    <h3 class="font-bold text-lg mb-4 text-blue-400">📄 单证工具</h3>
+                    <div class="space-y-2">
+                        <button class="w-full bg-gray-800 hover:bg-gray-700 py-2 rounded text-sm transition" onclick="alert('开发中')">生成 Proforma Invoice</button>
+                        <button class="w-full bg-gray-800 hover:bg-gray-700 py-2 rounded text-sm transition" onclick="alert('开发中')">生成 Commercial Invoice</button>
+                        <button class="w-full bg-gray-800 hover:bg-gray-700 py-2 rounded text-sm transition" onclick="alert('开发中')">生成 Packing List</button>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 border border-gray-700 p-6 rounded-xl hover:border-green-500 transition">
+                    <h3 class="font-bold text-lg mb-4 text-green-400">🚢 物流追踪</h3>
+                    <div class="space-y-2">
+                        <button class="w-full bg-gray-800 hover:bg-gray-700 py-2 rounded text-sm transition" onclick="alert('开发中')">添加运单号</button>
+                        <button class="w-full bg-gray-800 hover:bg-gray-700 py-2 rounded text-sm transition" onclick="alert('开发中')">查询物流状态</button>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 border border-gray-700 p-6 rounded-xl hover:border-purple-500 transition">
+                    <h3 class="font-bold text-lg mb-4 text-purple-400">🌍 全球时钟</h3>
+                    <div class="space-y-1 text-sm" id="globalClockDisplay">
+                        <div class="flex justify-between"><span>🇨🇳 Beijing</span><span id="time-beijing">--:--</span></div>
+                        <div class="flex justify-between"><span>🇵🇭 Manila</span><span id="time-manila">--:--</span></div>
+                        <div class="flex justify-between"><span>🇹🇷 Istanbul</span><span id="time-istanbul">--:--</span></div>
+                        <div class="flex justify-between"><span>🇳🇱 Amsterdam</span><span id="time-amsterdam">--:--</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
         
-        <div id="tab-kanban" class="tab-content">
+        <!-- ========== Kanban Tab ========== -->
+        <div id="tab-kanban" class="tab-content" style="display:none;">
             <div class="mb-6 flex justify-between items-center">
                 <h2 class="text-2xl font-black text-red-500 uppercase">订单战场</h2>
-                <button onclick="app.kanban.openFullAddModal()" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-bold">
-                    <i class="fas fa-plus mr-2"></i> 新增订单
+                <button onclick="app.kanban.openQuickAdd()" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-bold transition">
+                    <i class="fas fa-plus mr-2"></i> 快速新建
                 </button>
             </div>
             <div class="flex gap-4 overflow-x-auto pb-4">
+                <!-- 看板列 -->
                 <div class="kanban-column min-w-[300px]" data-status="New Inquiry">
                     <div class="mb-4 font-bold text-blue-400">New Inquiry <span class="text-xs bg-gray-800 px-2 py-1 rounded ml-2" data-count="inquiry">0</span></div>
-                    <div class="quick-add-btn mb-4 cursor-pointer text-center py-2 border border-dashed border-gray-700 hover:border-blue-500 rounded text-gray-500" onclick="app.kanban.openQuickAdd()">+ 快速新建</div>
                     <div id="kanban-inquiry" class="space-y-3"></div>
                 </div>
                 <div class="kanban-column min-w-[300px]" data-status="PI Sent">
@@ -115,31 +207,37 @@
             </div>
         </div>
         
-        <div id="tab-crm" class="tab-content">
+        <!-- ========== CRM Tab ========== -->
+        <div id="tab-crm" class="tab-content" style="display:none;">
             <div class="mb-6 flex justify-between items-center">
                 <h2 class="text-2xl font-black text-green-500 uppercase">客户档案</h2>
-                <button onclick="app.crm.openCustomerModal()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-bold">
+                <button onclick="app.crm.openCustomerModal()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-bold transition">
                     <i class="fas fa-user-plus mr-2"></i> 新增客户
                 </button>
             </div>
             <div id="customer-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                </div>
+                <div class="text-center text-gray-500 py-12 col-span-full">暂无客户档案</div>
+            </div>
         </div>
         
-        <div id="tab-suppliers" class="tab-content">
+        <!-- ========== Suppliers Tab ========== -->
+        <div id="tab-suppliers" class="tab-content" style="display:none;">
             <div class="mb-6 flex justify-between items-center">
                 <h2 class="text-2xl font-black text-blue-500 uppercase">供应商管理</h2>
-                <button onclick="app.suppliers.openAddModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded font-bold">
+                <button onclick="app.suppliers.openAddModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded font-bold transition">
                     <i class="fas fa-plus mr-2"></i> 新增供应商
                 </button>
             </div>
-            <div id="suppliers-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            <div id="suppliers-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="text-center text-gray-500 py-12 col-span-full">暂无供应商档案</div>
+            </div>
         </div>
         
-        <div id="tab-expenses" class="tab-content">
+        <!-- ========== Expenses Tab ========== -->
+        <div id="tab-expenses" class="tab-content" style="display:none;">
             <div class="mb-6 flex justify-between items-center">
                 <h2 class="text-2xl font-black text-purple-500 uppercase">运营支出</h2>
-                <button onclick="app.expenses.openAddModal()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded font-bold">
+                <button onclick="app.expenses.openAddModal()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded font-bold transition">
                     <i class="fas fa-plus mr-2"></i> 新增支出
                 </button>
             </div>
@@ -155,7 +253,9 @@
                             <th class="p-4 text-center">操作</th>
                         </tr>
                     </thead>
-                    <tbody id="expense-list" class="divide-y divide-gray-800"></tbody>
+                    <tbody id="expense-list" class="divide-y divide-gray-800">
+                        <tr><td colspan="6" class="text-center text-gray-500 py-8">暂无支出记录</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -163,11 +263,16 @@
     </div>
 </main>
 
-<div id="customer-modal" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+<!-- ========================================= -->
+<!-- Modals -->
+<!-- ========================================= -->
+
+<!-- 客户Modal -->
+<div id="customer-modal" class="modal-overlay">
     <div class="modal-content bg-gray-900 border border-gray-700 p-6 rounded-xl w-full max-w-lg">
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-xl font-bold text-green-500">新增客户档案</h3>
-            <button onclick="app.crm.closeCustomerModal()" class="text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
+            <button onclick="app.crm.closeCustomerModal()" class="text-slate-400 hover:text-white transition"><i class="fas fa-times"></i></button>
         </div>
         <div class="space-y-4">
             <div>
@@ -218,12 +323,94 @@
             </div>
         </div>
         <div class="mt-6 flex gap-3">
-            <button onclick="app.crm.saveCustomer()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded">保存档案</button>
-            <button onclick="app.crm.closeCustomerModal()" class="px-6 bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 rounded">取消</button>
+            <button onclick="app.crm.saveCustomer()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded transition">保存档案</button>
+            <button onclick="app.crm.closeCustomerModal()" class="px-6 bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 rounded transition">取消</button>
         </div>
     </div>
 </div>
 
+<!-- 支出Modal -->
+<div id="expense-modal" class="modal-overlay">
+    <div class="modal-content bg-gray-900 border border-gray-700 p-6 rounded-xl w-full max-w-lg">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-purple-500">新增运营支出</h3>
+            <button onclick="app.expenses.closeExpenseModal()" class="text-slate-400 hover:text-white transition"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1">日期 *</label>
+                    <input type="date" id="expense-date" class="w-full p-2 bg-black border border-gray-700 rounded text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1">类别 *</label>
+                    <select id="expense-category" class="w-full p-2 bg-black border border-gray-700 rounded text-white">
+                        <option value="房租">房租</option>
+                        <option value="差旅">差旅</option>
+                        <option value="招待">招待</option>
+                        <option value="物流">物流</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">金额 (CNY) *</label>
+                <input type="number" id="expense-amount" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="1000">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">关联客户</label>
+                <input type="text" id="expense-customer" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="可选...">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">备注</label>
+                <textarea id="expense-notes" rows="3" class="w-full p-2 bg-black border border-gray-700 rounded text-white"></textarea>
+            </div>
+        </div>
+        <div class="mt-6 flex gap-3">
+            <button onclick="app.expenses.saveExpense()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded transition">保存支出</button>
+            <button onclick="app.expenses.closeExpenseModal()" class="px-6 bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 rounded transition">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- 设置Modal -->
+<div id="settings-modal" class="modal-overlay">
+    <div class="modal-content bg-gray-900 border border-gray-700 p-6 rounded-xl w-full max-w-lg">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-blue-500">系统设置</h3>
+            <button onclick="app.closeSettings()" class="text-slate-400 hover:text-white transition"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">年度目标 (CNY)</label>
+                <input type="number" id="settings-target" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="5000000">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">美元汇率</label>
+                <input type="number" step="0.01" id="settings-rate" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="6.98">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">飞书Webhook URL</label>
+                <input type="text" id="settings-webhook" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="https://...">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">Cloudflare Worker URL</label>
+                <input type="text" id="settings-worker" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="https://...">
+            </div>
+        </div>
+        <div class="mt-6 flex gap-3">
+            <button onclick="app.saveSettings()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded transition">保存设置</button>
+            <button onclick="app.closeSettings()" class="px-6 bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 rounded transition">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast通知 -->
+<div id="toast-container" class="fixed bottom-4 right-4 z-50"></div>
+
+<!-- ========================================= -->
+<!-- Scripts -->
+<!-- ========================================= -->
 <script src="js/workbench-config.js"></script>
 <script src="js/workbench-utils.js"></script>
 <script src="js/workbench-storage.js"></script>
@@ -234,47 +421,83 @@
 <script src="js/workbench-finance.js"></script>
 
 <script>
+// ========================================
+// V14.1 Main App Controller
+// ========================================
 document.addEventListener('DOMContentLoaded', async function() {
-    console.log('[V14.1 ERP] System Initializing...');
+    console.log('[V14.1] 🚀 System Initializing...');
 
-    // 1. 初始化模块
-    if (typeof WorkbenchDashboard.init === 'function') await WorkbenchDashboard.init();
-    if (typeof WorkbenchOrders.init === 'function') WorkbenchOrders.init();
-    if (typeof WorkbenchSuppliers.init === 'function') WorkbenchSuppliers.init();
-    if (typeof WorkbenchFinance.init === 'function') WorkbenchFinance.init();
+    // 初始化模块
+    try {
+        if (WorkbenchDashboard?.init) await WorkbenchDashboard.init();
+        if (WorkbenchOrders?.init) WorkbenchOrders.init();
+        if (WorkbenchSuppliers?.init) WorkbenchSuppliers.init();
+        if (WorkbenchFinance?.init) WorkbenchFinance.init();
+    } catch (error) {
+        console.error('[V14.1] Module init failed:', error);
+    }
 
-    // 2. 全局 APP 对象
+    // 全局 APP 对象
     window.app = {
-        // 生存模式
+        // === 生存模式 ===
         survival: {
             checkInputs: () => {
-                const a1 = document.getElementById('action-1').value;
-                const a2 = document.getElementById('action-2').value;
-                const a3 = document.getElementById('action-3').value;
-                document.getElementById('battle-start-btn').disabled = !(a1 && a2 && a3);
+                const inputs = [
+                    document.getElementById('action-1'),
+                    document.getElementById('action-2'),
+                    document.getElementById('action-3')
+                ];
+                const filled = inputs.every(input => input && input.value.trim());
+                const btn = document.getElementById('battle-start-btn');
+                if (btn) btn.disabled = !filled;
+                
+                // 视觉反馈
+                inputs.forEach(input => {
+                    if (input) {
+                        if (input.value.trim()) {
+                            input.classList.add('filled');
+                        } else {
+                            input.classList.remove('filled');
+                        }
+                    }
+                });
             },
+            
             startBattle: () => {
                 const actions = [
                     document.getElementById('action-1').value,
                     document.getElementById('action-2').value,
                     document.getElementById('action-3').value
                 ];
+                
                 localStorage.setItem('v14_today_actions', JSON.stringify(actions));
                 localStorage.setItem('v14_unlock_time', Date.now());
+                
                 document.getElementById('iron-curtain').classList.add('hidden');
                 WorkbenchDashboard.renderTodayActions(actions);
-                WorkbenchUtils.toast('战斗开始！', 'success');
+                WorkbenchUtils.toast('战斗开始！现金为王！', 'success');
             },
+            
             emergencyOverride: () => {
-                if(confirm("确定启用紧急模式？")) {
+                if(confirm("⚠️ 确定启用紧急模式？\n紧急模式将在10分钟后自动退出。")) {
                     document.getElementById('iron-curtain').classList.add('hidden');
                     document.getElementById('emergency-mode-warning').classList.remove('hidden');
-                    setTimeout(() => location.reload(), 10 * 60 * 1000);
+                    
+                    // 10分钟后自动重载
+                    setTimeout(() => {
+                        alert('紧急模式超时，系统将重新加载');
+                        location.reload();
+                    }, 10 * 60 * 1000);
+                    
+                    WorkbenchUtils.toast('紧急模式已激活 (10分钟)', 'warning');
                 }
             },
+            
             initCheck: () => {
                 const lastUnlock = localStorage.getItem('v14_unlock_time');
                 const now = Date.now();
+                
+                // 30分钟有效期
                 if (!lastUnlock || (now - lastUnlock > 30 * 60 * 1000)) {
                     document.getElementById('iron-curtain').classList.remove('hidden');
                 } else {
@@ -285,54 +508,44 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
         },
 
-        // 看板 (Orders)
+        // === 看板（订单）===
         kanban: {
-            openQuickAdd: () => window.WorkbenchOrders && WorkbenchOrders.openQuickAdd(),
-            closeQuickAdd: () => window.WorkbenchOrders && WorkbenchOrders.closeQuickAdd(),
-            saveQuickOrder: () => window.WorkbenchOrders && WorkbenchOrders.saveQuickOrder(),
-            openFullAddModal: () => window.WorkbenchOrders && WorkbenchOrders.openFullAddModal(),
-            closeFullAddModal: () => window.WorkbenchOrders && WorkbenchOrders.closeFullAddModal(),
-            saveFullOrder: () => window.WorkbenchOrders && WorkbenchOrders.saveFullOrder()
+            openQuickAdd: () => WorkbenchOrders?.openQuickAdd(),
+            closeQuickAdd: () => WorkbenchOrders?.closeQuickAdd(),
+            saveQuickOrder: () => WorkbenchOrders?.saveQuickOrder(),
+            openFullAddModal: () => WorkbenchOrders?.openFullAddModal(),
+            closeFullAddModal: () => WorkbenchOrders?.closeFullAddModal(),
+            saveFullOrder: () => WorkbenchOrders?.saveFullOrder()
         },
 
-        // 供应商 (Suppliers)
+        // === 供应商 ===
         suppliers: {
-            openAddModal: () => window.WorkbenchSuppliers && WorkbenchSuppliers.openAddModal(),
-            closeSupplierModal: () => window.WorkbenchSuppliers && WorkbenchSuppliers.closeSupplierModal(),
-            saveSupplier: () => window.WorkbenchSuppliers && WorkbenchSuppliers.saveSupplier()
+            openAddModal: () => WorkbenchSuppliers?.openAddModal(),
+            closeSupplierModal: () => WorkbenchSuppliers?.closeSupplierModal(),
+            saveSupplier: () => WorkbenchSuppliers?.saveSupplier()
         },
 
-        // 运营支出 (Expenses)
-        expenses: {
-            openAddModal: () => {
-                const modal = document.getElementById('expense-modal');
-                if(modal) { modal.classList.remove('hidden'); modal.classList.add('active'); }
-                else { alert("支出弹窗代码未找到，请检查 HTML 结构"); }
-            },
-            closeExpenseModal: () => {
-                const modal = document.getElementById('expense-modal');
-                if(modal) { modal.classList.add('hidden'); modal.classList.remove('active'); }
-            },
-            // ... (复用之前的 saveExpense 逻辑)
-            renderExpenseList: () => { /* ...复用之前的 render ... */ } 
-        },
-
-        // CRM (客户档案) - 🔥 重写逻辑支持新字段
+        // === CRM（客户）===
         crm: {
             openCustomerModal: () => {
                 const modal = document.getElementById('customer-modal');
-                modal.classList.remove('hidden');
-                // 清空表单
-                document.getElementById('customer-name').value = '';
-                document.getElementById('customer-contact').value = '';
-                document.getElementById('customer-whatsapp').value = '';
-                document.getElementById('customer-country').value = '';
-                document.getElementById('customer-address').value = '';
-                document.getElementById('customer-notes').value = '';
+                if (modal) {
+                    modal.classList.add('active');
+                    // 清空表单
+                    ['customer-name', 'customer-contact', 'customer-whatsapp', 'customer-address', 'customer-notes'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.value = '';
+                    });
+                    document.getElementById('customer-country').value = '';
+                    document.getElementById('customer-currency').value = 'USD';
+                }
             },
+            
             closeCustomerModal: () => {
-                document.getElementById('customer-modal').classList.add('hidden');
+                const modal = document.getElementById('customer-modal');
+                if (modal) modal.classList.remove('active');
             },
+            
             saveCustomer: () => {
                 const name = document.getElementById('customer-name').value.trim();
                 if (!name) return alert("请输入公司名称");
@@ -341,39 +554,35 @@ document.addEventListener('DOMContentLoaded', async function() {
                     id: 'CUST-' + Date.now(),
                     company: name,
                     contact: document.getElementById('customer-contact').value,
-                    whatsapp: document.getElementById('customer-whatsapp').value, // 新字段
+                    whatsapp: document.getElementById('customer-whatsapp').value,
                     country: document.getElementById('customer-country').value,
                     currency: document.getElementById('customer-currency').value,
-                    address: document.getElementById('customer-address').value, // 新字段
+                    address: document.getElementById('customer-address').value,
                     notes: document.getElementById('customer-notes').value,
                     createdAt: new Date().toISOString()
                 };
 
-                // 获取现有客户列表
-                const customers = WorkbenchDashboard.data.customers || [];
-                customers.push(newCustomer);
-                WorkbenchDashboard.data.customers = customers; // 更新内存
-                WorkbenchStorage.save('v5_customers', customers); // 保存到存储
+                WorkbenchDashboard.data.customers.push(newCustomer);
+                WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.CUSTOMERS, WorkbenchDashboard.data.customers);
 
                 WorkbenchUtils.toast('客户档案已保存', 'success');
                 app.crm.closeCustomerModal();
-                app.crm.render(); // 刷新列表
+                app.crm.render();
             },
+            
             render: () => {
                 const container = document.getElementById('customer-grid');
                 if (!container) return;
-                container.innerHTML = '';
                 
                 const customers = WorkbenchDashboard.data.customers || [];
+                
                 if (customers.length === 0) {
-                    container.innerHTML = '<div class="text-slate-500 col-span-3 text-center py-8">暂无客户档案</div>';
+                    container.innerHTML = '<div class="text-center text-gray-500 py-12 col-span-full">暂无客户档案</div>';
                     return;
                 }
 
-                customers.forEach(c => {
-                    const card = document.createElement('div');
-                    card.className = 'bg-gray-900 border border-gray-700 p-4 rounded-xl hover:border-green-500 transition relative group';
-                    card.innerHTML = `
+                container.innerHTML = customers.map(c => `
+                    <div class="bg-gray-900 border border-gray-700 p-4 rounded-xl hover:border-green-500 transition relative group">
                         <div class="flex justify-between items-start mb-2">
                             <h3 class="font-bold text-lg text-white">${c.company}</h3>
                             <span class="text-xs bg-gray-800 px-2 py-1 rounded text-slate-300">${c.country || '未设置'}</span>
@@ -384,66 +593,203 @@ document.addEventListener('DOMContentLoaded', async function() {
                             <p class="truncate"><i class="fas fa-map-marker-alt w-5 text-red-500"></i> ${c.address || '-'}</p>
                         </div>
                         <div class="mt-4 pt-4 border-t border-gray-800 flex gap-2">
-                            <button onclick="app.crm.copyAddress('${c.id}')" class="flex-1 bg-gray-800 hover:bg-gray-700 py-1.5 rounded text-xs text-white">
+                            <button onclick="app.crm.copyAddress('${c.id}')" class="flex-1 bg-gray-800 hover:bg-gray-700 py-1.5 rounded text-xs text-white transition">
                                 <i class="fas fa-copy"></i> 复制发货信息
                             </button>
-                            <button onclick="alert('开发中: 直接开单')" class="px-3 bg-green-900 hover:bg-green-800 py-1.5 rounded text-xs text-green-300">
-                                开单
-                            </button>
                         </div>
-                    `;
-                    container.appendChild(card);
-                });
+                    </div>
+                `).join('');
             },
+            
             copyAddress: (id) => {
                 const c = WorkbenchDashboard.data.customers.find(x => x.id === id);
                 if (c) {
                     const text = `TO: ${c.company}\nATTN: ${c.contact}\nTEL: ${c.whatsapp}\nADD: ${c.address}\nCOUNTRY: ${c.country}`;
-                    navigator.clipboard.writeText(text);
-                    WorkbenchUtils.toast('发货信息已复制！', 'success');
+                    WorkbenchUtils.copyToClipboard(text);
                 }
             }
         },
         
-        // Tab 切换逻辑
-        ui: {
-            switchTab: (tabId) => {
-                document.querySelectorAll('.tab-content').forEach(el => {
-                    el.style.display = 'none';
-                    el.classList.remove('active');
-                });
-                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        // === 运营支出 ===
+        expenses: {
+            openAddModal: () => {
+                const modal = document.getElementById('expense-modal');
+                if (modal) {
+                    modal.classList.add('active');
+                    // 设置默认日期
+                    document.getElementById('expense-date').valueAsDate = new Date();
+                }
+            },
+            
+            closeExpenseModal: () => {
+                const modal = document.getElementById('expense-modal');
+                if (modal) modal.classList.remove('active');
+            },
+            
+            saveExpense: () => {
+                const date = document.getElementById('expense-date').value;
+                const category = document.getElementById('expense-category').value;
+                const amount = parseFloat(document.getElementById('expense-amount').value);
                 
-                const content = document.getElementById(`tab-${tabId}`);
-                if (content) {
-                    content.style.display = 'block';
-                    content.classList.add('active');
+                if (!date || !amount) return alert("请填写必填项");
+                
+                const newExpense = {
+                    id: 'EXP-' + Date.now(),
+                    date: date,
+                    category: category,
+                    amount: amount,
+                    customer: document.getElementById('expense-customer').value,
+                    notes: document.getElementById('expense-notes').value,
+                    createdAt: new Date().toISOString()
+                };
+                
+                WorkbenchDashboard.data.expenses.push(newExpense);
+                WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.EXPENSES, WorkbenchDashboard.data.expenses);
+                
+                WorkbenchUtils.toast('支出已记录', 'success');
+                app.expenses.closeExpenseModal();
+                app.expenses.render();
+                WorkbenchDashboard.updateDashboard();
+            },
+            
+            render: () => {
+                const tbody = document.getElementById('expense-list');
+                if (!tbody) return;
+                
+                const expenses = WorkbenchDashboard.data.expenses || [];
+                
+                if (expenses.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-gray-500 py-8">暂无支出记录</td></tr>';
+                    return;
                 }
                 
+                tbody.innerHTML = expenses.map(e => `
+                    <tr class="hover:bg-gray-800 transition">
+                        <td class="p-4">${e.date}</td>
+                        <td class="p-4"><span class="bg-gray-800 px-2 py-1 rounded text-xs">${e.category}</span></td>
+                        <td class="p-4 font-bold text-red-400">¥${e.amount.toLocaleString()}</td>
+                        <td class="p-4 text-gray-400">${e.customer || '-'}</td>
+                        <td class="p-4 text-sm text-gray-400">${e.notes || '-'}</td>
+                        <td class="p-4 text-center">
+                            <button onclick="app.expenses.delete('${e.id}')" class="text-red-500 hover:text-red-400"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            },
+            
+            delete: (id) => {
+                if (!confirm('确定删除该支出记录？')) return;
+                WorkbenchDashboard.data.expenses = WorkbenchDashboard.data.expenses.filter(e => e.id !== id);
+                WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.EXPENSES, WorkbenchDashboard.data.expenses);
+                app.expenses.render();
+                WorkbenchDashboard.updateDashboard();
+                WorkbenchUtils.toast('支出已删除', 'success');
+            }
+        },
+
+        // === Tab切换 ===
+        ui: {
+            switchTab: (tabId) => {
+                // 隐藏所有tab
+                document.querySelectorAll('.tab-content').forEach(el => {
+                    el.style.display = 'none';
+                });
+                
+                // 移除按钮active状态
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                
+                // 显示目标tab
+                const content = document.getElementById(`tab-${tabId}`);
+                if (content) content.style.display = 'block';
+                
+                // 激活按钮
                 const btn = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
-                if(btn) btn.classList.add('active');
+                if (btn) btn.classList.add('active');
 
                 // 触发渲染
-                if(tabId === 'kanban' && window.WorkbenchOrders) WorkbenchOrders.render();
-                if(tabId === 'suppliers' && window.WorkbenchSuppliers) WorkbenchSuppliers.render();
-                if(tabId === 'crm') app.crm.render();
-                if(tabId === 'expenses') app.expenses.renderExpenseList();
+                if (tabId === 'kanban' && WorkbenchOrders) WorkbenchOrders.render();
+                if (tabId === 'suppliers' && WorkbenchSuppliers) WorkbenchSuppliers.render();
+                if (tabId === 'crm') app.crm.render();
+                if (tabId === 'expenses') app.expenses.render();
             }
+        },
+
+        // === 设置 ===
+        openSettings: () => {
+            const modal = document.getElementById('settings-modal');
+            if (modal) {
+                modal.classList.add('active');
+                // 加载当前设置
+                document.getElementById('settings-target').value = WorkbenchDashboard.data.target;
+                document.getElementById('settings-rate').value = WorkbenchDashboard.data.rate;
+                document.getElementById('settings-webhook').value = WorkbenchDashboard.data.feishuWebhook || '';
+                document.getElementById('settings-worker').value = WorkbenchStorage.WORKER_URL || '';
+            }
+        },
+        
+        closeSettings: () => {
+            const modal = document.getElementById('settings-modal');
+            if (modal) modal.classList.remove('active');
+        },
+        
+        saveSettings: () => {
+            const target = parseFloat(document.getElementById('settings-target').value);
+            const rate = parseFloat(document.getElementById('settings-rate').value);
+            const webhook = document.getElementById('settings-webhook').value;
+            const worker = document.getElementById('settings-worker').value;
+            
+            WorkbenchDashboard.data.target = target;
+            WorkbenchDashboard.data.rate = rate;
+            WorkbenchDashboard.data.feishuWebhook = webhook;
+            
+            WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.TARGET, target);
+            WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.USD_RATE, rate);
+            WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.FEISHU_WEBHOOK, webhook);
+            WorkbenchStorage.setWorkerUrl(worker);
+            
+            WorkbenchUtils.toast('设置已保存', 'success');
+            app.closeSettings();
+            WorkbenchDashboard.updateDashboard();
+        },
+
+        // === 数据导出 ===
+        exportData: () => {
+            const backup = WorkbenchStorage.exportAll();
+            const filename = `V5_Medical_V14.1_Backup_${new Date().toISOString().slice(0,10)}.json`;
+            WorkbenchUtils.downloadJSON(backup, filename);
+            WorkbenchUtils.toast('数据已导出', 'success');
         }
     };
 
-    // 绑定 Tab 点击
+    // 绑定Tab点击
     document.querySelectorAll('.tab-button').forEach(btn => {
-        btn.onclick = function() { app.ui.switchTab(this.dataset.tab); };
+        btn.onclick = function() {
+            app.ui.switchTab(this.dataset.tab);
+        };
     });
+    
+    // 绑定输入框检查
+    ['action-1', 'action-2', 'action-3'].forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.oninput = app.survival.checkInputs;
+        }
+    });
+    
+    // 绑定开始战斗按钮
+    const battleBtn = document.getElementById('battle-start-btn');
+    if (battleBtn) {
+        battleBtn.onclick = app.survival.startBattle;
+    }
 
     // 初始化检查
     app.survival.initCheck();
     
-    // 首次渲染 CRM (如果有数据)
+    // 首次渲染
     app.crm.render();
+    app.expenses.render();
 
-    console.log('[V14.1] System Online');
+    console.log('[V14.1] ✅ System Online - All Modules Loaded');
 });
 </script>
 
