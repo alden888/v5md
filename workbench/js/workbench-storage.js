@@ -220,5 +220,8 @@ const WorkbenchStorage = {
     }
 };
 
+// 🔥 FIX: 显式挂载到 window 对象
+window.WorkbenchStorage = WorkbenchStorage;
+
 // 自动初始化
 WorkbenchStorage.init();
