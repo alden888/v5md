@@ -1,108 +1,61 @@
 // ============================================
-// V14.0 ERP - SUPPLIERS MANAGEMENT MODULE
+// js/workbench-suppliers.js - 新建
 // ============================================
 
 const WorkbenchSuppliers = {
-    /**
-     * 初始化供应商模块
-     */
     init() {
-        console.log('[Suppliers] Initializing suppliers management module...');
-        
-        // 绑定Tab点击事件
-        this.bindEvents();
-        
+        console.log('[Suppliers] Initializing...');
         return this;
     },
     
     /**
-     * 绑定事件
+     * 渲染供应商列表 - 🔥 渲染到 #suppliers-list
      */
-    bindEvents() {
-        // 🔥 FIX: 确保供应商Tab点击事件正确绑定
-        const suppliersTab = document.querySelector('[data-tab="suppliers"]');
-        if (suppliersTab) {
-            suppliersTab.addEventListener('click', () => {
-                console.log('[Suppliers] Tab clicked');
-                this.showSuppliers();
-            });
-        }
+    render() {
+        console.log('[Suppliers] Rendering suppliers list...');
         
-        // 新增供应商按钮
-        const addBtn = document.getElementById('add-supplier-btn');
-        if (addBtn) {
-            addBtn.addEventListener('click', () => this.openAddSupplier());
-        }
-    },
-    
-    /**
-     * 🔥 FIX: 显示供应商列表
-     */
-    showSuppliers() {
-        console.log('[Suppliers] Showing suppliers tab');
-        
-        // 隐藏其他Tab
-        document.querySelectorAll('.tab-content').forEach(tab => {
-            tab.classList.add('hidden');
-        });
-        
-        // 显示供应商Tab
-        const suppliersContent = document.getElementById('suppliers-tab');
-        if (suppliersContent) {
-            suppliersContent.classList.remove('hidden');
-            console.log('[Suppliers] Tab is now visible');
-        } else {
-            console.error('[Suppliers] suppliers-tab element not found!');
-        }
-        
-        // 更新供应商列表
-        this.updateSuppliersList();
-    },
-    
-    /**
-     * 更新供应商列表
-     */
-    updateSuppliersList() {
         const container = document.getElementById('suppliers-list');
-        if (!container) return;
+        if (!container) {
+            console.error('[Suppliers] #suppliers-list not found!');
+            return;
+        }
         
         container.innerHTML = '';
         
-        if (WorkbenchDashboard.data.suppliers.length === 0) {
+        const suppliers = WorkbenchDashboard.data.suppliers || [];
+        
+        if (suppliers.length === 0) {
             container.innerHTML = `
-                <div class="text-center text-slate-400 py-12">
+                <div class="col-span-full text-center text-slate-400 py-12">
                     <div class="text-4xl mb-4">🏭</div>
                     <div>暂无供应商</div>
-                    <div class="text-sm mt-2">点击"新增供应商"开始添加</div>
+                    <div class="text-sm mt-2">点击右上角"新增供应商"开始添加</div>
                 </div>
             `;
             return;
         }
         
-        WorkbenchDashboard.data.suppliers.forEach(supplier => {
-            const card = this.createSupplierCard(supplier);
+        suppliers.forEach(supplier => {
+            const card = this._createCard(supplier);
             container.appendChild(card);
         });
     },
     
-    /**
-     * 创建供应商卡片
-     */
-    createSupplierCard(supplier) {
+    _createCard(supplier) {
         const card = document.createElement('div');
-        card.className = 'bg-slate-800 p-4 rounded-lg border border-slate-700';
+        card.className = 'bg-slate-800 p-4 rounded-lg border border-slate-700 hover:border-blue-500 transition';
         
         card.innerHTML = `
             <div class="flex justify-between items-start mb-3">
                 <h3 class="text-lg font-bold text-white">${supplier.company}</h3>
                 <div class="flex gap-2">
-                    <button onclick="WorkbenchSuppliers.editSupplier('${supplier.id}')" 
-                            class="text-blue-400 hover:text-blue-300">
+                    <button onclick="WorkbenchSuppliers.openEditModal('${supplier.id}')" 
+                            class="text-blue-400 hover:text-blue-300 text-sm">
                         📝 编辑
                     </button>
                     <button onclick="WorkbenchSuppliers.deleteSupplier('${supplier.id}')" 
-                            class="text-red-400 hover:text-red-300">
-                        🗑️ 删除
+                            class="text-red-400 hover:text-red-300 text-sm">
+                        🗑️
                     </button>
                 </div>
             </div>
@@ -122,10 +75,7 @@ const WorkbenchSuppliers = {
         return card;
     },
     
-    /**
-     * 打开新增供应商模态框
-     */
-    openAddSupplier() {
+    openAddModal() {
         document.getElementById('supplier-id').value = '';
         document.getElementById('supplier-company').value = '';
         document.getElementById('supplier-contact').value = '';
@@ -135,14 +85,19 @@ const WorkbenchSuppliers = {
         document.getElementById('supplier-certificates').value = '';
         document.getElementById('supplier-notes').value = '';
         
-        WorkbenchUtils.toggle('supplier-modal', true);
+        const modalTitle = document.getElementById('supplier-modal-title');
+        if (modalTitle) modalTitle.textContent = '新增供应商';
+        
+        const modal = document.getElementById('supplier-modal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('active');
+        }
+        
         setTimeout(() => document.getElementById('supplier-company').focus(), 100);
     },
     
-    /**
-     * 编辑供应商
-     */
-    editSupplier(id) {
+    openEditModal(id) {
         const supplier = WorkbenchDashboard.data.suppliers.find(s => s.id === id);
         if (!supplier) return;
         
@@ -155,13 +110,25 @@ const WorkbenchSuppliers = {
         document.getElementById('supplier-certificates').value = supplier.certificates || '';
         document.getElementById('supplier-notes').value = supplier.notes || '';
         
-        WorkbenchUtils.toggle('supplier-modal', true);
+        const modalTitle = document.getElementById('supplier-modal-title');
+        if (modalTitle) modalTitle.textContent = '编辑供应商';
+        
+        const modal = document.getElementById('supplier-modal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('active');
+        }
     },
     
-    /**
-     * 保存供应商
-     */
-    async saveSupplier() {
+    closeSupplierModal() {
+        const modal = document.getElementById('supplier-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('active');
+        }
+    },
+    
+    saveSupplier() {
         const id = document.getElementById('supplier-id').value;
         const company = document.getElementById('supplier-company').value.trim();
         
@@ -181,14 +148,12 @@ const WorkbenchSuppliers = {
         };
         
         if (id) {
-            // 更新现有供应商
             const supplier = WorkbenchDashboard.data.suppliers.find(s => s.id === id);
             if (supplier) {
                 Object.assign(supplier, supplierData);
             }
             WorkbenchUtils.toast('供应商已更新', 'success');
         } else {
-            // 新增供应商
             WorkbenchDashboard.data.suppliers.push({
                 id: WorkbenchUtils.generateId('SUPP'),
                 ...supplierData,
@@ -198,31 +163,21 @@ const WorkbenchSuppliers = {
             WorkbenchUtils.toast('供应商已添加', 'success');
         }
         
-        await WorkbenchStorage.save(
-            WorkbenchConfig.STORAGE_KEYS.SUPPLIERS,
-            WorkbenchDashboard.data.suppliers
-        );
+        WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.SUPPLIERS, WorkbenchDashboard.data.suppliers);
         
-        WorkbenchUtils.toggle('supplier-modal', false);
-        this.updateSuppliersList();
+        this.closeSupplierModal();
+        this.render();
+        WorkbenchOrders.updateSupplierSuggestions();
     },
     
-    /**
-     * 删除供应商
-     */
-    async deleteSupplier(id) {
-        if (!confirm('确定要删除这个供应商吗？')) {
-            return;
-        }
+    deleteSupplier(id) {
+        if (!confirm('确定要删除这个供应商吗？')) return;
         
         WorkbenchDashboard.data.suppliers = WorkbenchDashboard.data.suppliers.filter(s => s.id !== id);
-        
-        await WorkbenchStorage.save(
-            WorkbenchConfig.STORAGE_KEYS.SUPPLIERS,
-            WorkbenchDashboard.data.suppliers
-        );
+        WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.SUPPLIERS, WorkbenchDashboard.data.suppliers);
         
         WorkbenchUtils.toast('供应商已删除', 'success');
-        this.updateSuppliersList();
+        this.render();
+        WorkbenchOrders.updateSupplierSuggestions();
     }
 };
