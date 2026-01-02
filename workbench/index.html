@@ -764,83 +764,73 @@
 <script src="js/workbench-suppliers.js"></script>
 <script src="js/workbench-finance.js"></script>
 
+<!-- ============================================ -->
+<!-- index.html 底部 - 修复后的初始化脚本 -->
+<!-- ============================================ -->
+
 <script>
-// ========== V14.0: GLOBAL APP BRIDGE (修复胶水层) ========== 
-// 这一层负责把 HTML 中的 onclick="app.xxx()" 映射到具体的 JS 模块
+// ========== V14.0: GLOBAL APP BRIDGE (修复版) ========== 
 
 document.addEventListener('DOMContentLoaded', async function() {
     console.log('[V14.0 ERP] Initializing modular application...');
     
-    // 1. 初始化各模块实例
-    const storage = new WorkbenchStorage(); // 假设 Storage 是类
-    const dashboard = new WorkbenchDashboard();
+    // 1. 初始化各模块
+    await WorkbenchDashboard.init();
+    WorkbenchOrders.init();
+    WorkbenchSuppliers.init();
+    WorkbenchFinance.init();
     
-    // 2. 重建全局 app 对象 (这是 HTML 按钮能点击的关键)
+    // 2. 构建全局 app 对象（桥接 HTML onclick 和 JS 模块）
     window.app = {
         // --- 生存模式 (Survival) ---
         survival: {
-            // 检查输入框，决定是否点亮“开始战斗”按钮
             checkInputs: () => {
-                const a1 = document.getElementById('action-1').value.trim();
-                const a2 = document.getElementById('action-2').value.trim();
-                const a3 = document.getElementById('action-3').value.trim();
+                const a1 = document.getElementById('action-1')?.value.trim();
+                const a2 = document.getElementById('action-2')?.value.trim();
+                const a3 = document.getElementById('action-3')?.value.trim();
                 const btn = document.getElementById('battle-start-btn');
                 
-                if(a1 && a2 && a3) {
-                    btn.removeAttribute('disabled');
-                    btn.classList.add('active'); // 可加 CSS 让它变亮
+                if (a1 && a2 && a3) {
+                    btn?.removeAttribute('disabled');
                 } else {
-                    btn.setAttribute('disabled', 'true');
-                    btn.classList.remove('active');
+                    btn?.setAttribute('disabled', 'true');
                 }
             },
             
-            // 开始战斗逻辑
             startBattle: () => {
                 const actions = [
-                    document.getElementById('action-1').value,
-                    document.getElementById('action-2').value,
-                    document.getElementById('action-3').value
+                    document.getElementById('action-1')?.value || '',
+                    document.getElementById('action-2')?.value || '',
+                    document.getElementById('action-3')?.value || ''
                 ];
                 
-                // 保存今日三件事
                 localStorage.setItem('v14_today_actions', JSON.stringify(actions));
-                // 设置解锁时间戳 (30分钟有效期)
                 localStorage.setItem('v14_unlock_time', Date.now());
                 
-                // 隐藏铁幕
-                document.getElementById('iron-curtain').classList.add('hidden');
-                
-                // 刷新页面显示三件事
-                app.dashboard.renderTodayActions(actions);
-                
+                document.getElementById('iron-curtain')?.classList.add('hidden');
+                WorkbenchDashboard.renderTodayActions(actions);
                 WorkbenchUtils.toast('战斗开始！聚焦现金流！', 'success');
             },
             
-            // 紧急模式
             emergencyOverride: () => {
-                if(confirm("确定启用10分钟紧急模式？Header 将变为警戒色。")) {
-                    document.getElementById('iron-curtain').classList.add('hidden');
-                    document.getElementById('emergency-mode-warning').classList.remove('hidden');
-                    
-                    // 10分钟后强制刷新
+                if (confirm("确定启用10分钟紧急模式？")) {
+                    document.getElementById('iron-curtain')?.classList.add('hidden');
+                    document.getElementById('emergency-mode-warning')?.classList.remove('hidden');
                     setTimeout(() => location.reload(), 10 * 60 * 1000);
                     WorkbenchUtils.toast('紧急模式已启动 (10min)', 'warning');
                 }
             },
             
-            // 检查是否需要锁屏 (页面加载时运行)
             initCheck: () => {
                 const lastUnlock = localStorage.getItem('v14_unlock_time');
                 const now = Date.now();
-                // 如果没有解锁记录，或者超过 30 分钟，显示铁幕
+                
                 if (!lastUnlock || (now - lastUnlock > 30 * 60 * 1000)) {
-                    document.getElementById('iron-curtain').classList.remove('hidden');
+                    document.getElementById('iron-curtain')?.classList.remove('hidden');
                 } else {
-                    document.getElementById('iron-curtain').classList.add('hidden');
-                    // 恢复显示之前填写的 Actions
+                    document.getElementById('iron-curtain')?.classList.add('hidden');
                     const savedActions = JSON.parse(localStorage.getItem('v14_today_actions') || '[]');
-                    app.dashboard.renderTodayActions(savedActions);
+                    WorkbenchDashboard.renderTodayActions(savedActions);
                 }
             }
         },
@@ -853,39 +843,51 @@ document.addEventListener('DOMContentLoaded', async function() {
             openFullAddModal: () => WorkbenchOrders.openFullAddModal(),
             closeFullAddModal: () => WorkbenchOrders.closeFullAddModal(),
             saveFullOrder: () => WorkbenchOrders.saveFullOrder(),
+            editOrder: (id) => WorkbenchOrders.editOrder(id),
             closeEditModal: () => WorkbenchOrders.closeEditModal(),
             saveEditOrder: () => WorkbenchOrders.saveEditOrder(),
-            updateQuickRate: () => WorkbenchOrders.updateRate('quick'),
-            updateFullRate: () => WorkbenchOrders.updateRate('new'),
-            updateEditRate: () => WorkbenchOrders.updateRate('edit'),
-            calculateQuickProfit: () => WorkbenchOrders.calculateProfit('quick')
-        },
-
-        // --- 仪表盘 (Dashboard) ---
-        dashboard: {
-            renderTodayActions: (actions) => {
-                const container = document.getElementById('actions-display');
-                if(!container) return;
-                
-                container.innerHTML = actions.map((act, i) => `
-                    <div class="bg-gray-900 border border-gray-700 p-2 rounded text-xs text-gray-300 flex items-center">
-                        <span class="bg-red-900 text-red-300 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold mr-2">${i+1}</span>
-                        <span class="truncate">${act}</span>
-                    </div>
-                `).join('');
-            }
+            updateQuickRate: () => WorkbenchOrders.updateQuickRate(),
+            updateFullRate: () => WorkbenchOrders.updateFullRate(),
+            updateEditRate: () => WorkbenchOrders.updateEditRate(),
+            calculateQuickProfit: () => WorkbenchOrders.calculateQuickProfit()
         },
 
         // --- CRM ---
         crm: {
-            openCustomerModal: () => document.getElementById('customer-modal').classList.add('open'),
-            closeCustomerModal: () => document.getElementById('customer-modal').classList.remove('open'),
+            openCustomerModal: () => {
+                const modal = document.getElementById('customer-modal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    modal.classList.add('active');
+                }
+            },
+            closeCustomerModal: () => {
+                const modal = document.getElementById('customer-modal');
+                if (modal) {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('active');
+                }
+            },
             saveCustomer: () => {
-                // 简易保存逻辑，建议连接到 workbench-orders.js 或 workbench-utils.js 中更完善的逻辑
-                const name = document.getElementById('customer-name').value;
-                if(name) {
-                    WorkbenchUtils.toast('客户保存成功 (演示)', 'success');
+                const name = document.getElementById('customer-name')?.value.trim();
+                if (name) {
+                    const customer = {
+                        id: WorkbenchUtils.generateId('CUST'),
+                        company: name,
+                        contact: document.getElementById('customer-contact')?.value.trim() || '',
+                        country: document.getElementById('customer-country')?.value || '',
+                        currency: document.getElementById('customer-currency')?.value || 'USD',
+                        notes: document.getElementById('customer-notes')?.value.trim() || '',
+                        createdAt: new Date().toISOString(),
+                        totalOrders: 0,
+                        totalSales: 0
+                    };
+                    
+                    WorkbenchDashboard.data.customers.push(customer);
+                    WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.CUSTOMERS, WorkbenchDashboard.data.customers);
+                    WorkbenchUtils.toast('客户保存成功', 'success');
                     app.crm.closeCustomerModal();
+                    WorkbenchOrders.updateCustomerSuggestions();
                 } else {
                     WorkbenchUtils.toast('请输入客户名称', 'error');
                 }
@@ -894,11 +896,26 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         // --- 飞书 & 设置 ---
         feishu: {
-            openSettings: () => document.getElementById('feishu-settings-modal').classList.add('open'),
-            closeSettings: () => document.getElementById('feishu-settings-modal').classList.remove('open'),
+            openSettings: () => {
+                const modal = document.getElementById('feishu-settings-modal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    modal.classList.add('active');
+                }
+            },
+            closeSettings: () => {
+                const modal = document.getElementById('feishu-settings-modal');
+                if (modal) {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('active');
+                }
+            },
             saveSettings: () => {
-                const url = document.getElementById('feishu-webhook-input').value;
-                localStorage.setItem('v14_feishu_webhook', url);
+                const url = document.getElementById('feishu-webhook-input')?.value;
+                if (url) {
+                    WorkbenchDashboard.data.feishuWebhook = url;
+                    WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.FEISHU_WEBHOOK, url);
+                }
                 app.feishu.closeSettings();
                 WorkbenchUtils.toast('设置已保存', 'success');
             },
@@ -908,49 +925,71 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         // --- 财务 ---
         finance: {
-            showXTransferInfo: () => document.getElementById('xtransfer-modal').classList.add('open'),
-            closeXTransferInfo: () => document.getElementById('xtransfer-modal').classList.remove('open'),
-            copyBankInfo: () => {
-                // 简单的复制演示
-                navigator.clipboard.writeText("Account: 63007935038\nBank: JPMorgan Chase Bank N.A.");
-                WorkbenchUtils.toast('账户信息已复制', 'success');
-            }
+            showXTransferInfo: () => WorkbenchFinance.showXTransferInfo(),
+            closeXTransferInfo: () => WorkbenchFinance.closeXTransferInfo(),
+            copyBankInfo: () => WorkbenchFinance.copyBankInfo()
         },
         
         // --- 数据导出 ---
         exportData: () => {
-            WorkbenchStorage.exportBackup(); // 假设 Storage 模块有这个静态方法
+            const backup = WorkbenchStorage.exportAll();
+            const filename = `V14.0_ERP_Backup_${WorkbenchUtils.formatDate(new Date(), 'YYYY-MM-DD')}.json`;
+            WorkbenchUtils.downloadJSON(backup, filename);
+            WorkbenchUtils.toast('数据导出成功', 'success');
         }
     };
 
-    // 3. 运行初始化检查
-    app.survival.initCheck();
-    
-    // 初始化其他静态模块
-    if(window.WorkbenchDashboard) await WorkbenchDashboard.init();
-    if(window.WorkbenchOrders) WorkbenchOrders.init();
-    
-    // Tab 切换逻辑 (原生实现)
+    // 3. 🔥 Tab 切换逻辑（触发对应模块的 render）
     document.querySelectorAll('.tab-button').forEach(btn => {
         btn.addEventListener('click', (e) => {
             // 移除所有 active
             document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); // 修正：假设你的CSS是用active控制显示
-            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             
             // 添加 active
             e.currentTarget.classList.add('active');
-            const tabId = e.currentTarget.dataset.tab;
-            const content = document.getElementById(`tab-${tabId}`);
-            if(content) {
+            const tabName = e.currentTarget.dataset.tab;
+            const content = document.getElementById(`tab-${tabName}`);
+            
+            if (content) {
                 content.classList.add('active');
-                content.style.display = 'block';
+                
+                // 🔥 FIX: 触发对应模块的 render() 刷新数据
+                switch(tabName) {
+                    case 'dashboard':
+                        WorkbenchDashboard.updateDashboard();
+                        break;
+                    case 'kanban':
+                        WorkbenchOrders.render();
+                        break;
+                    case 'suppliers':
+                        WorkbenchSuppliers.render();
+                        break;
+                    case 'crm':
+                        // CRM render logic here if needed
+                        break;
+                }
             }
         });
     });
 
+    // 4. 初始化检查
+    app.survival.initCheck();
+    
+    // 5. 渲染Today Actions
+    const savedActions = JSON.parse(localStorage.getItem('v14_today_actions') || '["","",""]');
+    WorkbenchDashboard.renderTodayActions(savedActions);
+
     WorkbenchUtils.toast('战时指挥台启动 (V14.0 ERP)', 'success');
-    console.log('[V14.0 ERP] Global APP object constructed.');
+    console.log('[V14.0 ERP] Initialization complete.');
+});
+
+// 🔥 Modal 通用关闭逻辑（点击背景关闭）
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('modal-overlay')) {
+        e.target.classList.add('hidden');
+        e.target.classList.remove('active');
+    }
 });
 </script>
 
