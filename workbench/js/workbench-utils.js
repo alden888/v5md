@@ -1,15 +1,18 @@
 // ============================================
-// V14.1 ERP - UTILITIES MODULE (ENHANCED)
+// V14.1 ERP - UTILITIES MODULE (FULLY ENHANCED)
 // ============================================
 
 const WorkbenchUtils = {
     /**
-     * 显示Toast通知
+     * 显示Toast通知 (增强版 - 降级保护)
      */
     toast(message, type = 'info', duration = 3000) {
+        console.log(`[Toast] ${type.toUpperCase()}: ${message}`);
+        
         const container = document.getElementById('toast-container');
         if (!container) {
-            console.warn('[Utils] Toast container not found');
+            console.warn('[Utils] Toast container not found, using alert fallback');
+            alert(`${type.toUpperCase()}: ${message}`);
             return;
         }
         
@@ -206,7 +209,7 @@ const WorkbenchUtils = {
     },
     
     /**
-     * 复制文本到剪贴板
+     * 复制文本到剪贴板 (增强版)
      */
     async copyToClipboard(text) {
         try {
@@ -295,9 +298,10 @@ const WorkbenchUtils = {
     },
     
     /**
-     * 确认对话框（带样式）
+     * 确认对话框（增强版）
      */
     confirm(message, title = '确认操作') {
+        console.log(`[Confirm] ${title}: ${message}`);
         return window.confirm(`${title}\n\n${message}`);
     },
     
@@ -311,8 +315,35 @@ const WorkbenchUtils = {
             }
         } catch (error) {
             console.error('[Utils] Safe call failed:', error);
+            this.toast('操作失败: ' + error.message, 'error');
             return null;
         }
+    },
+    
+    /**
+     * 验证必填字段
+     */
+    validateRequired(fields) {
+        const missing = [];
+        for (const [name, value] of Object.entries(fields)) {
+            if (!value || (typeof value === 'string' && !value.trim())) {
+                missing.push(name);
+            }
+        }
+        
+        if (missing.length > 0) {
+            this.toast(`请填写必填项: ${missing.join(', ')}`, 'warning');
+            return false;
+        }
+        return true;
+    },
+    
+    /**
+     * 安全的数字解析
+     */
+    parseNumber(value, defaultValue = 0) {
+        const num = parseFloat(value);
+        return isNaN(num) ? defaultValue : num;
     }
 };
 
@@ -341,3 +372,4 @@ if (!document.getElementById('utils-animations')) {
 
 // 🔥 挂载到Window
 window.WorkbenchUtils = WorkbenchUtils;
+console.log('✅ [Utils] Module loaded and mounted');
