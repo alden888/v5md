@@ -238,6 +238,7 @@ const WorkbenchSuppliers = {
         this.updateSuppliersList();
     }
 };
-
+if (!window.WorkbenchSuppliers) {
+  window.WorkbenchSuppliers = new WorkbenchSuppliersModule();
 // 🔥 FIX: 显式挂载到 window 对象
 window.WorkbenchSuppliers = WorkbenchSuppliers;
