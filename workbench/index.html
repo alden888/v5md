@@ -1,23 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V5 Medical 战时指挥台 V14.1 | 供应链·财务·真实利润</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/workbench-v14.css">
+</head>
+
+<body class="bg-black text-white">
+
 <!-- ========================================= -->
-<!-- V14.1 更新后的 Scripts 部分 -->
-<!-- 在原 index.html 中找到这部分并替换 -->
+<!-- 铁幕登录界面 -->
+<!-- ========================================= -->
+<div id="iron-curtain" class="iron-curtain">
+    <div class="survival-gate">
+        <div class="text-center mb-8">
+            <div class="text-6xl mb-4">⚔️</div>
+            <h1 class="text-3xl font-black mb-2 text-red-500">SURVIVAL MODE</h1>
+            <p class="text-slate-400 text-sm">战时指挥台 · 现金为王 · 没有退路</p>
+        </div>
+        <div class="mb-6">
+            <p class="text-white font-bold mb-4 text-center">今天唯一能带回<span class="text-red-500 text-xl">现金</span>的三件事是什么？</p>
+        </div>
+        <div class="space-y-4 mb-8">
+            <input type="text" id="action-1" class="survival-input" placeholder="Action #1: 催 Mikki 尾款..." />
+            <input type="text" id="action-2" class="survival-input" placeholder="Action #2: 确认 Turhan 订单..." />
+            <input type="text" id="action-3" class="survival-input" placeholder="Action #3: ..." />
+        </div>
+        <button id="battle-start-btn" class="battle-start-btn" disabled>
+            <i class="fas fa-fist-raised mr-2"></i> 开始战斗
+        </button>
+        <button onclick="app.survival.emergencyOverride()" class="mt-4 w-full text-xs text-slate-600 hover:text-slate-400 transition text-center py-2 rounded underline">
+            ⚡ 10分钟紧急进入
+        </button>
+    </div>
+</div>
+
+<!-- ========================================= -->
+<!-- 主Header -->
+<!-- ========================================= -->
+<header id="main-header" class="fixed top-0 left-0 right-0 bg-gradient-to-r from-blue-900 to-blue-800 z-50 h-[70px] border-b border-blue-700">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="bg-red-600 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg">⚔️</div>
+            <div>
+                <h1 class="font-black text-lg leading-tight text-white">战时指挥台 <span class="text-xs bg-red-600 px-2 rounded-full">V14.1</span></h1>
+                <div class="text-[10px] uppercase tracking-wider font-bold text-blue-200">ERP EDITION · B2B 专用</div>
+            </div>
+        </div>
+        <div id="emergency-mode-warning" class="hidden px-4 py-2 bg-yellow-900 text-yellow-300 rounded font-bold animate-pulse">
+            ⚠️ 紧急模式运行中
+        </div>
+        <div class="flex items-center gap-4">
+            <button onclick="app.openSettings()" class="text-sm px-3 py-1.5 rounded hover:bg-blue-800 text-white"><i class="fas fa-cog"></i> 设置</button>
+            <button onclick="app.exportData()" class="text-sm px-3 py-1.5 rounded hover:bg-blue-800 text-white"><i class="fas fa-download"></i> 备份</button>
+        </div>
+    </div>
+</header>
+
+<!-- ========================================= -->
+<!-- 今日三件事Banner -->
+<!-- ========================================= -->
+<div class="cash-actions-banner" style="top: 70px;">
+    <div class="max-w-7xl mx-auto">
+        <h3 class="text-sm font-black text-red-500 mb-3 uppercase tracking-wider flex items-center gap-2">
+            <i class="fas fa-bullseye"></i> Today's 3 Cash Actions
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="actions-display"></div>
+    </div>
+</div>
+
+<!-- ========================================= -->
+<!-- Tab导航 -->
+<!-- ========================================= -->
+<nav class="fixed left-0 right-0 bg-black border-b border-gray-800 z-40" style="top: 70px;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="flex gap-2 overflow-x-auto">
+            <button class="tab-button active" data-tab="dashboard"><i class="fas fa-crosshairs mr-2"></i> 现金流</button>
+            <button class="tab-button" data-tab="kanban"><i class="fas fa-columns mr-2"></i> 订单战场</button>
+            <button class="tab-button" data-tab="crm"><i class="fas fa-users mr-2"></i> 客户档案</button>
+            <button class="tab-button" data-tab="suppliers"><i class="fas fa-industry mr-2"></i> 供应商</button>
+            <button class="tab-button" data-tab="expenses"><i class="fas fa-file-invoice-dollar mr-2"></i> 运营支出</button>
+        </div>
+    </div>
+</nav>
+
+<!-- ========================================= -->
+<!-- 主内容区 -->
+<!-- ========================================= -->
+<main class="pb-8 px-4 sm:px-6" style="padding-top: calc(70px + 130px + 55px);">
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- ========== Dashboard Tab ========== -->
+        <div id="tab-dashboard" class="tab-content">
+            <!-- 财务指标 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="cash-metric">
+                    <div class="cash-metric-label">总营收</div>
+                    <div id="dashboard-revenue" class="cash-metric-value text-green-400">¥0</div>
+                </div>
+                <div class="cash-metric">
+                    <div class="cash-metric-label">总成本</div>
+                    <div id="dashboard-cost" class="cash-metric-value text-red-400">¥0</div>
+                </div>
+                <div class="cash-metric">
+                    <div class="cash-metric-label">毛利润</div>
+                    <div id="dashboard-gross" class="cash-metric-value text-blue-400">¥0</div>
+                </div>
+                <div class="cash-metric">
+                    <div class="cash-metric-label">净利润</div>
+                    <div id="dashboard-net" class="cash-metric-value text-yellow-400">¥0</div>
+                </div>
+            </div>
+            
+            <!-- 最后回款 + 时钟 + 进度 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <!-- 最后回款 -->
+                <div id="last-income-card" class="bg-gray-900 p-6 rounded-xl border-2 border-gray-700">
+                    <h3 class="font-bold text-lg mb-4 text-green-400">📊 最后回款</h3>
+                    <div id="lastIncomeInfo" class="text-sm text-gray-400 mb-2">暂无数据</div>
+                    <div class="flex items-end gap-2">
+                        <div id="hoursSinceIncome" class="text-4xl font-black text-green-400">--</div>
+                        <div class="text-sm text-gray-500 mb-2">小时前</div>
+                    </div>
+                </div>
+                
+                <!-- 本地时间 -->
+                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800">
+                    <h3 class="font-bold text-lg mb-4">🕐 本地时间</h3>
+                    <div id="local-time" class="text-4xl font-mono text-green-400 mb-2">--:--:--</div>
+                    <div id="local-date" class="text-gray-400">----/--/--</div>
+                </div>
+                
+                <!-- 年度进度 -->
+                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800">
+                    <h3 class="font-bold text-lg mb-4">🎯 年度进度</h3>
+                    <div id="dashboard-progress" class="text-4xl font-bold text-blue-400 mb-2">0%</div>
+                    <div class="text-sm text-gray-400">毛利率: <span id="dashboard-margin" class="font-bold">0%</span></div>
+                </div>
+            </div>
+            
+            <!-- 快捷工具区 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="quick-tools-section">
+                <div class="bg-gray-900 border border-gray-700 p-6 rounded-xl hover:border-blue-500 transition">
+                    <h3 class="font-bold text-lg mb-4 text-blue-400">📄 单证工具</h3>
+                    <div class="space-y-2">
+                        <button class="w-full bg-gray-800 hover:bg-gray-700 py-2 rounded text-sm transition" onclick="alert('开发中')">生成 Proforma Invoice</button>
+                        <button class="w-full bg-gray-800 hover:bg-gray-700 py-2 rounded text-sm transition" onclick="alert('开发中')">生成 Commercial Invoice</button>
+                        <button class="w-full bg-gray-800 hover:bg-gray-700 py-2 rounded text-sm transition" onclick="alert('开发中')">生成 Packing List</button>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 border border-gray-700 p-6 rounded-xl hover:border-green-500 transition">
+                    <h3 class="font-bold text-lg mb-4 text-green-400">🚢 物流追踪</h3>
+                    <div class="space-y-2">
+                        <button class="w-full bg-gray-800 hover:bg-gray-700 py-2 rounded text-sm transition" onclick="alert('开发中')">添加运单号</button>
+                        <button class="w-full bg-gray-800 hover:bg-gray-700 py-2 rounded text-sm transition" onclick="alert('开发中')">查询物流状态</button>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 border border-gray-700 p-6 rounded-xl hover:border-purple-500 transition">
+                    <h3 class="font-bold text-lg mb-4 text-purple-400">🌍 全球时钟</h3>
+                    <div class="space-y-1 text-sm" id="globalClockDisplay">
+                        <div class="flex justify-between"><span>🇨🇳 Beijing</span><span id="time-beijing">--:--</span></div>
+                        <div class="flex justify-between"><span>🇵🇭 Manila</span><span id="time-manila">--:--</span></div>
+                        <div class="flex justify-between"><span>🇹🇷 Istanbul</span><span id="time-istanbul">--:--</span></div>
+                        <div class="flex justify-between"><span>🇳🇱 Amsterdam</span><span id="time-amsterdam">--:--</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ========== Kanban Tab ========== -->
+        <div id="tab-kanban" class="tab-content" style="display:none;">
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-2xl font-black text-red-500 uppercase">订单战场</h2>
+                <button onclick="app.kanban.openQuickAdd()" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-bold transition">
+                    <i class="fas fa-plus mr-2"></i> 快速新建
+                </button>
+            </div>
+            <div class="flex gap-4 overflow-x-auto pb-4">
+                <!-- 看板列 -->
+                <div class="kanban-column min-w-[300px]" data-status="New Inquiry">
+                    <div class="mb-4 font-bold text-blue-400">New Inquiry <span class="text-xs bg-gray-800 px-2 py-1 rounded ml-2" data-count="inquiry">0</span></div>
+                    <div id="kanban-inquiry" class="space-y-3"></div>
+                </div>
+                <div class="kanban-column min-w-[300px]" data-status="PI Sent">
+                    <div class="mb-4 font-bold text-yellow-400">PI Sent <span class="text-xs bg-gray-800 px-2 py-1 rounded ml-2" data-count="pi">0</span></div>
+                    <div id="kanban-pi" class="space-y-3"></div>
+                </div>
+                <div class="kanban-column min-w-[300px]" data-status="Production">
+                    <div class="mb-4 font-bold text-purple-400">Production <span class="text-xs bg-gray-800 px-2 py-1 rounded ml-2" data-count="production">0</span></div>
+                    <div id="kanban-production" class="space-y-3"></div>
+                </div>
+                <div class="kanban-column min-w-[300px]" data-status="Shipped">
+                    <div class="mb-4 font-bold text-blue-600">Shipped <span class="text-xs bg-gray-800 px-2 py-1 rounded ml-2" data-count="shipped">0</span></div>
+                    <div id="kanban-shipped" class="space-y-3"></div>
+                </div>
+                <div class="kanban-column min-w-[300px]" data-status="Paid">
+                    <div class="mb-4 font-bold text-green-500">Paid (已回款) <span class="text-xs bg-gray-800 px-2 py-1 rounded ml-2" data-count="paid">0</span></div>
+                    <div id="kanban-paid" class="space-y-3"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ========== CRM Tab ========== -->
+        <div id="tab-crm" class="tab-content" style="display:none;">
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-2xl font-black text-green-500 uppercase">客户档案</h2>
+                <button onclick="app.crm.openCustomerModal()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-bold transition">
+                    <i class="fas fa-user-plus mr-2"></i> 新增客户
+                </button>
+            </div>
+            <div id="customer-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="text-center text-gray-500 py-12 col-span-full">暂无客户档案</div>
+            </div>
+        </div>
+        
+        <!-- ========== Suppliers Tab ========== -->
+        <div id="tab-suppliers" class="tab-content" style="display:none;">
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-2xl font-black text-blue-500 uppercase">供应商管理</h2>
+                <button onclick="app.suppliers.openAddModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded font-bold transition">
+                    <i class="fas fa-plus mr-2"></i> 新增供应商
+                </button>
+            </div>
+            <div id="suppliers-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="text-center text-gray-500 py-12 col-span-full">暂无供应商档案</div>
+            </div>
+        </div>
+        
+        <!-- ========== Expenses Tab ========== -->
+        <div id="tab-expenses" class="tab-content" style="display:none;">
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-2xl font-black text-purple-500 uppercase">运营支出</h2>
+                <button onclick="app.expenses.openAddModal()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded font-bold transition">
+                    <i class="fas fa-plus mr-2"></i> 新增支出
+                </button>
+            </div>
+            <div class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-800 text-slate-400">
+                        <tr>
+                            <th class="p-4">日期</th>
+                            <th class="p-4">类别</th>
+                            <th class="p-4">金额</th>
+                            <th class="p-4">关联客户</th>
+                            <th class="p-4">备注</th>
+                            <th class="p-4 text-center">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expense-list" class="divide-y divide-gray-800">
+                        <tr><td colspan="6" class="text-center text-gray-500 py-8">暂无支出记录</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+</main>
+
+<!-- ========================================= -->
+<!-- Modals -->
 <!-- ========================================= -->
 
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<!-- 客户Modal -->
+<div id="customer-modal" class="modal-overlay">
+    <div class="modal-content bg-gray-900 border border-gray-700 p-6 rounded-xl w-full max-w-lg">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-green-500">新增客户档案</h3>
+            <button onclick="app.crm.closeCustomerModal()" class="text-slate-400 hover:text-white transition"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">公司名称 *</label>
+                <input type="text" id="customer-name" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="Mikki Hospital Ltd.">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1">联系人</label>
+                    <input type="text" id="customer-contact" class="w-full p-2 bg-black border border-gray-700 rounded text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1">WhatsApp</label>
+                    <input type="text" id="customer-whatsapp" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="+63 ...">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1">国家/地区</label>
+                    <select id="customer-country" class="w-full p-2 bg-black border border-gray-700 rounded text-white">
+                        <option value="">请选择...</option>
+                        <option value="Philippines">🇵🇭 Philippines (菲律宾)</option>
+                        <option value="Netherlands">🇳🇱 Netherlands (荷兰)</option>
+                        <option value="Turkey">🇹🇷 Turkey (土耳其)</option>
+                        <option value="China">🇨🇳 China (中国)</option>
+                        <option value="USA">🇺🇸 USA (美国)</option>
+                        <option value="UK">🇬🇧 UK (英国)</option>
+                        <option value="Germany">🇩🇪 Germany (德国)</option>
+                        <option value="Other">🌍 Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1">偏好币种</label>
+                    <select id="customer-currency" class="w-full p-2 bg-black border border-gray-700 rounded text-white">
+                        <option value="USD">USD</option>
+                        <option value="CNY">CNY</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">收货地址 (Shipping Address)</label>
+                <textarea id="customer-address" rows="3" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="用于发给货代..."></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">备注</label>
+                <textarea id="customer-notes" rows="2" class="w-full p-2 bg-black border border-gray-700 rounded text-white"></textarea>
+            </div>
+        </div>
+        <div class="mt-6 flex gap-3">
+            <button onclick="app.crm.saveCustomer()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded transition">保存档案</button>
+            <button onclick="app.crm.closeCustomerModal()" class="px-6 bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 rounded transition">取消</button>
+        </div>
+    </div>
+</div>
 
-<!-- 加载所有增强版模块 -->
+<!-- 支出Modal -->
+<div id="expense-modal" class="modal-overlay">
+    <div class="modal-content bg-gray-900 border border-gray-700 p-6 rounded-xl w-full max-w-lg">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-purple-500">新增运营支出</h3>
+            <button onclick="app.expenses.closeExpenseModal()" class="text-slate-400 hover:text-white transition"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1">日期 *</label>
+                    <input type="date" id="expense-date" class="w-full p-2 bg-black border border-gray-700 rounded text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-400 mb-1">类别 *</label>
+                    <select id="expense-category" class="w-full p-2 bg-black border border-gray-700 rounded text-white">
+                        <option value="房租">房租</option>
+                        <option value="差旅">差旅</option>
+                        <option value="招待">招待</option>
+                        <option value="物流">物流</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">金额 (CNY) *</label>
+                <input type="number" id="expense-amount" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="1000">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">关联客户</label>
+                <input type="text" id="expense-customer" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="可选...">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">备注</label>
+                <textarea id="expense-notes" rows="3" class="w-full p-2 bg-black border border-gray-700 rounded text-white"></textarea>
+            </div>
+        </div>
+        <div class="mt-6 flex gap-3">
+            <button onclick="app.expenses.saveExpense()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded transition">保存支出</button>
+            <button onclick="app.expenses.closeExpenseModal()" class="px-6 bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 rounded transition">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- 设置Modal -->
+<div id="settings-modal" class="modal-overlay">
+    <div class="modal-content bg-gray-900 border border-gray-700 p-6 rounded-xl w-full max-w-lg">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-blue-500">系统设置</h3>
+            <button onclick="app.closeSettings()" class="text-slate-400 hover:text-white transition"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">年度目标 (CNY)</label>
+                <input type="number" id="settings-target" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="5000000">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">美元汇率</label>
+                <input type="number" step="0.01" id="settings-rate" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="6.98">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">飞书Webhook URL</label>
+                <input type="text" id="settings-webhook" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="https://...">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-400 mb-1">Cloudflare Worker URL</label>
+                <input type="text" id="settings-worker" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="https://...">
+            </div>
+        </div>
+        <div class="mt-6 flex gap-3">
+            <button onclick="app.saveSettings()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded transition">保存设置</button>
+            <button onclick="app.closeSettings()" class="px-6 bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 rounded transition">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast通知 -->
+<div id="toast-container" class="fixed bottom-4 right-4 z-50"></div>
+
+<!-- ========================================= -->
+<!-- Scripts -->
+<!-- ========================================= -->
 <script src="js/workbench-firebase.js"></script>
 <script src="js/workbench-config.js"></script>
-<script src="js/workbench-utils-enhanced.js"></script> <!-- 替换原 workbench-utils.js -->
+<script src="js/workbench-utils.js"></script> 
 <script src="js/workbench-storage.js"></script>
 <script src="js/workbench-auth.js"></script>
 <script src="js/workbench-dashboard.js"></script>
-<script src="js/workbench-orders-enhanced.js"></script> <!-- 替换原 workbench-orders.js -->
-<script src="js/workbench-suppliers-enhanced.js"></script> <!-- 替换原 workbench-suppliers.js -->
+<script src="js/workbench-orders.js"></script> 
+<script src="js/workbench-suppliers.js"></script> 
 <script src="js/workbench-finance.js"></script>
-<script src="js/workbench-crm-expenses.js"></script> <!-- 新增模块 -->
+<script src="js/workbench-crm-expenses.js"></script> 
 
 <script>
 // ========================================
