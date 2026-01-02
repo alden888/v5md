@@ -181,11 +181,6 @@ const WorkbenchSuppliers = {
         WorkbenchOrders.updateSupplierSuggestions();
     }
 };
-// ============================================
-// js/workbench-suppliers.js - 末尾添加
-// ============================================
 
-// ... (所有现有代码保持不变) ...
-
-// 🔥 FIX: 显式挂载到window对象
+// 🔥 【关键修复】把模块挂载到 Window 对象
 window.WorkbenchSuppliers = WorkbenchSuppliers;
