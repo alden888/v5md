@@ -1,6 +1,6 @@
 /**
  * V14.2 PRO - ORDERS MODULE (COMPLETELY FIXED)
- * 修复快速新建订单功能 + 整合系统标准交互
+ * 适配V14.2 PRO Utils + 增强稳定性
  */
 const WorkbenchOrders = {
     currentEditId: null,
@@ -17,7 +17,7 @@ const WorkbenchOrders = {
     },
 
     /**
-     * 绑定DOM事件（新增）
+     * 绑定DOM事件
      */
     bindEvents() {
         // 绑定快速添加订单按钮
@@ -36,14 +36,17 @@ const WorkbenchOrders = {
     },
 
     /**
-     * 🔥 修复：渲染订单看板
+     * 渲染订单看板
      */
     render() {
         console.log('[Orders] 📊 Rendering kanban...');
         
         const Dashboard = window.WorkbenchDashboard;
+        const Utils = window.WorkbenchUtils;
+        
         if (!Dashboard || !Dashboard.data) {
             console.error('[Orders] Dashboard not ready');
+            Utils?.toast('数据面板未加载，请刷新页面', 'warning');
             return;
         }
         
@@ -101,17 +104,25 @@ const WorkbenchOrders = {
      * 创建订单卡片HTML
      */
     createCardHTML(order) {
+        const Utils = window.WorkbenchUtils;
         let profitDisplay = '';
+        
         if (order.cost > 0 || order.grossProfit) {
             const profit = order.grossProfit || 0;
             const margin = order.grossMargin || 0;
             const color = profit >= 0 ? 'text-green-400' : 'text-red-400';
             profitDisplay = `
                 <div class="text-xs mt-2 pt-2 border-t border-gray-700 ${color}">
-                    毛利: ¥${profit.toLocaleString()} (${margin.toFixed(1)}%)
+                    毛利: ¥${Utils.formatNumber(profit, 2)} (${margin.toFixed(1)}%)
                 </div>
             `;
         }
+        
+        // 格式化日期和金额
+        const formattedDate = Utils.formatDate(order.date, 'YYYY-MM-DD');
+        const formattedAmount = Utils.formatNumber(order.total || 0, 2);
+        const currencySymbol = order.currency === 'USD' ? '$' : '¥';
+        const amountColor = order.currency === 'USD' ? 'text-green-400' : 'text-yellow-400';
         
         return `
             <div class="bg-gray-800 p-3 rounded border border-gray-700 hover:border-blue-500 cursor-pointer transition" onclick="window.WorkbenchOrders.openEditModal('${order.id}')">
@@ -120,24 +131,24 @@ const WorkbenchOrders = {
                     <span class="bg-gray-900 px-2 py-0.5 rounded">${order.currency || 'USD'}</span>
                 </div>
                 <div class="font-bold text-white mb-2">${order.customer || '未知客户'}</div>
-                <div class="text-sm text-right ${order.currency === 'USD' ? 'text-green-400' : 'text-yellow-400'}">
-                    ${order.currency === 'USD' ? '$' : '¥'}${(order.total || 0).toLocaleString()}
+                <div class="text-sm text-right ${amountColor}">
+                    ${currencySymbol}${formattedAmount}
                 </div>
                 ${profitDisplay}
                 <div class="text-xs text-gray-500 mt-2">
-                    ${new Date(order.date).toLocaleDateString()}
+                    ${formattedDate}
                 </div>
             </div>
         `;
     },
 
     /**
-     * 🔥 关键修复：快速添加订单（增强版）
+     * 快速添加订单（增强版）
      */
     openQuickAdd() {
         // 防重复点击
         if (this.isProcessing) {
-            window.WorkbenchUtils?.toast('操作中，请稍候...', 'info');
+            window.WorkbenchUtils?.toast('操作中，请稍候...', 'warning');
             return;
         }
         
@@ -168,8 +179,8 @@ const WorkbenchOrders = {
                 return;
             }
             
-            const amount = parseFloat(amountStr);
-            if (isNaN(amount) || amount <= 0) {
+            const amount = Utils.parseNumber(amountStr);
+            if (amount <= 0) {
                 Utils.toast('请输入有效金额（必须大于0）', 'error');
                 this.isProcessing = false;
                 return;
@@ -199,32 +210,36 @@ const WorkbenchOrders = {
             });
             
         } catch (error) {
-            console.error('[Orders] Error:', error);
-            Utils.toast('添加失败: ' + error.message, 'error');
+            console.error('[Orders] Quick add error:', error);
+            window.WorkbenchUtils?.toast(`添加失败: ${error.message}`, 'error');
             this.isProcessing = false;
         }
     },
 
     /**
-     * 处理传统表单提交（兼容旧版）
+     * 处理传统表单提交
      */
     handleFormSubmit(e) {
         e.preventDefault();
+        const Utils = window.WorkbenchUtils;
         
         // 防重复提交
         if (this.isProcessing) return;
         this.isProcessing = true;
         
-        const Utils = window.WorkbenchUtils;
         const submitBtn = e.target.querySelector('button[type="submit"]');
+        if (Utils.isDoubleClick(submitBtn)) {
+            this.isProcessing = false;
+            return;
+        }
         
         try {
             // 获取表单数据
             const formData = {
                 customer: document.getElementById('order-customer').value.trim(),
                 product: document.getElementById('order-product').value.trim(),
-                quantity: parseInt(document.getElementById('order-quantity').value, 10) || 0,
-                total: parseFloat(document.getElementById('order-total').value) || 0,
+                quantity: Utils.parseNumber(document.getElementById('order-quantity').value, 0),
+                total: Utils.parseNumber(document.getElementById('order-total').value, 0),
                 currency: document.getElementById('order-currency').value || 'USD',
                 status: 'New Inquiry' // 表单默认新增为新询价
             };
@@ -238,6 +253,7 @@ const WorkbenchOrders = {
             
             if (errors.length > 0) {
                 Utils.toast(errors.join('<br>'), 'error');
+                Utils.releaseClick(submitBtn);
                 this.isProcessing = false;
                 return;
             }
@@ -250,18 +266,20 @@ const WorkbenchOrders = {
             }).catch((err) => {
                 Utils.toast(`创建失败: ${err.message}`, 'error');
             }).finally(() => {
+                Utils.releaseClick(submitBtn);
                 this.isProcessing = false;
             });
             
         } catch (error) {
             console.error('[Orders] Form submit error:', error);
-            Utils.toast('提交失败: ' + error.message, 'error');
+            Utils.toast(`提交失败: ${error.message}`, 'error');
+            Utils.releaseClick(submitBtn);
             this.isProcessing = false;
         }
     },
 
     /**
-     * 🔥 关键修复：保存新订单（增强版）
+     * 保存新订单（核心方法）
      */
     async saveNewOrder(orderData) {
         console.log('[Orders] 💾 Saving order...', orderData);
@@ -272,14 +290,18 @@ const WorkbenchOrders = {
             const Storage = window.WorkbenchStorage;
             const Config = window.WorkbenchConfig;
             
-            if (!Dashboard || !Storage || !Config || !Utils) {
-                throw new Error('系统核心模块未加载，请刷新页面');
+            // 核心模块检查
+            const missingModules = [];
+            if (!Dashboard) missingModules.push('Dashboard');
+            if (!Storage) missingModules.push('Storage');
+            if (!Config) missingModules.push('Config');
+            
+            if (missingModules.length > 0) {
+                throw new Error(`系统核心模块未加载: ${missingModules.join(', ')}`);
             }
             
-            // 生成订单ID（补充缺失的PIN生成逻辑）
-            const orderId = Utils.generatePINumber ? 
-                Utils.generatePINumber() : 
-                `PI-${Date.now()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
+            // 生成订单ID（使用新Utils方法）
+            const orderId = Utils.generatePINumber();
             
             // 构建完整订单对象
             const newOrder = {
@@ -304,10 +326,12 @@ const WorkbenchOrders = {
             
             console.log('[Orders] Created order:', newOrder);
             
-            // 添加到Dashboard数据
-            if (!Dashboard.data.orders) {
+            // 初始化订单数组（防止undefined）
+            if (!Array.isArray(Dashboard.data.orders)) {
                 Dashboard.data.orders = [];
             }
+            
+            // 添加到Dashboard数据
             Dashboard.data.orders.push(newOrder);
             
             // 保存到本地存储
@@ -315,15 +339,17 @@ const WorkbenchOrders = {
             console.log('[Orders] ✅ Saved to storage');
             
             // 如果是Paid状态，触发现金流检查
-            if (newOrder.status === 'Paid') {
+            if (newOrder.status === 'Paid' && typeof Dashboard.checkCashRedLine === 'function') {
                 Dashboard.checkCashRedLine();
             }
             
             // 刷新界面
             this.render();
-            Dashboard.updateDashboard();
+            if (typeof Dashboard.updateDashboard === 'function') {
+                Dashboard.updateDashboard();
+            }
             
-            // 成功提示（快速添加已在调用处处理，表单提交单独处理）
+            // 成功提示（快速添加专用）
             if (!document.getElementById('new-order-form')) {
                 Utils.toast(`✅ 订单 ${orderId} 已创建！`, 'success');
             }
@@ -332,13 +358,12 @@ const WorkbenchOrders = {
             
         } catch (error) {
             console.error('[Orders] ❌ Save failed:', error);
-            this.isProcessing = false;
             throw error; // 向上抛出错误
         }
     },
 
     /**
-     * 打开编辑Modal（增强版）
+     * 打开编辑Modal
      */
     openEditModal(orderId) {
         // 防重复操作
@@ -346,23 +371,26 @@ const WorkbenchOrders = {
         this.isProcessing = true;
         
         console.log('[Orders] Opening edit for:', orderId);
-        
-        const Dashboard = window.WorkbenchDashboard;
         const Utils = window.WorkbenchUtils;
-        const order = Dashboard?.data?.orders.find(o => o.id === orderId);
+        const Dashboard = window.WorkbenchDashboard;
         
+        const order = Dashboard?.data?.orders?.find(o => o.id === orderId);
         if (!order) {
             Utils?.toast('订单不存在', 'error');
             this.isProcessing = false;
             return;
         }
         
+        // 格式化订单信息
+        const formattedDate = Utils.formatDate(order.date);
+        const formattedAmount = Utils.formatNumber(order.total, 2);
+        
         const details = `📝 订单详情 [${order.id}]
 ━━━━━━━━━━━━━━
 客户: ${order.customer}
-金额: ${order.currency} ${order.total.toLocaleString()}
+金额: ${order.currency} ${formattedAmount}
 状态: ${order.status}
-日期: ${new Date(order.date).toLocaleDateString()}
+日期: ${formattedDate}
 ━━━━━━━━━━━━━━
 
 🔧 操作选项：
@@ -387,12 +415,12 @@ const WorkbenchOrders = {
     },
     
     /**
-     * 移动订单到下一阶段（增强版）
+     * 移动订单到下一阶段
      */
     async moveToNextStage(orderId) {
-        const Dashboard = window.WorkbenchDashboard;
         const Utils = window.WorkbenchUtils;
-        const order = Dashboard?.data?.orders.find(o => o.id === orderId);
+        const Dashboard = window.WorkbenchDashboard;
+        const order = Dashboard?.data?.orders?.find(o => o.id === orderId);
         
         if (!order) {
             Utils?.toast('订单不存在', 'error');
@@ -400,7 +428,8 @@ const WorkbenchOrders = {
         }
         
         const stages = ['New Inquiry', 'PI Sent', 'Production', 'Shipped', 'Paid'];
-        const currentIndex = stages.indexOf(order.kanbanStatus || order.status);
+        const currentStatus = order.kanbanStatus || order.status;
+        const currentIndex = stages.indexOf(currentStatus);
         
         if (currentIndex >= stages.length - 1) {
             Utils?.toast('📌 已经是最终阶段（已付款）', 'info');
@@ -425,10 +454,12 @@ const WorkbenchOrders = {
             
             // 刷新界面
             this.render();
-            Dashboard.updateDashboard();
+            if (typeof Dashboard.updateDashboard === 'function') {
+                Dashboard.updateDashboard();
+            }
             
             // 现金流检查
-            if (nextStage === 'Paid') {
+            if (nextStage === 'Paid' && typeof Dashboard.checkCashRedLine === 'function') {
                 Dashboard.checkCashRedLine();
             }
             
@@ -441,7 +472,7 @@ const WorkbenchOrders = {
     },
     
     /**
-     * 删除订单（增强版）
+     * 删除订单
      */
     async deleteOrder(orderId) {
         const Utils = window.WorkbenchUtils;
@@ -454,9 +485,15 @@ const WorkbenchOrders = {
         
         try {
             // 过滤删除
+            const initialCount = Dashboard.data.orders.length;
             Dashboard.data.orders = Dashboard.data.orders.filter(
                 o => o.id !== orderId
             );
+            
+            // 检查是否真的删除了
+            if (Dashboard.data.orders.length === initialCount) {
+                throw new Error('订单删除失败，未找到对应订单');
+            }
             
             // 保存更新
             await window.WorkbenchStorage.save(
@@ -466,7 +503,9 @@ const WorkbenchOrders = {
             
             // 刷新界面
             this.render();
-            Dashboard.updateDashboard();
+            if (typeof Dashboard.updateDashboard === 'function') {
+                Dashboard.updateDashboard();
+            }
             
             Utils?.toast('🗑️ 订单已成功删除', 'success');
             
@@ -476,7 +515,7 @@ const WorkbenchOrders = {
         }
     },
 
-    // 兼容方法（保留，防止旧代码报错）
+    // 兼容方法（防止旧代码报错）
     closeQuickAdd() {},
     openFullAddModal() {
         window.WorkbenchUtils?.toast("✨ 推荐使用快速添加功能（点击右上角+号）", 'info');
@@ -486,7 +525,7 @@ const WorkbenchOrders = {
     saveFullOrder() {}
 };
 
-// 🔥 初始化并挂载到全局
+// 初始化并挂载到全局
 document.addEventListener('DOMContentLoaded', () => {
     window.WorkbenchOrders = WorkbenchOrders;
     WorkbenchOrders.init();
