@@ -94,73 +94,7 @@
 <!-- ========================================= -->
 <main class="pb-8 px-4 sm:px-6" style="padding-top: calc(70px + 130px + 55px);">
     <div class="max-w-7xl mx-auto">
-    <div class="bg-gradient-to-r from-indigo-900/50 to-purple-900/50 border-2 border-purple-500/30 rounded-xl p-6 mb-8">
-    <div class="flex items-center gap-3 mb-4">
-        <div class="text-3xl">🌍</div>
-        <div>
-            <h3 class="text-lg font-bold text-purple-300">Global Business Hours</h3>
-            <p class="text-xs text-purple-400">实时追踪全球主要市场营业时间</p>
-        </div>
-    </div>
-    
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="global-business-hours">
-        <!-- 北京时间 -->
-        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
-            <div class="flex items-center gap-2 mb-2">
-                <span class="text-2xl">🇨🇳</span>
-                <div class="flex-1">
-                    <div class="text-xs text-gray-400">Beijing</div>
-                    <div id="time-beijing-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
-                </div>
-            </div>
-            <div id="status-beijing" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
-                Loading...
-            </div>
-        </div>
         
-        <!-- 马尼拉时间 -->
-        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
-            <div class="flex items-center gap-2 mb-2">
-                <span class="text-2xl">🇵🇭</span>
-                <div class="flex-1">
-                    <div class="text-xs text-gray-400">Manila</div>
-                    <div id="time-manila-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
-                </div>
-            </div>
-            <div id="status-manila" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
-                Loading...
-            </div>
-        </div>
-        
-        <!-- 伊斯坦布尔时间 -->
-        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
-            <div class="flex items-center gap-2 mb-2">
-                <span class="text-2xl">🇹🇷</span>
-                <div class="flex-1">
-                    <div class="text-xs text-gray-400">Istanbul</div>
-                    <div id="time-istanbul-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
-                </div>
-            </div>
-            <div id="status-istanbul" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
-                Loading...
-            </div>
-        </div>
-        
-        <!-- 阿姆斯特丹时间 -->
-        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
-            <div class="flex items-center gap-2 mb-2">
-                <span class="text-2xl">🇳🇱</span>
-                <div class="flex-1">
-                    <div class="text-xs text-gray-400">Amsterdam</div>
-                    <div id="time-amsterdam-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
-                </div>
-            </div>
-            <div id="status-amsterdam" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
-                Loading...
-            </div>
-        </div>
-    </div>
-</div>
         <!-- ========== Dashboard Tab ========== -->
         <div id="tab-dashboard" class="tab-content">
             <!-- 财务指标 -->
@@ -245,7 +179,76 @@
                         </div>
                     </div>
                 </div>
-            
+                
+<!-- 🔥 NEW: 全球商机时钟（横向展示） -->
+<div class="bg-gradient-to-r from-indigo-900/50 to-purple-900/50 border-2 border-purple-500/30 rounded-xl p-6 mb-8">
+    <div class="flex items-center gap-3 mb-4">
+        <div class="text-3xl">🌍</div>
+        <div>
+            <h3 class="text-lg font-bold text-purple-300">Global Business Hours</h3>
+            <p class="text-xs text-purple-400">实时追踪全球主要市场营业时间</p>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="global-business-hours">
+        <!-- 北京时间 -->
+        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-2xl">🇨🇳</span>
+                <div class="flex-1">
+                    <div class="text-xs text-gray-400">Beijing</div>
+                    <div id="time-beijing-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
+                </div>
+            </div>
+            <div id="status-beijing" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
+                Loading...
+            </div>
+        </div>
+        
+        <!-- 马尼拉时间 -->
+        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-2xl">🇵🇭</span>
+                <div class="flex-1">
+                    <div class="text-xs text-gray-400">Manila</div>
+                    <div id="time-manila-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
+                </div>
+            </div>
+            <div id="status-manila" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
+                Loading...
+            </div>
+        </div>
+        
+        <!-- 伊斯坦布尔时间 -->
+        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-2xl">🇹🇷</span>
+                <div class="flex-1">
+                    <div class="text-xs text-gray-400">Istanbul</div>
+                    <div id="time-istanbul-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
+                </div>
+            </div>
+            <div id="status-istanbul" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
+                Loading...
+            </div>
+        </div>
+        
+        <!-- 阿姆斯特丹时间 -->
+        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-2xl">🇳🇱</span>
+                <div class="flex-1">
+                    <div class="text-xs text-gray-400">Amsterdam</div>
+                    <div id="time-amsterdam-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
+                </div>
+            </div>
+            <div id="status-amsterdam" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
+                Loading...
+            </div>
+        </div>
+    </div>
+</div>
+        
         <!-- ========== Kanban Tab ========== -->
         <div id="tab-kanban" class="tab-content" style="display:none;">
             <div class="mb-6 flex justify-between items-center">
