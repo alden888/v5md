@@ -3,11 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V5 Medical 战时指挥台 V14.2 PRO | 完整版</title>
+    <title>V5 Medical 战时指挥台 V14.2 PRO | 供应链·财务·真实利润</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/workbench-v14.css">
+    
+    <style>
+        /* 实用工具样式 */
+        .tool-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #f3f4f6;
+        }
+        
+        .tool-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #1f2937;
+        }
+        
+        .input-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .result-box {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        
+        .btn-action {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-action:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .section-divider {
+            margin: 3rem 0 2rem;
+            border-bottom: 3px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: #1f2937;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
 </head>
 
 <body class="bg-black text-white">
@@ -48,7 +136,7 @@
             <div class="bg-red-600 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg">⚔️</div>
             <div>
                 <h1 class="font-black text-lg leading-tight text-white">战时指挥台 <span class="text-xs bg-red-600 px-2 rounded-full">V14.2 PRO</span></h1>
-                <div class="text-[10px] uppercase tracking-wider font-bold text-blue-200">Complete Edition · 实战版</div>
+                <div class="text-[10px] uppercase tracking-wider font-bold text-blue-200">ERP EDITION · B2B 专用</div>
             </div>
         </div>
         <div id="emergency-mode-warning" class="hidden px-4 py-2 bg-yellow-900 text-yellow-300 rounded font-bold animate-pulse">
@@ -119,7 +207,6 @@
             
             <!-- 最后回款 + 时钟 + 进度 -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <!-- 最后回款 -->
                 <div id="last-income-card" class="bg-gray-900 p-6 rounded-xl border-2 border-gray-700">
                     <h3 class="font-bold text-lg mb-4 text-green-400">📊 最后回款</h3>
                     <div id="lastIncomeInfo" class="text-sm text-gray-400 mb-2">暂无数据</div>
@@ -129,14 +216,12 @@
                     </div>
                 </div>
                 
-                <!-- 本地时间 -->
                 <div class="bg-gray-900 p-6 rounded-xl border border-gray-800">
                     <h3 class="font-bold text-lg mb-4">🕐 本地时间</h3>
                     <div id="local-time" class="text-4xl font-mono text-green-400 mb-2">--:--:--</div>
                     <div id="local-date" class="text-gray-400">----/--/--</div>
                 </div>
                 
-                <!-- 年度进度 -->
                 <div class="bg-gray-900 p-6 rounded-xl border border-gray-800">
                     <h3 class="font-bold text-lg mb-4">🎯 年度进度</h3>
                     <div id="dashboard-progress" class="text-4xl font-bold text-blue-400 mb-2">0%</div>
@@ -145,18 +230,16 @@
             </div>
             
             <!-- 每日鸡血金句 -->
-            <div class="bg-gradient-to-r from-purple-900/50 to-blue-900/50 border border-purple-500/30 p-6 rounded-xl mb-8">
-                <div class="flex items-center gap-3">
-                    <div class="text-4xl">💪</div>
-                    <div>
-                        <div class="text-xs text-purple-300 uppercase tracking-wider font-bold mb-1">Daily Motivation</div>
-                        <div id="daily-quote" class="text-lg font-bold text-white">Loading...</div>
-                    </div>
+            <div class="bg-gradient-to-r from-red-900 to-red-800 p-6 rounded-xl mb-8 border-2 border-red-600">
+                <div class="flex items-center gap-3 mb-2">
+                    <i class="fas fa-fire text-yellow-400 text-2xl"></i>
+                    <h3 class="font-bold text-lg text-white">每日鸡血金句</h3>
                 </div>
+                <p id="daily-quote" class="text-white text-lg font-medium italic">"加载中..."</p>
             </div>
             
             <!-- 快捷工具区 -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="quick-tools-section">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-gray-900 border border-gray-700 p-6 rounded-xl hover:border-blue-500 transition">
                     <h3 class="font-bold text-lg mb-4 text-blue-400">📄 单证工具</h3>
                     <div class="space-y-2">
@@ -169,85 +252,26 @@
                 <div class="bg-gray-900 border border-gray-700 p-6 rounded-xl hover:border-green-500 transition">
                     <h3 class="font-bold text-lg mb-4 text-green-400">🚢 物流追踪</h3>
                     <div class="space-y-2">
-                        <a href="https://www.17track.net/zh-cn" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 py-2 rounded text-sm text-center text-white transition">
-                            <i class="fas fa-search-location mr-1"></i> 17Track 全球查询
-                        </a>
+                        <a href="https://www.17track.net/zh-cn" target="_blank" class="block w-full bg-gray-800 hover:bg-gray-700 py-2 rounded text-sm transition text-center">17Track 全球查询</a>
                         <div class="grid grid-cols-3 gap-2">
-                            <a href="https://www.dhl.com/" target="_blank" class="bg-gray-800 hover:bg-red-700 py-2 rounded text-xs text-center transition">DHL</a>
-                            <a href="https://www.fedex.com/" target="_blank" class="bg-gray-800 hover:bg-purple-700 py-2 rounded text-xs text-center transition">FedEx</a>
-                            <a href="https://www.ups.com/" target="_blank" class="bg-gray-800 hover:bg-yellow-700 py-2 rounded text-xs text-center transition">UPS</a>
+                            <a href="https://www.dhl.com/" target="_blank" class="text-xs text-center p-2 bg-gray-800 hover:bg-red-900 rounded">DHL</a>
+                            <a href="https://www.fedex.com/" target="_blank" class="text-xs text-center p-2 bg-gray-800 hover:bg-purple-900 rounded">FedEx</a>
+                            <a href="https://www.ups.com/" target="_blank" class="text-xs text-center p-2 bg-gray-800 hover:bg-yellow-900 rounded">UPS</a>
                         </div>
                     </div>
                 </div>
                 
-<!-- 🔥 NEW: 全球商机时钟（横向展示） -->
-<div class="bg-gradient-to-r from-indigo-900/50 to-purple-900/50 border-2 border-purple-500/30 rounded-xl p-6 mb-8">
-    <div class="flex items-center gap-3 mb-4">
-        <div class="text-3xl">🌍</div>
-        <div>
-            <h3 class="text-lg font-bold text-purple-300">Global Business Hours</h3>
-            <p class="text-xs text-purple-400">实时追踪全球主要市场营业时间</p>
-        </div>
-    </div>
-    
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="global-business-hours">
-        <!-- 北京时间 -->
-        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
-            <div class="flex items-center gap-2 mb-2">
-                <span class="text-2xl">🇨🇳</span>
-                <div class="flex-1">
-                    <div class="text-xs text-gray-400">Beijing</div>
-                    <div id="time-beijing-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
+                <div class="bg-gray-900 border border-gray-700 p-6 rounded-xl hover:border-purple-500 transition">
+                    <h3 class="font-bold text-lg mb-4 text-purple-400">🌍 全球时钟</h3>
+                    <div class="space-y-1 text-sm" id="globalClockDisplay">
+                        <div class="flex justify-between"><span>🇨🇳 Beijing</span><span id="time-beijing">--:--</span></div>
+                        <div class="flex justify-between"><span>🇵🇭 Manila</span><span id="time-manila">--:--</span></div>
+                        <div class="flex justify-between"><span>🇹🇷 Istanbul</span><span id="time-istanbul">--:--</span></div>
+                        <div class="flex justify-between"><span>🇳🇱 Amsterdam</span><span id="time-amsterdam">--:--</span></div>
+                    </div>
                 </div>
             </div>
-            <div id="status-beijing" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
-                Loading...
-            </div>
         </div>
-        
-        <!-- 马尼拉时间 -->
-        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
-            <div class="flex items-center gap-2 mb-2">
-                <span class="text-2xl">🇵🇭</span>
-                <div class="flex-1">
-                    <div class="text-xs text-gray-400">Manila</div>
-                    <div id="time-manila-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
-                </div>
-            </div>
-            <div id="status-manila" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
-                Loading...
-            </div>
-        </div>
-        
-        <!-- 伊斯坦布尔时间 -->
-        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
-            <div class="flex items-center gap-2 mb-2">
-                <span class="text-2xl">🇹🇷</span>
-                <div class="flex-1">
-                    <div class="text-xs text-gray-400">Istanbul</div>
-                    <div id="time-istanbul-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
-                </div>
-            </div>
-            <div id="status-istanbul" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
-                Loading...
-            </div>
-        </div>
-        
-        <!-- 阿姆斯特丹时间 -->
-        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
-            <div class="flex items-center gap-2 mb-2">
-                <span class="text-2xl">🇳🇱</span>
-                <div class="flex-1">
-                    <div class="text-xs text-gray-400">Amsterdam</div>
-                    <div id="time-amsterdam-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
-                </div>
-            </div>
-            <div id="status-amsterdam" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
-                Loading...
-            </div>
-        </div>
-    </div>
-</div>
         
         <!-- ========== Kanban Tab ========== -->
         <div id="tab-kanban" class="tab-content" style="display:none;">
@@ -258,7 +282,6 @@
                 </button>
             </div>
             <div class="flex gap-4 overflow-x-auto pb-4">
-                <!-- 看板列 -->
                 <div class="kanban-column min-w-[300px]" data-status="New Inquiry">
                     <div class="mb-4 font-bold text-blue-400">New Inquiry <span class="text-xs bg-gray-800 px-2 py-1 rounded ml-2" data-count="inquiry">0</span></div>
                     <div id="kanban-inquiry" class="space-y-3"></div>
@@ -335,50 +358,53 @@
             </div>
         </div>
         
-        <!-- ========== 🔥 NEW: Tools Tab ========== -->
+        <!-- ========== Tools Tab (新增) ========== -->
         <div id="tab-tools" class="tab-content" style="display:none;">
-            <h2 class="text-2xl font-black text-orange-500 uppercase mb-6">实用工具箱</h2>
+            <h2 class="text-2xl font-black text-yellow-500 uppercase mb-6">实用工具箱</h2>
             
-            <!-- FOB计算器 -->
-            <div class="bg-gray-900 border-2 border-blue-600 rounded-xl p-6 mb-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-blue-400"><i class="fas fa-calculator mr-2"></i> FOB价格计算器</h3>
+            <!-- FOB报价计算器 -->
+            <div class="section-divider">
+                <h3 class="section-title text-white">💰 FOB报价计算器</h3>
+            </div>
+            
+            <div class="tool-card bg-gray-900 border-gray-700 mb-8">
+                <div class="tool-header border-gray-700">
+                    <div class="tool-title text-white">智能报价计算</div>
                     <div class="flex gap-2">
-                        <button onclick="app.tools.saveRate()" class="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">保存汇率</button>
-                        <button onclick="app.tools.resetCalculator()" class="text-xs bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded">重置</button>
+                        <button onclick="app.tools.saveRate()" class="text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">保存汇率</button>
+                        <button onclick="app.tools.resetCalculator()" class="text-xs bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-600">重置</button>
                     </div>
                 </div>
-                
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                     <div>
-                        <label class="block text-sm font-bold text-gray-400 mb-1">工厂含税价 (CNY)</label>
-                        <input type="number" id="calc-cost" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="100.00">
+                        <label class="input-label text-gray-400">工厂含税价 (CNY)</label>
+                        <input type="number" id="calc-cost" class="input-field bg-black text-white border-gray-600" placeholder="100.00">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-400 mb-1">当前汇率 (USD)</label>
-                        <input type="number" id="calc-rate" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="7.25">
+                        <label class="input-label text-gray-400">当前汇率 (USD)</label>
+                        <input type="number" id="calc-rate" class="input-field bg-black text-white border-gray-600" placeholder="7.25">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-400 mb-1">退税率 (%)</label>
-                        <input type="number" id="calc-rebate" class="w-full p-2 bg-black border border-gray-700 rounded text-white" value="13">
+                        <label class="input-label text-gray-400">退税率 (%)</label>
+                        <input type="number" id="calc-rebate" class="input-field bg-black text-white border-gray-600" value="13">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-400 mb-1">目标利润率 (%)</label>
-                        <input type="number" id="calc-margin" class="w-full p-2 bg-black border border-gray-700 rounded text-white" value="20">
+                        <label class="input-label text-gray-400">目标利润率 (%)</label>
+                        <input type="number" id="calc-margin" class="input-field bg-black text-white border-gray-600" value="20">
                     </div>
                 </div>
                 
-                <button onclick="app.tools.calculateFOB()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">
-                    <i class="fas fa-search-dollar mr-2"></i> 计算报价 & 利润
+                <button onclick="app.tools.calculateFOB()" class="btn-action">
+                    <i class="fas fa-calculator mr-2"></i> 计算报价 & 利润
                 </button>
                 
-                <div id="fob-result" class="hidden mt-6 p-4 bg-blue-900/20 border-l-4 border-blue-500 rounded">
+                <div id="fob-result" class="result-box bg-black border border-gray-700 mt-6 hidden">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <div class="text-xs text-gray-400 mb-1 uppercase tracking-wide">建议FOB报价 (USD)</div>
-                            <div class="text-4xl font-black text-blue-400" id="res-price">$0.00</div>
+                            <div class="text-xs text-gray-400 mb-1 uppercase tracking-wide">建议报价 (USD)</div>
+                            <div class="text-3xl font-black text-green-400" id="res-price">$0.00</div>
                         </div>
-                        <div class="space-y-2 text-right">
+                        <div class="space-y-2 text-right border-l border-gray-700 pl-4">
                             <div class="flex justify-between text-sm">
                                 <span class="text-gray-400">退税收入:</span> 
                                 <span id="res-tax" class="font-bold text-green-400">¥0.00</span>
@@ -396,85 +422,47 @@
                 </div>
             </div>
             
-            <!-- 金额转大写 + XTransfer -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <!-- 金额转大写 -->
-                <div class="bg-gray-900 border-2 border-purple-600 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-purple-400 mb-4"><i class="fas fa-file-contract mr-2"></i> 金额转大写 (Amount to Words)</h3>
-                    
-                    <div class="flex gap-2 mb-3">
-                        <input type="number" id="amount-num" class="flex-1 p-2 bg-black border border-gray-700 rounded text-white" placeholder="1234.50" oninput="app.tools.convertAmount()">
-                        <select id="amount-currency" class="p-2 bg-black border border-gray-700 rounded text-white w-24" onchange="app.tools.convertAmount()">
-                            <option value="USD">USD</option>
-                            <option value="CNY">CNY</option>
-                            <option value="EUR">EUR</option>
-                        </select>
-                    </div>
-                    
-                    <div class="bg-purple-900/20 p-3 rounded-lg border border-purple-500/30 min-h-[60px] flex items-center mb-3">
-                        <p id="amount-text" class="text-sm font-mono text-purple-300 break-words w-full">SAY TOTAL US DOLLARS...</p>
-                    </div>
-                    
-                    <button onclick="app.tools.copyAmountText()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded transition">
-                        <i class="fas fa-copy mr-2"></i> 复制到剪贴板
-                    </button>
-                </div>
-                
-                <!-- XTransfer银行信息 -->
-                <div class="bg-gray-900 border-2 border-green-600 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-green-400 mb-4"><i class="fas fa-university mr-2"></i> XTransfer 收款信息</h3>
-                    
-                    <div class="p-4 bg-green-900/10 border border-green-500/30 rounded-lg text-sm text-gray-300 relative group">
-                        <div class="font-bold mb-2 flex items-center gap-2">
-                            <i class="fas fa-info-circle text-green-400"></i> JPMorgan Hong Kong
-                        </div>
-                        <div class="space-y-1 font-mono text-xs" id="bank-info-text">
-                            <p><span class="text-gray-500">Beneficiary:</span> Kunshan Vvohoo Industry Co., Ltd</p>
-                            <p><span class="text-gray-500">Bank:</span> JPMorgan Chase Bank N.A., Hong Kong Branch</p>
-                            <p><span class="text-gray-500">Account:</span> 63007935038</p>
-                            <p><span class="text-gray-500">SWIFT:</span> CHASHKHH</p>
-                        </div>
-                    </div>
-                    
-                    <button onclick="app.tools.copyBankInfo()" class="w-full mt-3 bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded transition">
-                        <i class="fas fa-copy mr-2"></i> 复制全部信息
-                    </button>
-                    
-                    <div class="mt-3 text-xs text-gray-500 flex items-center gap-1">
-                        <i class="fas fa-shield-alt"></i> 大额交易请务必核对 SWIFT Code
-                    </div>
-                </div>
+            <!-- 金额转大写 -->
+            <div class="section-divider">
+                <h3 class="section-title text-white">🔤 金额转大写</h3>
             </div>
             
-            <!-- Amazon & 物流快捷链接 -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-gray-900 border-2 border-orange-500 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-orange-400 mb-4"><i class="fab fa-amazon mr-2"></i> Amazon Seller Central</h3>
-                    
-                    <div class="grid grid-cols-2 gap-3">
-                        <a href="https://sellercentral.amazon.com/" target="_blank" class="p-4 bg-orange-600 hover:bg-orange-700 rounded-lg text-center transition">
-                            <i class="fab fa-amazon text-3xl mb-2"></i>
-                            <div class="text-sm font-bold">US Market</div>
-                        </a>
-                        <a href="https://sellercentral.amazon.co.uk/" target="_blank" class="p-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-center transition">
-                            <i class="fab fa-amazon text-3xl mb-2"></i>
-                            <div class="text-sm font-bold">UK Market</div>
-                        </a>
-                    </div>
+            <div class="tool-card bg-gray-900 border-gray-700 mb-8">
+                <div class="flex gap-2 mb-3">
+                    <input type="number" id="amount-num" class="input-field bg-black text-white border-gray-600" placeholder="1234.50">
+                    <select id="amount-currency" class="input-field w-32 bg-black text-white border-gray-600">
+                        <option value="USD">USD</option>
+                        <option value="CNY">RMB</option>
+                        <option value="EUR">EUR</option>
+                    </select>
                 </div>
-                
-                <div class="bg-gray-900 border-2 border-teal-500 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-teal-400 mb-4"><i class="fas fa-truck-loading mr-2"></i> 物流查询快捷方式</h3>
-                    
-                    <div class="space-y-2">
-                        <a href="https://www.17track.net/zh-cn" target="_blank" class="block w-full p-3 bg-blue-600 hover:bg-blue-700 rounded text-center font-bold transition">
-                            <i class="fas fa-search-location mr-2"></i> 17Track 全球物流查询
-                        </a>
-                        <div class="grid grid-cols-3 gap-2">
-                            <a href="https://www.dhl.com/" target="_blank" class="text-center p-2 bg-red-600 hover:bg-red-700 rounded font-medium transition">DHL</a>
-                            <a href="https://www.fedex.com/" target="_blank" class="text-center p-2 bg-purple-600 hover:bg-purple-700 rounded font-medium transition">FedEx</a>
-                            <a href="https://www.ups.com/" target="_blank" class="text-center p-2 bg-yellow-600 hover:bg-yellow-700 rounded font-medium transition">UPS</a>
-                        </div>
+                <div class="bg-black p-3 rounded-lg border border-gray-700 min-h-[60px] flex items-center">
+                    <p id="amount-text" class="text-sm font-mono text-green-400 break-words w-full">SAY TOTAL US DOLLARS...</p>
+                </div>
+                <button onclick="app.tools.copyAmountText()" class="mt-3 w-full btn-action bg-purple-600 hover:bg-purple-700 text-xs">
+                    <i class="fas fa-copy"></i> 复制到剪贴板
+                </button>
+            </div>
+            
+            <!-- XTransfer收款信息 -->
+            <div class="section-divider">
+                <h3 class="section-title text-white">🏦 XTransfer 收款信息</h3>
+            </div>
+            
+            <div class="tool-card bg-gray-900 border-gray-700 mb-8">
+                <div class="p-4 bg-black border border-gray-700 rounded-lg text-sm text-gray-300 relative group">
+                    <div class="absolute top-2 right-2">
+                        <button onclick="app.tools.copyBankInfo()" class="text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">复制全部</button>
+                    </div>
+                    <div class="font-bold mb-2 flex items-center gap-2 text-white">
+                        <i class="fas fa-info-circle text-blue-400"></i> 收款账户信息 (JPMorgan HK)
+                    </div>
+                    <div class="space-y-1 font-mono text-xs" id="bank-info-text">
+                        <p><span class="text-gray-500">Beneficiary:</span> Kunshan Vvohoo Industry Co., Ltd</p>
+                        <p><span class="text-gray-500">Bank:</span> JPMorgan Chase Bank N.A., Hong Kong Branch</p>
+                        <p><span class="text-gray-500">Account:</span> 63007935038</p>
+                        <p><span class="text-gray-500">SWIFT:</span> CHASHKHH</p>
+                        <p><span class="text-gray-500">Bank Addr:</span> 18/F, 20/F, 22-29/F, CHATER HOUSE, 8 CONNAUGHT ROAD CENTRAL, HONG KONG</p>
                     </div>
                 </div>
             </div>
@@ -514,14 +502,13 @@
                     <label class="block text-sm font-bold text-slate-400 mb-1">国家/地区</label>
                     <select id="customer-country" class="w-full p-2 bg-black border border-gray-700 rounded text-white">
                         <option value="">请选择...</option>
-                        <option value="Philippines">🇵🇭 Philippines (菲律宾)</option>
-                        <option value="Netherlands">🇳🇱 Netherlands (荷兰)</option>
-                        <option value="Turkey">🇹🇷 Turkey (土耳其)</option>
-                        <option value="China">🇨🇳 China (中国)</option>
-                        <option value="USA">🇺🇸 USA (美国)</option>
-                        <option value="UK">🇬🇧 UK (英国)</option>
-                        <option value="Germany">🇩🇪 Germany (德国)</option>
-                        <option value="Other">🌍 Other</option>
+                        <option value="Philippines">🇵🇭 Philippines</option>
+                        <option value="Netherlands">🇳🇱 Netherlands</option>
+                        <option value="Turkey">🇹🇷 Turkey</option>
+                        <option value="China">🇨🇳 China</option>
+                        <option value="USA">🇺🇸 USA</option>
+                        <option value="UK">🇬🇧 UK</option>
+                        <option value="Germany">🇩🇪 Germany</option>
                     </select>
                 </div>
                 <div>
@@ -534,8 +521,8 @@
                 </div>
             </div>
             <div>
-                <label class="block text-sm font-bold text-slate-400 mb-1">收货地址 (Shipping Address)</label>
-                <textarea id="customer-address" rows="3" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="用于发给货代..."></textarea>
+                <label class="block text-sm font-bold text-slate-400 mb-1">收货地址</label>
+                <textarea id="customer-address" rows="3" class="w-full p-2 bg-black border border-gray-700 rounded text-white"></textarea>
             </div>
             <div>
                 <label class="block text-sm font-bold text-slate-400 mb-1">备注</label>
@@ -613,10 +600,6 @@
                 <label class="block text-sm font-bold text-slate-400 mb-1">飞书Webhook URL</label>
                 <input type="text" id="settings-webhook" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="https://...">
             </div>
-            <div>
-                <label class="block text-sm font-bold text-slate-400 mb-1">Cloudflare Worker URL</label>
-                <input type="text" id="settings-worker" class="w-full p-2 bg-black border border-gray-700 rounded text-white" placeholder="https://...">
-            </div>
         </div>
         <div class="mt-6 flex gap-3">
             <button onclick="app.saveSettings()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded transition">保存设置</button>
@@ -631,20 +614,24 @@
 <!-- ========================================= -->
 <!-- Scripts -->
 <!-- ========================================= -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
 <script src="js/workbench-firebase.js"></script>
 <script src="js/workbench-config.js"></script>
-<script src="js/workbench-utils.js"></script> 
+<script src="js/workbench-utils.js"></script>
 <script src="js/workbench-storage.js"></script>
 <script src="js/workbench-auth.js"></script>
 <script src="js/workbench-dashboard.js"></script>
-<script src="js/workbench-orders.js"></script> 
-<script src="js/workbench-suppliers.js"></script> 
+<script src="js/workbench-orders.js"></script>
+<script src="js/workbench-suppliers.js"></script>
 <script src="js/workbench-finance.js"></script>
-<script src="js/workbench-crm-expenses.js"></script> 
+<script src="js/workbench-crm-expenses.js"></script>
 
 <script>
 // ========================================
-// V14.2 PRO 主应用控制器（完整优化版）
+// V14.2 PRO 主应用控制器
 // ========================================
 document.addEventListener('DOMContentLoaded', async function() {
     console.log('[V14.2 PRO] 🚀 System Initializing...');
@@ -659,7 +646,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.error('[V14.2 PRO] Module init failed:', error);
     }
 
-    // 全局 APP 对象（完整版）
+    // 全局 APP 对象
     window.app = {
         // === 生存模式 ===
         survival: {
@@ -675,11 +662,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 
                 inputs.forEach(input => {
                     if (input) {
-                        if (input.value.trim()) {
-                            input.classList.add('filled');
-                        } else {
-                            input.classList.remove('filled');
-                        }
+                        input.classList.toggle('filled', input.value.trim());
                     }
                 });
             },
@@ -765,75 +748,69 @@ document.addEventListener('DOMContentLoaded', async function() {
             delete: (id) => WorkbenchExpenses?.delete(id)
         },
 
-        // === 🔥 NEW: 实用工具 ===
+        // === 实用工具 ===
         tools: {
-            // FOB计算器
             calculateFOB: () => {
                 const cost = parseFloat(document.getElementById('calc-cost').value);
                 const rate = parseFloat(document.getElementById('calc-rate').value);
-                const margin = parseFloat(document.getElementById('calc-margin').value) || 20;
-                const rebate = parseFloat(document.getElementById('calc-rebate').value) || 13;
+                const rebate = parseFloat(document.getElementById('calc-rebate').value);
+                const margin = parseFloat(document.getElementById('calc-margin').value);
                 
                 if (!cost || !rate) {
-                    WorkbenchUtils.toast('请输入成本和汇率', 'warning');
+                    WorkbenchUtils.toast('请填写工厂价和汇率', 'warning');
                     return;
                 }
                 
-                // FOB计算公式
-                const taxBase = cost / 1.13;
-                const taxRefund = taxBase * (rebate / 100);
-                const realCost = cost - taxRefund;
-                const finalPrice = (realCost / (1 - margin/100)) / rate;
-                const profitRMB = (finalPrice * rate) - realCost;
-                const actualMargin = (profitRMB / (finalPrice * rate)) * 100;
+                // 退税收入
+                const taxIncome = cost * (rebate / 100);
+                // 成本价（含税价）
+                const realCost = cost - taxIncome;
+                // FOB价（美元）
+                const fobPrice = (realCost / rate) * (1 + margin / 100);
+                // 净利润
+                const profit = (fobPrice * rate) - realCost;
+                // 实际利润率
+                const actualMargin = (profit / (fobPrice * rate)) * 100;
                 
-                document.getElementById('res-price').innerText = '$' + finalPrice.toFixed(2);
-                document.getElementById('res-tax').innerText = '¥' + taxRefund.toFixed(2);
-                document.getElementById('res-profit').innerText = '¥' + profitRMB.toFixed(2);
-                document.getElementById('profit-margin').innerText = actualMargin.toFixed(1) + '%';
+                document.getElementById('res-price').textContent = '$' + fobPrice.toFixed(2);
+                document.getElementById('res-tax').textContent = '¥' + taxIncome.toFixed(2);
+                document.getElementById('res-profit').textContent = '¥' + profit.toFixed(2);
+                document.getElementById('profit-margin').textContent = actualMargin.toFixed(1) + '%';
                 
                 document.getElementById('fob-result').classList.remove('hidden');
-                WorkbenchUtils.toast('计算完成', 'success');
+                WorkbenchUtils.toast('计算完成！', 'success');
             },
             
             saveRate: () => {
-                const rate = parseFloat(document.getElementById('calc-rate').value);
-                if (rate > 0) {
-                    WorkbenchDashboard.data.rate = rate;
-                    WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.USD_RATE, rate);
+                const rate = document.getElementById('calc-rate').value;
+                if (rate) {
+                    localStorage.setItem('v5_usd_rate', rate);
                     WorkbenchUtils.toast('汇率已保存', 'success');
-                    WorkbenchDashboard.updateDashboard();
                 }
             },
             
             resetCalculator: () => {
-                document.getElementById('calc-cost').value = '';
-                document.getElementById('calc-rate').value = WorkbenchDashboard.data.rate || 7.25;
-                document.getElementById('calc-margin').value = '20';
-                document.getElementById('calc-rebate').value = '13';
+                ['calc-cost', 'calc-rate'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
                 document.getElementById('fob-result').classList.add('hidden');
             },
             
-            // 金额转大写
             convertAmount: () => {
                 const num = document.getElementById('amount-num').value;
                 const currency = document.getElementById('amount-currency').value;
                 
-                if (!num) {
-                    document.getElementById('amount-text').textContent = "SAY TOTAL...";
-                    return;
+                if(!num) { 
+                    document.getElementById('amount-text').textContent = "SAY TOTAL..."; 
+                    return; 
                 }
                 
                 const n = parseFloat(num);
                 const intPart = Math.floor(n);
                 const decPart = Math.round((n - intPart) * 100);
                 
-                const currencyMap = {
-                    'USD': 'US DOLLARS',
-                    'EUR': 'EUROS',
-                    'CNY': 'CHINESE YUAN'
-                };
-                
+                const currencyMap = {'USD': 'US DOLLARS', 'EUR': 'EUROS', 'CNY': 'CHINESE YUAN'};
                 let text = `SAY TOTAL ${currencyMap[currency]} ${intPart.toLocaleString('en-US')}`;
                 text += decPart > 0 ? ` AND ${decPart}/100 CENTS ONLY` : ` ONLY`;
                 
@@ -842,20 +819,14 @@ document.addEventListener('DOMContentLoaded', async function() {
             
             copyAmountText: () => {
                 const text = document.getElementById('amount-text').textContent;
-                if (text !== "SAY TOTAL...") {
-                    WorkbenchUtils.copyToClipboard(text);
-                } else {
-                    WorkbenchUtils.toast('请先输入金额', 'warning');
-                }
+                WorkbenchUtils.copyToClipboard(text);
             },
             
-            // 复制银行信息
             copyBankInfo: () => {
-                const text = `Beneficiary: Kunshan Vvohoo Industry Co., Ltd
-Bank: JPMorgan Chase Bank N.A., Hong Kong Branch
-Account: 63007935038
-SWIFT: CHASHKHH`;
-                WorkbenchUtils.copyToClipboard(text);
+                const text = document.getElementById('bank-info-text').innerText;
+                navigator.clipboard.writeText(text).then(() => {
+                    WorkbenchUtils.toast('收款信息已复制', 'success');
+                });
             }
         },
 
@@ -879,13 +850,6 @@ SWIFT: CHASHKHH`;
                 if (tabId === 'suppliers' && WorkbenchSuppliers) WorkbenchSuppliers.render();
                 if (tabId === 'crm' && WorkbenchCRM) WorkbenchCRM.render();
                 if (tabId === 'expenses' && WorkbenchExpenses) WorkbenchExpenses.render();
-                if (tabId === 'tools') {
-                    // 初始化工具tab
-                    const calcRate = document.getElementById('calc-rate');
-                    if (calcRate && !calcRate.value) {
-                        calcRate.value = WorkbenchDashboard.data.rate || 7.25;
-                    }
-                }
             }
         },
 
@@ -897,7 +861,6 @@ SWIFT: CHASHKHH`;
                 document.getElementById('settings-target').value = WorkbenchDashboard.data.target;
                 document.getElementById('settings-rate').value = WorkbenchDashboard.data.rate;
                 document.getElementById('settings-webhook').value = WorkbenchDashboard.data.feishuWebhook || '';
-                document.getElementById('settings-worker').value = WorkbenchStorage.WORKER_URL || '';
             }
         },
         
@@ -910,7 +873,6 @@ SWIFT: CHASHKHH`;
             const target = parseFloat(document.getElementById('settings-target').value);
             const rate = parseFloat(document.getElementById('settings-rate').value);
             const webhook = document.getElementById('settings-webhook').value;
-            const worker = document.getElementById('settings-worker').value;
             
             WorkbenchDashboard.data.target = target;
             WorkbenchDashboard.data.rate = rate;
@@ -919,7 +881,6 @@ SWIFT: CHASHKHH`;
             WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.TARGET, target);
             WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.USD_RATE, rate);
             WorkbenchStorage.save(WorkbenchConfig.STORAGE_KEYS.FEISHU_WEBHOOK, webhook);
-            WorkbenchStorage.setWorkerUrl(worker);
             
             WorkbenchUtils.toast('设置已保存', 'success');
             app.closeSettings();
@@ -929,7 +890,7 @@ SWIFT: CHASHKHH`;
         // === 数据导出 ===
         exportData: () => {
             const backup = WorkbenchStorage.exportAll();
-            const filename = `V5_Medical_V14.2_PRO_Backup_${new Date().toISOString().slice(0,10)}.json`;
+            const filename = `V5_Medical_V14.2_Backup_${new Date().toISOString().slice(0,10)}.json`;
             WorkbenchUtils.downloadJSON(backup, filename);
             WorkbenchUtils.toast('数据已导出', 'success');
         }
@@ -956,6 +917,12 @@ SWIFT: CHASHKHH`;
         battleBtn.onclick = app.survival.startBattle;
     }
 
+    // 金额转换实时监听
+    const amountInput = document.getElementById('amount-num');
+    const currencySelect = document.getElementById('amount-currency');
+    if (amountInput) amountInput.oninput = app.tools.convertAmount;
+    if (currencySelect) currencySelect.onchange = app.tools.convertAmount;
+
     // 初始化检查
     app.survival.initCheck();
     
@@ -963,9 +930,7 @@ SWIFT: CHASHKHH`;
     WorkbenchCRM.render();
     WorkbenchExpenses.render();
     
-// 🔥 修复1：初始化每日金句
-function initDailyQuote() {
-    console.log('[Quote] 💪 Initializing...');
+    // 每日鸡血金句
     const quotes = [
         "Every 'No' brings you closer to a 'Yes'. (每一次拒绝都让你离成交更近)",
         "Quality is the best business plan. (质量是最好的商业计划)",
@@ -978,25 +943,10 @@ function initDailyQuote() {
         "成交之前的每一次拒绝，都是在积累运气。",
         "Action is the foundational key to all success. (行动是所有成功的基石)"
     ];
-    let todayQuote = localStorage.getItem('v14_daily_quote');
-    let quoteDate = localStorage.getItem('v14_quote_date');
-    const today = new Date().toDateString();
-    if (!todayQuote || quoteDate !== today) {
-        todayQuote = quotes[Math.floor(Math.random() * quotes.length)];
-        localStorage.setItem('v14_daily_quote', todayQuote);
-        localStorage.setItem('v14_quote_date', today);
-    }
-    const quoteEl = document.getElementById('daily-quote');
-    if (quoteEl) {
-        quoteEl.textContent = todayQuote;
-        console.log('[Quote] ✅ Loaded');
-    } else {
-        console.error('[Quote] ❌ Element not found');
-    }
-}
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById('daily-quote').innerText = randomQuote;
 
-initDailyQuote();
-    console.log('[V14.2 PRO] ✅ System Online - All Modules Loaded + Tools Integrated');
+    console.log('[V14.2 PRO] ✅ System Online - All Modules Loaded');
 });
 </script>
 
