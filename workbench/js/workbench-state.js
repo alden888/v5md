@@ -1,6 +1,7 @@
 /**
  * V14.2 PRO - 全局状态管理器
  * 统一管理应用状态，解决数据同步问题
+ * 优化版本 - 2026-01-03
  * @namespace WorkbenchState
  */
 const WorkbenchState = (() => {
@@ -38,7 +39,8 @@ const WorkbenchState = (() => {
             target: 5000000,
             exchangeRate: 7.25,
             feishuWebhook: '',
-            useCloudStorage: false
+            firebaseEnabled: false,
+            survivalModeEnabled: true
         },
         
         // UI状态
@@ -53,19 +55,41 @@ const WorkbenchState = (() => {
     const listeners = new Map();
     let listenerIdCounter = 0;
 
+    // 存储键名配置（统一workbench_前缀）
+    const STORAGE_KEYS = {
+        SETTINGS: 'workbench_settings',
+        ORDERS: 'workbench_orders',
+        CUSTOMERS: 'workbench_customers',
+        SUPPLIERS: 'workbench_suppliers',
+        EXPENSES: 'workbench_expenses',
+        INCOMES: 'workbench_incomes',
+        TODAY_ACTIONS: 'workbench_today_actions'
+    };
+
     /**
-     * 初始化状态管理器
+     * 初始化状态管理器（供loader调用）
+     * @returns {boolean} 是否成功
      */
     function init() {
-        console.log('[State] 状态管理器初始化中...');
-        
-        // 从存储加载状态
-        loadStateFromStorage();
-        
-        // 设置自动保存
-        setupAutoSave();
-        
-        console.log('[State] ✅ 状态管理器已初始化');
+        try {
+            console.log('[State] 状态管理器初始化中...');
+            
+            // 从存储加载状态
+            loadStateFromStorage();
+            
+            // 设置自动保存
+            setupAutoSave();
+            
+            state.system.isReady = true;
+            
+            console.log('[State] ✅ 状态管理器已初始化');
+            console.log('[State] 存储键名:', Object.keys(STORAGE_KEYS).join(', '));
+            
+            return true;
+        } catch (error) {
+            console.error('[State] ❌ 初始化失败:', error);
+            return false;
+        }
     }
 
     /**
@@ -74,19 +98,24 @@ const WorkbenchState = (() => {
     function loadStateFromStorage() {
         try {
             // 加载系统设置
-            const settingsStr = localStorage.getItem('v14_settings');
+            const settingsStr = localStorage.getItem(STORAGE_KEYS.SETTINGS);
             if (settingsStr) {
-                const settings = JSON.parse(settingsStr);
-                state.settings = { ...state.settings, ...settings };
+                try {
+                    const settings = JSON.parse(settingsStr);
+                    state.settings = { ...state.settings, ...settings };
+                    console.log('[State] 设置已加载');
+                } catch (error) {
+                    console.warn('[State] 设置解析失败:', error);
+                }
             }
 
             // 加载业务数据
             const dataKeys = {
-                orders: 'workbench_orders',
-                customers: 'workbench_customers',
-                suppliers: 'workbench_suppliers',
-                expenses: 'workbench_expenses',
-                incomes: 'workbench_incomes'
+                orders: STORAGE_KEYS.ORDERS,
+                customers: STORAGE_KEYS.CUSTOMERS,
+                suppliers: STORAGE_KEYS.SUPPLIERS,
+                expenses: STORAGE_KEYS.EXPENSES,
+                incomes: STORAGE_KEYS.INCOMES
             };
 
             Object.entries(dataKeys).forEach(([key, storageKey]) => {
@@ -94,22 +123,31 @@ const WorkbenchState = (() => {
                 if (dataStr) {
                     try {
                         state.data[key] = JSON.parse(dataStr);
+                        console.log(`[State] ${key}已加载: ${state.data[key].length}项`);
                     } catch (error) {
-                        console.error(`[State] 加载 ${key} 失败:`, error);
+                        console.error(`[State] ❌ 加载${key}失败:`, error);
                         state.data[key] = [];
                     }
+                } else {
+                    state.data[key] = [];
                 }
             });
 
             // 加载今日三件事
-            const actionsStr = localStorage.getItem('v14_today_actions');
+            const actionsStr = localStorage.getItem(STORAGE_KEYS.TODAY_ACTIONS);
             if (actionsStr) {
-                state.data.todayActions = JSON.parse(actionsStr);
+                try {
+                    state.data.todayActions = JSON.parse(actionsStr);
+                    console.log('[State] 今日行动已加载');
+                } catch (error) {
+                    console.warn('[State] 今日行动解析失败:', error);
+                    state.data.todayActions = [];
+                }
             }
 
-            console.log('[State] 状态已从存储加载');
+            console.log('[State] ✅ 状态已从存储加载');
         } catch (error) {
-            console.error('[State] 加载状态失败:', error);
+            console.error('[State] ❌ 加载状态失败:', error);
         }
     }
 
@@ -126,6 +164,8 @@ const WorkbenchState = (() => {
         window.addEventListener('beforeunload', () => {
             saveStateToStorage();
         });
+
+        console.log('[State] ✅ 自动保存已启用');
     }
 
     /**
@@ -134,15 +174,15 @@ const WorkbenchState = (() => {
     function saveStateToStorage() {
         try {
             // 保存设置
-            localStorage.setItem('v14_settings', JSON.stringify(state.settings));
+            localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(state.settings));
 
             // 保存业务数据
             const dataKeys = {
-                orders: 'workbench_orders',
-                customers: 'workbench_customers',
-                suppliers: 'workbench_suppliers',
-                expenses: 'workbench_expenses',
-                incomes: 'workbench_incomes'
+                orders: STORAGE_KEYS.ORDERS,
+                customers: STORAGE_KEYS.CUSTOMERS,
+                suppliers: STORAGE_KEYS.SUPPLIERS,
+                expenses: STORAGE_KEYS.EXPENSES,
+                incomes: STORAGE_KEYS.INCOMES
             };
 
             Object.entries(dataKeys).forEach(([key, storageKey]) => {
@@ -150,15 +190,58 @@ const WorkbenchState = (() => {
             });
 
             // 保存今日三件事
-            localStorage.setItem('v14_today_actions', JSON.stringify(state.data.todayActions));
+            localStorage.setItem(STORAGE_KEYS.TODAY_ACTIONS, JSON.stringify(state.data.todayActions));
 
             state.system.lastSyncTime = new Date().toISOString();
-            console.log('[State] 状态已保存到存储');
+            
+            // 同步到Firebase（如果启用）
+            syncToFirebase();
+            
+            console.log('[State] ✅ 状态已保存到存储');
         } catch (error) {
-            console.error('[State] 保存状态失败:', error);
+            console.error('[State] ❌ 保存状态失败:', error);
             if (window.WorkbenchUtils) {
                 WorkbenchUtils.toast('数据保存失败，请检查存储空间', 'error');
             }
+        }
+    }
+
+    /**
+     * 同步到Firebase
+     */
+    function syncToFirebase() {
+        try {
+            // 检查Firebase是否启用
+            if (!state.settings.firebaseEnabled) {
+                return;
+            }
+
+            if (typeof WorkbenchFirebase === 'undefined' || !WorkbenchFirebase.isInitialized()) {
+                return;
+            }
+
+            // 同步今日行动
+            if (state.data.todayActions && state.data.todayActions.length > 0) {
+                WorkbenchFirebase.syncTodayActions(state.data.todayActions).catch(err => {
+                    console.warn('[State] Firebase同步失败:', err);
+                });
+            }
+
+            // 同步订单
+            if (state.data.orders && state.data.orders.length > 0) {
+                WorkbenchFirebase.syncOrders(state.data.orders).catch(err => {
+                    console.warn('[State] 订单同步失败:', err);
+                });
+            }
+
+            // 同步供应商
+            if (state.data.suppliers && state.data.suppliers.length > 0) {
+                WorkbenchFirebase.syncSuppliers(state.data.suppliers).catch(err => {
+                    console.warn('[State] 供应商同步失败:', err);
+                });
+            }
+        } catch (error) {
+            console.warn('[State] Firebase同步出错:', error);
         }
     }
 
@@ -184,7 +267,7 @@ const WorkbenchState = (() => {
                    typeof value === 'object' && value !== null ? { ...value } : 
                    value;
         } catch (error) {
-            console.error('[State] 获取状态失败:', error);
+            console.error('[State] ❌ 获取状态失败:', error);
             return undefined;
         }
     }
@@ -223,7 +306,7 @@ const WorkbenchState = (() => {
             
             console.log(`[State] 状态已更新: ${path}`);
         } catch (error) {
-            console.error('[State] 设置状态失败:', error);
+            console.error('[State] ❌ 设置状态失败:', error);
         }
     }
 
@@ -242,7 +325,7 @@ const WorkbenchState = (() => {
                 console.warn('[State] 只能更新对象类型的状态');
             }
         } catch (error) {
-            console.error('[State] 更新状态失败:', error);
+            console.error('[State] ❌ 更新状态失败:', error);
         }
     }
 
@@ -261,7 +344,7 @@ const WorkbenchState = (() => {
                 console.warn('[State] 只能向数组状态添加项');
             }
         } catch (error) {
-            console.error('[State] 添加项失败:', error);
+            console.error('[State] ❌ 添加项失败:', error);
         }
     }
 
@@ -280,7 +363,7 @@ const WorkbenchState = (() => {
                 console.warn('[State] 只能从数组状态移除项');
             }
         } catch (error) {
-            console.error('[State] 移除项失败:', error);
+            console.error('[State] ❌ 移除项失败:', error);
         }
     }
 
@@ -352,7 +435,7 @@ const WorkbenchState = (() => {
                 });
             }
         } catch (error) {
-            console.error('[State] 通知监听器失败:', error);
+            console.error('[State] ❌ 通知监听器失败:', error);
         }
     }
 
@@ -382,7 +465,8 @@ const WorkbenchState = (() => {
                 target: 5000000,
                 exchangeRate: 7.25,
                 feishuWebhook: '',
-                useCloudStorage: false
+                firebaseEnabled: false,
+                survivalModeEnabled: true
             };
             saveStateToStorage();
         }
@@ -405,7 +489,8 @@ const WorkbenchState = (() => {
             'settings.target': 5000000,
             'settings.exchangeRate': 7.25,
             'settings.feishuWebhook': '',
-            'settings.useCloudStorage': false
+            'settings.firebaseEnabled': false,
+            'settings.survivalModeEnabled': true
         };
         return defaults[path] !== undefined ? defaults[path] : null;
     }
@@ -416,6 +501,14 @@ const WorkbenchState = (() => {
      */
     function getSnapshot() {
         return JSON.parse(JSON.stringify(state));
+    }
+
+    /**
+     * 获取存储键名配置
+     * @returns {Object} 存储键名
+     */
+    function getStorageKeys() {
+        return { ...STORAGE_KEYS };
     }
 
     // 公共API
@@ -430,14 +523,10 @@ const WorkbenchState = (() => {
         unwatch,
         reset,
         getSnapshot,
+        getStorageKeys,
         saveStateToStorage,
         loadStateFromStorage
     };
-
-    // 自动初始化
-    document.addEventListener('DOMContentLoaded', () => {
-        init();
-    });
 
     return api;
 })();
@@ -451,3 +540,5 @@ if (typeof module !== 'undefined' && module.exports) {
 } else if (typeof define === 'function' && define.amd) {
     define([], () => WorkbenchState);
 }
+
+console.log('[State] 状态管理器模块已加载');

@@ -1,6 +1,7 @@
 /**
  * V14.2 PRO - 模态框管理器
  * 统一管理所有模态框，解决重叠显示问题
+ * 优化版本 - 2026-01-03
  * @namespace WorkbenchModal
  */
 const WorkbenchModal = (() => {
@@ -13,17 +14,29 @@ const WorkbenchModal = (() => {
     let currentModal = null;
 
     /**
-     * 初始化模态框管理器
+     * 初始化模态框管理器（供loader调用）
+     * @returns {boolean} 是否成功
      */
     function init() {
-        console.log('[Modal] 模态框管理器已初始化');
-        
-        // 监听ESC键关闭模态框
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && currentModal) {
-                close();
-            }
-        });
+        try {
+            console.log('[Modal] 模态框管理器初始化中...');
+            
+            // 注入样式
+            injectStyles();
+            
+            // 监听ESC键关闭模态框
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && currentModal) {
+                    close();
+                }
+            });
+            
+            console.log('[Modal] ✅ 模态框管理器已初始化');
+            return true;
+        } catch (error) {
+            console.error('[Modal] ❌ 初始化失败:', error);
+            return false;
+        }
     }
 
     /**
@@ -38,7 +51,7 @@ const WorkbenchModal = (() => {
                 title: '提示',
                 content: '',
                 buttons: [],
-                size: 'md', // sm, md, lg, xl
+                size: 'md', // sm, md, lg, xl, 2xl, 3xl, 4xl, full
                 closeOnClickOutside: true,
                 closeOnEsc: true,
                 showCloseButton: true,
@@ -49,8 +62,8 @@ const WorkbenchModal = (() => {
 
             const config = { ...defaultOptions, ...options };
 
-            // 关闭当前模态框（如果存在）
-            if (currentModal) {
+            // 关闭当前模态框（如果存在且不支持多层）
+            if (currentModal && !config.allowMultiple) {
                 close();
             }
 
@@ -74,13 +87,17 @@ const WorkbenchModal = (() => {
 
             // 调用回调
             if (config.onOpen && typeof config.onOpen === 'function') {
-                config.onOpen(modal);
+                try {
+                    config.onOpen(modal);
+                } catch (error) {
+                    console.error('[Modal] onOpen回调执行失败:', error);
+                }
             }
 
-            console.log('[Modal] 模态框已打开');
+            console.log('[Modal] ✅ 模态框已打开');
             return modal;
         } catch (error) {
-            console.error('[Modal] 打开模态框失败:', error);
+            console.error('[Modal] ❌ 打开模态框失败:', error);
             return null;
         }
     }
@@ -109,6 +126,13 @@ const WorkbenchModal = (() => {
 
         const sizeClass = sizeClasses[config.size] || sizeClasses.md;
 
+        // 转义HTML内容（安全处理）
+        const escapeHtml = (text) => {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        };
+
         modal.innerHTML = `
             <!-- 背景遮罩 -->
             <div class="modal-backdrop absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"></div>
@@ -117,7 +141,7 @@ const WorkbenchModal = (() => {
             <div class="modal-container relative bg-gray-900 rounded-lg shadow-2xl w-full ${sizeClass} mx-4 transform transition-all">
                 <!-- 头部 -->
                 <div class="modal-header flex justify-between items-center p-6 border-b border-gray-800">
-                    <h3 class="modal-title text-xl font-bold text-white">${config.title}</h3>
+                    <h3 class="modal-title text-xl font-bold text-white">${escapeHtml(config.title)}</h3>
                     ${config.showCloseButton ? `
                         <button class="modal-close-btn text-gray-400 hover:text-white text-2xl leading-none transition-colors" 
                                 aria-label="关闭">&times;</button>
@@ -135,7 +159,7 @@ const WorkbenchModal = (() => {
                         ${config.buttons.map((btn, index) => `
                             <button class="modal-btn ${btn.className || 'bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded transition-colors'}" 
                                     data-btn-index="${index}">
-                                ${btn.text || '按钮'}
+                                ${escapeHtml(btn.text || '按钮')}
                             </button>
                         `).join('')}
                     </div>
@@ -147,7 +171,17 @@ const WorkbenchModal = (() => {
         if (config.showCloseButton) {
             const closeBtn = modal.querySelector('.modal-close-btn');
             if (closeBtn) {
-                closeBtn.addEventListener('click', () => close());
+                closeBtn.addEventListener('click', () => {
+                    // 调用onClose回调
+                    if (config.onClose && typeof config.onClose === 'function') {
+                        try {
+                            config.onClose(modal);
+                        } catch (error) {
+                            console.error('[Modal] onClose回调执行失败:', error);
+                        }
+                    }
+                    close();
+                });
             }
         }
 
@@ -158,7 +192,11 @@ const WorkbenchModal = (() => {
                 const btnConfig = config.buttons[index];
                 if (btnConfig && btnConfig.onClick) {
                     btn.addEventListener('click', (e) => {
-                        btnConfig.onClick(modal, e);
+                        try {
+                            btnConfig.onClick(modal, e);
+                        } catch (error) {
+                            console.error('[Modal] 按钮事件执行失败:', error);
+                        }
                     });
                 }
             });
@@ -168,7 +206,17 @@ const WorkbenchModal = (() => {
         if (config.closeOnClickOutside) {
             const backdrop = modal.querySelector('.modal-backdrop');
             if (backdrop) {
-                backdrop.addEventListener('click', () => close());
+                backdrop.addEventListener('click', () => {
+                    // 调用onClose回调
+                    if (config.onClose && typeof config.onClose === 'function') {
+                        try {
+                            config.onClose(modal);
+                        } catch (error) {
+                            console.error('[Modal] onClose回调执行失败:', error);
+                        }
+                    }
+                    close();
+                });
             }
         }
 
@@ -215,9 +263,9 @@ const WorkbenchModal = (() => {
                 }
             }, 300);
 
-            console.log('[Modal] 模态框已关闭');
+            console.log('[Modal] ✅ 模态框已关闭');
         } catch (error) {
-            console.error('[Modal] 关闭模态框失败:', error);
+            console.error('[Modal] ❌ 关闭模态框失败:', error);
         }
     }
 
@@ -242,9 +290,9 @@ const WorkbenchModal = (() => {
             // 解锁页面滚动
             document.body.style.overflow = '';
 
-            console.log('[Modal] 所有模态框已关闭');
+            console.log('[Modal] ✅ 所有模态框已关闭');
         } catch (error) {
-            console.error('[Modal] 关闭所有模态框失败:', error);
+            console.error('[Modal] ❌ 关闭所有模态框失败:', error);
         }
     }
 
@@ -265,9 +313,16 @@ const WorkbenchModal = (() => {
                 ...options
             };
 
+            // 转义HTML
+            const escapeHtml = (text) => {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            };
+
             open({
                 title: defaultOptions.title,
-                content: `<p class="text-gray-300">${message}</p>`,
+                content: `<p class="text-gray-300">${escapeHtml(message)}</p>`,
                 buttons: [
                     {
                         text: defaultOptions.cancelText,
@@ -286,7 +341,8 @@ const WorkbenchModal = (() => {
                         }
                     }
                 ],
-                closeOnClickOutside: false
+                closeOnClickOutside: false,
+                onClose: () => resolve(false)
             });
         });
     }
@@ -302,22 +358,31 @@ const WorkbenchModal = (() => {
             const defaultOptions = {
                 title: '提示',
                 buttonText: '确定',
+                buttonColor: 'bg-blue-600 hover:bg-blue-700',
                 ...options
+            };
+
+            // 转义HTML
+            const escapeHtml = (text) => {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
             };
 
             open({
                 title: defaultOptions.title,
-                content: `<p class="text-gray-300">${message}</p>`,
+                content: `<p class="text-gray-300">${escapeHtml(message)}</p>`,
                 buttons: [
                     {
                         text: defaultOptions.buttonText,
-                        className: 'bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded font-medium',
+                        className: `${defaultOptions.buttonColor} text-white px-6 py-2 rounded font-medium`,
                         onClick: (modal) => {
                             close(modal);
                             resolve();
                         }
                     }
-                ]
+                ],
+                onClose: () => resolve()
             });
         });
     }
@@ -338,7 +403,17 @@ const WorkbenchModal = (() => {
         return modalStack.length > 0;
     }
 
-    // 添加必要的CSS样式
+    /**
+     * 获取模态框数量
+     * @returns {number} 模态框数量
+     */
+    function getCount() {
+        return modalStack.length;
+    }
+
+    /**
+     * 注入CSS样式
+     */
     function injectStyles() {
         if (document.getElementById('workbench-modal-styles')) {
             return; // 已注入
@@ -379,8 +454,16 @@ const WorkbenchModal = (() => {
                 transform: scale(0.95);
                 opacity: 0;
             }
+
+            /* 响应式优化 */
+            @media (max-width: 640px) {
+                .workbench-modal .modal-container {
+                    max-width: calc(100vw - 2rem) !important;
+                }
+            }
         `;
         document.head.appendChild(style);
+        console.log('[Modal] ✅ 样式已注入');
     }
 
     // 公共API
@@ -392,14 +475,9 @@ const WorkbenchModal = (() => {
         confirm,
         alert,
         getCurrent,
-        isOpen
+        isOpen,
+        getCount
     };
-
-    // 自动初始化
-    document.addEventListener('DOMContentLoaded', () => {
-        init();
-        injectStyles();
-    });
 
     return api;
 })();
@@ -413,3 +491,5 @@ if (typeof module !== 'undefined' && module.exports) {
 } else if (typeof define === 'function' && define.amd) {
     define([], () => WorkbenchModal);
 }
+
+console.log('[Modal] 模态框管理器模块已加载');

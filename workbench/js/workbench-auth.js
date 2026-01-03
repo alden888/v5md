@@ -1,15 +1,16 @@
 /**
- * V14.2 ERP - Authentication Module
- * 认证模块：用户认证 + 权限管理 + 会话控制
+ * V14.2 PRO - 认证模块
+ * 用户认证 + 权限管理 + 会话控制
+ * 优化版本 - 2026-01-03
  * @namespace WorkbenchAuth
  */
 const WorkbenchAuth = (() => {
     'use strict';
 
-    // 配置常量
+    // 配置常量（统一workbench_前缀）
     const CONFIG = {
-        STORAGE_KEY: 'v14_auth_session',
-        TOKEN_KEY: 'v14_auth_token',
+        STORAGE_KEY: 'workbench_auth_session',
+        TOKEN_KEY: 'workbench_auth_token',
         SESSION_EXPIRY: 24 * 60 * 60 * 1000, // 24小时会话过期
         MAX_RETRY: 3,
         DEFAULT_ROLE: 'user'
@@ -27,31 +28,37 @@ const WorkbenchAuth = (() => {
         isAuthenticated: false,
         currentUser: null,
         sessionExpiry: null,
-        isInitializing: false
+        isInitializing: false,
+        sessionTimer: null
     };
 
     /**
-     * 初始化认证模块
-     * @returns {Promise<boolean>} 是否初始化成功
+     * 初始化认证模块（供loader调用）
+     * @returns {boolean} 是否成功
      */
-    async function init() {
-        if (state.isInitializing) return false;
+    function init() {
+        if (state.isInitializing) {
+            console.warn('[Auth] 认证模块正在初始化...');
+            return false;
+        }
         
         state.isInitializing = true;
+        
         try {
-            console.log('[Auth] 初始化认证模块...');
+            console.log('[Auth] 认证模块初始化中...');
             
             // 检查本地存储的会话
-            await checkStoredSession();
+            checkStoredSession();
             
-            console.log('[Auth] 认证模块初始化完成', {
-                authenticated: state.isAuthenticated,
-                user: state.currentUser ? state.currentUser.username : '未登录'
-            });
+            console.log('[Auth] ✅ 认证模块已初始化');
+            console.log('[Auth] 认证状态:', state.isAuthenticated ? '已登录' : '未登录');
+            if (state.currentUser) {
+                console.log('[Auth] 当前用户:', state.currentUser.username);
+            }
             
-            return state.isAuthenticated;
+            return true;
         } catch (error) {
-            console.error('[Auth] 初始化失败:', error);
+            console.error('[Auth] ❌ 初始化失败:', error);
             return false;
         } finally {
             state.isInitializing = false;
@@ -60,12 +67,13 @@ const WorkbenchAuth = (() => {
 
     /**
      * 检查存储的会话
-     * @returns {Promise<boolean>} 是否有有效的会话
+     * @returns {boolean} 是否有有效的会话
      */
-    async function checkStoredSession() {
+    function checkStoredSession() {
         try {
+            // 使用WorkbenchStorage模块读取
             const sessionData = WorkbenchStorage ? 
-                await WorkbenchStorage.load(CONFIG.STORAGE_KEY) : 
+                WorkbenchStorage.load(CONFIG.STORAGE_KEY) : 
                 JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEY) || 'null');
 
             if (sessionData && sessionData.user && sessionData.expiry) {
@@ -76,19 +84,22 @@ const WorkbenchAuth = (() => {
                     state.currentUser = sessionData.user;
                     state.sessionExpiry = sessionData.expiry;
                     
+                    console.log('[Auth] 会话已恢复:', state.currentUser.username);
+                    
                     // 启动会话超时检查
                     startSessionTimer();
                     return true;
                 } else {
                     // 会话过期
-                    await logout('会话已过期');
+                    console.log('[Auth] 会话已过期');
+                    logout('会话已过期');
                 }
             }
             
             return false;
         } catch (error) {
-            console.error('[Auth] 检查会话失败:', error);
-            await logout('会话验证失败');
+            console.error('[Auth] ❌ 检查会话失败:', error);
+            logout('会话验证失败');
             return false;
         }
     }
@@ -106,12 +117,17 @@ const WorkbenchAuth = (() => {
                 throw new Error('用户名和密码不能为空');
             }
 
-            // 模拟后端验证（实际项目中应替换为API调用）
+            console.log('[Auth] 尝试登录:', username);
+
+            // 模拟后端验证
             const user = await validateCredentials(username, password);
             
             if (user) {
                 // 创建会话
                 await createSession(user);
+                
+                console.log('[Auth] ✅ 登录成功:', user.username);
+                
                 return {
                     success: true,
                     user: user,
@@ -121,7 +137,7 @@ const WorkbenchAuth = (() => {
             
             throw new Error('用户名或密码错误');
         } catch (error) {
-            console.error('[Auth] 登录失败:', error);
+            console.error('[Auth] ❌ 登录失败:', error);
             return {
                 success: false,
                 message: error.message || '登录失败，请重试'
@@ -136,13 +152,12 @@ const WorkbenchAuth = (() => {
      * @returns {Promise<Object|null>} 用户信息
      */
     async function validateCredentials(username, password) {
-        // 实际项目中应替换为API调用
-        // 这里使用模拟数据
+        // 模拟数据（实际项目中应替换为API调用）
         const mockUsers = [
             {
                 id: 'admin1',
                 username: 'admin',
-                password: 'admin123', // 实际项目中应使用加密存储
+                password: 'admin123',
                 name: '系统管理员',
                 email: 'admin@example.com',
                 role: 'ADMIN',
@@ -168,7 +183,7 @@ const WorkbenchAuth = (() => {
             }
         ];
 
-        // 简单的凭据验证（实际项目中应使用加密验证）
+        // 简单的凭据验证
         const user = mockUsers.find(u => 
             u.username === username && u.password === password
         );
@@ -198,9 +213,9 @@ const WorkbenchAuth = (() => {
                 createdAt: new Date().toISOString()
             };
 
-            // 使用存储模块保存
+            // 使用WorkbenchStorage模块保存
             if (WorkbenchStorage) {
-                await WorkbenchStorage.save(CONFIG.STORAGE_KEY, sessionData);
+                WorkbenchStorage.save(CONFIG.STORAGE_KEY, sessionData);
             } else {
                 localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(sessionData));
             }
@@ -218,9 +233,10 @@ const WorkbenchAuth = (() => {
                 WorkbenchUtils.toast(`欢迎回来，${user.name}！`, 'success');
             }
 
+            console.log('[Auth] ✅ 会话已创建');
             return true;
         } catch (error) {
-            console.error('[Auth] 创建会话失败:', error);
+            console.error('[Auth] ❌ 创建会话失败:', error);
             throw error;
         }
     }
@@ -228,15 +244,15 @@ const WorkbenchAuth = (() => {
     /**
      * 登出系统
      * @param {string} reason - 登出原因
-     * @returns {Promise<boolean>} 是否成功
+     * @returns {boolean} 是否成功
      */
-    async function logout(reason = '用户主动登出') {
+    function logout(reason = '用户主动登出') {
         try {
             console.log('[Auth] 登出系统:', reason);
 
             // 清除会话信息
             if (WorkbenchStorage) {
-                await WorkbenchStorage.remove(CONFIG.STORAGE_KEY);
+                WorkbenchStorage.remove(CONFIG.STORAGE_KEY);
             } else {
                 localStorage.removeItem(CONFIG.STORAGE_KEY);
             }
@@ -250,13 +266,14 @@ const WorkbenchAuth = (() => {
             clearSessionTimer();
 
             // 显示登出消息
-            if (WorkbenchUtils) {
-                WorkbenchUtils.toast('已安全登出系统', 'info');
+            if (WorkbenchUtils && reason !== '会话验证失败') {
+                WorkbenchUtils.toast(reason === '用户主动登出' ? '已安全登出系统' : reason, 'info');
             }
 
+            console.log('[Auth] ✅ 已登出');
             return true;
         } catch (error) {
-            console.error('[Auth] 登出失败:', error);
+            console.error('[Auth] ❌ 登出失败:', error);
             return false;
         }
     }
@@ -274,6 +291,8 @@ const WorkbenchAuth = (() => {
                 state.sessionTimer = setTimeout(() => {
                     logout('会话超时');
                 }, timeRemaining);
+                
+                console.log('[Auth] 会话计时器已启动，剩余时间:', Math.floor(timeRemaining / 1000 / 60), '分钟');
             }
         }
     }
@@ -336,9 +355,9 @@ const WorkbenchAuth = (() => {
 
     /**
      * 刷新会话
-     * @returns {Promise<boolean>} 是否成功
+     * @returns {boolean} 是否成功
      */
-    async function refreshSession() {
+    function refreshSession() {
         if (!state.isAuthenticated || !state.currentUser) {
             return false;
         }
@@ -356,7 +375,7 @@ const WorkbenchAuth = (() => {
             };
 
             if (WorkbenchStorage) {
-                await WorkbenchStorage.save(CONFIG.STORAGE_KEY, sessionData);
+                WorkbenchStorage.save(CONFIG.STORAGE_KEY, sessionData);
             } else {
                 localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(sessionData));
             }
@@ -364,9 +383,10 @@ const WorkbenchAuth = (() => {
             // 重启计时器
             startSessionTimer();
 
+            console.log('[Auth] ✅ 会话已刷新');
             return true;
         } catch (error) {
-            console.error('[Auth] 刷新会话失败:', error);
+            console.error('[Auth] ❌ 刷新会话失败:', error);
             return false;
         }
     }
@@ -380,7 +400,8 @@ const WorkbenchAuth = (() => {
             isAuthenticated: state.isAuthenticated,
             user: state.currentUser,
             expiry: state.sessionExpiry,
-            timeRemaining: state.sessionExpiry ? Math.max(0, state.sessionExpiry - Date.now()) : 0
+            timeRemaining: state.sessionExpiry ? Math.max(0, state.sessionExpiry - Date.now()) : 0,
+            timeRemainingMinutes: state.sessionExpiry ? Math.floor(Math.max(0, state.sessionExpiry - Date.now()) / 1000 / 60) : 0
         };
     }
 
@@ -393,10 +414,6 @@ const WorkbenchAuth = (() => {
         if (!isAuthenticated()) {
             if (WorkbenchUtils) {
                 WorkbenchUtils.toast('请先登录系统', 'warning');
-            }
-            // 重定向到登录页面
-            if (window.location.pathname !== '/login.html') {
-                window.location.href = '/login.html';
             }
             return false;
         }
@@ -411,6 +428,40 @@ const WorkbenchAuth = (() => {
         return true;
     }
 
+    /**
+     * 匿名登录（用于测试或无需认证的场景）
+     * @returns {Promise<Object>} 登录结果
+     */
+    async function anonymousLogin() {
+        try {
+            const anonymousUser = {
+                id: 'anonymous',
+                username: 'anonymous',
+                name: '访客',
+                email: '',
+                role: 'USER',
+                permissions: PERMISSIONS.USER,
+                isAnonymous: true
+            };
+
+            await createSession(anonymousUser);
+
+            console.log('[Auth] ✅ 匿名登录成功');
+
+            return {
+                success: true,
+                user: anonymousUser,
+                message: '已以访客身份登录'
+            };
+        } catch (error) {
+            console.error('[Auth] ❌ 匿名登录失败:', error);
+            return {
+                success: false,
+                message: '匿名登录失败'
+            };
+        }
+    }
+
     // 公共API
     const api = {
         // 初始化
@@ -419,6 +470,7 @@ const WorkbenchAuth = (() => {
         // 认证操作
         login,
         logout,
+        anonymousLogin,
         refreshSession,
         
         // 状态检查
@@ -436,11 +488,6 @@ const WorkbenchAuth = (() => {
         CONFIG
     };
 
-    // 自动初始化
-    document.addEventListener('DOMContentLoaded', async () => {
-        await init();
-    });
-
     return api;
 })();
 
@@ -453,3 +500,5 @@ if (typeof module !== 'undefined' && module.exports) {
 } else if (typeof define === 'function' && define.amd) {
     define([], () => WorkbenchAuth);
 }
+
+console.log('[Auth] 认证模块已加载');
