@@ -1,858 +1,480 @@
 /**
- * V14.2 PRO - Orders Module (Enhanced)
- * 订单看板模块：订单管理 + 状态跟踪 + 数据分析
+ * V14.2 PRO - 订单看板模块
+ * 负责订单管理、看板状态控制、快速添加等功能
  * @namespace WorkbenchOrders
  */
 const WorkbenchOrders = (() => {
     'use strict';
 
-    // 配置常量
-    const CONFIG = {
-        STORAGE_KEY: 'v14_orders',
-        KANBAN_STAGES: ['New', 'Processing', 'Shipped', 'Paid'],
-        DEFAULT_CURRENCY: 'CNY',
-        DECIMAL_PRECISION: 2,
-        PAGE_SIZE: 10
+    // 看板状态定义
+    const KANBAN_STATUS = {
+        NEW: 'New',
+        PROCESSING: 'Processing',
+        PAID: 'Paid',
+        SHIPPED: 'Shipped',
+        COMPLETED: 'Completed'
+    };
+
+    // 订单状态颜色映射
+    const STATUS_COLORS = {
+        [KANBAN_STATUS.NEW]: 'bg-blue-600',
+        [KANBAN_STATUS.PROCESSING]: 'bg-yellow-600',
+        [KANBAN_STATUS.PAID]: 'bg-green-600',
+        [KANBAN_STATUS.SHIPPED]: 'bg-purple-600',
+        [KANBAN_STATUS.COMPLETED]: 'bg-gray-600'
     };
 
     // 模块状态
     const state = {
         orders: [],
-        currentEditId: null,
-        isProcessing: false,
-        currentPage: 1,
-        searchQuery: '',
-        filterStatus: 'all',
-        sortBy: 'createdAt',
-        sortDirection: 'desc',
-        isInitialized: false
+        currentEditingOrder: null,
+        isInitialized: false,
+        modalElement: null
     };
 
     /**
      * 初始化订单模块
-     * @returns {Promise<boolean>} 是否初始化成功
+     * @returns {boolean} 是否成功
      */
-    async function init() {
-        if (state.isInitialized) return true;
-
+    function init() {
         try {
-            console.log('[Orders] 🚀 初始化订单模块 (V14.2 PRO)...');
-            
+            console.log('[Orders] 🚀 初始化订单模块...');
+
             // 加载订单数据
-            await loadOrdersData();
-            
-            // 绑定DOM事件
+            loadOrders();
+
+            // 绑定事件
             bindEvents();
-            
-            // 渲染初始界面
-            render();
-            
+
+            // 渲染看板
+            renderKanban();
+
             state.isInitialized = true;
-            console.log('[Orders] ✅ 订单模块初始化完成', {
-                orderCount: state.orders.length
-            });
-            
+            console.log('[Orders] ✅ 订单模块初始化成功');
             return true;
         } catch (error) {
             console.error('[Orders] ❌ 初始化失败:', error);
-            showError('订单模块初始化失败，请刷新页面重试');
+            if (window.WorkbenchUtils) {
+                WorkbenchUtils.toast('订单模块初始化失败', 'error');
+            }
             return false;
         }
     }
 
     /**
-     * 加载订单数据
-     * @returns {Promise<void>}
+     * 从存储加载订单数据
      */
-    async function loadOrdersData() {
+    function loadOrders() {
         try {
-            // 使用存储模块加载数据
-            if (window.WorkbenchStorage) {
-                state.orders = await window.WorkbenchStorage.loadArray(CONFIG.STORAGE_KEY, []);
+            // 优先使用 WorkbenchStorage
+            if (window.WorkbenchStorage && WorkbenchStorage.load) {
+                state.orders = WorkbenchStorage.load('orders') || [];
             } else {
-                // 降级到localStorage
-                state.orders = JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEY) || '[]');
+                // 降级到 localStorage
+                const ordersJson = localStorage.getItem('workbench_orders');
+                state.orders = ordersJson ? JSON.parse(ordersJson) : [];
             }
-
-            // 确保订单数据结构完整
-            state.orders = state.orders.map(order => normalizeOrderData(order));
+            console.log(`[Orders] 已加载 ${state.orders.length} 条订单`);
         } catch (error) {
-            console.error('[Orders] ❌ 加载订单数据失败:', error);
+            console.error('[Orders] 加载订单数据失败:', error);
             state.orders = [];
         }
     }
 
     /**
      * 保存订单数据
-     * @returns {Promise<boolean>} 是否成功
+     * @returns {boolean} 是否成功
      */
-    async function saveOrdersData() {
+    function saveOrders() {
         try {
-            if (window.WorkbenchStorage) {
-                await window.WorkbenchStorage.save(CONFIG.STORAGE_KEY, state.orders);
+            // 优先使用 WorkbenchStorage
+            if (window.WorkbenchStorage && WorkbenchStorage.save) {
+                WorkbenchStorage.save('orders', state.orders);
             } else {
-                localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(state.orders));
+                // 降级到 localStorage
+                localStorage.setItem('workbench_orders', JSON.stringify(state.orders));
             }
-            
-            // 通知仪表盘更新
-            if (window.WorkbenchDashboard && typeof window.WorkbenchDashboard.updateDashboard === 'function') {
-                window.WorkbenchDashboard.updateDashboard();
-            }
-            
+            console.log(`[Orders] 已保存 ${state.orders.length} 条订单`);
             return true;
         } catch (error) {
-            console.error('[Orders] ❌ 保存订单数据失败:', error);
-            showError('保存订单数据失败');
+            console.error('[Orders] 保存订单数据失败:', error);
+            if (window.WorkbenchUtils) {
+                WorkbenchUtils.toast('订单数据保存失败', 'error');
+            }
             return false;
         }
     }
 
     /**
-     * 规范化订单数据结构
-     * @param {Object} order - 订单数据
-     * @returns {Object} 规范化后的订单数据
-     */
-    function normalizeOrderData(order) {
-        const now = new Date().toISOString();
-        
-        return {
-            id: order.id || generateOrderId(),
-            customer: order.customer || '',
-            product: order.product || '',
-            amount: order.amount ? parseFloat(order.amount.toFixed(CONFIG.DECIMAL_PRECISION)) : 0,
-            quantity: order.quantity || 1,
-            totalAmount: order.totalAmount ? parseFloat(order.totalAmount.toFixed(CONFIG.DECIMAL_PRECISION)) : 
-                (order.amount ? parseFloat((order.amount * (order.quantity || 1)).toFixed(CONFIG.DECIMAL_PRECISION)) : 0),
-            status: order.status || 'New',
-            kanbanStatus: order.kanbanStatus || order.status || 'New',
-            notes: order.notes || '',
-            createdAt: order.createdAt || now,
-            updatedAt: now,
-            paidDate: order.paidDate || null,
-            shippedDate: order.shippedDate || null,
-            customerId: order.customerId || null,
-            supplierId: order.supplierId || null,
-            tags: order.tags || []
-        };
-    }
-
-    /**
-     * 绑定DOM事件
+     * 绑定事件监听器
      */
     function bindEvents() {
-        console.log('[Orders] 🎯 绑定事件...');
-
-        // 快速添加订单按钮
-        const quickAddBtn = document.getElementById('quick-add-order');
+        // 快速添加按钮
+        const quickAddBtn = document.getElementById('kanban-quick-add');
         if (quickAddBtn) {
-            quickAddBtn.addEventListener('click', openQuickAddModal);
+            quickAddBtn.addEventListener('click', () => openQuickAddModal());
         }
-
-        // 传统表单提交事件
-        const orderForm = document.getElementById('new-order-form');
-        if (orderForm) {
-            orderForm.addEventListener('submit', handleFormSubmit);
-        }
-
-        // 搜索框事件
-        const searchInput = document.getElementById('order-search');
-        if (searchInput) {
-            searchInput.addEventListener('input', debounce((e) => {
-                state.searchQuery = e.target.value.toLowerCase();
-                render();
-            }, 300));
-        }
-
-        // 状态筛选事件
-        const statusFilter = document.getElementById('order-status-filter');
-        if (statusFilter) {
-            statusFilter.addEventListener('change', (e) => {
-                state.filterStatus = e.target.value;
-                render();
-            });
-        }
-
-        // 排序选择事件
-        const sortSelect = document.getElementById('order-sort');
-        if (sortSelect) {
-            sortSelect.addEventListener('change', (e) => {
-                const [sortBy, sortDirection] = e.target.value.split('-');
-                state.sortBy = sortBy;
-                state.sortDirection = sortDirection;
-                render();
-            });
-        }
-
-        console.log('[Orders] ✅ 事件绑定完成');
     }
 
     /**
-     * 渲染订单看板
+     * 渲染看板
      */
-    function render() {
-        console.log('[Orders] 📊 渲染订单看板...');
-
+    function renderKanban() {
         try {
-            // 获取看板容器
-            const kanbanContainer = document.getElementById('orders-kanban');
-            if (!kanbanContainer) {
-                console.error('[Orders] ❌ 未找到看板容器');
-                return;
-            }
-
-            // 清空容器
-            kanbanContainer.innerHTML = '';
-
-            // 过滤和排序订单
-            const filteredOrders = filterAndSortOrders();
-
-            // 创建看板列
-            CONFIG.KANBAN_STAGES.forEach(stage => {
-                const stageOrders = filteredOrders.filter(order => order.kanbanStatus === stage);
-                const stageColumn = createStageColumn(stage, stageOrders);
-                kanbanContainer.appendChild(stageColumn);
+            // 按状态分组订单
+            const groupedOrders = {};
+            Object.values(KANBAN_STATUS).forEach(status => {
+                groupedOrders[status] = state.orders.filter(order => order.kanbanStatus === status);
             });
 
-            // 更新统计信息
-            updateOrderStats(filteredOrders);
+            // 渲染各个列
+            Object.entries(groupedOrders).forEach(([status, orders]) => {
+                renderKanbanColumn(status, orders);
+            });
 
-            console.log(`[Orders] ✅ 渲染完成，显示 ${filteredOrders.length} 个订单`);
+            console.log('[Orders] 看板渲染完成');
         } catch (error) {
-            console.error('[Orders] ❌ 渲染失败:', error);
-            showError('订单看板渲染失败');
+            console.error('[Orders] 渲染看板失败:', error);
         }
     }
 
     /**
-     * 过滤和排序订单
-     * @returns {Array} 处理后的订单数组
+     * 渲染看板列
+     * @param {string} status - 状态
+     * @param {Array} orders - 订单列表
      */
-    function filterAndSortOrders() {
-        let result = [...state.orders];
+    function renderKanbanColumn(status, orders) {
+        const columnId = `kanban-column-${status.toLowerCase()}`;
+        const column = document.getElementById(columnId);
 
-        // 状态过滤
-        if (state.filterStatus !== 'all') {
-            result = result.filter(order => order.kanbanStatus === state.filterStatus);
-        }
-
-        // 搜索过滤
-        if (state.searchQuery) {
-            const query = state.searchQuery.toLowerCase();
-            result = result.filter(order => 
-                order.customer.toLowerCase().includes(query) ||
-                order.product.toLowerCase().includes(query) ||
-                order.notes.toLowerCase().includes(query) ||
-                order.id.toLowerCase().includes(query)
-            );
-        }
-
-        // 排序
-        result.sort((a, b) => {
-            if (state.sortBy === 'amount') {
-                return state.sortDirection === 'asc' 
-                    ? a.totalAmount - b.totalAmount 
-                    : b.totalAmount - a.totalAmount;
-            } else {
-                return state.sortDirection === 'asc' 
-                    ? new Date(a[state.sortBy]) - new Date(b[state.sortBy]) 
-                    : new Date(b[state.sortBy]) - new Date(a[state.sortBy]);
-            }
-        });
-
-        return result;
-    }
-
-    /**
-     * 创建看板列
-     * @param {string} stage - 阶段名称
-     * @param {Array} orders - 该阶段的订单
-     * @returns {HTMLElement} 看板列元素
-     */
-    function createStageColumn(stage, orders) {
-        const column = document.createElement('div');
-        column.className = 'kanban-column bg-gray-800 border border-gray-700 rounded-lg p-4 flex-1 min-w-[300px] max-w-[400px]';
-        
-        // 阶段标题
-        const header = document.createElement('div');
-        header.className = 'flex justify-between items-center mb-4 pb-2 border-b border-gray-700';
-        
-        const title = document.createElement('h3');
-        title.className = 'text-lg font-bold text-white';
-        title.textContent = `${getStageDisplayName(stage)} (${orders.length})`;
-        
-        const countBadge = document.createElement('span');
-        countBadge.className = `px-2 py-1 rounded-full text-xs font-bold ${getStageBadgeClass(stage)}`;
-        countBadge.textContent = orders.length;
-        
-        header.appendChild(title);
-        header.appendChild(countBadge);
-        column.appendChild(header);
-        
-        // 订单列表
-        const orderList = document.createElement('div');
-        orderList.className = 'space-y-3 min-h-[500px]';
-        
-        if (orders.length === 0) {
-            const emptyState = document.createElement('div');
-            emptyState.className = 'text-center py-8 text-gray-500';
-            emptyState.innerHTML = `
-                <div class="text-4xl mb-2">📭</div>
-                <div class="text-sm">暂无订单</div>
-            `;
-            orderList.appendChild(emptyState);
-        } else {
-            orders.forEach(order => {
-                const orderCard = createOrderCard(order);
-                orderList.appendChild(orderCard);
-            });
-        }
-        
-        column.appendChild(orderList);
-        
-        return column;
-    }
-
-    /**
-     * 创建订单卡片
-     * @param {Object} order - 订单数据
-     * @returns {HTMLElement} 订单卡片元素
-     */
-    function createOrderCard(order) {
-        const card = document.createElement('div');
-        card.className = 'order-card bg-dark border border-gray-700 rounded-lg p-4 shadow-md hover:shadow-lg transition-all cursor-move';
-        card.dataset.orderId = order.id;
-        
-        // 订单信息
-        const infoDiv = document.createElement('div');
-        infoDiv.className = 'mb-3';
-        
-        const idSpan = document.createElement('span');
-        idSpan.className = 'text-xs text-gray-400 block mb-1';
-        idSpan.textContent = `订单 #${order.id}`;
-        
-        const customerDiv = document.createElement('div');
-        customerDiv.className = 'font-bold text-white mb-1';
-        customerDiv.textContent = order.customer || '未知客户';
-        
-        const productDiv = document.createElement('div');
-        productDiv.className = 'text-sm text-gray-300 mb-2';
-        productDiv.textContent = order.product || '未指定产品';
-        
-        infoDiv.appendChild(idSpan);
-        infoDiv.appendChild(customerDiv);
-        infoDiv.appendChild(productDiv);
-        
-        // 金额信息
-        const amountDiv = document.createElement('div');
-        amountDiv.className = 'flex justify-between items-center mb-3 pb-3 border-b border-gray-700';
-        
-        const totalAmount = document.createElement('div');
-        totalAmount.className = 'text-lg font-bold text-white';
-        totalAmount.textContent = `¥${window.WorkbenchUtils?.formatNumber(order.totalAmount) || order.totalAmount}`;
-        
-        const quantity = document.createElement('span');
-        quantity.className = 'text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded';
-        quantity.textContent = `×${order.quantity}`;
-        
-        amountDiv.appendChild(totalAmount);
-        amountDiv.appendChild(quantity);
-        
-        // 操作按钮
-        const actionsDiv = document.createElement('div');
-        actionsDiv.className = 'flex justify-between items-center';
-        
-        const moveBtn = document.createElement('button');
-        moveBtn.className = 'text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded transition-colors';
-        moveBtn.textContent = '移至下一步';
-        moveBtn.addEventListener('click', () => moveOrderToNextStage(order.id));
-        
-        // 禁用最后阶段的移动按钮
-        const currentIndex = CONFIG.KANBAN_STAGES.indexOf(order.kanbanStatus);
-        if (currentIndex >= CONFIG.KANBAN_STAGES.length - 1) {
-            moveBtn.disabled = true;
-            moveBtn.className = 'text-xs bg-gray-600 text-gray-400 px-3 py-1 rounded cursor-not-allowed';
-            moveBtn.textContent = '已完成';
-        }
-        
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition-colors';
-        deleteBtn.textContent = '删除';
-        deleteBtn.addEventListener('click', () => deleteOrder(order.id));
-        
-        actionsDiv.appendChild(moveBtn);
-        actionsDiv.appendChild(deleteBtn);
-        
-        // 组装卡片
-        card.appendChild(infoDiv);
-        card.appendChild(amountDiv);
-        card.appendChild(actionsDiv);
-        
-        // 添加拖放功能
-        setupDragAndDrop(card);
-        
-        return card;
-    }
-
-    /**
-     * 设置拖放功能
-     * @param {HTMLElement} card - 订单卡片元素
-     */
-    function setupDragAndDrop(card) {
-        card.draggable = true;
-        
-        card.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', card.dataset.orderId);
-            card.classList.add('opacity-50');
-        });
-        
-        card.addEventListener('dragend', () => {
-            card.classList.remove('opacity-50');
-        });
-        
-        // 为列添加拖放区域
-        const columns = document.querySelectorAll('.kanban-column');
-        columns.forEach(column => {
-            column.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                column.classList.add('bg-gray-700');
-            });
-            
-            column.addEventListener('dragleave', () => {
-                column.classList.remove('bg-gray-700');
-            });
-            
-            column.addEventListener('drop', (e) => {
-                e.preventDefault();
-                column.classList.remove('bg-gray-700');
-                
-                const orderId = e.dataTransfer.getData('text/plain');
-                const stage = column.querySelector('h3').textContent.split(' ')[0];
-                
-                if (orderId && stage) {
-                    moveOrderToStage(orderId, stage);
-                }
-            });
-        });
-    }
-
-    /**
-     * 移动订单到下一阶段
-     * @param {string} orderId - 订单ID
-     */
-    async function moveOrderToNextStage(orderId) {
-        if (state.isProcessing) return;
-        
-        try {
-            state.isProcessing = true;
-            
-            const order = state.orders.find(o => o.id === orderId);
-            if (!order) {
-                throw new Error('未找到订单');
-            }
-            
-            const currentIndex = CONFIG.KANBAN_STAGES.indexOf(order.kanbanStatus);
-            if (currentIndex >= CONFIG.KANBAN_STAGES.length - 1) {
-                showInfo('已经是最终阶段（已付款）');
-                return;
-            }
-            
-            const nextStage = CONFIG.KANBAN_STAGES[currentIndex + 1];
-            await updateOrderStage(orderId, nextStage);
-            
-            // 现金流检查
-            if (nextStage === 'Paid' && window.WorkbenchDashboard && typeof window.WorkbenchDashboard.checkCashRedLine === 'function') {
-                window.WorkbenchDashboard.checkCashRedLine();
-            }
-            
-            showSuccess(`订单已移至: ${getStageDisplayName(nextStage)}`);
-        } catch (error) {
-            console.error('[Orders] ❌ 移动订单失败:', error);
-            showError(`操作失败: ${error.message}`);
-        } finally {
-            state.isProcessing = false;
-        }
-    }
-
-    /**
-     * 移动订单到指定阶段
-     * @param {string} orderId - 订单ID
-     * @param {string} stage - 目标阶段
-     */
-    async function moveOrderToStage(orderId, stage) {
-        if (state.isProcessing || !CONFIG.KANBAN_STAGES.includes(stage)) return;
-        
-        try {
-            state.isProcessing = true;
-            
-            await updateOrderStage(orderId, stage);
-            showSuccess(`订单已移至: ${getStageDisplayName(stage)}`);
-        } catch (error) {
-            console.error('[Orders] ❌ 移动订单失败:', error);
-            showError(`操作失败: ${error.message}`);
-        } finally {
-            state.isProcessing = false;
-        }
-    }
-
-    /**
-     * 更新订单阶段
-     * @param {string} orderId - 订单ID
-     * @param {string} stage - 目标阶段
-     */
-    async function updateOrderStage(orderId, stage) {
-        const order = state.orders.find(o => o.id === orderId);
-        if (!order) {
-            throw new Error('未找到订单');
-        }
-        
-        // 更新订单状态
-        order.kanbanStatus = stage;
-        order.status = stage;
-        order.updatedAt = new Date().toISOString();
-        
-        // 设置阶段日期
-        if (stage === 'Shipped' && !order.shippedDate) {
-            order.shippedDate = new Date().toISOString();
-        } else if (stage === 'Paid' && !order.paidDate) {
-            order.paidDate = new Date().toISOString();
-        }
-        
-        // 保存更新
-        await saveOrdersData();
-        
-        // 重新渲染
-        render();
-    }
-
-    /**
-     * 删除订单
-     * @param {string} orderId - 订单ID
-     */
-    async function deleteOrder(orderId) {
-        if (state.isProcessing) return;
-        
-        // 安全确认
-        if (!confirm('⚠️ 警告！\n\n确定删除此订单吗？\n此操作不可撤销！')) {
+        if (!column) {
+            console.warn(`[Orders] 看板列未找到: ${columnId}`);
             return;
         }
-        
-        try {
-            state.isProcessing = true;
-            
-            const initialCount = state.orders.length;
-            state.orders = state.orders.filter(o => o.id !== orderId);
-            
-            if (state.orders.length === initialCount) {
-                throw new Error('订单删除失败，未找到对应订单');
-            }
-            
-            // 保存更新
-            await saveOrdersData();
-            
-            // 重新渲染
-            render();
-            
-            showSuccess('🗑️ 订单已成功删除');
-        } catch (error) {
-            console.error('[Orders] ❌ 删除订单失败:', error);
-            showError(`删除失败: ${error.message}`);
-        } finally {
-            state.isProcessing = false;
-        }
+
+        // 生成订单卡片HTML
+        const cardsHtml = orders.map(order => generateOrderCard(order)).join('');
+
+        // 更新列内容
+        const cardsContainer = column.querySelector('.kanban-cards') || column;
+        cardsContainer.innerHTML = cardsHtml || '<div class="text-gray-500 text-center py-8 text-sm">暂无订单</div>';
     }
 
     /**
-     * 添加新订单
-     * @param {Object} orderData - 订单数据
-     * @returns {Promise<Object>} 添加的订单
+     * 生成订单卡片HTML
+     * @param {Object} order - 订单数据
+     * @returns {string} HTML字符串
      */
-    async function addOrder(orderData) {
-        if (state.isProcessing) return null;
-        
-        try {
-            state.isProcessing = true;
-            
-            // 验证订单数据
-            validateOrderData(orderData);
-            
-            // 创建新订单
-            const newOrder = normalizeOrderData({
-                ...orderData,
-                id: generateOrderId(),
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
-            });
-            
-            // 添加到订单列表
-            state.orders.unshift(newOrder);
-            
-            // 保存数据
-            await saveOrdersData();
-            
-            // 重新渲染
-            render();
-            
-            showSuccess(`✅ 订单 #${newOrder.id} 已创建`);
-            
-            return newOrder;
-        } catch (error) {
-            console.error('[Orders] ❌ 添加订单失败:', error);
-            showError(`创建失败: ${error.message}`);
-            return null;
-        } finally {
-            state.isProcessing = false;
-        }
-    }
+    function generateOrderCard(order) {
+        const statusColor = STATUS_COLORS[order.kanbanStatus] || 'bg-gray-600';
+        const amount = parseFloat(order.amount) || 0;
+        const currency = order.currency || 'USD';
 
-    /**
-     * 更新订单
-     * @param {string} orderId - 订单ID
-     * @param {Object} updates - 更新数据
-     * @returns {Promise<Object|null>} 更新后的订单
-     */
-    async function updateOrder(orderId, updates) {
-        if (state.isProcessing) return null;
-        
-        try {
-            state.isProcessing = true;
-            
-            const order = state.orders.find(o => o.id === orderId);
-            if (!order) {
-                throw new Error('未找到订单');
-            }
-            
-            // 更新订单数据
-            const updatedOrder = normalizeOrderData({
-                ...order,
-                ...updates,
-                updatedAt: new Date().toISOString()
-            });
-            
-            // 替换订单
-            const index = state.orders.findIndex(o => o.id === orderId);
-            state.orders[index] = updatedOrder;
-            
-            // 保存数据
-            await saveOrdersData();
-            
-            // 重新渲染
-            render();
-            
-            showSuccess(`✅ 订单 #${orderId} 已更新`);
-            
-            return updatedOrder;
-        } catch (error) {
-            console.error('[Orders] ❌ 更新订单失败:', error);
-            showError(`更新失败: ${error.message}`);
-            return null;
-        } finally {
-            state.isProcessing = false;
-        }
-    }
-
-    /**
-     * 验证订单数据
-     * @param {Object} orderData - 订单数据
-     * @throws {Error} 验证失败时抛出错误
-     */
-    function validateOrderData(orderData) {
-        if (!orderData.customer || orderData.customer.trim() === '') {
-            throw new Error('客户名称不能为空');
-        }
-        
-        if (!orderData.product || orderData.product.trim() === '') {
-            throw new Error('产品名称不能为空');
-        }
-        
-        if (!orderData.amount || orderData.amount <= 0) {
-            throw new Error('订单金额必须大于0');
-        }
-        
-        if (!orderData.quantity || orderData.quantity <= 0) {
-            throw new Error('数量必须大于0');
-        }
-    }
-
-    /**
-     * 生成订单ID
-     * @returns {string} 唯一订单ID
-     */
-    function generateOrderId() {
-        const date = new Date();
-        const year = date.getFullYear().toString().substr(2, 2);
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-        
-        return `ORD${year}${month}${day}${random}`;
+        return `
+            <div class="bg-gray-800 rounded-lg p-4 mb-3 border-l-4 ${statusColor} cursor-pointer hover:bg-gray-750 transition-colors"
+                 data-order-id="${order.id}"
+                 onclick="WorkbenchOrders.openOrderDetail('${order.id}')">
+                <div class="flex justify-between items-start mb-2">
+                    <h4 class="font-medium text-white truncate flex-1">${escapeHtml(order.customerName || '未命名客户')}</h4>
+                    <span class="text-xs ${statusColor} text-white px-2 py-1 rounded ml-2">${order.kanbanStatus}</span>
+                </div>
+                <p class="text-sm text-gray-400 mb-2">订单号: ${order.orderNumber || order.id}</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-green-400 font-bold">${currency} ${amount.toFixed(2)}</span>
+                    <span class="text-xs text-gray-500">${formatDate(order.createTime)}</span>
+                </div>
+            </div>
+        `;
     }
 
     /**
      * 打开快速添加模态框
      */
     function openQuickAddModal() {
-        // 实现快速添加模态框逻辑
-        showInfo("✨ 快速添加功能开发中，敬请期待");
+        try {
+            // 创建模态框
+            const modal = createModal({
+                title: '快速添加订单',
+                content: generateQuickAddForm(),
+                buttons: [
+                    {
+                        text: '取消',
+                        className: 'bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded',
+                        onClick: () => closeModal()
+                    },
+                    {
+                        text: '保存',
+                        className: 'bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded',
+                        onClick: () => handleQuickAdd()
+                    }
+                ]
+            });
+
+            state.modalElement = modal;
+            console.log('[Orders] 快速添加模态框已打开');
+        } catch (error) {
+            console.error('[Orders] 打开快速添加模态框失败:', error);
+            if (window.WorkbenchUtils) {
+                WorkbenchUtils.toast('打开添加订单窗口失败', 'error');
+            }
+        }
     }
 
     /**
-     * 处理表单提交
-     * @param {Event} e - 事件对象
+     * 生成快速添加表单HTML
+     * @returns {string} HTML字符串
      */
-    function handleFormSubmit(e) {
-        e.preventDefault();
-        
-        const form = e.target;
-        const formData = new FormData(form);
-        
-        const orderData = {
-            customer: formData.get('customer'),
-            product: formData.get('product'),
-            amount: parseFloat(formData.get('amount')),
-            quantity: parseInt(formData.get('quantity')),
-            notes: formData.get('notes')
-        };
-        
-        addOrder(orderData);
-        form.reset();
-    }
-
-    /**
-     * 更新订单统计信息
-     * @param {Array} orders - 订单数组
-     */
-    function updateOrderStats(orders) {
-        const stats = calculateOrderStats(orders);
-        
-        // 更新统计面板
-        const statsElement = document.getElementById('order-stats');
-        if (statsElement) {
-            statsElement.innerHTML = `
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="bg-gray-800 border border-gray-700 rounded-lg p-4">
-                        <div class="text-sm text-gray-400 mb-1">总订单数</div>
-                        <div class="text-2xl font-bold text-white">${stats.totalOrders}</div>
+    function generateQuickAddForm() {
+        return `
+            <form id="quick-add-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">客户名称 *</label>
+                    <input type="text" id="order-customer-name" required
+                           class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           placeholder="请输入客户名称">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">订单号</label>
+                    <input type="text" id="order-number"
+                           class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           placeholder="自动生成或手动输入">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">金额 *</label>
+                        <input type="number" id="order-amount" required step="0.01" min="0"
+                               class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="0.00">
                     </div>
-                    <div class="bg-gray-800 border border-gray-700 rounded-lg p-4">
-                        <div class="text-sm text-gray-400 mb-1">总金额</div>
-                        <div class="text-2xl font-bold text-white">¥${window.WorkbenchUtils?.formatNumber(stats.totalAmount) || stats.totalAmount}</div>
-                    </div>
-                    <div class="bg-gray-800 border border-gray-700 rounded-lg p-4">
-                        <div class="text-sm text-gray-400 mb-1">已付款</div>
-                        <div class="text-2xl font-bold text-green-400">${stats.paidPercentage}%</div>
-                    </div>
-                    <div class="bg-gray-800 border border-gray-700 rounded-lg p-4">
-                        <div class="text-sm text-gray-400 mb-1">平均金额</div>
-                        <div class="text-2xl font-bold text-white">¥${window.WorkbenchUtils?.formatNumber(stats.averageAmount) || stats.averageAmount}</div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">货币</label>
+                        <select id="order-currency"
+                                class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="USD">USD 美元</option>
+                            <option value="EUR">EUR 欧元</option>
+                            <option value="GBP">GBP 英镑</option>
+                            <option value="CNY">CNY 人民币</option>
+                        </select>
                     </div>
                 </div>
-            `;
-        }
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">状态</label>
+                    <select id="order-status"
+                            class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="${KANBAN_STATUS.NEW}">新订单</option>
+                        <option value="${KANBAN_STATUS.PROCESSING}">处理中</option>
+                        <option value="${KANBAN_STATUS.PAID}">已付款</option>
+                        <option value="${KANBAN_STATUS.SHIPPED}">已发货</option>
+                        <option value="${KANBAN_STATUS.COMPLETED}">已完成</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">备注</label>
+                    <textarea id="order-remark" rows="3"
+                              class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              placeholder="订单备注信息（可选）"></textarea>
+                </div>
+            </form>
+        `;
     }
 
     /**
-     * 计算订单统计
-     * @param {Array} orders - 订单数组
-     * @returns {Object} 统计数据
+     * 处理快速添加提交
      */
-    function calculateOrderStats(orders) {
-        const totalOrders = orders.length;
-        const totalAmount = orders.reduce((sum, order) => sum + order.totalAmount, 0);
-        const paidOrders = orders.filter(order => order.kanbanStatus === 'Paid').length;
-        const paidPercentage = totalOrders > 0 ? Math.round((paidOrders / totalOrders) * 100) : 0;
-        const averageAmount = totalOrders > 0 ? totalAmount / totalOrders : 0;
-        
-        return {
-            totalOrders,
-            totalAmount: parseFloat(totalAmount.toFixed(CONFIG.DECIMAL_PRECISION)),
-            paidOrders,
-            paidPercentage,
-            averageAmount: parseFloat(averageAmount.toFixed(CONFIG.DECIMAL_PRECISION))
-        };
-    }
-
-    /**
-     * 获取阶段显示名称
-     * @param {string} stage - 阶段名称
-     * @returns {string} 显示名称
-     */
-    function getStageDisplayName(stage) {
-        const stageNames = {
-            'New': '新订单',
-            'Processing': '处理中',
-            'Shipped': '已发货',
-            'Paid': '已付款'
-        };
-        return stageNames[stage] || stage;
-    }
-
-    /**
-     * 获取阶段徽章样式
-     * @param {string} stage - 阶段名称
-     * @returns {string} CSS类名
-     */
-    function getStageBadgeClass(stage) {
-        const badgeClasses = {
-            'New': 'bg-blue-600',
-            'Processing': 'bg-yellow-600',
-            'Shipped': 'bg-purple-600',
-            'Paid': 'bg-green-600'
-        };
-        return badgeClasses[stage] || 'bg-gray-600';
-    }
-
-    /**
-     * 防抖函数
-     * @param {Function} func - 函数
-     * @param {number} wait - 等待时间
-     * @returns {Function} 防抖函数
-     */
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
+    function handleQuickAdd() {
+        try {
+            // 获取表单数据
+            const formData = {
+                customerName: document.getElementById('order-customer-name')?.value?.trim(),
+                orderNumber: document.getElementById('order-number')?.value?.trim(),
+                amount: parseFloat(document.getElementById('order-amount')?.value) || 0,
+                currency: document.getElementById('order-currency')?.value || 'USD',
+                kanbanStatus: document.getElementById('order-status')?.value || KANBAN_STATUS.NEW,
+                remark: document.getElementById('order-remark')?.value?.trim() || ''
             };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
 
-    /**
-     * 显示成功消息
-     * @param {string} message - 消息内容
-     */
-    function showSuccess(message) {
-        if (window.WorkbenchUtils && typeof window.WorkbenchUtils.toast === 'function') {
-            window.WorkbenchUtils.toast(message, 'success');
-        } else {
-            alert(message);
+            // 验证必填项
+            if (!formData.customerName) {
+                if (window.WorkbenchUtils) {
+                    WorkbenchUtils.toast('请输入客户名称', 'warning');
+                }
+                return;
+            }
+
+            if (formData.amount <= 0) {
+                if (window.WorkbenchUtils) {
+                    WorkbenchUtils.toast('请输入有效的订单金额', 'warning');
+                }
+                return;
+            }
+
+            // 生成订单ID和订单号
+            const orderId = `order_${Date.now()}`;
+            const orderNumber = formData.orderNumber || `ORD-${Date.now().toString().slice(-8)}`;
+
+            // 创建订单对象
+            const newOrder = {
+                id: orderId,
+                orderNumber: orderNumber,
+                customerName: formData.customerName,
+                amount: formData.amount,
+                currency: formData.currency,
+                kanbanStatus: formData.kanbanStatus,
+                remark: formData.remark,
+                createTime: new Date().toISOString(),
+                updateTime: new Date().toISOString()
+            };
+
+            // 添加到订单列表
+            state.orders.push(newOrder);
+
+            // 保存数据
+            saveOrders();
+
+            // 刷新看板
+            renderKanban();
+
+            // 关闭模态框
+            closeModal();
+
+            // 成功提示
+            if (window.WorkbenchUtils) {
+                WorkbenchUtils.toast('订单添加成功', 'success');
+            }
+
+            console.log('[Orders] 订单添加成功:', newOrder);
+        } catch (error) {
+            console.error('[Orders] 添加订单失败:', error);
+            if (window.WorkbenchUtils) {
+                WorkbenchUtils.toast('添加订单失败，请重试', 'error');
+            }
         }
     }
 
     /**
-     * 显示错误消息
-     * @param {string} message - 消息内容
+     * 打开订单详情
+     * @param {string} orderId - 订单ID
      */
-    function showError(message) {
-        if (window.WorkbenchUtils && typeof window.WorkbenchUtils.toast === 'function') {
-            window.WorkbenchUtils.toast(message, 'error');
-        } else {
-            alert(`错误: ${message}`);
+    function openOrderDetail(orderId) {
+        try {
+            const order = state.orders.find(o => o.id === orderId);
+            if (!order) {
+                console.warn('[Orders] 订单不存在:', orderId);
+                return;
+            }
+
+            state.currentEditingOrder = order;
+
+            // TODO: 实现订单详情模态框
+            console.log('[Orders] 打开订单详情:', order);
+            if (window.WorkbenchUtils) {
+                WorkbenchUtils.toast('订单详情功能开发中', 'info');
+            }
+        } catch (error) {
+            console.error('[Orders] 打开订单详情失败:', error);
         }
     }
 
     /**
-     * 显示信息消息
-     * @param {string} message - 消息内容
+     * 创建模态框
+     * @param {Object} options - 模态框选项
+     * @returns {HTMLElement} 模态框元素
      */
-    function showInfo(message) {
-        if (window.WorkbenchUtils && typeof window.WorkbenchUtils.toast === 'function') {
-            window.WorkbenchUtils.toast(message, 'info');
-        } else {
-            alert(message);
+    function createModal(options) {
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999] animate-fade-in';
+        
+        modal.innerHTML = `
+            <div class="bg-gray-900 rounded-lg shadow-xl w-full max-w-lg mx-4 p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-white">${options.title || '订单操作'}</h3>
+                    <button class="text-gray-400 hover:text-white text-2xl leading-none" onclick="WorkbenchOrders.closeModal()">&times;</button>
+                </div>
+                <div class="modal-content">
+                    ${options.content || ''}
+                </div>
+                <div class="flex justify-end gap-3 mt-6">
+                    ${options.buttons?.map(btn => `
+                        <button class="${btn.className}" onclick="${btn.onClick ? 'this.handleClick()' : ''}">${btn.text}</button>
+                    `).join('') || ''}
+                </div>
+            </div>
+        `;
+
+        // 绑定按钮事件
+        if (options.buttons) {
+            const buttons = modal.querySelectorAll('button');
+            buttons.forEach((btn, index) => {
+                const btnConfig = options.buttons[index];
+                if (btnConfig && btnConfig.onClick) {
+                    btn.addEventListener('click', btnConfig.onClick);
+                }
+            });
         }
+
+        // 点击背景关闭
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.body.appendChild(modal);
+        return modal;
+    }
+
+    /**
+     * 关闭模态框
+     */
+    function closeModal() {
+        if (state.modalElement) {
+            state.modalElement.remove();
+            state.modalElement = null;
+        }
+    }
+
+    /**
+     * HTML转义
+     * @param {string} str - 字符串
+     * @returns {string} 转义后的字符串
+     */
+    function escapeHtml(str) {
+        if (!str) return '';
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    /**
+     * 格式化日期
+     * @param {string} dateStr - 日期字符串
+     * @returns {string} 格式化后的日期
+     */
+    function formatDate(dateStr) {
+        if (!dateStr) return '未知';
+        try {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('zh-CN');
+        } catch {
+            return '未知';
+        }
+    }
+
+    /**
+     * 获取所有订单
+     * @returns {Array} 订单列表
+     */
+    function getAllOrders() {
+        return [...state.orders];
+    }
+
+    /**
+     * 按状态获取订单
+     * @param {string} status - 状态
+     * @returns {Array} 订单列表
+     */
+    function getOrdersByStatus(status) {
+        return state.orders.filter(order => order.kanbanStatus === status);
     }
 
     // 公共API
@@ -860,45 +482,35 @@ const WorkbenchOrders = (() => {
         // 初始化
         init,
         
-        // 订单管理
-        addOrder,
-        updateOrder,
-        deleteOrder,
-        moveOrderToNextStage,
-        moveOrderToStage,
-        
-        // 数据操作
-        getOrders: () => [...state.orders],
-        getOrderById: (id) => state.orders.find(o => o.id === id) || null,
-        calculateOrderStats,
-        
-        // UI操作
-        render,
+        // 订单操作
         openQuickAddModal,
+        openOrderDetail,
+        getAllOrders,
+        getOrdersByStatus,
         
-        // 状态管理
-        getStatus: () => ({
-            orderCount: state.orders.length,
-            isInitialized: state.isInitialized,
-            isProcessing: state.isProcessing
-        }),
+        // 看板操作
+        renderKanban,
+        
+        // 模态框操作
+        closeModal,
         
         // 常量
-        CONFIG
+        KANBAN_STATUS,
+        STATUS_COLORS
     };
-
-    // 自动初始化
-    document.addEventListener('DOMContentLoaded', async () => {
-        window.WorkbenchOrders = api;
-        await api.init();
-        console.log('✅ [Orders] V14.2 PRO 模块已加载并初始化');
-    });
 
     return api;
 })();
 
-// 兼容旧版API
+// 挂载到全局
 window.WorkbenchOrders = WorkbenchOrders;
+
+// 自动初始化
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.WorkbenchOrders) {
+        WorkbenchOrders.init();
+    }
+});
 
 // 模块导出（支持CommonJS和ES模块）
 if (typeof module !== 'undefined' && module.exports) {
