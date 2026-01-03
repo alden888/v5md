@@ -94,69 +94,7 @@
 <!-- ========================================= -->
 <main class="pb-8 px-4 sm:px-6" style="padding-top: calc(70px + 130px + 55px);">
     <div class="max-w-7xl mx-auto">
-        
-        <!-- ========== Dashboard Tab ========== -->
-        <div id="tab-dashboard" class="tab-content">
-            <!-- 财务指标 -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <div class="cash-metric">
-                    <div class="cash-metric-label">总营收</div>
-                    <div id="dashboard-revenue" class="cash-metric-value text-green-400">¥0</div>
-                </div>
-                <div class="cash-metric">
-                    <div class="cash-metric-label">总成本</div>
-                    <div id="dashboard-cost" class="cash-metric-value text-red-400">¥0</div>
-                </div>
-                <div class="cash-metric">
-                    <div class="cash-metric-label">毛利润</div>
-                    <div id="dashboard-gross" class="cash-metric-value text-blue-400">¥0</div>
-                </div>
-                <div class="cash-metric">
-                    <div class="cash-metric-label">净利润</div>
-                    <div id="dashboard-net" class="cash-metric-value text-yellow-400">¥0</div>
-                </div>
-            </div>
-            
-            <!-- 最后回款 + 时钟 + 进度 -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <!-- 最后回款 -->
-                <div id="last-income-card" class="bg-gray-900 p-6 rounded-xl border-2 border-gray-700">
-                    <h3 class="font-bold text-lg mb-4 text-green-400">📊 最后回款</h3>
-                    <div id="lastIncomeInfo" class="text-sm text-gray-400 mb-2">暂无数据</div>
-                    <div class="flex items-end gap-2">
-                        <div id="hoursSinceIncome" class="text-4xl font-black text-green-400">--</div>
-                        <div class="text-sm text-gray-500 mb-2">小时前</div>
-                    </div>
-                </div>
-                
-                <!-- 本地时间 -->
-                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800">
-                    <h3 class="font-bold text-lg mb-4">🕐 本地时间</h3>
-                    <div id="local-time" class="text-4xl font-mono text-green-400 mb-2">--:--:--</div>
-                    <div id="local-date" class="text-gray-400">----/--/--</div>
-                </div>
-                
-                <!-- 年度进度 -->
-                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800">
-                    <h3 class="font-bold text-lg mb-4">🎯 年度进度</h3>
-                    <div id="dashboard-progress" class="text-4xl font-bold text-blue-400 mb-2">0%</div>
-                    <div class="text-sm text-gray-400">毛利率: <span id="dashboard-margin" class="font-bold">0%</span></div>
-                </div>
-            </div>
-            
-            <!-- 每日鸡血金句 -->
-            <div class="bg-gradient-to-r from-purple-900/50 to-blue-900/50 border border-purple-500/30 p-6 rounded-xl mb-8">
-                <div class="flex items-center gap-3">
-                    <div class="text-4xl">💪</div>
-                    <div>
-                        <div class="text-xs text-purple-300 uppercase tracking-wider font-bold mb-1">Daily Motivation</div>
-                        <div id="daily-quote" class="text-lg font-bold text-white">Loading...</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 🔥 NEW: 全球商机时钟（横向展示） -->
-<div class="bg-gradient-to-r from-indigo-900/50 to-purple-900/50 border-2 border-purple-500/30 rounded-xl p-6 mb-8">
+    <div class="bg-gradient-to-r from-indigo-900/50 to-purple-900/50 border-2 border-purple-500/30 rounded-xl p-6 mb-8">
     <div class="flex items-center gap-3 mb-4">
         <div class="text-3xl">🌍</div>
         <div>
@@ -223,6 +161,66 @@
         </div>
     </div>
 </div>
+        <!-- ========== Dashboard Tab ========== -->
+        <div id="tab-dashboard" class="tab-content">
+            <!-- 财务指标 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="cash-metric">
+                    <div class="cash-metric-label">总营收</div>
+                    <div id="dashboard-revenue" class="cash-metric-value text-green-400">¥0</div>
+                </div>
+                <div class="cash-metric">
+                    <div class="cash-metric-label">总成本</div>
+                    <div id="dashboard-cost" class="cash-metric-value text-red-400">¥0</div>
+                </div>
+                <div class="cash-metric">
+                    <div class="cash-metric-label">毛利润</div>
+                    <div id="dashboard-gross" class="cash-metric-value text-blue-400">¥0</div>
+                </div>
+                <div class="cash-metric">
+                    <div class="cash-metric-label">净利润</div>
+                    <div id="dashboard-net" class="cash-metric-value text-yellow-400">¥0</div>
+                </div>
+            </div>
+            
+            <!-- 最后回款 + 时钟 + 进度 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <!-- 最后回款 -->
+                <div id="last-income-card" class="bg-gray-900 p-6 rounded-xl border-2 border-gray-700">
+                    <h3 class="font-bold text-lg mb-4 text-green-400">📊 最后回款</h3>
+                    <div id="lastIncomeInfo" class="text-sm text-gray-400 mb-2">暂无数据</div>
+                    <div class="flex items-end gap-2">
+                        <div id="hoursSinceIncome" class="text-4xl font-black text-green-400">--</div>
+                        <div class="text-sm text-gray-500 mb-2">小时前</div>
+                    </div>
+                </div>
+                
+                <!-- 本地时间 -->
+                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800">
+                    <h3 class="font-bold text-lg mb-4">🕐 本地时间</h3>
+                    <div id="local-time" class="text-4xl font-mono text-green-400 mb-2">--:--:--</div>
+                    <div id="local-date" class="text-gray-400">----/--/--</div>
+                </div>
+                
+                <!-- 年度进度 -->
+                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800">
+                    <h3 class="font-bold text-lg mb-4">🎯 年度进度</h3>
+                    <div id="dashboard-progress" class="text-4xl font-bold text-blue-400 mb-2">0%</div>
+                    <div class="text-sm text-gray-400">毛利率: <span id="dashboard-margin" class="font-bold">0%</span></div>
+                </div>
+            </div>
+            
+            <!-- 每日鸡血金句 -->
+            <div class="bg-gradient-to-r from-purple-900/50 to-blue-900/50 border border-purple-500/30 p-6 rounded-xl mb-8">
+                <div class="flex items-center gap-3">
+                    <div class="text-4xl">💪</div>
+                    <div>
+                        <div class="text-xs text-purple-300 uppercase tracking-wider font-bold mb-1">Daily Motivation</div>
+                        <div id="daily-quote" class="text-lg font-bold text-white">Loading...</div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- 快捷工具区 -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="quick-tools-section">
                 <div class="bg-gray-900 border border-gray-700 p-6 rounded-xl hover:border-blue-500 transition">
