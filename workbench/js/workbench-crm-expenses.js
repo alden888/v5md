@@ -1,11 +1,11 @@
 /**
- * V14.1 CRM & EXPENSES MODULE (FULLY FUNCTIONAL)
- * 客户档案和运营支出的完整实现
+ * V14.2 PRO - CRM & EXPENSES MODULE (COMPLETELY FIXED)
+ * 修复客户档案和运营支出保存功能
  */
 
 const WorkbenchCRM = {
     /**
-     * 打开客户Modal
+     * 🔥 修复：打开客户Modal
      */
     openCustomerModal() {
         console.log('[CRM] 📝 Opening customer modal...');
@@ -13,14 +13,16 @@ const WorkbenchCRM = {
         const modal = document.getElementById('customer-modal');
         if (!modal) {
             console.error('[CRM] ❌ Modal not found');
-            window.WorkbenchUtils.toast('客户Modal未找到', 'error');
+            window.WorkbenchUtils?.toast('Modal未找到，请检查页面', 'error');
             return;
         }
         
+        // 显示Modal
         modal.classList.add('active');
         
         // 清空表单
-        ['customer-name', 'customer-contact', 'customer-whatsapp', 'customer-address', 'customer-notes'].forEach(id => {
+        const fields = ['customer-name', 'customer-contact', 'customer-whatsapp', 'customer-address', 'customer-notes'];
+        fields.forEach(id => {
             const el = document.getElementById(id);
             if (el) el.value = '';
         });
@@ -38,13 +40,13 @@ const WorkbenchCRM = {
      * 关闭客户Modal
      */
     closeCustomerModal() {
-        console.log('[CRM] Closing customer modal...');
+        console.log('[CRM] Closing modal...');
         const modal = document.getElementById('customer-modal');
         if (modal) modal.classList.remove('active');
     },
     
     /**
-     * 🔥 保存客户档案 (增强版)
+     * 🔥 关键修复：保存客户档案
      */
     async saveCustomer() {
         console.log('[CRM] 💾 Saving customer...');
@@ -55,25 +57,26 @@ const WorkbenchCRM = {
             const Storage = window.WorkbenchStorage;
             const Config = window.WorkbenchConfig;
             
-            if (!Dashboard || !Storage || !Config) {
-                throw new Error('Required modules not loaded');
+            if (!Dashboard || !Storage || !Config || !Utils) {
+                throw new Error('系统模块未加载，请刷新页面');
             }
             
             // 获取表单数据
-            const name = document.getElementById('customer-name')?.value?.trim();
+            const nameEl = document.getElementById('customer-name');
+            const name = nameEl?.value?.trim();
+            
+            if (!name) {
+                Utils.toast('请输入公司名称', 'warning');
+                nameEl?.focus();
+                return;
+            }
+            
             const contact = document.getElementById('customer-contact')?.value?.trim() || '';
             const whatsapp = document.getElementById('customer-whatsapp')?.value?.trim() || '';
             const country = document.getElementById('customer-country')?.value || '';
             const currency = document.getElementById('customer-currency')?.value || 'USD';
             const address = document.getElementById('customer-address')?.value?.trim() || '';
             const notes = document.getElementById('customer-notes')?.value?.trim() || '';
-            
-            // 验证必填项
-            if (!name) {
-                Utils.toast('请输入公司名称', 'warning');
-                document.getElementById('customer-name')?.focus();
-                return;
-            }
             
             // 构建客户对象
             const newCustomer = {
@@ -89,12 +92,12 @@ const WorkbenchCRM = {
                 updatedAt: new Date().toISOString()
             };
             
-            console.log('[CRM] Created customer object:', newCustomer);
+            console.log('[CRM] New customer:', newCustomer);
             
-            // 添加到数据中
+            // 添加到数据
             Dashboard.data.customers.push(newCustomer);
             
-            // 保存到存储
+            // 保存
             await Storage.save(Config.STORAGE_KEYS.CUSTOMERS, Dashboard.data.customers);
             console.log('[CRM] ✅ Saved to storage');
             
@@ -111,7 +114,7 @@ const WorkbenchCRM = {
             
         } catch (error) {
             console.error('[CRM] ❌ Save failed:', error);
-            window.WorkbenchUtils.toast('保存客户失败: ' + error.message, 'error');
+            window.WorkbenchUtils?.toast('保存失败: ' + error.message, 'error');
         }
     },
     
@@ -136,7 +139,7 @@ const WorkbenchCRM = {
         }
 
         container.innerHTML = customers.map(c => `
-            <div class="bg-gray-900 border border-gray-700 p-4 rounded-xl hover:border-green-500 transition relative group">
+            <div class="bg-gray-900 border border-gray-700 p-4 rounded-xl hover:border-green-500 transition">
                 <div class="flex justify-between items-start mb-2">
                     <h3 class="font-bold text-lg text-white">${c.company}</h3>
                     <span class="text-xs bg-gray-800 px-2 py-1 rounded text-slate-300">${c.country || '未设置'}</span>
@@ -164,11 +167,9 @@ const WorkbenchCRM = {
      * 复制发货地址
      */
     copyAddress(id) {
-        console.log('[CRM] 📋 Copying address for:', id);
-        
         const c = window.WorkbenchDashboard?.data?.customers.find(x => x.id === id);
         if (!c) {
-            window.WorkbenchUtils.toast('客户不存在', 'error');
+            window.WorkbenchUtils?.toast('客户不存在', 'error');
             return;
         }
         
@@ -178,19 +179,17 @@ TEL: ${c.whatsapp || '-'}
 ADD: ${c.address || '-'}
 COUNTRY: ${c.country || '-'}`;
         
-        window.WorkbenchUtils.copyToClipboard(text);
+        window.WorkbenchUtils?.copyToClipboard(text);
     },
     
     /**
      * 删除客户
      */
     async deleteCustomer(id) {
-        console.log('[CRM] 🗑️ Deleting customer:', id);
-        
         try {
             const customer = window.WorkbenchDashboard?.data?.customers.find(c => c.id === id);
             if (!customer) {
-                window.WorkbenchUtils.toast('客户不存在', 'error');
+                window.WorkbenchUtils?.toast('客户不存在', 'error');
                 return;
             }
             
@@ -198,44 +197,43 @@ COUNTRY: ${c.country || '-'}`;
                 return;
             }
             
-            // 从数据中移除
             window.WorkbenchDashboard.data.customers = window.WorkbenchDashboard.data.customers.filter(
                 c => c.id !== id
             );
             
-            // 保存
             await window.WorkbenchStorage.save(
                 window.WorkbenchConfig.STORAGE_KEYS.CUSTOMERS,
                 window.WorkbenchDashboard.data.customers
             );
             
             this.render();
-            window.WorkbenchUtils.toast(`✅ 客户 "${customer.company}" 已删除`, 'success');
+            window.WorkbenchUtils?.toast(`✅ 客户 "${customer.company}" 已删除`, 'success');
             
         } catch (error) {
             console.error('[CRM] ❌ Delete failed:', error);
-            window.WorkbenchUtils.toast('删除客户失败: ' + error.message, 'error');
+            window.WorkbenchUtils?.toast('删除失败: ' + error.message, 'error');
         }
     }
 };
 
 const WorkbenchExpenses = {
     /**
-     * 打开支出Modal
+     * 🔥 修复：打开支出Modal
      */
     openAddModal() {
-        console.log('[Expenses] 📝 Opening add expense modal...');
+        console.log('[Expenses] 📝 Opening modal...');
         
         const modal = document.getElementById('expense-modal');
         if (!modal) {
             console.error('[Expenses] ❌ Modal not found');
-            window.WorkbenchUtils.toast('支出Modal未找到', 'error');
+            window.WorkbenchUtils?.toast('Modal未找到，请检查页面', 'error');
             return;
         }
         
+        // 显示Modal
         modal.classList.add('active');
         
-        // 设置默认日期为今天
+        // 设置默认日期
         const dateInput = document.getElementById('expense-date');
         if (dateInput) {
             dateInput.valueAsDate = new Date();
@@ -250,7 +248,6 @@ const WorkbenchExpenses = {
         if (customerInput) customerInput.value = '';
         if (notesInput) notesInput.value = '';
         
-        // 重置类别为默认
         const categoryInput = document.getElementById('expense-category');
         if (categoryInput) categoryInput.value = '房租';
         
@@ -261,13 +258,13 @@ const WorkbenchExpenses = {
      * 关闭支出Modal
      */
     closeExpenseModal() {
-        console.log('[Expenses] Closing expense modal...');
+        console.log('[Expenses] Closing modal...');
         const modal = document.getElementById('expense-modal');
         if (modal) modal.classList.remove('active');
     },
     
     /**
-     * 🔥 保存支出 (增强版)
+     * 🔥 关键修复：保存支出
      */
     async saveExpense() {
         console.log('[Expenses] 💾 Saving expense...');
@@ -278,36 +275,40 @@ const WorkbenchExpenses = {
             const Storage = window.WorkbenchStorage;
             const Config = window.WorkbenchConfig;
             
-            if (!Dashboard || !Storage || !Config) {
-                throw new Error('Required modules not loaded');
+            if (!Dashboard || !Storage || !Config || !Utils) {
+                throw new Error('系统模块未加载，请刷新页面');
             }
             
             // 获取表单数据
-            const date = document.getElementById('expense-date')?.value;
-            const category = document.getElementById('expense-category')?.value || '其他';
-            const amountStr = document.getElementById('expense-amount')?.value;
-            const customer = document.getElementById('expense-customer')?.value?.trim() || '';
-            const notes = document.getElementById('expense-notes')?.value?.trim() || '';
+            const dateEl = document.getElementById('expense-date');
+            const date = dateEl?.value;
             
-            // 验证必填项
             if (!date) {
                 Utils.toast('请选择日期', 'warning');
-                document.getElementById('expense-date')?.focus();
+                dateEl?.focus();
                 return;
             }
             
+            const category = document.getElementById('expense-category')?.value || '其他';
+            
+            const amountEl = document.getElementById('expense-amount');
+            const amountStr = amountEl?.value;
+            
             if (!amountStr) {
                 Utils.toast('请输入金额', 'warning');
-                document.getElementById('expense-amount')?.focus();
+                amountEl?.focus();
                 return;
             }
             
             const amount = parseFloat(amountStr);
             if (isNaN(amount) || amount <= 0) {
                 Utils.toast('请输入有效金额', 'error');
-                document.getElementById('expense-amount')?.focus();
+                amountEl?.focus();
                 return;
             }
+            
+            const customer = document.getElementById('expense-customer')?.value?.trim() || '';
+            const notes = document.getElementById('expense-notes')?.value?.trim() || '';
             
             // 构建支出对象
             const newExpense = {
@@ -321,12 +322,12 @@ const WorkbenchExpenses = {
                 updatedAt: new Date().toISOString()
             };
             
-            console.log('[Expenses] Created expense object:', newExpense);
+            console.log('[Expenses] New expense:', newExpense);
             
-            // 添加到数据中
+            // 添加到数据
             Dashboard.data.expenses.push(newExpense);
             
-            // 保存到存储
+            // 保存
             await Storage.save(Config.STORAGE_KEYS.EXPENSES, Dashboard.data.expenses);
             console.log('[Expenses] ✅ Saved to storage');
             
@@ -346,7 +347,7 @@ const WorkbenchExpenses = {
             
         } catch (error) {
             console.error('[Expenses] ❌ Save failed:', error);
-            window.WorkbenchUtils.toast('保存支出失败: ' + error.message, 'error');
+            window.WorkbenchUtils?.toast('保存失败: ' + error.message, 'error');
         }
     },
     
@@ -354,7 +355,7 @@ const WorkbenchExpenses = {
      * 渲染支出列表
      */
     render() {
-        console.log('[Expenses] 📊 Rendering expenses...');
+        console.log('[Expenses] 📊 Rendering...');
         
         const tbody = document.getElementById('expense-list');
         if (!tbody) {
@@ -370,7 +371,6 @@ const WorkbenchExpenses = {
             return;
         }
         
-        // 按日期倒序排列
         const sortedExpenses = [...expenses].sort((a, b) => new Date(b.date) - new Date(a.date));
         
         tbody.innerHTML = sortedExpenses.map(e => `
@@ -395,25 +395,21 @@ const WorkbenchExpenses = {
      * 删除支出
      */
     async delete(id) {
-        console.log('[Expenses] 🗑️ Deleting expense:', id);
-        
         try {
             const expense = window.WorkbenchDashboard?.data?.expenses.find(e => e.id === id);
             if (!expense) {
-                window.WorkbenchUtils.toast('支出不存在', 'error');
+                window.WorkbenchUtils?.toast('支出不存在', 'error');
                 return;
             }
             
-            if (!confirm(`⚠️ 确定删除此支出记录吗？\n\n金额: ¥${expense.amount}\n类别: ${expense.category}\n\n此操作不可撤销！`)) {
+            if (!confirm(`⚠️ 确定删除此支出吗？\n\n金额: ¥${expense.amount}\n类别: ${expense.category}\n\n此操作不可撤销！`)) {
                 return;
             }
             
-            // 从数据中移除
             window.WorkbenchDashboard.data.expenses = window.WorkbenchDashboard.data.expenses.filter(
                 e => e.id !== id
             );
             
-            // 保存
             await window.WorkbenchStorage.save(
                 window.WorkbenchConfig.STORAGE_KEYS.EXPENSES,
                 window.WorkbenchDashboard.data.expenses
@@ -421,17 +417,17 @@ const WorkbenchExpenses = {
             
             this.render();
             window.WorkbenchDashboard.updateDashboard();
-            window.WorkbenchUtils.toast('✅ 支出已删除', 'success');
+            window.WorkbenchUtils?.toast('✅ 支出已删除', 'success');
             
         } catch (error) {
             console.error('[Expenses] ❌ Delete failed:', error);
-            window.WorkbenchUtils.toast('删除支出失败: ' + error.message, 'error');
+            window.WorkbenchUtils?.toast('删除失败: ' + error.message, 'error');
         }
     }
 };
 
-// 🔥 挂载到全局
+// 🔥 立即挂载到全局
 window.WorkbenchCRM = WorkbenchCRM;
 window.WorkbenchExpenses = WorkbenchExpenses;
-console.log('✅ [CRM] Module loaded and mounted');
-console.log('✅ [Expenses] Module loaded and mounted');
+console.log('✅ [CRM] Module loaded and mounted to window');
+console.log('✅ [Expenses] Module loaded and mounted to window');

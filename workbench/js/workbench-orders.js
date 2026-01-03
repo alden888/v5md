@@ -1,23 +1,30 @@
 /**
- * V14.1 ORDERS MODULE (FULLY FUNCTIONAL & ENHANCED)
- * 修复所有已知问题，提供完整的订单管理功能
+ * V14.2 PRO - ORDERS MODULE (COMPLETELY FIXED)
+ * 修复快速新建订单功能
  */
 const WorkbenchOrders = {
-    currentEditId: null, // 当前编辑的订单ID
+    currentEditId: null,
     
     init() {
-        console.log('[Orders] 🚀 Initializing V14.1 Orders Module...');
-        this.render(); // 初始化渲染
+        console.log('[Orders] 🚀 Initializing Orders Module...');
+        this.render();
         return this;
     },
 
     /**
-     * 🔥 核心渲染方法 - 显示所有订单卡片
+     * 🔥 修复：渲染看板
      */
     render() {
         console.log('[Orders] 📊 Rendering kanban...');
-        const orders = window.WorkbenchDashboard?.data?.orders || [];
-        console.log(`[Orders] Found ${orders.length} orders to render`);
+        
+        const Dashboard = window.WorkbenchDashboard;
+        if (!Dashboard || !Dashboard.data) {
+            console.error('[Orders] Dashboard not ready');
+            return;
+        }
+        
+        const orders = Dashboard.data.orders || [];
+        console.log(`[Orders] Rendering ${orders.length} orders`);
         
         // 定义所有看板列
         const columns = {
@@ -28,15 +35,7 @@ const WorkbenchOrders = {
             'paid': 'Paid'
         };
         
-        // 清空所有列
-        Object.keys(columns).forEach(key => {
-            const el = document.getElementById(`kanban-${key}`);
-            if (el) {
-                el.innerHTML = '';
-            }
-        });
-
-        // 按状态分组订单
+        // 按状态分组
         const grouped = {
             'inquiry': [],
             'pi': [],
@@ -47,16 +46,15 @@ const WorkbenchOrders = {
         
         orders.forEach(order => {
             const status = order.kanbanStatus || order.status || 'New Inquiry';
-            // 映射状态到列
             if (status.includes('Inquiry')) grouped.inquiry.push(order);
             else if (status.includes('PI') || status.includes('Sent')) grouped.pi.push(order);
             else if (status.includes('Production')) grouped.production.push(order);
             else if (status.includes('Shipped')) grouped.shipped.push(order);
             else if (status.includes('Paid')) grouped.paid.push(order);
-            else grouped.inquiry.push(order); // 默认归入inquiry
+            else grouped.inquiry.push(order);
         });
 
-        // 渲染每一列的卡片
+        // 渲染每一列
         Object.keys(grouped).forEach(key => {
             const container = document.getElementById(`kanban-${key}`);
             if (!container) return;
@@ -64,9 +62,7 @@ const WorkbenchOrders = {
             if (grouped[key].length === 0) {
                 container.innerHTML = '<div class="text-gray-600 text-xs text-center py-4">暂无订单</div>';
             } else {
-                grouped[key].forEach(order => {
-                    container.appendChild(this.createCard(order));
-                });
+                container.innerHTML = grouped[key].map(order => this.createCardHTML(order)).join('');
             }
             
             // 更新计数
@@ -78,13 +74,9 @@ const WorkbenchOrders = {
     },
 
     /**
-     * 创建订单卡片
+     * 创建订单卡片HTML
      */
-    createCard(order) {
-        const card = document.createElement('div');
-        card.className = 'bg-gray-800 p-3 rounded border border-gray-700 hover:border-blue-500 cursor-pointer transition';
-        
-        // 计算利润显示
+    createCardHTML(order) {
         let profitDisplay = '';
         if (order.cost > 0 || order.grossProfit) {
             const profit = order.grossProfit || 0;
@@ -97,84 +89,85 @@ const WorkbenchOrders = {
             `;
         }
         
-        card.innerHTML = `
-            <div class="flex justify-between items-start text-xs text-gray-400 mb-1">
-                <span>${order.id || 'NO-ID'}</span>
-                <span class="bg-gray-900 px-2 py-0.5 rounded">${order.currency || 'USD'}</span>
-            </div>
-            <div class="font-bold text-white mb-2">${order.customer || '未知客户'}</div>
-            <div class="text-sm text-right ${order.currency === 'USD' ? 'text-green-400' : 'text-yellow-400'}">
-                ${order.currency === 'USD' ? '$' : '¥'}${(order.total || 0).toLocaleString()}
-            </div>
-            ${profitDisplay}
-            <div class="text-xs text-gray-500 mt-2">
-                ${new Date(order.date).toLocaleDateString()}
+        return `
+            <div class="bg-gray-800 p-3 rounded border border-gray-700 hover:border-blue-500 cursor-pointer transition" onclick="app.kanban.openEditModal('${order.id}')">
+                <div class="flex justify-between items-start text-xs text-gray-400 mb-1">
+                    <span>${order.id || 'NO-ID'}</span>
+                    <span class="bg-gray-900 px-2 py-0.5 rounded">${order.currency || 'USD'}</span>
+                </div>
+                <div class="font-bold text-white mb-2">${order.customer || '未知客户'}</div>
+                <div class="text-sm text-right ${order.currency === 'USD' ? 'text-green-400' : 'text-yellow-400'}">
+                    ${order.currency === 'USD' ? '$' : '¥'}${(order.total || 0).toLocaleString()}
+                </div>
+                ${profitDisplay}
+                <div class="text-xs text-gray-500 mt-2">
+                    ${new Date(order.date).toLocaleDateString()}
+                </div>
             </div>
         `;
-        
-        // 点击编辑
-        card.onclick = () => this.openEditModal(order.id);
-        
-        return card;
     },
 
     /**
-     * 🔥 打开快速添加（使用原生对话框，但增强体验）
+     * 🔥 关键修复：快速添加订单
      */
     openQuickAdd() {
-        console.log('[Orders] 📝 Opening quick add dialog...');
+        console.log('[Orders] 📝 Opening quick add...');
+        
+        const Utils = window.WorkbenchUtils;
+        if (!Utils) {
+            alert('系统模块未加载，请刷新页面');
+            return;
+        }
         
         try {
             // 第1步：客户名称
             const customer = prompt("📋 输入客户名称:", "");
             if (!customer || !customer.trim()) {
-                console.log('[Orders] User cancelled at customer name');
+                console.log('[Orders] User cancelled');
                 return;
             }
             
             // 第2步：金额
             const amountStr = prompt("💰 输入金额 (数字):", "");
-            if (!amountStr) {
-                console.log('[Orders] User cancelled at amount');
-                return;
-            }
+            if (!amountStr) return;
             
             const amount = parseFloat(amountStr);
             if (isNaN(amount) || amount <= 0) {
-                window.WorkbenchUtils.toast('请输入有效金额', 'error');
+                Utils.toast('请输入有效金额', 'error');
                 return;
             }
             
             // 第3步：币种
-            const currency = prompt("💱 币种 (USD/CNY/EUR):", "USD").toUpperCase();
+            let currency = prompt("💱 币种 (USD/CNY/EUR):", "USD");
+            currency = (currency || 'USD').toUpperCase();
             if (!['USD', 'CNY', 'EUR', 'GBP'].includes(currency)) {
-                window.WorkbenchUtils.toast('币种无效，默认使用 USD', 'warning');
+                currency = 'USD';
             }
             
             // 第4步：状态
-            const isPaid = confirm("💵 是否已付款？\n\n点击"确定"表示已付款\n点击"取消"表示新询价");
+            const isPaid = confirm("💵 是否已付款？\n\n点击"确定"=已付款\n点击"取消"=新询价");
             const status = isPaid ? 'Paid' : 'New Inquiry';
             
             // 保存订单
             this.saveNewOrder({
                 customer: customer.trim(),
                 total: amount,
-                currency: ['USD', 'CNY', 'EUR', 'GBP'].includes(currency) ? currency : 'USD',
+                currency: currency,
                 status: status,
                 date: new Date().toISOString()
             });
             
         } catch (error) {
-            console.error('[Orders] Error in openQuickAdd:', error);
-            window.WorkbenchUtils.toast('添加订单失败: ' + error.message, 'error');
+            console.error('[Orders] Error:', error);
+            Utils.toast('添加失败: ' + error.message, 'error');
         }
     },
 
     /**
-     * 🔥 保存新订单
+     * 🔥 关键修复：保存新订单
      */
     async saveNewOrder(orderData) {
-        console.log('[Orders] 💾 Saving new order...', orderData);
+        console.log('[Orders] 💾 Saving order...', orderData);
         
         try {
             const Utils = window.WorkbenchUtils;
@@ -182,8 +175,8 @@ const WorkbenchOrders = {
             const Storage = window.WorkbenchStorage;
             const Config = window.WorkbenchConfig;
             
-            if (!Dashboard || !Storage || !Config) {
-                throw new Error('Required modules not loaded');
+            if (!Dashboard || !Storage || !Config || !Utils) {
+                throw new Error('系统模块未加载');
             }
             
             // 生成订单ID
@@ -209,18 +202,17 @@ const WorkbenchOrders = {
                 updatedAt: new Date().toISOString()
             };
             
-            console.log('[Orders] Created order object:', newOrder);
+            console.log('[Orders] Created order:', newOrder);
             
-            // 添加到数据中
+            // 添加到数据
             Dashboard.data.orders.push(newOrder);
             
-            // 保存到存储
+            // 保存
             await Storage.save(Config.STORAGE_KEYS.ORDERS, Dashboard.data.orders);
             console.log('[Orders] ✅ Saved to storage');
             
-            // 如果是Paid，触发红线检查
+            // 如果是Paid，触发检查
             if (newOrder.status === 'Paid') {
-                console.log('[Orders] Triggering cash red line check...');
                 Dashboard.checkCashRedLine();
             }
             
@@ -234,25 +226,23 @@ const WorkbenchOrders = {
             
         } catch (error) {
             console.error('[Orders] ❌ Save failed:', error);
-            window.WorkbenchUtils.toast('保存订单失败: ' + error.message, 'error');
+            window.WorkbenchUtils?.toast('保存失败: ' + error.message, 'error');
         }
     },
 
     /**
-     * 打开编辑弹窗
+     * 打开编辑Modal
      */
     openEditModal(orderId) {
-        console.log('[Orders] 📝 Opening edit modal for:', orderId);
+        console.log('[Orders] Opening edit for:', orderId);
         
         const order = window.WorkbenchDashboard?.data?.orders.find(o => o.id === orderId);
         if (!order) {
-            window.WorkbenchUtils.toast('订单不存在', 'error');
+            window.WorkbenchUtils?.toast('订单不存在', 'error');
             return;
         }
         
-        // 简化版：使用 alert 显示订单详情
-        const details = `
-订单详情
+        const details = `订单详情
 ━━━━━━━━━━━━━━
 ID: ${order.id}
 客户: ${order.customer}
@@ -261,12 +251,12 @@ ID: ${order.id}
 日期: ${new Date(order.date).toLocaleDateString()}
 ━━━━━━━━━━━━━━
 
-功能：
-1. 移动到下一阶段
-2. 删除订单
-        `.trim();
+操作：
+1 - 移动到下一阶段
+2 - 删除订单
+回车 - 取消`;
         
-        const action = prompt(details + "\n\n输入操作 (1-移动阶段, 2-删除, 回车-取消):");
+        const action = prompt(details);
         
         if (action === '1') {
             this.moveToNextStage(orderId);
@@ -276,7 +266,7 @@ ID: ${order.id}
     },
     
     /**
-     * 移动订单到下一阶段
+     * 移动到下一阶段
      */
     async moveToNextStage(orderId) {
         const order = window.WorkbenchDashboard?.data?.orders.find(o => o.id === orderId);
@@ -286,7 +276,7 @@ ID: ${order.id}
         const currentIndex = stages.indexOf(order.kanbanStatus || order.status);
         
         if (currentIndex >= stages.length - 1) {
-            window.WorkbenchUtils.toast('已经是最终阶段', 'info');
+            window.WorkbenchUtils?.toast('已经是最终阶段', 'info');
             return;
         }
         
@@ -295,7 +285,6 @@ ID: ${order.id}
         order.status = nextStage;
         order.updatedAt = new Date().toISOString();
         
-        // 如果移动到Paid，更新付款日期
         if (nextStage === 'Paid') {
             order.paidDate = new Date().toISOString();
         }
@@ -312,7 +301,7 @@ ID: ${order.id}
             window.WorkbenchDashboard.checkCashRedLine();
         }
         
-        window.WorkbenchUtils.toast(`订单已移至: ${nextStage}`, 'success');
+        window.WorkbenchUtils?.toast(`✅ 已移至: ${nextStage}`, 'success');
     },
     
     /**
@@ -334,32 +323,19 @@ ID: ${order.id}
         
         this.render();
         window.WorkbenchDashboard.updateDashboard();
-        window.WorkbenchUtils.toast('订单已删除', 'success');
+        window.WorkbenchUtils?.toast('✅ 订单已删除', 'success');
     },
 
-    // 🔥 暴露所有必要方法供 HTML 调用
+    // 兼容方法
+    closeQuickAdd() {},
     openFullAddModal() {
-        console.log('[Orders] Full add modal requested');
-        window.WorkbenchUtils.toast("完整订单添加功能开发中，请使用快速添加", 'info');
+        window.WorkbenchUtils?.toast("请使用快速添加功能", 'info');
     },
-    
-    closeQuickAdd() {
-        console.log('[Orders] Close quick add');
-    },
-    
-    closeFullAddModal() {
-        console.log('[Orders] Close full add modal');
-    },
-    
-    saveQuickOrder() {
-        console.log('[Orders] Save quick order');
-    },
-    
-    saveFullOrder() {
-        console.log('[Orders] Save full order');
-    }
+    closeFullAddModal() {},
+    saveQuickOrder() {},
+    saveFullOrder() {}
 };
 
-// 🔥 关键：挂载到 Window
+// 🔥 立即挂载到全局
 window.WorkbenchOrders = WorkbenchOrders;
-console.log('✅ [Orders] Module loaded and mounted');
+console.log('✅ [Orders] Module loaded and mounted to window');
