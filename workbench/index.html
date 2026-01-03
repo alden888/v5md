@@ -180,17 +180,74 @@
                     </div>
                 </div>
                 
-                <div class="bg-gray-900 border border-gray-700 p-6 rounded-xl hover:border-purple-500 transition">
-                    <h3 class="font-bold text-lg mb-4 text-purple-400">🌍 全球时钟</h3>
-                    <div class="space-y-1 text-sm" id="globalClockDisplay">
-                        <div class="flex justify-between"><span>🇨🇳 Beijing</span><span id="time-beijing">--:--</span></div>
-                        <div class="flex justify-between"><span>🇵🇭 Manila</span><span id="time-manila">--:--</span></div>
-                        <div class="flex justify-between"><span>🇹🇷 Istanbul</span><span id="time-istanbul">--:--</span></div>
-                        <div class="flex justify-between"><span>🇳🇱 Amsterdam</span><span id="time-amsterdam">--:--</span></div>
-                    </div>
+<!-- 🔥 NEW: 全球商机时钟（横向展示） -->
+<div class="bg-gradient-to-r from-indigo-900/50 to-purple-900/50 border-2 border-purple-500/30 rounded-xl p-6 mb-8">
+    <div class="flex items-center gap-3 mb-4">
+        <div class="text-3xl">🌍</div>
+        <div>
+            <h3 class="text-lg font-bold text-purple-300">Global Business Hours</h3>
+            <p class="text-xs text-purple-400">实时追踪全球主要市场营业时间</p>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="global-business-hours">
+        <!-- 北京时间 -->
+        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-2xl">🇨🇳</span>
+                <div class="flex-1">
+                    <div class="text-xs text-gray-400">Beijing</div>
+                    <div id="time-beijing-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
                 </div>
             </div>
+            <div id="status-beijing" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
+                Loading...
+            </div>
         </div>
+        
+        <!-- 马尼拉时间 -->
+        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-2xl">🇵🇭</span>
+                <div class="flex-1">
+                    <div class="text-xs text-gray-400">Manila</div>
+                    <div id="time-manila-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
+                </div>
+            </div>
+            <div id="status-manila" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
+                Loading...
+            </div>
+        </div>
+        
+        <!-- 伊斯坦布尔时间 -->
+        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-2xl">🇹🇷</span>
+                <div class="flex-1">
+                    <div class="text-xs text-gray-400">Istanbul</div>
+                    <div id="time-istanbul-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
+                </div>
+            </div>
+            <div id="status-istanbul" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
+                Loading...
+            </div>
+        </div>
+        
+        <!-- 阿姆斯特丹时间 -->
+        <div class="bg-black/30 rounded-lg p-4 border border-purple-500/20">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-2xl">🇳🇱</span>
+                <div class="flex-1">
+                    <div class="text-xs text-gray-400">Amsterdam</div>
+                    <div id="time-amsterdam-display" class="text-2xl font-bold text-green-400 font-mono">--:--:--</div>
+                </div>
+            </div>
+            <div id="status-amsterdam" class="text-xs px-2 py-1 rounded text-center bg-gray-800 text-gray-400">
+                Loading...
+            </div>
+        </div>
+    </div>
+</div>
         
         <!-- ========== Kanban Tab ========== -->
         <div id="tab-kanban" class="tab-content" style="display:none;">
@@ -906,7 +963,9 @@ SWIFT: CHASHKHH`;
     WorkbenchCRM.render();
     WorkbenchExpenses.render();
     
-    // 🔥 初始化每日金句
+// 🔥 修复1：初始化每日金句
+function initDailyQuote() {
+    console.log('[Quote] 💪 Initializing...');
     const quotes = [
         "Every 'No' brings you closer to a 'Yes'. (每一次拒绝都让你离成交更近)",
         "Quality is the best business plan. (质量是最好的商业计划)",
@@ -919,10 +978,24 @@ SWIFT: CHASHKHH`;
         "成交之前的每一次拒绝，都是在积累运气。",
         "Action is the foundational key to all success. (行动是所有成功的基石)"
     ];
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    let todayQuote = localStorage.getItem('v14_daily_quote');
+    let quoteDate = localStorage.getItem('v14_quote_date');
+    const today = new Date().toDateString();
+    if (!todayQuote || quoteDate !== today) {
+        todayQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        localStorage.setItem('v14_daily_quote', todayQuote);
+        localStorage.setItem('v14_quote_date', today);
+    }
     const quoteEl = document.getElementById('daily-quote');
-    if (quoteEl) quoteEl.textContent = randomQuote;
+    if (quoteEl) {
+        quoteEl.textContent = todayQuote;
+        console.log('[Quote] ✅ Loaded');
+    } else {
+        console.error('[Quote] ❌ Element not found');
+    }
+}
 
+initDailyQuote();
     console.log('[V14.2 PRO] ✅ System Online - All Modules Loaded + Tools Integrated');
 });
 </script>
