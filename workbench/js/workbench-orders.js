@@ -29,7 +29,8 @@ const WorkbenchOrders = (() => {
     const state = {
         orders: [],
         currentEditingOrder: null,
-        isInitialized: false
+        isInitialized: false,
+        modalElement: null
     };
 
     /**
@@ -50,8 +51,10 @@ const WorkbenchOrders = (() => {
             renderKanban();
 
             state.isInitialized = true;
+            
             console.log('[Orders] ✅ 订单模块已初始化');
-            console.log('[Orders] 当前订单数:', state.orders.length);
+            console.log('[Orders] 订单数量:', state.orders.length);
+            
             return true;
         } catch (error) {
             console.error('[Orders] ❌ 初始化失败:', error);
@@ -67,19 +70,15 @@ const WorkbenchOrders = (() => {
      */
     function loadOrders() {
         try {
-            // 使用WorkbenchState（优先）
-            if (window.WorkbenchState && WorkbenchState.get) {
-                state.orders = WorkbenchState.get('data.orders') || [];
-                console.log('[Orders] 从State加载订单');
-            } else if (window.WorkbenchStorage && WorkbenchStorage.load) {
+            // 优先使用WorkbenchStorage
+            if (window.WorkbenchStorage) {
                 state.orders = WorkbenchStorage.load('orders') || [];
-                console.log('[Orders] 从Storage加载订单');
             } else {
-                // 降级到localStorage
+                // 降级到localStorage（自动加workbench_前缀）
                 const ordersJson = localStorage.getItem('workbench_orders');
                 state.orders = ordersJson ? JSON.parse(ordersJson) : [];
-                console.log('[Orders] 从localStorage加载订单');
             }
+            
             console.log(`[Orders] ✅ 已加载 ${state.orders.length} 条订单`);
         } catch (error) {
             console.error('[Orders] ❌ 加载订单数据失败:', error);
@@ -93,20 +92,18 @@ const WorkbenchOrders = (() => {
      */
     function saveOrders() {
         try {
-            // 使用WorkbenchState（优先）
-            if (window.WorkbenchState && WorkbenchState.set) {
-                WorkbenchState.set('data.orders', state.orders, true);
-                console.log('[Orders] 保存到State');
-            } else if (window.WorkbenchStorage && WorkbenchStorage.save) {
+            // 优先使用WorkbenchStorage
+            if (window.WorkbenchStorage) {
                 WorkbenchStorage.save('orders', state.orders);
-                console.log('[Orders] 保存到Storage');
             } else {
                 // 降级到localStorage
                 localStorage.setItem('workbench_orders', JSON.stringify(state.orders));
-                console.log('[Orders] 保存到localStorage');
             }
             
-            console.log(`[Orders] ✅ 已保存 ${state.orders.length} 条订单`);
+            // 同步到WorkbenchState（如果可用）
+            if (window.WorkbenchState) {
+                WorkbenchState.set('data.orders', state.orders);
+            }
             
             // 同步到Firebase（如果启用）
             if (window.WorkbenchFirebase && WorkbenchFirebase.isInitialized && WorkbenchFirebase.isInitialized()) {
@@ -115,6 +112,7 @@ const WorkbenchOrders = (() => {
                 });
             }
             
+            console.log(`[Orders] ✅ 已保存 ${state.orders.length} 条订单`);
             return true;
         } catch (error) {
             console.error('[Orders] ❌ 保存订单数据失败:', error);
@@ -133,20 +131,6 @@ const WorkbenchOrders = (() => {
         const quickAddBtn = document.getElementById('kanban-quick-add');
         if (quickAddBtn) {
             quickAddBtn.addEventListener('click', () => openQuickAddModal());
-            console.log('[Orders] 快速添加按钮已绑定');
-        }
-
-        // 刷新按钮
-        const refreshBtn = document.getElementById('kanban-refresh');
-        if (refreshBtn) {
-            refreshBtn.addEventListener('click', () => {
-                loadOrders();
-                renderKanban();
-                if (window.WorkbenchUtils) {
-                    WorkbenchUtils.toast('订单数据已刷新', 'success');
-                }
-            });
-            console.log('[Orders] 刷新按钮已绑定');
         }
     }
 
@@ -182,6 +166,7 @@ const WorkbenchOrders = (() => {
         const column = document.getElementById(columnId);
 
         if (!column) {
+            console.warn(`[Orders] 看板列未找到: ${columnId}`);
             return;
         }
 
@@ -202,14 +187,13 @@ const WorkbenchOrders = (() => {
         const statusColor = STATUS_COLORS[order.kanbanStatus] || 'bg-gray-600';
         const amount = parseFloat(order.amount) || 0;
         const currency = order.currency || 'USD';
-        const customerName = escapeHtml(order.customerName || '未命名客户');
 
         return `
             <div class="bg-gray-800 rounded-lg p-4 mb-3 border-l-4 ${statusColor} cursor-pointer hover:bg-gray-750 transition-colors"
                  data-order-id="${order.id}"
                  onclick="WorkbenchOrders.openOrderDetail('${order.id}')">
                 <div class="flex justify-between items-start mb-2">
-                    <h4 class="font-medium text-white truncate flex-1">${customerName}</h4>
+                    <h4 class="font-medium text-white truncate flex-1">${escapeHtml(order.customerName || '未命名客户')}</h4>
                     <span class="text-xs ${statusColor} text-white px-2 py-1 rounded ml-2">${order.kanbanStatus}</span>
                 </div>
                 <p class="text-sm text-gray-400 mb-2">订单号: ${order.orderNumber || order.id}</p>
@@ -226,8 +210,8 @@ const WorkbenchOrders = (() => {
      */
     function openQuickAddModal() {
         try {
-            // 使用WorkbenchModal
-            if (window.WorkbenchModal && WorkbenchModal.open) {
+            // 使用WorkbenchModal（如果可用）
+            if (window.WorkbenchModal) {
                 WorkbenchModal.open({
                     title: '快速添加订单',
                     content: generateQuickAddForm(),
@@ -235,26 +219,43 @@ const WorkbenchOrders = (() => {
                     buttons: [
                         {
                             text: '取消',
-                            className: 'bg-gray-700 hover:bg-gray-600 text-white px-6 py-2 rounded font-medium',
+                            className: 'bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded',
                             onClick: (modal) => WorkbenchModal.close(modal)
                         },
                         {
                             text: '保存',
-                            className: 'bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded font-medium',
+                            className: 'bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded',
                             onClick: () => handleQuickAdd()
                         }
                     ]
                 });
             } else {
-                console.warn('[Orders] WorkbenchModal未找到');
-                if (window.WorkbenchUtils) {
-                    WorkbenchUtils.toast('模态框功能不可用', 'warning');
-                }
+                // 降级使用自定义模态框
+                const modal = createModal({
+                    title: '快速添加订单',
+                    content: generateQuickAddForm(),
+                    buttons: [
+                        {
+                            text: '取消',
+                            className: 'bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded',
+                            onClick: () => closeModal()
+                        },
+                        {
+                            text: '保存',
+                            className: 'bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded',
+                            onClick: () => handleQuickAdd()
+                        }
+                    ]
+                });
+                state.modalElement = modal;
             }
-
+            
             console.log('[Orders] 快速添加模态框已打开');
         } catch (error) {
             console.error('[Orders] ❌ 打开快速添加模态框失败:', error);
+            if (window.WorkbenchUtils) {
+                WorkbenchUtils.toast('打开添加订单窗口失败', 'error');
+            }
         }
     }
 
@@ -263,6 +264,11 @@ const WorkbenchOrders = (() => {
      * @returns {string} HTML字符串
      */
     function generateQuickAddForm() {
+        // 获取货币列表（从WorkbenchConfig或默认）
+        const currencies = window.WorkbenchConfig ? 
+            Object.keys(WorkbenchConfig.CURRENCY.LIST) : 
+            ['USD', 'EUR', 'GBP', 'CNY'];
+
         return `
             <form id="quick-add-form" class="space-y-4">
                 <div>
@@ -288,22 +294,17 @@ const WorkbenchOrders = (() => {
                         <label class="block text-sm font-medium text-gray-300 mb-1">货币</label>
                         <select id="order-currency"
                                 class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="USD">USD - 美元</option>
-                            <option value="EUR">EUR - 欧元</option>
-                            <option value="GBP">GBP - 英镑</option>
-                            <option value="CNY">CNY - 人民币</option>
+                            ${currencies.map(curr => `<option value="${curr}">${curr}</option>`).join('')}
                         </select>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-1">看板状态</label>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">订单状态</label>
                     <select id="order-status"
                             class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="${KANBAN_STATUS.NEW}">New - 新订单</option>
-                        <option value="${KANBAN_STATUS.PROCESSING}">Processing - 处理中</option>
-                        <option value="${KANBAN_STATUS.PAID}">Paid - 已付款</option>
-                        <option value="${KANBAN_STATUS.SHIPPED}">Shipped - 已发货</option>
-                        <option value="${KANBAN_STATUS.COMPLETED}">Completed - 已完成</option>
+                        ${Object.entries(KANBAN_STATUS).map(([key, value]) => 
+                            `<option value="${value}">${value}</option>`
+                        ).join('')}
                     </select>
                 </div>
                 <div>
@@ -321,6 +322,7 @@ const WorkbenchOrders = (() => {
      */
     function handleQuickAdd() {
         try {
+            // 获取表单数据
             const formData = {
                 customerName: document.getElementById('order-customer-name')?.value?.trim(),
                 orderNumber: document.getElementById('order-number')?.value?.trim(),
@@ -330,6 +332,7 @@ const WorkbenchOrders = (() => {
                 remark: document.getElementById('order-remark')?.value?.trim() || ''
             };
 
+            // 验证必填项
             if (!formData.customerName) {
                 if (window.WorkbenchUtils) {
                     WorkbenchUtils.toast('请输入客户名称', 'warning');
@@ -344,9 +347,13 @@ const WorkbenchOrders = (() => {
                 return;
             }
 
-            const orderId = `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            // 生成订单ID和订单号
+            const orderId = window.WorkbenchUtils ? 
+                WorkbenchUtils.generateId('order') : 
+                `order_${Date.now()}`;
             const orderNumber = formData.orderNumber || `ORD-${Date.now().toString().slice(-8)}`;
 
+            // 创建订单对象
             const newOrder = {
                 id: orderId,
                 orderNumber: orderNumber,
@@ -359,14 +366,23 @@ const WorkbenchOrders = (() => {
                 updateTime: new Date().toISOString()
             };
 
+            // 添加到订单列表
             state.orders.push(newOrder);
+
+            // 保存数据
             saveOrders();
+
+            // 刷新看板
             renderKanban();
 
+            // 关闭模态框
             if (window.WorkbenchModal) {
                 WorkbenchModal.close();
+            } else {
+                closeModal();
             }
 
+            // 成功提示
             if (window.WorkbenchUtils) {
                 WorkbenchUtils.toast('订单添加成功', 'success');
             }
@@ -375,7 +391,7 @@ const WorkbenchOrders = (() => {
         } catch (error) {
             console.error('[Orders] ❌ 添加订单失败:', error);
             if (window.WorkbenchUtils) {
-                WorkbenchUtils.toast('添加订单失败', 'error');
+                WorkbenchUtils.toast('添加订单失败，请重试', 'error');
             }
         }
     }
@@ -394,23 +410,10 @@ const WorkbenchOrders = (() => {
 
             state.currentEditingOrder = order;
 
-            if (window.WorkbenchModal) {
-                WorkbenchModal.open({
-                    title: '订单详情',
-                    content: generateOrderDetailHTML(order),
-                    size: 'xl',
-                    buttons: [
-                        {
-                            text: '关闭',
-                            className: 'bg-gray-700 hover:bg-gray-600 text-white px-6 py-2 rounded font-medium',
-                            onClick: (modal) => WorkbenchModal.close(modal)
-                        }
-                    ]
-                });
-            } else {
-                if (window.WorkbenchUtils) {
-                    WorkbenchUtils.toast('详情功能开发中', 'info');
-                }
+            // TODO: 实现订单详情模态框
+            console.log('[Orders] 打开订单详情:', order);
+            if (window.WorkbenchUtils) {
+                WorkbenchUtils.toast('订单详情功能开发中', 'info');
             }
         } catch (error) {
             console.error('[Orders] ❌ 打开订单详情失败:', error);
@@ -418,86 +421,163 @@ const WorkbenchOrders = (() => {
     }
 
     /**
-     * 生成订单详情HTML
-     * @param {Object} order - 订单对象
-     * @returns {string} HTML字符串
+     * 创建模态框（降级方案）
+     * @param {Object} options - 模态框选项
+     * @returns {HTMLElement} 模态框元素
      */
-    function generateOrderDetailHTML(order) {
-        return `
-            <div class="space-y-4 text-gray-300">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-sm text-gray-500">订单号</label>
-                        <p class="text-white font-medium">${order.orderNumber}</p>
-                    </div>
-                    <div>
-                        <label class="text-sm text-gray-500">客户名称</label>
-                        <p class="text-white font-medium">${escapeHtml(order.customerName)}</p>
-                    </div>
-                    <div>
-                        <label class="text-sm text-gray-500">订单金额</label>
-                        <p class="text-white font-medium">${order.currency} ${parseFloat(order.amount).toFixed(2)}</p>
-                    </div>
-                    <div>
-                        <label class="text-sm text-gray-500">看板状态</label>
-                        <p class="text-white font-medium">${order.kanbanStatus}</p>
-                    </div>
-                    <div>
-                        <label class="text-sm text-gray-500">创建时间</label>
-                        <p class="text-white font-medium">${formatDate(order.createTime)}</p>
-                    </div>
-                    <div>
-                        <label class="text-sm text-gray-500">更新时间</label>
-                        <p class="text-white font-medium">${formatDate(order.updateTime)}</p>
-                    </div>
+    function createModal(options) {
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999] animate-fade-in';
+        
+        modal.innerHTML = `
+            <div class="bg-gray-900 rounded-lg shadow-xl w-full max-w-lg mx-4 p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-white">${escapeHtml(options.title || '订单操作')}</h3>
+                    <button class="text-gray-400 hover:text-white text-2xl leading-none" onclick="WorkbenchOrders.closeModal()">&times;</button>
                 </div>
-                ${order.remark ? `
-                    <div>
-                        <label class="text-sm text-gray-500">备注</label>
-                        <p class="text-white">${escapeHtml(order.remark)}</p>
-                    </div>
-                ` : ''}
+                <div class="modal-content">
+                    ${options.content || ''}
+                </div>
+                <div class="flex justify-end gap-3 mt-6">
+                    ${options.buttons?.map(btn => `
+                        <button class="${btn.className}">${escapeHtml(btn.text)}</button>
+                    `).join('') || ''}
+                </div>
             </div>
         `;
+
+        // 绑定按钮事件
+        if (options.buttons) {
+            const buttons = modal.querySelectorAll('button');
+            const closeButton = buttons[0]; // 关闭按钮
+            buttons.forEach((btn, index) => {
+                if (index === 0) return; // 跳过关闭按钮
+                const btnConfig = options.buttons[index - 1];
+                if (btnConfig && btnConfig.onClick) {
+                    btn.addEventListener('click', btnConfig.onClick);
+                }
+            });
+        }
+
+        // 点击背景关闭
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.body.appendChild(modal);
+        return modal;
     }
 
+    /**
+     * 关闭模态框（降级方案）
+     */
+    function closeModal() {
+        if (state.modalElement) {
+            state.modalElement.remove();
+            state.modalElement = null;
+        }
+    }
+
+    /**
+     * HTML转义
+     * @param {string} str - 字符串
+     * @returns {string} 转义后的字符串
+     */
     function escapeHtml(str) {
         if (!str) return '';
+        if (window.WorkbenchUtils && WorkbenchUtils.escapeHtml) {
+            return WorkbenchUtils.escapeHtml(str);
+        }
         const div = document.createElement('div');
         div.textContent = str;
         return div.innerHTML;
     }
 
+    /**
+     * 格式化日期
+     * @param {string} dateStr - 日期字符串
+     * @returns {string} 格式化后的日期
+     */
     function formatDate(dateStr) {
         if (!dateStr) return '未知';
+        if (window.WorkbenchUtils && WorkbenchUtils.formatDate) {
+            return WorkbenchUtils.formatDate(dateStr, 'YYYY-MM-DD');
+        }
         try {
-            if (window.WorkbenchUtils && WorkbenchUtils.formatDate) {
-                return WorkbenchUtils.formatDate(dateStr, 'YYYY-MM-DD HH:mm');
-            }
             const date = new Date(dateStr);
-            return date.toLocaleDateString('zh-CN') + ' ' + date.toLocaleTimeString('zh-CN');
+            return date.toLocaleDateString('zh-CN');
         } catch {
             return '未知';
         }
     }
 
+    /**
+     * 获取所有订单
+     * @returns {Array} 订单列表
+     */
     function getAllOrders() {
         return [...state.orders];
     }
 
+    /**
+     * 按状态获取订单
+     * @param {string} status - 状态
+     * @returns {Array} 订单列表
+     */
     function getOrdersByStatus(status) {
         return state.orders.filter(order => order.kanbanStatus === status);
     }
 
+    /**
+     * 删除订单
+     * @param {string} orderId - 订单ID
+     * @returns {boolean} 是否成功
+     */
+    function deleteOrder(orderId) {
+        try {
+            const index = state.orders.findIndex(o => o.id === orderId);
+            if (index === -1) {
+                console.warn('[Orders] 订单不存在:', orderId);
+                return false;
+            }
+
+            state.orders.splice(index, 1);
+            saveOrders();
+            renderKanban();
+
+            if (window.WorkbenchUtils) {
+                WorkbenchUtils.toast('订单已删除', 'success');
+            }
+
+            console.log('[Orders] ✅ 订单已删除:', orderId);
+            return true;
+        } catch (error) {
+            console.error('[Orders] ❌ 删除订单失败:', error);
+            return false;
+        }
+    }
+
+    // 公共API
     const api = {
+        // 初始化
         init,
+        
+        // 订单操作
         openQuickAddModal,
         openOrderDetail,
         getAllOrders,
         getOrdersByStatus,
+        deleteOrder,
+        
+        // 看板操作
         renderKanban,
-        loadOrders,
-        saveOrders,
+        
+        // 模态框操作
+        closeModal,
+        
+        // 常量
         KANBAN_STATUS,
         STATUS_COLORS
     };
@@ -505,8 +585,10 @@ const WorkbenchOrders = (() => {
     return api;
 })();
 
+// 挂载到全局
 window.WorkbenchOrders = WorkbenchOrders;
 
+// 模块导出（支持CommonJS和ES模块）
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = WorkbenchOrders;
 } else if (typeof define === 'function' && define.amd) {
