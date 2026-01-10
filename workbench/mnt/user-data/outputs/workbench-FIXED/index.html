@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>战时指挥台 V14.2 PRO</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<style>
+body{font-family:system-ui,sans-serif;background:#030712}
+.tab-content{display:none}
+.tab-content:not(.hidden){display:block}
+</style>
+<script src="js/workbench-config.js"></script>
+<script src="js/workbench-utils.js"></script>
+<script src="js/workbench-modal.js"></script>
+<script src="js/workbench-state.js"></script>
+<script src="js/workbench-storage.js"></script>
+<script src="js/workbench-dashboard.js"></script>
+<script src="js/workbench-orders.js"></script>
+<script src="js/workbench-suppliers.js"></script>
+<script src="js/workbench-expenses.js"></script>
+<script src="js/workbench-crm.js"></script>
+</head>
+<body class="text-white">
+<div id="loading" class="fixed inset-0 bg-black/90 flex items-center justify-center z-50">
+<div class="text-center">
+<div class="text-4xl mb-4">⚙️</div>
+<p class="text-xl">系统初始化中...</p>
+</div>
+</div>
+
+<main>
+<header class="bg-gray-900 border-b border-gray-800 p-4">
+<div class="flex justify-between items-center">
+<h1 class="text-xl font-bold text-red-500">战时指挥台 V14.2 PRO</h1>
+<nav class="flex gap-4">
+<button onclick="app.switchTab('dashboard')" class="nav-tab px-3 py-1 rounded hover:bg-gray-800">仪表盘</button>
+<button onclick="app.switchTab('orders')" class="nav-tab px-3 py-1 rounded hover:bg-gray-800">订单</button>
+<button onclick="app.switchTab('crm')" class="nav-tab px-3 py-1 rounded hover:bg-gray-800">客户</button>
+<button onclick="app.switchTab('suppliers')" class="nav-tab px-3 py-1 rounded hover:bg-gray-800">供应商</button>
+<button onclick="app.switchTab('expenses')" class="nav-tab px-3 py-1 rounded hover:bg-gray-800">支出</button>
+</nav>
+</div>
+</header>
+
+<div class="p-6">
+<div id="tab-dashboard" class="tab-content">
+<h2 class="text-2xl font-bold mb-4">仪表盘</h2>
+<div class="grid grid-cols-4 gap-4">
+<div class="bg-gray-900 p-6 rounded-lg">
+<p class="text-gray-400">订单数</p>
+<p id="dashboard-total-orders" class="text-3xl font-bold">0</p>
+</div>
+<div class="bg-gray-900 p-6 rounded-lg">
+<p class="text-gray-400">总收入</p>
+<p id="dashboard-total-income" class="text-3xl font-bold">¥0</p>
+</div>
+<div class="bg-gray-900 p-6 rounded-lg">
+<p class="text-gray-400">本月收入</p>
+<p id="dashboard-month-income" class="text-3xl font-bold">¥0</p>
+</div>
+<div class="bg-gray-900 p-6 rounded-lg">
+<p class="text-gray-400">供应商</p>
+<p id="dashboard-total-suppliers" class="text-3xl font-bold">0</p>
+</div>
+</div>
+<div class="mt-6 text-center">
+<p id="current-time" class="text-2xl font-mono">--:--:--</p>
+</div>
+</div>
+
+<div id="tab-orders" class="tab-content hidden">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-2xl font-bold">订单管理</h2>
+<button onclick="WorkbenchOrders.openQuickAddModal()" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">新增订单</button>
+</div>
+<div id="orders-list" class="space-y-4">
+<p class="text-gray-500 text-center py-12">暂无订单</p>
+</div>
+</div>
+
+<div id="tab-crm" class="tab-content hidden">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-2xl font-bold">客户管理</h2>
+<button onclick="WorkbenchCRM.openCustomerModal()" class="bg-purple-600 px-4 py-2 rounded hover:bg-purple-700">新增客户</button>
+</div>
+<div id="crm-customers" class="grid grid-cols-3 gap-4">
+<p class="col-span-3 text-gray-500 text-center py-12">暂无客户</p>
+</div>
+</div>
+
+<div id="tab-suppliers" class="tab-content hidden">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-2xl font-bold">供应商管理</h2>
+<button onclick="WorkbenchSuppliers.openAddModal()" class="bg-green-600 px-4 py-2 rounded hover:bg-green-700">新增供应商</button>
+</div>
+<div id="suppliers-list" class="space-y-4">
+<p class="text-gray-500 text-center py-12">暂无供应商</p>
+</div>
+</div>
+
+<div id="tab-expenses" class="tab-content hidden">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-2xl font-bold">运营支出</h2>
+<button onclick="WorkbenchExpenses.openExpenseModal()" class="bg-orange-600 px-4 py-2 rounded hover:bg-orange-700">记录支出</button>
+</div>
+<div id="expenses-list" class="space-y-4">
+<p class="text-gray-500 text-center py-12">暂无支出记录</p>
+</div>
+</div>
+</div>
+</main>
+
+<script>
+const app={
+switchTab(t){
+document.querySelectorAll('.tab-content').forEach(e=>e.classList.add('hidden'));
+document.getElementById('tab-'+t).classList.remove('hidden');
+if(t==='dashboard'&&WorkbenchDashboard?.renderDashboard)WorkbenchDashboard.renderDashboard();
+if(t==='orders'&&WorkbenchOrders?.render)WorkbenchOrders.render();
+if(t==='crm'&&WorkbenchCRM?.renderCustomers)WorkbenchCRM.renderCustomers();
+if(t==='suppliers'&&WorkbenchSuppliers?.render)WorkbenchSuppliers.render();
+if(t==='expenses'&&WorkbenchExpenses?.render)WorkbenchExpenses.render();
+},
+init(){
+setTimeout(()=>{
+document.getElementById('loading').style.display='none';
+this.switchTab('dashboard');
+if(WorkbenchDashboard?.startClock)WorkbenchDashboard.startClock();
+console.log('✅ 系统初始化完成');
+},500);
+}
+};
+
+document.addEventListener('DOMContentLoaded',()=>{
+try{
+WorkbenchConfig?.init();
+WorkbenchUtils?.init();
+WorkbenchModal?.init();
+WorkbenchState?.init();
+WorkbenchStorage?.init();
+WorkbenchDashboard?.init();
+WorkbenchOrders?.init();
+WorkbenchSuppliers?.init();
+WorkbenchExpenses?.init();
+WorkbenchCRM?.init();
+app.init();
+}catch(e){
+console.error('初始化失败:',e);
+alert('系统初始化失败');
+}
+});
+</script>
+</body>
+</html>
