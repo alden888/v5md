@@ -53,41 +53,39 @@ background-attachment: fixed;
 100% { transform: rotate(360deg); }
 }
 .loading-spinner {
-border: 2px solid rgba(255, 255, 255, 0.1);
+border: 3px solid rgba(255, 255, 255, 0.1);
 border-radius: 50%;
-border-top: 2px solid #ef4444;
-width: 20px;
-height: 20px;
-animation: spin 1s linear infinite;
+border-top: 3px solid #ef4444;
+width: 50px;
+height: 50px;
+animation: spin 0.8s linear infinite;
 display: inline-block;
 }
 
-/* 淡入动画 */
 @keyframes fadeIn {
 from { opacity: 0; transform: translateY(10px); }
 to { opacity: 1; transform: translateY(0); }
 }
 .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
 
-/* Tab 隐藏 */
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 </style>
 
 <!-- 本地样式文件 -->
-<link rel="stylesheet" href="./css/workbench-v14.css">
+<link rel="stylesheet" href="css/workbench-v14.css">
 </head>
 <body class="min-h-screen text-white bg-darkest">
 
-<!-- 🔥 系统加载指示器（带详细信息） -->
-<div id="system-loading" class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center">
-<div class="text-center max-w-md">
-<div class="loading-spinner mx-auto mb-4" style="width: 40px; height: 40px;"></div>
-<h2 class="text-xl font-bold text-red-500 mb-2">系统初始化中...</h2>
-<p class="text-gray-400 mb-4">正在加载核心模块，请稍候...</p>
-<div id="loading-progress" class="text-sm text-gray-500 mb-2">0% 完成</div>
-<div id="loading-details" class="text-xs text-gray-600"></div>
-<div id="loading-error" class="hidden mt-4 p-4 bg-red-900/50 border border-red-500 rounded text-red-200 text-sm"></div>
+<!-- 🔥 系统加载指示器 -->
+<div id="system-loading" class="fixed inset-0 z-50 bg-black/95 flex items-center justify-center">
+<div class="text-center max-w-md px-6">
+<div class="loading-spinner mx-auto mb-6"></div>
+<h2 class="text-2xl font-bold text-red-500 mb-3">系统初始化中</h2>
+<p class="text-gray-400 mb-4">正在加载核心模块...</p>
+<div id="loading-progress" class="text-sm text-gray-500 mb-3">准备加载...</div>
+<div id="loading-module" class="text-xs text-gray-600 mb-2"></div>
+<div id="loading-error" class="hidden mt-6 p-4 bg-red-900/50 border border-red-500 rounded text-red-200 text-sm text-left max-h-60 overflow-y-auto"></div>
 </div>
 </div>
 
@@ -383,28 +381,44 @@ class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg flex it
 </div>
 </main>
 
-<!-- 🔥 核心模块加载（按依赖顺序，添加错误处理） -->
+<!-- 🔥 核心模块加载 - 使用最简路径格式（推荐） -->
+<script src="js/workbench-config.js"></script>
+<script src="js/workbench-utils.js"></script>
+<script src="js/workbench-modal.js"></script>
+<script src="js/workbench-state.js"></script>
+<script src="js/workbench-storage.js"></script>
+<script src="js/workbench-auth.js"></script>
+
+<!-- Firebase SDK (可选) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+<script src="js/workbench-firebase.js"></script>
+
+<!-- 业务模块 -->
+<script src="js/workbench-dashboard.js"></script>
+<script src="js/workbench-orders.js"></script>
+<script src="js/workbench-suppliers.js"></script>
+<script src="js/workbench-finance.js"></script>
+<script src="js/workbench-expenses.js"></script>
+<script src="js/workbench-crm.js"></script>
+
+<!-- 🔥 主应用脚本（必须最后加载） -->
+<script src="js/workbench-app.js"></script>
+
+<!-- 🔥 模块加载完成处理 -->
 <script>
-// 模块加载错误处理
-window.moduleLoadErrors = [];
+document.addEventListener('DOMContentLoaded', async function() {
+console.log('[V14.2 PRO] DOM加载完成，等待模块初始化...');
 
-function logModuleLoad(moduleName, success, error) {
-const details = document.getElementById('loading-details');
-if (success) {
-console.log(`✅ ${moduleName} 加载成功`);
-if (details) details.textContent = `已加载: ${moduleName}`;
-} else {
-console.error(`❌ ${moduleName} 加载失败:`, error);
-window.moduleLoadErrors.push({ module: moduleName, error: error });
-if (details) details.textContent = `❌ ${moduleName} 加载失败`;
-}
-}
+// 给模块一点时间完成加载
+await new Promise(resolve => setTimeout(resolve, 500));
 
-// 检查所有模块是否加载成功
-function checkModulesLoaded() {
+// 验证所有关键模块
 const requiredModules = [
 'WorkbenchConfig',
-'WorkbenchUtils',
+'WorkbenchUtils', 
 'WorkbenchModal',
 'WorkbenchState',
 'WorkbenchStorage',
@@ -414,55 +428,49 @@ const requiredModules = [
 'WorkbenchSuppliers',
 'WorkbenchFinance',
 'WorkbenchExpenses',
-'WorkbenchCRM'
+'WorkbenchCRM',
+'app'
 ];
 
 const missing = requiredModules.filter(m => typeof window[m] === 'undefined');
+
 if (missing.length > 0) {
-console.error('❌ 缺失模块:', missing);
-const errorDiv = document.getElementById('loading-error');
-if (errorDiv) {
-errorDiv.classList.remove('hidden');
-errorDiv.innerHTML = `
+console.error('[V14.2 PRO] ❌ 缺失模块:', missing);
+document.getElementById('loading-error').classList.remove('hidden');
+document.getElementById('loading-error').innerHTML = `
 <strong>模块加载失败</strong><br>
-缺失: ${missing.join(', ')}<br>
-<small>请检查 js 文件夹中的文件是否完整</small><br>
+缺失模块: ${missing.join(', ')}<br>
 <button onclick="location.reload()" class="mt-2 px-4 py-2 bg-red-600 rounded hover:bg-red-700">
 重新加载
 </button>
+<a href="diagnostic.html" class="mt-2 ml-2 px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 inline-block">
+系统诊断
+</a>
 `;
+} else {
+console.log('[V14.2 PRO] ✅ 所有模块加载完成');
+console.log('[V14.2 PRO] 已加载:', requiredModules.length, '个模块');
+
+// 隐藏加载界面
+setTimeout(() => {
+const loadingEl = document.getElementById('system-loading');
+if (loadingEl) {
+loadingEl.style.opacity = '0';
+loadingEl.style.transition = 'opacity 0.3s ease';
+setTimeout(() => {
+loadingEl.style.display = 'none';
+}, 300);
 }
-return false;
+
+// 启动应用
+if (typeof app !== 'undefined' && app.init) {
+console.log('[V14.2 PRO] 启动应用...');
+app.init();
 }
-return true;
+}, 300);
 }
+});
 </script>
-
-<!-- 按顺序加载核心模块 -->
-<script src="./js/workbench-config.js" onerror="logModuleLoad('Config', false, event)"></script>
-<script src="./js/workbench-utils.js" onerror="logModuleLoad('Utils', false, event)"></script>
-<script src="./js/workbench-modal.js" onerror="logModuleLoad('Modal', false, event)"></script>
-<script src="./js/workbench-state.js" onerror="logModuleLoad('State', false, event)"></script>
-<script src="./js/workbench-storage.js" onerror="logModuleLoad('Storage', false, event)"></script>
-<script src="./js/workbench-auth.js" onerror="logModuleLoad('Auth', false, event)"></script>
-
-<!-- Firebase 模块（可选） -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-<script src="./js/workbench-firebase.js" onerror="logModuleLoad('Firebase', false, event)"></script>
-
-<!-- 业务模块 -->
-<script src="./js/workbench-dashboard.js" onerror="logModuleLoad('Dashboard', false, event)"></script>
-<script src="./js/workbench-orders.js" onerror="logModuleLoad('Orders', false, event)"></script>
-<script src="./js/workbench-suppliers.js" onerror="logModuleLoad('Suppliers', false, event)"></script>
-<script src="./js/workbench-finance.js" onerror="logModuleLoad('Finance', false, event)"></script>
-<script src="./js/workbench-expenses.js" onerror="logModuleLoad('Expenses', false, event)"></script>
-<script src="./js/workbench-crm.js" onerror="logModuleLoad('CRM', false, event)"></script>
-
-<!-- 🔥 主应用脚本 -->
-<script src="./js/workbench-app.js"></script>
 
 </body>
 </html>
