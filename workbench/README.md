@@ -1,276 +1,125 @@
-# V5 Medical 战时指挥台 V14.0 ERP Edition
+# V14.2 PRO Workbench - Cloudflare Pages 修复指南
 
-> 供应链 · 财务 · 真实利润
+## 问题诊断
 
-## 🚀 快速开始
+根据您的截图分析，问题在于：
 
-### 方式1: 本地测试
-```bash
-cd workbench/
-python3 -m http.server 8000
-# 访问 http://localhost:8000/
+### 1. `_headers` 路径不匹配
+**原来的配置：**
+```
+/js/*.js
+  Content-Type: application/javascript
 ```
 
-### 方式2: GitHub Pages部署
-```bash
-# 1. 将workbench目录上传到GitHub仓库
-git add workbench/
-git commit -m "V14.0 ERP Edition"
-git push origin main
+**问题：** 这个路径匹配的是网站根目录的 `/js/`，而不是 `/workbench/js/`
 
-# 2. 启用GitHub Pages (Settings → Pages → Source: main branch)
-
-# 3. 访问
-https://your-username.github.io/repo-name/workbench/
+### 2. `_redirects` 规则太激进
+**原来的配置：**
 ```
+/* /index.html 200
+```
+
+**问题：** 这可能干扰静态资源的加载
+
+### 3. 脚本使用相对路径
+**原来的引用：**
+```html
+<script src="js/workbench-config.js"></script>
+```
+
+**问题：** 在某些情况下可能解析错误
 
 ---
 
-## 📁 文件结构
+## 修复内容
 
-```
-workbench/
-├── index.html                    # 主入口 (500行)
-├── css/
-│   └── workbench-v14.css        # 样式表 (532行)
-└── js/
-    ├── workbench-config.js      # 配置模块
-    ├── workbench-storage.js     # 存储模块
-    ├── workbench-dashboard.js   # 仪表盘模块
-    ├── workbench-orders.js      # 订单模块
-    ├── workbench-suppliers.js   # 供应商模块
-    └── workbench-utils.js       # 工具函数
-```
+### 文件 1: `_headers`
+- 修改所有路径为 `/workbench/...` 格式
+- 添加正确的 Content-Type 和安全头
 
----
+### 文件 2: `_redirects`  
+- 添加静态资源的显式规则
+- 限制 SPA 重定向范围
 
-## 🔑 登录密码
+### 文件 3: `index.html`
+- 所有脚本引用改为绝对路径 `/workbench/js/...`
+- CSS 引用改为绝对路径 `/workbench/css/...`
+- 添加更详细的错误提示
 
-生存模式铁幕密码:
-- `cash2025`
-- `override`
+### 文件 4: `diagnostic.html`
+- 添加模块加载脚本（使用绝对路径）
+- 增强诊断功能
 
 ---
 
-## ✨ 核心功能
+## 部署步骤
 
-### 1. 现金流仪表盘
-- 营收、成本、毛利实时计算
-- 净利润 = 毛利 - 运营支出
-- 目标进度追踪
+### 方法 1：直接更新文件（推荐）
 
-### 2. 订单管理 (看板)
-- Quick Add / Full Add
-- 8阶段看板 (Lead → Paid)
-- 实时利润计算
-- 订单编辑/删除
+1. 将以下修复后的文件上传到您的 GitHub 仓库 `workbench/` 目录：
+   - `_headers`
+   - `_redirects`
+   - `index.html`
+   - `diagnostic.html`
 
-### 3. 供应商管理 🆕
-- 供应商档案CRUD
-- 证书管理 (CE, ISO)
-- 历史采购记录
+2. 推送到 GitHub：
+   ```bash
+   git add .
+   git commit -m "修复 Cloudflare Pages 路径问题"
+   git push origin main
+   ```
 
-### 4. 客户档案
-- 自动从订单提取
-- 智能联想输入
-- 交易历史
+3. Cloudflare Pages 会自动重新部署
 
-### 5. 运营支出
-- 分类记录 (房租/差旅/招待)
-- 月度/年度统计
-- 客户关联 (ROI分析)
-
-### 6. 红屏警戒 (Critical Mode)
-- 72小时未进账触发
-- 非核心功能自动隐藏
-- 铁幕紧急通道 (60秒)
+4. 等待部署完成后访问：
+   - https://v5md.com/workbench/
+   - https://v5md.com/workbench/diagnostic.html
 
 ---
 
-## 🔧 配置说明
+## 可选：方案 B - 创建独立项目
 
-### 修改目标金额
-```javascript
-// js/workbench-config.js
-DEFAULT_TARGET: 5000000, // RMB
-```
+如果修复后仍有问题，可以为 workbench 创建独立的 Cloudflare Pages 项目：
 
-### 启用云端同步
-```javascript
-// js/workbench-storage.js
-USE_CLOUD: true,
-WORKER_URL: 'https://your-worker.workers.dev',
-```
+1. 在 Cloudflare Dashboard 创建新的 Pages 项目
+2. 连接同一个 GitHub 仓库
+3. 设置构建配置：
+   - **构建输出目录：** `workbench`
+   - **根目录：** `workbench`
+4. 绑定子域名：`erp.v5md.com` 或 `workbench.v5md.com`
 
-### 修改汇率
-```javascript
-// js/workbench-config.js
-DEFAULT_EXCHANGE_RATE: 6.98,
-```
+这样 workbench 就会作为独立站点部署，`_headers` 和 `_redirects` 就会正确生效。
 
 ---
 
-## 🧪 测试场景
+## 关键修改对比
 
-### 场景1: 录入Paid订单解除红屏
-```
-1. Quick Add
-2. Customer: Test Corp
-3. Status: Paid
-4. Amount: $10,000
-5. Cost: $7,000
-6. 点击"创建订单"
-
-预期:
-✅ 红屏消失
-✅ 毛利显示: ¥20,940 (30%)
-✅ 所有模块恢复显示
-```
-
-### 场景2: 新增供应商
-```
-1. 点击"🏭 供应商"Tab
-2. 点击"新增供应商"
-3. 公司名称: Ningbo Medical
-4. 主营产品: PGA Sutures
-5. 证书: CE, ISO 13485
-6. 保存
-
-预期:
-✅ 供应商列表更新
-✅ 订单录入时可选择该供应商
-```
+| 项目 | 修改前 | 修改后 |
+|------|--------|--------|
+| _headers 路径 | `/js/*.js` | `/workbench/js/*` |
+| _redirects | `/* /index.html 200` | 添加静态资源例外 |
+| script src | `js/xxx.js` | `/workbench/js/xxx.js` |
+| CSS href | `css/xxx.css` | `/workbench/css/xxx.css` |
 
 ---
 
-## 📊 数据持久化
+## 验证方法
 
-### LocalStorage Keys
-```
-v5_orders          # 订单数据
-v5_customers       # 客户数据
-v5_suppliers       # 供应商数据 🆕
-v5_expenses        # 运营支出 🆕
-v5_target          # 年度目标
-v5_usd_rate        # 美元汇率
-v5_feishu_webhook  # 飞书Webhook
-v5_today_actions   # 今日行动
-v5_worker_url      # Cloudflare Worker URL
-v5_last_sync       # 上次同步时间
-```
+部署后，按顺序检查：
 
-### 数据导出
-```javascript
-app.exportData();
-// 下载: V5_Medical_V14.0_Backup_2025-01-02.json
-```
+1. **直接访问 JS 文件：**
+   https://v5md.com/workbench/js/workbench-config.js
+   - 应该显示 JavaScript 代码
+   - 检查响应头 Content-Type 是否为 `application/javascript`
 
-### 数据导入
-```javascript
-// 在设置中选择备份文件导入
-```
+2. **访问诊断页面：**
+   https://v5md.com/workbench/diagnostic.html
+   - 所有模块应该显示 ✅
+
+3. **访问主页：**
+   https://v5md.com/workbench/
+   - 不应该卡在"系统初始化中"
 
 ---
 
-## 🐛 已修复的Bug
-
-### 1. 生存模式解锁
-- ✅ 解除红屏后，所有模块正常显示
-- ✅ 单证工具、物流、时钟全部恢复
-
-### 2. 供应商Tab
-- ✅ 点击后正确显示供应商列表
-- ✅ CSS隐藏逻辑修复
-
-### 3. 利润计算
-- ✅ 实时计算毛利和毛利率
-- ✅ 负毛利红色警告
-
----
-
-## 🔄 从V13.5升级
-
-1. **备份数据**
-```javascript
-// 在V13.5中执行
-app.exportData();
-```
-
-2. **部署V14.0**
-```bash
-# 上传workbench目录
-```
-
-3. **导入数据**
-```javascript
-// 在V14.0设置中导入备份
-```
-
-4. **验证**
-- [ ] 订单正常
-- [ ] 客户已提取
-- [ ] 红屏逻辑正确
-- [ ] 利润计算准确
-
----
-
-## 📝 版本历史
-
-### V14.0 ERP Edition (2025-01-02)
-- ✅ 模块化重构 (单文件 → 7模块)
-- ✅ 供应商管理
-- ✅ 利润核算
-- ✅ 运营支出
-- ✅ Bug修复
-
-### V13.5 CRM Strategic (2025-01-02)
-- 客户档案
-- 红屏修复
-- 智能联想
-
-### V13.4 Commander (2025-01-01)
-- 订单编辑
-- B2B月度指标
-- 大单追踪
-
----
-
-## 🆘 故障排除
-
-### 问题1: 红屏无法解除
-```javascript
-// 检查控制台
-[V14.0 CRITICAL] ========== RED LINE CHECK START ==========
-// 查看详细日志
-```
-
-### 问题2: 供应商Tab空白
-```javascript
-// 检查控制台
-[V14.0 Suppliers] suppliers-tab not found in DOM
-// 确认HTML中存在 <div id="suppliers-tab">
-```
-
-### 问题3: 利润不显示
-```javascript
-// 检查订单是否有cost字段
-console.log(order.cost, order.grossProfit);
-```
-
----
-
-## 📞 支持
-
-- **文档**: [V14.0-REFACTORING-GUIDE.md](V14.0-REFACTORING-GUIDE.md)
-- **验证脚本**: `bash verify.sh`
-- **控制台**: 按F12查看详细日志
-
----
-
-## 📄 许可证
-
-Private - V5 Medical Internal Use Only
-
----
-
-**V14.0 ERP Edition - 从销售追踪到全链路财务管理！** 🏭💰📊
+如有问题，请检查浏览器控制台（F12）的 Network 标签，查看是否有 404 或 MIME 类型错误。

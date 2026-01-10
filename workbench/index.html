@@ -72,8 +72,26 @@ to { opacity: 1; transform: translateY(0); }
 .tab-content.active { display: block; }
 </style>
 
-<!-- 本地样式文件 -->
-<link rel="stylesheet" href="css/workbench-v14.css">
+<!-- 🔥 修复：使用绝对路径加载本地 CSS -->
+<link rel="stylesheet" href="/workbench/css/workbench-v14.css">
+
+<!-- 🔥 动态获取基础路径的脚本 -->
+<script>
+// 自动检测基础路径
+(function() {
+    var scripts = document.getElementsByTagName('script');
+    var currentScript = scripts[scripts.length - 1];
+    var path = window.location.pathname;
+    
+    // 检测是否在 /workbench/ 子目录
+    if (path.includes('/workbench')) {
+        window.WORKBENCH_BASE = '/workbench';
+    } else {
+        window.WORKBENCH_BASE = '';
+    }
+    console.log('[Init] Base path:', window.WORKBENCH_BASE);
+})();
+</script>
 </head>
 <body class="min-h-screen text-white bg-darkest">
 
@@ -381,94 +399,121 @@ class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg flex it
 </div>
 </main>
 
-<!-- 🔥 核心模块加载 - 使用最简路径格式（推荐） -->
-<script src="js/workbench-config.js"></script>
-<script src="js/workbench-utils.js"></script>
-<script src="js/workbench-modal.js"></script>
-<script src="js/workbench-state.js"></script>
-<script src="js/workbench-storage.js"></script>
-<script src="js/workbench-auth.js"></script>
+<!-- 🔥 模块验证函数 -->
+<script>
+// 全局模块加载检查函数
+window.checkModulesLoaded = function() {
+    var requiredModules = [
+        'WorkbenchConfig',
+        'WorkbenchUtils', 
+        'WorkbenchModal',
+        'WorkbenchState',
+        'WorkbenchStorage'
+    ];
+    
+    var allLoaded = true;
+    requiredModules.forEach(function(mod) {
+        if (typeof window[mod] === 'undefined') {
+            console.error('[Loader] 缺失模块:', mod);
+            allLoaded = false;
+        }
+    });
+    
+    return allLoaded;
+};
+</script>
+
+<!-- 🔥 核心模块加载 - 使用绝对路径（关键修复！）-->
+<script src="/workbench/js/workbench-config.js"></script>
+<script src="/workbench/js/workbench-utils.js"></script>
+<script src="/workbench/js/workbench-modal.js"></script>
+<script src="/workbench/js/workbench-state.js"></script>
+<script src="/workbench/js/workbench-storage.js"></script>
+<script src="/workbench/js/workbench-auth.js"></script>
 
 <!-- Firebase SDK (可选) -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-<script src="js/workbench-firebase.js"></script>
+<script src="/workbench/js/workbench-firebase.js"></script>
 
 <!-- 业务模块 -->
-<script src="js/workbench-dashboard.js"></script>
-<script src="js/workbench-orders.js"></script>
-<script src="js/workbench-suppliers.js"></script>
-<script src="js/workbench-finance.js"></script>
-<script src="js/workbench-expenses.js"></script>
-<script src="js/workbench-crm.js"></script>
+<script src="/workbench/js/workbench-dashboard.js"></script>
+<script src="/workbench/js/workbench-orders.js"></script>
+<script src="/workbench/js/workbench-suppliers.js"></script>
+<script src="/workbench/js/workbench-finance.js"></script>
+<script src="/workbench/js/workbench-expenses.js"></script>
+<script src="/workbench/js/workbench-crm.js"></script>
 
 <!-- 🔥 主应用脚本（必须最后加载） -->
-<script src="js/workbench-app.js"></script>
+<script src="/workbench/js/workbench-app.js"></script>
 
 <!-- 🔥 模块加载完成处理 -->
 <script>
 document.addEventListener('DOMContentLoaded', async function() {
-console.log('[V14.2 PRO] DOM加载完成，等待模块初始化...');
+    console.log('[V14.2 PRO] DOM加载完成，等待模块初始化...');
 
-// 给模块一点时间完成加载
-await new Promise(resolve => setTimeout(resolve, 500));
+    // 给模块一点时间完成加载
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-// 验证所有关键模块
-const requiredModules = [
-'WorkbenchConfig',
-'WorkbenchUtils', 
-'WorkbenchModal',
-'WorkbenchState',
-'WorkbenchStorage',
-'WorkbenchAuth',
-'WorkbenchDashboard',
-'WorkbenchOrders',
-'WorkbenchSuppliers',
-'WorkbenchFinance',
-'WorkbenchExpenses',
-'WorkbenchCRM',
-'app'
-];
+    // 验证所有关键模块
+    var requiredModules = [
+        'WorkbenchConfig',
+        'WorkbenchUtils', 
+        'WorkbenchModal',
+        'WorkbenchState',
+        'WorkbenchStorage',
+        'WorkbenchAuth',
+        'WorkbenchDashboard',
+        'WorkbenchOrders',
+        'WorkbenchSuppliers',
+        'WorkbenchFinance',
+        'WorkbenchExpenses',
+        'WorkbenchCRM',
+        'app'
+    ];
 
-const missing = requiredModules.filter(m => typeof window[m] === 'undefined');
+    var missing = requiredModules.filter(function(m) {
+        return typeof window[m] === 'undefined';
+    });
 
-if (missing.length > 0) {
-console.error('[V14.2 PRO] ❌ 缺失模块:', missing);
-document.getElementById('loading-error').classList.remove('hidden');
-document.getElementById('loading-error').innerHTML = `
-<strong>模块加载失败</strong><br>
-缺失模块: ${missing.join(', ')}<br>
-<button onclick="location.reload()" class="mt-2 px-4 py-2 bg-red-600 rounded hover:bg-red-700">
-重新加载
-</button>
-<a href="diagnostic.html" class="mt-2 ml-2 px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 inline-block">
-系统诊断
-</a>
-`;
-} else {
-console.log('[V14.2 PRO] ✅ 所有模块加载完成');
-console.log('[V14.2 PRO] 已加载:', requiredModules.length, '个模块');
+    if (missing.length > 0) {
+        console.error('[V14.2 PRO] ❌ 缺失模块:', missing);
+        document.getElementById('loading-error').classList.remove('hidden');
+        document.getElementById('loading-error').innerHTML = 
+            '<strong>模块加载失败</strong><br>' +
+            '缺失模块: ' + missing.join(', ') + '<br><br>' +
+            '<strong>可能原因：</strong><br>' +
+            '1. JS 文件路径不正确<br>' +
+            '2. Cloudflare Pages 配置问题<br>' +
+            '3. 网络连接问题<br><br>' +
+            '<button onclick="location.reload()" class="mt-2 px-4 py-2 bg-red-600 rounded hover:bg-red-700">' +
+            '重新加载</button> ' +
+            '<a href="/workbench/diagnostic.html" class="mt-2 ml-2 px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 inline-block">' +
+            '系统诊断</a>';
+    } else {
+        console.log('[V14.2 PRO] ✅ 所有模块加载完成');
+        console.log('[V14.2 PRO] 已加载:', requiredModules.length, '个模块');
 
-// 隐藏加载界面
-setTimeout(() => {
-const loadingEl = document.getElementById('system-loading');
-if (loadingEl) {
-loadingEl.style.opacity = '0';
-loadingEl.style.transition = 'opacity 0.3s ease';
-setTimeout(() => {
-loadingEl.style.display = 'none';
-}, 300);
-}
+        // 隐藏加载界面
+        setTimeout(function() {
+            var loadingEl = document.getElementById('system-loading');
+            if (loadingEl) {
+                loadingEl.style.opacity = '0';
+                loadingEl.style.transition = 'opacity 0.3s ease';
+                setTimeout(function() {
+                    loadingEl.style.display = 'none';
+                }, 300);
+            }
 
-// 启动应用
-if (typeof app !== 'undefined' && app.init) {
-console.log('[V14.2 PRO] 启动应用...');
-app.init();
-}
-}, 300);
-}
+            // 启动应用
+            if (typeof app !== 'undefined' && app.init) {
+                console.log('[V14.2 PRO] 启动应用...');
+                app.init();
+            }
+        }, 300);
+    }
 });
 </script>
 

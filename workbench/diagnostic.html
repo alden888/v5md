@@ -22,6 +22,13 @@ body { font-family: system-ui, sans-serif; background: #030712; }
 </div>
 </div>
 
+<button onclick="location.reload()" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold transition-colors mr-4">
+重新检测
+</button>
+<a href="/workbench/index.html" class="inline-block mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold transition-colors">
+返回主页面
+</a>
+
 <div class="mt-8 p-4 bg-gray-900 rounded-lg">
 <h3 class="font-bold mb-2">建议操作：</h3>
 <ol id="suggestions" class="list-decimal list-inside space-y-1 text-sm text-gray-400">
@@ -29,6 +36,20 @@ body { font-family: system-ui, sans-serif; background: #030712; }
 </ol>
 </div>
 </div>
+
+<!-- 🔥 加载模块以便检测 - 使用绝对路径 -->
+<script src="/workbench/js/workbench-config.js"></script>
+<script src="/workbench/js/workbench-utils.js"></script>
+<script src="/workbench/js/workbench-modal.js"></script>
+<script src="/workbench/js/workbench-state.js"></script>
+<script src="/workbench/js/workbench-storage.js"></script>
+<script src="/workbench/js/workbench-auth.js"></script>
+<script src="/workbench/js/workbench-dashboard.js"></script>
+<script src="/workbench/js/workbench-orders.js"></script>
+<script src="/workbench/js/workbench-suppliers.js"></script>
+<script src="/workbench/js/workbench-finance.js"></script>
+<script src="/workbench/js/workbench-expenses.js"></script>
+<script src="/workbench/js/workbench-crm.js"></script>
 
 <script>
 const results = document.getElementById('results');
@@ -63,7 +84,16 @@ addResult(
 `访问地址: ${currentUrl}`
 );
 
-// 2. 检查 JS 模块
+// 2. 检查路径格式
+const basePath = window.location.pathname;
+const isInWorkbench = basePath.includes('/workbench');
+addResult(
+'路径检测',
+isInWorkbench ? 'ok' : 'warning',
+`当前路径: ${basePath}<br>检测到子目录: ${isInWorkbench ? '是 (/workbench)' : '否'}`
+);
+
+// 3. 检查 JS 模块
 const modules = [
 'WorkbenchConfig',
 'WorkbenchUtils',
@@ -80,9 +110,15 @@ const modules = [
 ];
 
 let loadedCount = 0;
+const loadedList = [];
+const missingList = [];
+
 modules.forEach(mod => {
 if (typeof window[mod] !== 'undefined') {
 loadedCount++;
+loadedList.push(mod);
+} else {
+missingList.push(mod);
 }
 });
 
@@ -92,18 +128,27 @@ addResult(
 'ok',
 `所有模块已加载 (${loadedCount}/${modules.length})`
 );
+} else if (loadedCount > 0) {
+addResult(
+'JavaScript 模块',
+'warning',
+`部分模块已加载 (${loadedCount}/${modules.length})<br>
+<span class="text-green-400">已加载: ${loadedList.join(', ')}</span><br>
+<span class="text-red-400">缺失: ${missingList.join(', ')}</span>`
+);
+issues.push('检查缺失模块的 JS 文件是否存在');
 } else {
-const missing = modules.filter(m => typeof window[m] === 'undefined');
 addResult(
 'JavaScript 模块',
 'error',
-`部分模块未加载 (${loadedCount}/${modules.length})。缺失: ${missing.join(', ')}`
+`所有模块未加载 (${loadedCount}/${modules.length})<br>缺失: ${missingList.join(', ')}`
 );
-issues.push('检查 js/ 文件夹中的文件是否完整');
+issues.push('检查 /workbench/js/ 文件夹中的文件是否完整');
 issues.push('检查浏览器控制台是否有 404 错误');
+issues.push('确认 _headers 和 _redirects 配置正确');
 }
 
-// 3. 检查 localStorage
+// 4. 检查 localStorage
 try {
 localStorage.setItem('test', 'test');
 localStorage.removeItem('test');
@@ -121,7 +166,7 @@ addResult(
 issues.push('检查浏览器隐私设置，确保允许本地存储');
 }
 
-// 4. 检查 Firebase
+// 5. 检查 Firebase
 if (typeof firebase !== 'undefined') {
 addResult(
 'Firebase SDK',
@@ -136,7 +181,7 @@ addResult(
 );
 }
 
-// 5. 检查 CSS
+// 6. 检查 CSS
 const cssLoaded = document.styleSheets.length > 0;
 if (cssLoaded) {
 addResult(
@@ -150,12 +195,45 @@ addResult(
 'warning',
 '未检测到样式表'
 );
-issues.push('检查 css/workbench-v14.css 是否存在');
+issues.push('检查 /workbench/css/workbench-v14.css 是否存在');
 }
 
-// 6. 检查网络连接
+// 7. 测试 JS 文件可访问性
 try {
-const response = await fetch('./index.html', { method: 'HEAD' });
+const testUrl = '/workbench/js/workbench-config.js';
+const response = await fetch(testUrl, { method: 'HEAD' });
+const contentType = response.headers.get('content-type') || 'unknown';
+    
+if (response.ok) {
+addResult(
+'JS 文件访问',
+contentType.includes('javascript') ? 'ok' : 'warning',
+`${testUrl}<br>状态: ${response.status}<br>Content-Type: ${contentType}`
+);
+        
+if (!contentType.includes('javascript')) {
+issues.push('JS 文件的 Content-Type 不正确，请检查 _headers 配置');
+}
+} else {
+addResult(
+'JS 文件访问',
+'error',
+`${testUrl}<br>HTTP ${response.status} - ${response.statusText}`
+);
+issues.push('JS 文件无法访问，检查文件是否存在');
+}
+} catch (e) {
+addResult(
+'JS 文件访问',
+'error',
+`无法测试 JS 文件: ${e.message}`
+);
+issues.push('网络连接问题');
+}
+
+// 8. 检查网络连接
+try {
+const response = await fetch('/workbench/index.html', { method: 'HEAD' });
 if (response.ok) {
 addResult(
 '网络连接',
@@ -179,7 +257,7 @@ addResult(
 issues.push('检查网络连接');
 }
 
-// 7. 浏览器信息
+// 9. 浏览器信息
 addResult(
 '浏览器信息',
 'ok',
@@ -192,20 +270,12 @@ suggestions.innerHTML = '<li class="text-green-500">✅ 系统运行正常！可
 } else {
 suggestions.innerHTML = issues.map(issue => `<li>${issue}</li>`).join('');
 }
-
-// 添加返回按钮
-const backBtn = document.createElement('div');
-backBtn.className = 'mt-6 text-center';
-backBtn.innerHTML = `
-<a href="./index.html" class="inline-block bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold transition-colors">
-返回主页面
-</a>
-`;
-results.appendChild(backBtn);
 }
 
-// 自动开始诊断
-setTimeout(diagnose, 500);
+// 页面加载后延迟执行诊断（等待脚本加载）
+window.addEventListener('load', function() {
+setTimeout(diagnose, 1000);
+});
 </script>
 </body>
 </html>
