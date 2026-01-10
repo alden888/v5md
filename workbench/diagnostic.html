@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>系统诊断 - V14.2 PRO</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body { font-family: system-ui, sans-serif; background: #030712; }
+.status-ok { color: #10b981; }
+.status-error { color: #ef4444; }
+.status-warning { color: #f59e0b; }
+</style>
+</head>
+<body class="text-white p-8">
+<div class="max-w-4xl mx-auto">
+<h1 class="text-3xl font-bold mb-8 text-red-500">🔍 系统诊断工具</h1>
+
+<div id="results" class="space-y-4">
+<div class="bg-gray-900 p-4 rounded-lg">
+<p class="text-gray-400">正在检测...</p>
+</div>
+</div>
+
+<div class="mt-8 p-4 bg-gray-900 rounded-lg">
+<h3 class="font-bold mb-2">建议操作：</h3>
+<ol id="suggestions" class="list-decimal list-inside space-y-1 text-sm text-gray-400">
+<li>等待诊断完成...</li>
+</ol>
+</div>
+</div>
+
+<script>
+const results = document.getElementById('results');
+const suggestions = document.getElementById('suggestions');
+
+function addResult(title, status, message) {
+const statusClass = status === 'ok' ? 'status-ok' : status === 'error' ? 'status-error' : 'status-warning';
+const icon = status === 'ok' ? '✅' : status === 'error' ? '❌' : '⚠️';
+const div = document.createElement('div');
+div.className = 'bg-gray-900 p-4 rounded-lg';
+div.innerHTML = `
+<div class="flex items-start gap-3">
+<span class="text-2xl">${icon}</span>
+<div class="flex-1">
+<h3 class="font-bold ${statusClass}">${title}</h3>
+<p class="text-sm text-gray-400 mt-1">${message}</p>
+</div>
+</div>
+`;
+results.appendChild(div);
+}
+
+async function diagnose() {
+results.innerHTML = '';
+const issues = [];
+
+// 1. 检查当前 URL
+const currentUrl = window.location.href;
+addResult(
+'当前 URL',
+'ok',
+`访问地址: ${currentUrl}`
+);
+
+// 2. 检查 JS 模块
+const modules = [
+'WorkbenchConfig',
+'WorkbenchUtils',
+'WorkbenchModal',
+'WorkbenchState',
+'WorkbenchStorage',
+'WorkbenchAuth',
+'WorkbenchDashboard',
+'WorkbenchOrders',
+'WorkbenchSuppliers',
+'WorkbenchFinance',
+'WorkbenchExpenses',
+'WorkbenchCRM'
+];
+
+let loadedCount = 0;
+modules.forEach(mod => {
+if (typeof window[mod] !== 'undefined') {
+loadedCount++;
+}
+});
+
+if (loadedCount === modules.length) {
+addResult(
+'JavaScript 模块',
+'ok',
+`所有模块已加载 (${loadedCount}/${modules.length})`
+);
+} else {
+const missing = modules.filter(m => typeof window[m] === 'undefined');
+addResult(
+'JavaScript 模块',
+'error',
+`部分模块未加载 (${loadedCount}/${modules.length})。缺失: ${missing.join(', ')}`
+);
+issues.push('检查 js/ 文件夹中的文件是否完整');
+issues.push('检查浏览器控制台是否有 404 错误');
+}
+
+// 3. 检查 localStorage
+try {
+localStorage.setItem('test', 'test');
+localStorage.removeItem('test');
+addResult(
+'localStorage',
+'ok',
+'本地存储可用'
+);
+} catch (e) {
+addResult(
+'localStorage',
+'error',
+`本地存储不可用: ${e.message}`
+);
+issues.push('检查浏览器隐私设置，确保允许本地存储');
+}
+
+// 4. 检查 Firebase
+if (typeof firebase !== 'undefined') {
+addResult(
+'Firebase SDK',
+'ok',
+'Firebase SDK 已加载'
+);
+} else {
+addResult(
+'Firebase SDK',
+'warning',
+'Firebase SDK 未加载（云同步将不可用）'
+);
+}
+
+// 5. 检查 CSS
+const cssLoaded = document.styleSheets.length > 0;
+if (cssLoaded) {
+addResult(
+'CSS 样式',
+'ok',
+`已加载 ${document.styleSheets.length} 个样式表`
+);
+} else {
+addResult(
+'CSS 样式',
+'warning',
+'未检测到样式表'
+);
+issues.push('检查 css/workbench-v14.css 是否存在');
+}
+
+// 6. 检查网络连接
+try {
+const response = await fetch('./index.html', { method: 'HEAD' });
+if (response.ok) {
+addResult(
+'网络连接',
+'ok',
+'可以访问服务器资源'
+);
+} else {
+addResult(
+'网络连接',
+'error',
+`HTTP ${response.status} - ${response.statusText}`
+);
+issues.push('检查服务器状态');
+}
+} catch (e) {
+addResult(
+'网络连接',
+'error',
+`无法连接服务器: ${e.message}`
+);
+issues.push('检查网络连接');
+}
+
+// 7. 浏览器信息
+addResult(
+'浏览器信息',
+'ok',
+`${navigator.userAgent.split('(')[1]?.split(')')[0] || 'Unknown'}`
+);
+
+// 生成建议
+if (issues.length === 0) {
+suggestions.innerHTML = '<li class="text-green-500">✅ 系统运行正常！可以返回主页面使用。</li>';
+} else {
+suggestions.innerHTML = issues.map(issue => `<li>${issue}</li>`).join('');
+}
+
+// 添加返回按钮
+const backBtn = document.createElement('div');
+backBtn.className = 'mt-6 text-center';
+backBtn.innerHTML = `
+<a href="./index.html" class="inline-block bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold transition-colors">
+返回主页面
+</a>
+`;
+results.appendChild(backBtn);
+}
+
+// 自动开始诊断
+setTimeout(diagnose, 500);
+</script>
+</body>
+</html>
