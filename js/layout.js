@@ -265,7 +265,7 @@ const V5Layout = (() => {
                             </div>
                             <div class="flex gap-6">
                                 <a href="contact.html" class="hover:text-gray-400">Contact Us</a>
-                                <a href="#" class="hover:text-gray-400">Privacy Policy</a>
+                                <a href="privacy.html" class="hover:text-gray-400">Privacy Policy</a>
                             </div>
                         </div>
                     </div>
