@@ -6,7 +6,7 @@
 > Factory Direct | ISO 13485 | CE | FDA Certified
 
 [![Website](https://img.shields.io/badge/Website-v5md.com-blue)](https://v5md.com)
-[![Version](https://img.shields.io/badge/Version-2.7.0-green)]()
+[![Version](https://img.shields.io/badge/Version-2.8.0-green)]()
 [![License](https://img.shields.io/badge/License-Proprietary-red)]()
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-38B2AC?logo=tailwind-css&logoColor=white)
@@ -62,12 +62,17 @@ The site is built as a **high-performance static web application**, optimized fo
   - Payment strategy ("Two-Lane" system for fast delivery)
 - **Categories**: Sourcing Strategy, Technical Specs, Compliance (MDR), Sterilization Standards
 
-### 7. 💳 Payment Gateway Integration
+### 7. 📕 Product Catalog PDF
+- **Online Viewing**: Direct PDF access from product catalog page
+- **GitHub-hosted**: `pdf/Catalog.pdf` auto-deployed with site
+- **No Backend Required**: Static file served via CDN
+
+### 8. 💳 Payment Gateway Integration
 - **Stripe**: Credit card payments for samples (<$500)
 - **Bank Wire (T/T)**: For bulk orders (>$500)
 - **Dual-lane system**: Fast lane (Credit Card) for trials, Commercial lane (T/T) for production
 
-### 8. 🔒 Internal Workbench (Private)
+### 9. 🔒 Internal Workbench (Private)
 - **URL**: `/workbench/`
 - **Authentication**: Password-protected (SHA-256 hashed in `workbench-auth.js`) with brute-force protection
 - **Modules**: 
@@ -76,7 +81,7 @@ The site is built as a **high-performance static web application**, optimized fo
   - Config utilities (`workbench-config.js`)
 - **Storage**: Cloudflare Workers KV + localStorage fallback
 
-### 9. 📊 Performance Monitoring
+### 10. 📊 Performance Monitoring
 - **Core Web Vitals Tracking**: `performance-monitor.js` records TTFB, DOM Ready, Full Load metrics
 - **Optimized Loading**: Non-critical JS deferred, explicit image dimensions (0 CLS)
 
@@ -350,6 +355,23 @@ lhci autorun --config=lighthouserc.json
 
 ## 🗓️ Changelog
 
+### [2.8.0] - 2025-03-22
+#### Added
+- Product Catalog PDF online viewer (`catalog.html` sidebar)
+- QA Team on-site photo in homepage hero section
+
+#### Changed
+- Updated all JS file versions across site for cache busting
+- Migrated `layout.js` V5Layout to `window` object for better module detection
+
+#### Fixed
+- Privacy Policy footer link now correctly points to `privacy.html`
+- ON-SITE PROTOCOL label repositioned to top-left of image
+- Fixed layout.js loading failure on Cloudflare Pages (delayed config access)
+- PDF links now use relative paths (hide GitHub repo from customers)
+
+---
+
 ### [2.7.0] - 2025-01-02
 #### Added
 - Payment portal (`payment.html`) with Stripe integration (Two-Lane payment system)
@@ -376,6 +398,6 @@ lhci autorun --config=lighthouserc.json
 
 ---
 
-**Last Updated**: January 2, 2025  
+**Last Updated**: March 22, 2025  
 **Maintained by**: V5 Medical Development Team  
 **Build Status**: ✅ Stable (Production-Ready)
