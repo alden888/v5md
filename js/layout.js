@@ -7,15 +7,18 @@
  */
 
 const V5Layout = (() => {
-    const config = window.V5Config;
-    if (!config) {
-        console.error('[Layout] V5Config not found. Ensure config.js is loaded before layout.js.');
-        return { init: () => {} };
-    }
-
     class LayoutManager {
         constructor() {
-            this.config = config;
+            // 延迟获取配置，避免在模块加载时 config.js 尚未执行
+            this.config = window.V5Config;
+            if (!this.config) {
+                console.error('[Layout] V5Config not found. Ensure config.js is loaded before layout.js.');
+                // 使用默认配置作为回退
+                this.config = {
+                    IMAGES: { LOGO: 'images/v5logo.png', LOGO_LOCAL: 'images/v5logo.png' },
+                    CONTACT: { WHATSAPP: { API_URL: 'https://wa.me/447895047944' } }
+                };
+            }
             this.currentPage = this._detectPage();
         }
 
@@ -311,5 +314,23 @@ const V5Layout = (() => {
     return new LayoutManager();
 })();
 
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => V5Layout.init());
-else V5Layout.init();
+// 延迟初始化，确保所有依赖已就绪
+function initLayout() {
+    if (window.V5Layout && typeof window.V5Layout.init === 'function') {
+        try {
+            window.V5Layout.init();
+        } catch (e) {
+            console.error('[Layout] Initialization failed:', e);
+        }
+    }
+}
+
+// 等待 DOM 和 config.js 都就绪
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+        // 给 config.js 额外一点时间设置全局变量
+        setTimeout(initLayout, 10);
+    });
+} else {
+    setTimeout(initLayout, 10);
+}

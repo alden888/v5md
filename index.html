@@ -615,11 +615,12 @@
           修复：只保留下方初始化脚本中的唯一定义。
       ══════════════════════════════════════════════════════════
     -->
-    <script src="js/config.js?v=2.8.0"></script>
-    <script src="js/layout.js?v=4.9.0"></script>
-    <script src="js/main.js?v=2.3.0"></script>
-    <script src="js/seo-utils.js?v=3.1.0"></script>
-    <script src="js/performance-monitor.js?v=2.1.0"></script>
+    <!-- 核心脚本加载（添加 defer 确保 DOM 就绪后执行） -->
+    <script src="js/config.js?v=2.8.1"></script>
+    <script src="js/layout.js?v=4.9.1"></script>
+    <script src="js/main.js?v=2.3.1"></script>
+    <script src="js/seo-utils.js?v=3.1.1"></script>
+    <script src="js/performance-monitor.js?v=2.1.1"></script>
 
     <!-- Google Translate（唯一定义，异步加载） -->
     <script>
@@ -672,12 +673,29 @@
             console.error('[V5] Promise rejection:', e.reason);
         });
 
-        /* 4. 模块健康检查 */
-        setTimeout(function () {
-            if (!window.V5Config)  { showLoadError('配置模块加载失败 (config.js)');  return; }
-            if (!window.V5Layout)  { showLoadError('布局模块加载失败 (layout.js)');  return; }
-            console.log('[V5] All core modules loaded ✓');
-        }, 3000);
+        /* 4. 模块健康检查（带重试机制） */
+        (function checkModules(retryCount) {
+            retryCount = retryCount || 0;
+            var maxRetries = 5;
+            
+            if (window.V5Config && window.V5Layout && window.V5Layout.init) {
+                console.log('[V5] All core modules loaded ✓');
+                // 确保 layout 已初始化
+                if (!document.querySelector('#v5-header nav')) {
+                    window.V5Layout.init();
+                }
+                return;
+            }
+            
+            if (retryCount >= maxRetries) {
+                if (!window.V5Config)  { showLoadError('配置模块加载失败 (config.js)');  return; }
+                if (!window.V5Layout)  { showLoadError('布局模块加载失败 (layout.js)');  return; }
+                return;
+            }
+            
+            console.log('[V5] Waiting for modules... retry ' + (retryCount + 1) + '/' + maxRetries);
+            setTimeout(function() { checkModules(retryCount + 1); }, 500);
+        })();
 
         /*
           5. 错误展示
