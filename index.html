@@ -350,8 +350,15 @@
                              loading="lazy"
                              decoding="async">
                         <div class="absolute bottom-6 left-6 bg-white/95 backdrop-blur px-5 py-3 rounded-lg shadow-lg border border-gray-100 flex items-center gap-4">
-                            <div class="bg-green-100 p-2 rounded-full text-green-600">
-                                <i class="fas fa-user-shield text-xl" aria-hidden="true"></i>
+                            <!-- QA Team Avatar -->
+                            <div class="relative w-12 h-12 rounded-full overflow-hidden border-2 border-green-500 shadow-md flex-shrink-0">
+                                <img src="images/qa-team-on-site.jpg"
+                                     onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fas fa-user-shield text-green-600 text-xl\'></i>'; this.parentElement.classList.add('bg-green-100', 'flex', 'items-center', 'justify-center')"
+                                     class="w-full h-full object-cover"
+                                     alt="V5 QA Team"
+                                     width="48"
+                                     height="48"
+                                     loading="lazy">
                             </div>
                             <div>
                                 <p class="text-xs text-gray-500 uppercase font-bold">On-Site Protocol</p>
