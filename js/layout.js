@@ -314,6 +314,9 @@ const V5Layout = (() => {
     return new LayoutManager();
 })();
 
+// 关键：将 V5Layout 挂载到全局，供 index.html 检查
+window.V5Layout = V5Layout;
+
 // 延迟初始化，确保所有依赖已就绪
 function initLayout() {
     if (window.V5Layout && typeof window.V5Layout.init === 'function') {
