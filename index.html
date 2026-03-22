@@ -342,23 +342,16 @@
                           [P1-4 FIX] 添加 width/height 防 CLS + decoding="async" 避免阻塞主线程。
                           原始代码只有 loading="lazy"，缺少尺寸声明，图片加载时页面会抖动。
                         -->
-                        <img src="images/factory-audit.jpg"
-                             onerror="this.src='https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?w=800&q=80'"
+                        <img src="images/qa-team-on-site.jpg"
+                             onerror="this.src='images/factory-audit.jpg'"
                              class="relative rounded-xl shadow-2xl w-full object-cover h-[450px] transition duration-500 transform group-hover:scale-[1.01]"
                              alt="V5 Medical QA team conducting an on-site factory audit"
                              width="800" height="450"
                              loading="lazy"
                              decoding="async">
                         <div class="absolute bottom-6 left-6 bg-white/95 backdrop-blur px-5 py-3 rounded-lg shadow-lg border border-gray-100 flex items-center gap-4">
-                            <!-- QA Team Avatar -->
-                            <div class="relative w-12 h-12 rounded-full overflow-hidden border-2 border-green-500 shadow-md flex-shrink-0">
-                                <img src="images/qa-team-on-site.jpg"
-                                     onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fas fa-user-shield text-green-600 text-xl\'></i>'; this.parentElement.classList.add('bg-green-100', 'flex', 'items-center', 'justify-center')"
-                                     class="w-full h-full object-cover"
-                                     alt="V5 QA Team"
-                                     width="48"
-                                     height="48"
-                                     loading="lazy">
+                            <div class="bg-green-100 p-2 rounded-full text-green-600">
+                                <i class="fas fa-user-shield text-xl" aria-hidden="true"></i>
                             </div>
                             <div>
                                 <p class="text-xs text-gray-500 uppercase font-bold">On-Site Protocol</p>
