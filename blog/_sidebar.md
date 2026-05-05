@@ -1,14 +1,4 @@
 <div class="sidebar-category">
-  <span class="category-tag tag-home">Knowledge Hub</span>
-  <ul class="sidebar-list">
-    <li>
-      <i class="fas fa-home sidebar-icon"></i> 
-      <a href="#/">Insights Overview</a>
-    </li>
-  </ul>
-</div>
-
-<div class="sidebar-category">
   <span class="category-tag tag-chain">Sourcing Strategy</span>
   <ul class="sidebar-list">
     <li class="sidebar-highlight">
@@ -33,9 +23,15 @@
 </div>
 
 <div class="sidebar-category">
-  <span class="category-tag tag-product">Technical Specs</span>
+  <span class="category-tag tag-product">Packaging Solutions</span>
   <ul class="sidebar-list">
     <li class="sidebar-highlight">
+      <i class="fas fa-box-open sidebar-icon text-blue-500"></i> 
+      <a href="#/posts/comprehensive-packaging-solutions.md">
+        Comprehensive Packaging Solutions
+      </a>
+    </li>
+    <li>
       <i class="fas fa-star sidebar-icon text-yellow-500"></i> 
       <a href="#/posts/tyvek-vs-paper.md">
         Tyvek vs Paper Packaging

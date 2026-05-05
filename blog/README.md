@@ -26,8 +26,10 @@
   
 - **[MOQ vs. Unit Price: The Real Cost Curve](posts/moq-vs-price.md)** *Why fighting for the lowest price often increases your Total Landed Cost (TLC). Strategic negotiation tactics for long-term supply.*
 
-### 📦 **Technical Specifications**
-*Materials, Packaging, and Standards.*
+### 📦 **Packaging & Logistics**
+*Sterile barrier systems, sterilization compatibility, and global distribution.*
+
+- **[Comprehensive Packaging Solutions for Global Clients](posts/comprehensive-packaging-solutions.md)** *End-to-end packaging engineering—from material selection and sterilization validation to regulatory documentation and multi-SKU consolidation.*
 
 - **[Tyvek vs. Medical Paper Packaging](posts/tyvek-vs-paper.md)** *Choosing the right Sterile Barrier System (SBS). When to pay extra for Tyvek to prevent shelf-life failures during shipping.*
 
