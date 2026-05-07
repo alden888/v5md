@@ -30,6 +30,22 @@ www.v5md.com/* https://v5md.com/:splat 301!
 /chat        https://api.whatsapp.com/send/?phone=447895047944 302
 /talk        https://api.whatsapp.com/send/?phone=447895047944 302
 
+# ------------------------------
+# TEAM MEMBERS WHATSAPP SHORTCUTS
+# ------------------------------
+
+# David Cheng - CEO Executive Assistant
+/david       https://api.whatsapp.com/send/?phone=8618015570289&text=Hi%20David%2C%20I%20am%20interested%20in%20V5%20Medical%20products.%20Please%20contact%20me. 302
+
+# Leo Bennett - Negotiation Officer
+/leo         https://api.whatsapp.com/send/?phone=8615133008348&text=Hi%20Leo%2C%20I%20am%20interested%20in%20V5%20Medical%20products.%20Please%20contact%20me. 302
+
+# Kellan Ford - Commander
+/kellan      https://api.whatsapp.com/send/?phone=8617365387650&text=Hi%20Kellan%2C%20I%20am%20interested%20in%20V5%20Medical%20products.%20Please%20contact%20me. 302
+
+# Support - CEO Main Line
+/support     https://api.whatsapp.com/send/?phone=8618012669897&text=Hi%20V5%20Medical%20Support%2C%20I%20need%20assistance. 302
+
 # Product-specific inquiries
 /sutures     https://api.whatsapp.com/send/?phone=447895047944&text=Hi%20V5%20Medical%2C%20I%20am%20interested%20in%20your%20surgical%20sutures.%20Please%20send%20me%20a%20quote. 302
 /packs       https://api.whatsapp.com/send/?phone=447895047944&text=Hi%20V5%20Medical%2C%20I%20am%20interested%20in%20your%20surgical%20packs.%20Please%20send%20me%20a%20quote. 302
