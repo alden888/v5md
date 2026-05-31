@@ -12,6 +12,13 @@
 
 ---
 
+## 📅 Company News
+
+### **[June 2026 Greeting Card — Summer Partnership](posts/june-greeting-card.md)**
+> *As summer begins, we celebrate the warmth of our partnership. Wishing all our partners a productive and successful month ahead.* 🌞
+
+---
+
 ## 📚 Knowledge Base
 
 ### 🛡️ **Regulatory & Compliance**
@@ -54,4 +61,4 @@ Don't let compliance risks slow down your sales.
 
 ---
 
-*© 2025 V5 Medical LTD | Supply Chain Intelligence Hub*
+*© 2026 V5 Medical LTD | Supply Chain Intelligence Hub*

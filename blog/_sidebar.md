@@ -1,4 +1,16 @@
 <div class="sidebar-category">
+  <span class="category-tag tag-main">Company News</span>
+  <ul class="sidebar-list">
+    <li class="sidebar-highlight">
+      <i class="fas fa-sun sidebar-icon text-orange-500"></i> 
+      <a href="#/posts/june-greeting-card.md">
+        June 2026 Greeting Card
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div class="sidebar-category">
   <span class="category-tag tag-chain">Sourcing Strategy</span>
   <ul class="sidebar-list">
     <li class="sidebar-highlight">
