@@ -234,12 +234,12 @@
 
     <div id="v5-footer"></div>
 
-    <script src="js/config.js?v=2.8.2"></script>
-    <script src="js/layout.js?v=4.9.2"></script>
-    <script src="js/seo-utils.js?v=3.1.2"></script>
-    <script src="js/complete-products.js?v=3.3.1"></script>
-    <script src="js/product-loader.js?v=2.0.1"></script>
-    <script src="js/main.js?v=2.3.2"></script>
+    <script src="js/config.js?v=2.8.2" defer></script>
+    <script src="js/layout.js?v=4.9.3" defer></script>
+    <script src="js/seo-utils.js?v=3.1.0" defer></script>
+    <script src="js/complete-products.js?v=3.3.1" defer></script>
+    <script src="js/product-loader.js?v=2.0.1" defer></script>
+    <script src="js/main.js?v=2.3.2" defer></script>
 
     <script>
         function resolveImage(rawPath) {
@@ -275,6 +275,21 @@
 
         function renderProductPage(product) {
             if (window.seoUtils) window.seoUtils.updatePage({ title: `${product.name} Manufacturer | V5 Medical`, description: `Wholesale ${product.name}. ISO 13485 & CE.`, image: product.images[0] });
+
+            /*
+              [SEO FIX] canonical 指向对应的静态产品页 /products/<id>.html。
+              本页为 JS 动态渲染（?id=xxx），与静态页内容重复；
+              canonical 将权重汇聚到可被爬虫完整读取的静态版本，
+              避免重复内容分散排名。同时静态页互链回本页不影响用户体验。
+            */
+            let canon = document.querySelector('link[rel="canonical"]');
+            if (!canon) {
+                canon = document.createElement('link');
+                canon.rel = 'canonical';
+                document.head.appendChild(canon);
+            }
+            canon.href = `https://v5md.com/products/${product.id}.html`;
+
             document.getElementById('loading-state').classList.add('hidden');
             document.getElementById('product-content').classList.remove('hidden');
             setText('product-name', product.name);
@@ -313,6 +328,7 @@
         }
         
         // 🔥 核心逻辑优化：根据产品分类推荐博客
+        // [SEO FIX] 链接全部从 Docsify hash 路由改为可索引的静态文章页
         function renderRelatedInsights(category) {
             if (!category) return;
             const container = document.getElementById('blog-cards');
@@ -325,13 +341,13 @@
                 posts.push({
                     title: "CE Audit Failure Reasons",
                     desc: "Why 40% of suture technical files get rejected.",
-                    link: "/blog/#/posts/ce-audit-failure",
+                    link: "/blog/posts/ce-audit-failure.html",
                     tag: "Compliance"
                 });
                 posts.push({
                     title: "MOQ vs Unit Price Strategy",
                     desc: "How to negotiate suture pricing effectively.",
-                    link: "/blog/#/posts/moq-vs-price",
+                    link: "/blog/posts/moq-vs-price.html",
                     tag: "Strategy"
                 });
             } 
@@ -340,13 +356,13 @@
                 posts.push({
                     title: "Dental Kit Regulatory Guide",
                     desc: "FDA 510(k) vs EU MDR for oral care products.",
-                    link: "/blog/#/posts/ce-audit-failure", // 暂指向通用合规，后续可补 dental-compliance.md
+                    link: "/blog/posts/ce-audit-failure.html", // 暂指向通用合规，后续可补 dental-compliance.md
                     tag: "Dental"
                 });
                 posts.push({
                     title: "Sterilization: EtO vs Gamma",
                     desc: "Validation protocols for dental consumables.",
-                    link: "/blog/#/posts/sterilization-validation",
+                    link: "/blog/posts/sterilization-validation.html",
                     tag: "Technical"
                 });
             } 
@@ -355,13 +371,13 @@
                 posts.push({
                     title: "Sterilization Validation Guide",
                     desc: "Critical bio-burden limits for injection devices.",
-                    link: "/blog/#/posts/sterilization-validation",
+                    link: "/blog/posts/sterilization-validation.html",
                     tag: "Technical"
                 });
                 posts.push({
                     title: "CE Audit Failure Reasons",
                     desc: "Why Class IIa/IIb injection devices get rejected.",
-                    link: "/blog/#/posts/ce-audit-failure",
+                    link: "/blog/posts/ce-audit-failure.html",
                     tag: "Compliance"
                 });
             }
@@ -370,13 +386,13 @@
                 posts.push({
                     title: "Sterilization: EtO vs Gamma",
                     desc: "Which method validates better for surgical packs?",
-                    link: "/blog/#/posts/sterilization-validation",
+                    link: "/blog/posts/sterilization-validation.html",
                     tag: "Technical"
                 });
                 posts.push({
                     title: "Tyvek vs Medical Paper",
                     desc: "Choosing the right sterile barrier system.",
-                    link: "/blog/#/posts/tyvek-vs-paper",
+                    link: "/blog/posts/tyvek-vs-paper.html",
                     tag: "Packaging"
                 });
             } 
@@ -385,13 +401,13 @@
                 posts.push({
                     title: "Integrator vs Factory",
                     desc: "Who passes the audit? The truth about supply chain.",
-                    link: "/blog/#/posts/integrator-model",
+                    link: "/blog/posts/integrator-model.html",
                     tag: "Sourcing"
                 });
                 posts.push({
                     title: "CE Audit Failure Reasons",
                     desc: "Documentation gaps are the #1 killer of tenders.",
-                    link: "/blog/#/posts/ce-audit-failure",
+                    link: "/blog/posts/ce-audit-failure.html",
                     tag: "Compliance"
                 });
             }
@@ -434,6 +450,3 @@
     <div id="google_translate_element" class="fixed top-4 right-4 z-50"></div>
 </body>
 </html>
-
-
-

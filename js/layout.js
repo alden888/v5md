@@ -2,8 +2,13 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 4.8.3 (Update: Added Payment Gateway Link)
- * @updated 2025-12-28
+ * @version 4.9.3 (Update: Site-wide GA4 auto-injection)
+ * @updated 2026-07-18
+ *
+ * [CHANGELOG 4.9.3]
+ * - [SEO] 新增 _loadAnalytics()：所有使用 layout.js 的页面自动加载
+ *   GA4 (G-JE15YSMC2W)。原主站页面（index/about/catalog/contact 等）
+ *   完全没有 GA 统计，仅博客有（且被旧 CSP 拦截）。
  */
 
 const V5Layout = (() => {
@@ -27,9 +32,29 @@ const V5Layout = (() => {
             this.renderHeader();
             this.renderFooter();
             this.renderFloatingElements();
-            this.highlightCurrentPage(); 
+            this.highlightCurrentPage();
+            this._loadAnalytics();
             window.dispatchEvent(new Event('v5-layout-ready'));
-            console.log('[Layout] Initialized v4.8.3 (Payment Link Added)');
+            console.log('[Layout] Initialized v4.9.3 (GA4 Auto-Injection)');
+        }
+
+        /**
+         * [SEO] 全站 GA4 统计注入（幂等）
+         * 解决主站无统计、转化事件（WhatsApp 点击/表单提交）无法归因的问题。
+         */
+        _loadAnalytics() {
+            const GA_ID = 'G-JE15YSMC2W';
+            if (window.gtag || document.querySelector(`script[src*="${GA_ID}"]`)) return;
+
+            const s = document.createElement('script');
+            s.async = true;
+            s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+            document.head.appendChild(s);
+
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function () { window.dataLayer.push(arguments); };
+            window.gtag('js', new Date());
+            window.gtag('config', GA_ID, { anonymize_ip: true });
         }
 
         injectStyles() {

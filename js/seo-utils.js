@@ -1,8 +1,18 @@
 /**
  * V5 Medical Enhanced SEO Utilities
  * Generates dynamic JSON-LD structured data for Google Rich Snippets.
- * @version 3.0.0
- * @updated 2024-12-16
+ * @version 3.1.0
+ * @updated 2026-07-18
+ *
+ * [CHANGELOG 3.1.0]
+ * - [FIX] Product schema 移除 price: "0" 的占位 offers。
+ *   Google 要求 price 必须真实，占位价格会被判定为误导性结构化数据，
+ *   可能导致富媒体结果被取消资格。B2B "Contact for Price" 模式
+ *   正确做法是省略 offers 字段。
+ * - [FIX] 移除 injectAllSchemas 中的 FAQ 自动注入。
+ *   Google 指南要求 FAQ 结构化数据必须与页面可见内容一一对应，
+ *   JS 注入无可见内容的 FAQ 属于违规。首页现已有真实可见的
+ *   FAQ 板块和与之匹配的静态 FAQPage schema。
  */
 
 class EnhancedSEOUtils {
@@ -23,13 +33,14 @@ class EnhancedSEOUtils {
         if (data.image) {
             document.querySelector('meta[property="og:image"]')?.setAttribute('content', this._resolveUrl(data.image));
         }
-        
+
         // 自动注入 Schema
         this.injectAllSchemas(data);
     }
 
     /**
      * 2. 生成产品结构化数据 (Product Schema)
+     * [FIX] B2B 询盘模式不包含 offers/price 字段（合规）
      */
     generateProductSchema(product) {
         // 防御性检查：确保 images 是数组
@@ -41,7 +52,7 @@ class EnhancedSEOUtils {
             "name": product.name,
             "description": product.short || product.description,
             "sku": product.id,
-            "mpn": product.id.toUpperCase(),
+            "mpn": String(product.id).toUpperCase(),
             "image": images.map(img => this._resolveUrl(img)),
             "brand": {
                 "@type": "Brand",
@@ -52,46 +63,29 @@ class EnhancedSEOUtils {
                 "@type": "Organization",
                 "name": "V5 Medical LTD",
                 "url": "https://v5md.com"
-            },
-            "offers": {
-                "@type": "Offer",
-                "url": window.location.href,
-                "priceCurrency": "USD",
-                "price": "0", // Contact for price (Google requires a price, 0 acts as placeholder)
-                "priceValidUntil": this._getNextYearDate(),
-                "availability": "https://schema.org/InStock",
-                "itemCondition": "https://schema.org/NewCondition",
-                "seller": { "@type": "Organization", "name": "V5 Medical LTD" }
             }
         };
+
+        // 认证信息作为附加属性输出（增强 E-E-A-T 信号，不影响富媒体资格）
+        if (Array.isArray(product.certifications) && product.certifications.length > 0) {
+            schema.additionalProperty = product.certifications.map(cert => ({
+                "@type": "PropertyValue",
+                "name": "Certification",
+                "value": cert
+            }));
+        }
+
         return schema;
     }
 
     /**
-     * 3. 生成 FAQ 结构化数据
+     * 3. [DEPRECATED] FAQ 结构化数据
+     * 不再自动注入。FAQ schema 必须对应页面可见内容，
+     * 请在 HTML 中静态编写匹配的 <script type="application/ld+json">。
      */
     generateFAQSchema() {
-        return {
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-                {
-                    "@type": "Question",
-                    "name": "What certifications does V5 Medical hold?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "V5 Medical LTD holds ISO 13485, CE Mark, and FDA registrations for medical device manufacturing." }
-                },
-                {
-                    "@type": "Question",
-                    "name": "What is the minimum order quantity (MOQ)?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "MOQ varies by product category. We support flexible MOQs for trial orders. Contact our sales team for details." }
-                },
-                {
-                    "@type": "Question",
-                    "name": "Do you offer OEM/ODM services?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Yes, we provide comprehensive custom branding (OEM) and product development (ODM) services for global partners." }
-                }
-            ]
-        };
+        console.warn('[SEO] generateFAQSchema() is deprecated. Use static FAQPage JSON-LD matching visible content.');
+        return null;
     }
 
     /**
@@ -149,20 +143,19 @@ class EnhancedSEOUtils {
     /**
      * 💉 核心：注入所有 Schema
      */
-    injectAllSchemas(data) {
+    injectAllSchemas(data = {}) {
         const schemas = [];
 
         // Product
         if (data.product) schemas.push(this.generateProductSchema(data.product));
-        
+
         // Breadcrumb
         if (data.breadcrumb) {
             const breadcrumbSchema = this.generateBreadcrumbSchema(data.breadcrumb);
             if (breadcrumbSchema) schemas.push(breadcrumbSchema);
         }
 
-        // FAQ (手动开启)
-        if (data.includeFAQ) schemas.push(this.generateFAQSchema());
+        // [REMOVED] includeFAQ 分支已移除 —— FAQ 必须与可见内容匹配（见文件头说明）
 
         // Local Business (手动开启)
         if (data.includeLocalBusiness) schemas.push(this.generateLocalBusinessSchema());
@@ -189,12 +182,6 @@ class EnhancedSEOUtils {
         // 使用 window.imageUtils 的逻辑（如果有）或简单拼接
         if (window.imageUtils) return window.imageUtils.getImageUrl(path);
         return `${this.baseUrl}/${path.replace(/^\/+/, '')}`;
-    }
-
-    _getNextYearDate() {
-        const date = new Date();
-        date.setFullYear(date.getFullYear() + 1);
-        return date.toISOString().split('T')[0];
     }
 }
 

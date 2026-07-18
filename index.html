@@ -19,6 +19,13 @@
   ║  [P2-1] L14-15    preconnect 缺 crossorigin                     ║
   ║  [P2-2] L188      prose 类在 CDN Tailwind 无效                  ║
   ║  [P2-3] L81-86    WhatsApp 浮钮与 layout.js 注入重复            ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║  SEO 优化: 2026-07-18                                           ║
+  ║  [SEO-1] title/description/H1 注入核心 B2B 关键词               ║
+  ║  [SEO-2] 移除 JS 注入的隐形 FAQ schema（违规），改为页面          ║
+  ║          可见 FAQ 板块 + 静态匹配的 FAQPage JSON-LD              ║
+  ║  [SEO-3] 博客卡片链接从 hash 路由改为可索引的静态文章页          ║
+  ║  [SEO-4] 核心 JS 增加 defer，消除渲染阻塞                        ║
   ╚══════════════════════════════════════════════════════════════════╝
 -->
 
@@ -29,20 +36,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- SEO: Primary Meta -->
-    <title>V5 Medical: Strategic Supply Chain &amp; Compliance Integrator</title>
-    <meta name="description" content="V5 Medical LTD: ISO 13485 compliant medical supply chain integrator. Audited manufacturing, independent QC, and regulatory documentation for global distributors.">
-    <meta name="keywords" content="medical supply chain integrator, surgical sutures OEM, medical device registration, ISO 13485 audit, China medical sourcing">
+    <!-- [SEO-1] Primary Meta：前置高意向 B2B 关键词，品牌词置后 -->
+    <title>Surgical Sutures &amp; Medical Consumables Supplier | V5 Medical</title>
+    <meta name="description" content="ISO 13485 certified supplier of surgical sutures, sterile packs & medical consumables from China. Factory-direct OEM/ODM with CE & FDA documentation for global distributors.">
+    <meta name="keywords" content="surgical sutures supplier, medical consumables manufacturer China, sterile surgical packs OEM, absorbable suture factory, ISO 13485 medical supplier, medical device sourcing China">
     <meta name="author" content="V5 Medical LTD">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <link rel="canonical" href="https://v5md.com">
+    <link rel="canonical" href="https://v5md.com/">
     <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
 
     <!-- SEO: Open Graph -->
-    <meta property="og:title" content="V5 Medical – Compliance &amp; Supply Chain Solutions">
-    <meta property="og:description" content="Factories Produce. We Orchestrate. Your strategic partner for certified medical consumables.">
+    <meta property="og:title" content="V5 Medical – Surgical Sutures &amp; Medical Consumables Supplier">
+    <meta property="og:description" content="ISO 13485 certified medical consumables supply chain integrator. Audited manufacturing, independent QC, and regulatory documentation for global distributors.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://v5md.com">
+    <meta property="og:url" content="https://v5md.com/">
     <meta property="og:image" content="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -115,6 +122,19 @@
             border:4px solid #e5e7eb; border-top-color:#1e40af;
             animation:spin .8s linear infinite;
         }
+
+        /* [SEO-2] FAQ 手风琴样式（纯 HTML details，无需 JS，爬虫可读） */
+        .faq-item { border:1px solid #e5e7eb; border-radius:.75rem; background:#fff; }
+        .faq-item summary {
+            cursor:pointer; padding:1rem 1.25rem; font-weight:600; color:#111827;
+            display:flex; justify-content:space-between; align-items:center; list-style:none;
+        }
+        .faq-item summary::-webkit-details-marker { display:none; }
+        .faq-item summary::after {
+            content:'+'; font-size:1.25rem; color:#1e40af; font-weight:700; flex-shrink:0; margin-left:1rem;
+        }
+        .faq-item[open] summary::after { content:'−'; }
+        .faq-item .faq-answer { padding:0 1.25rem 1.25rem; color:#4b5563; font-size:.95rem; line-height:1.7; }
     </style>
 
     <!-- SEO: JSON-LD Structured Data -->
@@ -126,10 +146,10 @@
             "name": "V5 Medical LTD",
             "url": "https://v5md.com",
             "logo": "https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png",
-            "description": "Strategic Medical Supply Chain & Compliance Integrator.",
+            "description": "ISO 13485 certified supplier of surgical sutures, sterile packs and medical consumables for global distributors.",
             "foundingDate": "2023",
             "areaServed": ["Global", "Europe", "Middle East", "Southeast Asia"],
-            "knowsAbout": ["Medical Device Regulation", "ISO 13485", "Supply Chain Management", "Surgical Sutures"],
+            "knowsAbout": ["Medical Device Regulation", "ISO 13485", "Supply Chain Management", "Surgical Sutures", "Medical Consumables"],
             "contactPoint": {
                 "@type": "ContactPoint",
                 "contactType": "Sales",
@@ -144,6 +164,40 @@
             "serviceType": "Medical Device Registration Support"
         }
     ]
+    </script>
+
+    <!--
+      [SEO-2] 静态 FAQPage Schema —— 与下方页面可见 FAQ 板块内容一一对应。
+      原方案由 seo-utils.js 在客户端注入无可见内容的 FAQ，违反 Google
+      结构化数据指南，已移除。注意：FAQ 内容修改时必须同步更新此处。
+    -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What certifications do V5 Medical consumables carry?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Our manufacturing partners operate under ISO 13485:2016 quality management systems. Products carry CE marking under EU MDR, and we provide full technical documentation packages (including sterilization validation and test reports) to support FDA registration and local market approvals." }
+            },
+            {
+                "@type": "Question",
+                "name": "What is your minimum order quantity (MOQ)?",
+                "acceptedAnswer": { "@type": "Answer", "text": "MOQ varies by product category. We support flexible MOQs for pilot and trial orders so new distributors can verify quality before scaling. Contact our sales team with your target SKU list for an exact quotation." }
+            },
+            {
+                "@type": "Question",
+                "name": "Do you offer OEM/ODM private labeling?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes. We provide comprehensive OEM branding (custom packaging, labels, IFU) and ODM product development for established distributors, including regulatory documentation issued under your brand where applicable." }
+            },
+            {
+                "@type": "Question",
+                "name": "Which markets do you ship to and what are the lead times?",
+                "acceptedAnswer": { "@type": "Answer", "text": "We ship worldwide from Shanghai/Ningbo ports, with established distributor networks in Europe, the Middle East, and Southeast Asia. Typical lead time is 3–7 days for samples and 15–30 days for production orders, depending on sterilization and customization requirements." }
+            }
+        ]
+    }
     </script>
 </head>
 
@@ -179,7 +233,7 @@
                 <img src="images/hero-bg.jpg"
                      onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1920&q=80&auto=format&fit=crop'"
                      class="w-full h-full object-cover object-center hero-bg-image"
-                     alt=""
+                     alt="V5 Medical certified medical consumables manufacturing facility"
                      width="1920" height="1080"
                      fetchpriority="high"
                      decoding="sync">
@@ -236,18 +290,22 @@
                 <img src="https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png"
                      onerror="this.style.display='none'"
                      class="h-20 md:h-28 mx-auto mb-6 drop-shadow-2xl"
-                     alt="V5 Medical LTD logo"
+                     alt="V5 Medical LTD - surgical sutures and medical consumables supplier logo"
                      width="280" height="112"
                      decoding="async">
 
+                <!--
+                  [SEO-1] H1 前置核心关键词 "Medical Consumables / Surgical Sutures"，
+                  保留原有品牌 slogan 气质。原 H1 为纯口号，无搜索价值。
+                -->
                 <h1 class="text-3xl md:text-5xl font-extrabold mb-4 text-white leading-tight tracking-tight">
-                    Supply Chain Optimized.<br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-300">Risks Minimized.</span>
+                    Certified Medical Consumables.<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-300">Supply Optimized. Risks Minimized.</span>
                 </h1>
 
                 <p class="text-base md:text-xl mb-8 text-gray-200 font-medium max-w-xl mx-auto leading-relaxed">
                     Your <span class="text-white font-bold border-b-2 border-yellow-500">Compliance Firewall</span> in China.
-                    We integrate audited manufacturing with independent QC for professional distributors.
+                    ISO 13485 surgical sutures, sterile packs &amp; consumables — audited manufacturing with independent QC for professional distributors.
                 </p>
 
                 <div class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
@@ -318,7 +376,7 @@
                           改用标准 Tailwind 工具类控制排版。
                         -->
                         <div class="text-gray-600 text-lg leading-relaxed space-y-4">
-                            <p>In the medical industry, a product is only as good as its documentation. As a <strong class="text-gray-800">Supply Chain Integrator</strong>, we do not simply move boxes; we own the compliance process.</p>
+                            <p>In the medical industry, a product is only as good as its documentation. As a <strong class="text-gray-800">Medical Supply Chain Integrator</strong>, we do not simply move boxes; we own the compliance process.</p>
                             <p>While the factory focuses on output speed, V5 Medical focuses on <strong class="text-gray-800">Risk Management, Sterility Validation, and Regulatory Adherence</strong>. We stand between you and the production line as your technical firewall.</p>
                         </div>
 
@@ -345,7 +403,7 @@
                         <img src="images/qa-team-on-site.jpg"
                              onerror="this.src='images/factory-audit.jpg'"
                              class="relative rounded-xl shadow-2xl w-full object-cover h-[450px] transition duration-500 transform group-hover:scale-[1.01]"
-                             alt="V5 Medical QA team conducting an on-site factory audit"
+                             alt="V5 Medical QA team conducting an on-site ISO 13485 factory audit"
                              width="800" height="450"
                              loading="lazy"
                              decoding="async">
@@ -491,7 +549,7 @@
                         <div class="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mb-4"><i class="fas fa-cut text-xl" aria-hidden="true"></i></div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Surgical Sutures</h3>
                         <p class="text-sm text-gray-600 mb-4">PGA, PDO, Silk, Nylon. Full range of needle combinations.</p>
-                        <a href="catalog.html#sutures" class="text-blue-600 font-semibold text-sm hover:underline inline-flex items-center gap-1">Download Specs <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i></a>
+                        <a href="categories/surgical-sutures.html" class="text-blue-600 font-semibold text-sm hover:underline inline-flex items-center gap-1">View Category <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i></a>
                     </article>
                     <article class="group border border-gray-100 rounded-xl p-6 hover:shadow-lg transition-all relative overflow-hidden text-left">
                         <div class="absolute top-4 right-4 bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-1 rounded-full border border-orange-200 flex items-center gap-1">
@@ -500,13 +558,13 @@
                         <div class="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mb-4"><i class="fas fa-box-open text-xl" aria-hidden="true"></i></div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Surgical Packs</h3>
                         <p class="text-sm text-gray-600 mb-4">Universal, C-Section, Orthopedic. AAMI Level 3 Protection.</p>
-                        <a href="catalog.html#packs" class="text-blue-600 font-semibold text-sm hover:underline inline-flex items-center gap-1">Download Specs <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i></a>
+                        <a href="categories/surgical-packs.html" class="text-blue-600 font-semibold text-sm hover:underline inline-flex items-center gap-1">View Category <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i></a>
                     </article>
                     <article class="group border border-gray-100 rounded-xl p-6 hover:shadow-lg transition-all relative overflow-hidden text-left">
                         <div class="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mb-4"><i class="fas fa-syringe text-xl" aria-hidden="true"></i></div>
                         <h3 class="text-lg font-bold text-gray-900 mb-2">Injection Devices</h3>
                         <p class="text-sm text-gray-600 mb-4">Syringes, Infusion Sets, Insulin Needles. CE Certified.</p>
-                        <a href="catalog.html#injection" class="text-blue-600 font-semibold text-sm hover:underline inline-flex items-center gap-1">Download Specs <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i></a>
+                        <a href="categories/injection-infusion.html" class="text-blue-600 font-semibold text-sm hover:underline inline-flex items-center gap-1">View Category <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i></a>
                     </article>
                 </div>
             </div>
@@ -525,27 +583,60 @@
                     </a>
                 </div>
                 <div class="grid md:grid-cols-3 gap-6">
-                    <a href="/blog/#/posts/ce-audit-failure" class="group block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-500 transition-all duration-300">
+                    <!--
+                      [SEO-3] 链接从 Docsify hash 路由（不可索引）改为静态文章页。
+                      静态页由 build-static.py 从 blog/posts/*.md 自动生成。
+                    -->
+                    <a href="/blog/posts/ce-audit-failure.html" class="group block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-500 transition-all duration-300">
                         <div class="flex items-center justify-between mb-4">
                             <span class="text-xs font-bold bg-red-900/30 text-red-400 px-2 py-1 rounded uppercase tracking-wider">Risk Alert</span>
                             <i class="fas fa-external-link-alt text-gray-600 group-hover:text-blue-400 transition" aria-hidden="true"></i>
                         </div>
                         <h3 class="text-lg font-bold text-gray-100 group-hover:text-blue-300 transition leading-snug">Why 40% of Medical Distributors Fail CE Audits</h3>
                     </a>
-                    <a href="/blog/#/posts/integrator-model" class="group block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-green-500 transition-all duration-300">
+                    <a href="/blog/posts/integrator-model.html" class="group block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-green-500 transition-all duration-300">
                         <div class="flex items-center justify-between mb-4">
                             <span class="text-xs font-bold bg-green-900/30 text-green-400 px-2 py-1 rounded uppercase tracking-wider">Strategy</span>
                             <i class="fas fa-external-link-alt text-gray-600 group-hover:text-green-400 transition" aria-hidden="true"></i>
                         </div>
                         <h3 class="text-lg font-bold text-gray-100 group-hover:text-green-300 transition leading-snug">Trading Company vs. Factory: Who Passes the Audit?</h3>
                     </a>
-                    <a href="/blog/#/posts/sterilization-validation" class="group block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300">
+                    <a href="/blog/posts/sterilization-validation.html" class="group block bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300">
                         <div class="flex items-center justify-between mb-4">
                             <span class="text-xs font-bold bg-purple-900/30 text-purple-400 px-2 py-1 rounded uppercase tracking-wider">Technical</span>
                             <i class="fas fa-external-link-alt text-gray-600 group-hover:text-purple-400 transition" aria-hidden="true"></i>
                         </div>
                         <h3 class="text-lg font-bold text-gray-100 group-hover:text-purple-300 transition leading-snug">Sterilization: EtO vs. Gamma Validation Guide</h3>
                     </a>
+                </div>
+            </div>
+        </section>
+
+        <!--
+          [SEO-2] 可见 FAQ 板块 —— 与 <head> 中的 FAQPage JSON-LD 一一对应。
+          使用原生 <details>，无需 JS，爬虫可完整读取。
+        -->
+        <section class="py-16 px-4 bg-gray-50" aria-labelledby="faq-heading">
+            <div class="max-w-3xl mx-auto">
+                <h2 id="faq-heading" class="text-3xl font-bold text-gray-900 mb-3 text-center">Frequently Asked Questions</h2>
+                <p class="text-gray-500 text-center mb-8 text-sm">Common questions from medical distributors before their first order.</p>
+                <div class="space-y-4">
+                    <details class="faq-item">
+                        <summary>What certifications do V5 Medical consumables carry?</summary>
+                        <p class="faq-answer">Our manufacturing partners operate under <strong>ISO 13485:2016</strong> quality management systems. Products carry <strong>CE marking under EU MDR</strong>, and we provide full technical documentation packages (including sterilization validation and test reports) to support FDA registration and local market approvals.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>What is your minimum order quantity (MOQ)?</summary>
+                        <p class="faq-answer">MOQ varies by product category. We support <strong>flexible MOQs for pilot and trial orders</strong> so new distributors can verify quality before scaling. Contact our sales team with your target SKU list for an exact quotation.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Do you offer OEM/ODM private labeling?</summary>
+                        <p class="faq-answer">Yes. We provide comprehensive <strong>OEM branding</strong> (custom packaging, labels, IFU) and <strong>ODM product development</strong> for established distributors, including regulatory documentation issued under your brand where applicable.</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Which markets do you ship to and what are the lead times?</summary>
+                        <p class="faq-answer">We ship worldwide from <strong>Shanghai/Ningbo ports</strong>, with established distributor networks in Europe, the Middle East, and Southeast Asia. Typical lead time is <strong>3–7 days for samples</strong> and <strong>15–30 days for production orders</strong>, depending on sterilization and customization requirements.</p>
+                    </details>
                 </div>
             </div>
         </section>
@@ -613,14 +704,17 @@
         ↑ 与 L455 重复定义，产生 Race Condition，
           Translate API 调用哪个版本取决于网络时序，不可控。
           修复：只保留下方初始化脚本中的唯一定义。
+
+      [SEO-4] 5 个核心脚本增加 defer：脚本在 body 底部本已接近
+        非阻塞，defer 进一步保证解析不被打断，且执行顺序不变。
       ══════════════════════════════════════════════════════════
     -->
-    <!-- 核心脚本加载（添加 defer 确保 DOM 就绪后执行） -->
-    <script src="js/config.js?v=2.8.2"></script>
-    <script src="js/layout.js?v=4.9.2"></script>
-    <script src="js/main.js?v=2.3.2"></script>
-    <script src="js/seo-utils.js?v=3.1.2"></script>
-    <script src="js/performance-monitor.js?v=2.1.2"></script>
+    <!-- 核心脚本加载（defer 确保不阻塞 HTML 解析） -->
+    <script src="js/config.js?v=2.8.2" defer></script>
+    <script src="js/layout.js?v=4.9.3" defer></script>
+    <script src="js/main.js?v=2.3.2" defer></script>
+    <script src="js/seo-utils.js?v=3.1.0" defer></script>
+    <script src="js/performance-monitor.js?v=2.1.2" defer></script>
 
     <!-- Google Translate（唯一定义，异步加载） -->
     <script>
@@ -653,10 +747,12 @@
             }, 800);
         });
 
-        /* 2. SEO Schema 注入 */
-        if (window.seoUtils) {
-            window.seoUtils.injectAllSchemas({ includeFAQ: true });
-        }
+        /*
+          2. [SEO-2] 原此处调用 seoUtils.injectAllSchemas({ includeFAQ: true })
+          注入无可见内容的 FAQ schema，违反 Google 指南，已删除。
+          组织/服务 Schema 在 <head> 中静态提供，FAQ Schema 与页面
+          可见 FAQ 板块一一对应，无需运行时注入。
+        */
 
         /* 3. 全局错误捕获 */
         window.addEventListener('error', function (e) {
@@ -677,7 +773,7 @@
         (function checkModules(retryCount) {
             retryCount = retryCount || 0;
             var maxRetries = 5;
-            
+
             if (window.V5Config && window.V5Layout && window.V5Layout.init) {
                 console.log('[V5] All core modules loaded ✓');
                 // 确保 layout 已初始化
@@ -686,13 +782,13 @@
                 }
                 return;
             }
-            
+
             if (retryCount >= maxRetries) {
                 if (!window.V5Config)  { showLoadError('配置模块加载失败 (config.js)');  return; }
                 if (!window.V5Layout)  { showLoadError('布局模块加载失败 (layout.js)');  return; }
                 return;
             }
-            
+
             console.log('[V5] Waiting for modules... retry ' + (retryCount + 1) + '/' + maxRetries);
             setTimeout(function() { checkModules(retryCount + 1); }, 500);
         })();
