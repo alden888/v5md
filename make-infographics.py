@@ -147,3 +147,48 @@ plt.savefig(os.path.join(OUT, "anti-counterfeit-label-anatomy.png"),
             bbox_inches="tight", facecolor=fig.get_facecolor())
 plt.close()
 print("saved anti-counterfeit-label-anatomy.png")
+
+# ============ 图 3：项目流程 ============
+fig, ax = plt.subplots(figsize=(12, 5.2), dpi=100)
+ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
+fig.patch.set_facecolor("#f8fafc")
+
+ax.text(0.5, 0.90, "From Artwork to Shipment: The V5 Packaging Project Workflow",
+        ha="center", fontsize=18, fontweight="bold", color=INK)
+ax.text(0.5, 0.80, "One coordinated process for cartons, inserts, labels, security labels and blister trays",
+        ha="center", fontsize=10.5, color=MUTED)
+
+steps = [
+    ("1. Artwork\nReview", "Dieline check,\nmaterial advice,\n48h feedback"),
+    ("2. Material\nSelection", "Climate-rated\nboard, adhesives\n& resins"),
+    ("3. Sampling", "Physical proofs\nshipped for\napproval"),
+    ("4. QC\nValidation", "Peel, humidity &\ncolor tests on\nactual surfaces"),
+    ("5. Mass\nProduction", "Unified standard\nacross all 5\ncomponents"),
+    ("6. Consolidated\nShipment", "One QC report,\none shipment,\none customs entry"),
+]
+n = len(steps)
+w, gap = 0.145, 0.014
+x0 = (1 - (n*w + (n-1)*gap)) / 2
+y0, h = 0.18, 0.48
+
+for i, (t, d) in enumerate(steps):
+    x = x0 + i*(w+gap)
+    ax.add_patch(FancyBboxPatch((x, y0), w, h, boxstyle="round,pad=0.008,rounding_size=0.02",
+                                fc="white", ec=BLUE2, lw=1.4, zorder=2))
+    ax.add_patch(mp.Circle((x + w/2, y0 + h - 0.085), 0.036, fc=BLUE, ec="none", zorder=3))
+    ax.text(x + w/2, y0 + h - 0.085, str(i+1), ha="center", va="center",
+            fontsize=13, fontweight="bold", color="white", zorder=4)
+    ax.text(x + w/2, y0 + h - 0.20, t, ha="center", va="center",
+            fontsize=9.6, fontweight="bold", color=BLUE, zorder=4)
+    ax.text(x + w/2, y0 + 0.10, d, ha="center", va="center",
+            fontsize=7.6, color=MUTED, zorder=4)
+    if i < n - 1:
+        ax.annotate("", xy=(x + w + gap - 0.004, y0 + h/2), xytext=(x + w + 0.004, y0 + h/2),
+                    arrowprops=dict(arrowstyle="-|>", color=BLUE2, lw=1.6), zorder=5)
+
+ax.text(0.5, 0.055, "v5md.com  |  ISO 13485 Certified Supply Chain  |  Pharmaceutical Packaging Solutions",
+        ha="center", fontsize=9.5, color=MUTED)
+plt.savefig(os.path.join(OUT, "packaging-project-workflow.png"),
+            bbox_inches="tight", facecolor=fig.get_facecolor())
+plt.close()
+print("saved packaging-project-workflow.png")

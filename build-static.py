@@ -89,6 +89,12 @@ CATEGORIES = {
         "blurb": "Dental examination kits, oral care kits, saliva ejectors, dental bibs and impression trays. Cost-effective sterile dental consumables for clinics and distributors, with private-label packaging options.",
         "keywords": "dental consumables supplier, dental examination kit manufacturer, saliva ejector wholesale, dental products China",
     },
+    "pharmaceutical-packaging": {
+        "name": "Pharmaceutical Packaging",
+        "title": "Pharmaceutical Packaging Supplier: Cartons, Labels & Blister Trays | V5 Medical",
+        "blurb": "Complete secondary packaging sets for pharmaceutical companies — folding cartons, package inserts (IFU), self-adhesive labels, holographic anti-counterfeit labels and blister trays. One supplier, one quality standard, one consolidated shipment. Climate-engineered materials for Southeast Asia, with tamper-evident and serialization options.",
+        "keywords": "pharmaceutical packaging supplier, medicine box manufacturer, pharma folding cartons, anti-counterfeit hologram labels, blister tray packaging, pharmaceutical secondary packaging China",
+    },
 }
 
 # ---------------- 通用模板 ----------------
@@ -271,6 +277,21 @@ def plain_text(md_text, limit=160):
     t = re.sub(r"\s+", " ", t).strip()
     return (t[:157] + "...") if len(t) > limit else t
 
+def strip_md(text):
+    """去 Markdown 标记，留纯文本（用于 schema / description）"""
+    t = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)  # 链接保留锚文本
+    t = re.sub(r"[*_`>#|]", "", t)
+    return re.sub(r"\s+", " ", t).strip()
+
+def extract_faq(md_text):
+    """从正文中提取 FAQ 板块（## Frequently Asked Questions + ### N. 问题），生成 FAQPage schema 数据。
+    页面保留可见 FAQ（Google 要求 schema 与可见内容一致），此处仅用于结构化数据。"""
+    m = re.search(r"^##\s+Frequently Asked Questions\s*\n(.*?)(?=^---\s*$|^##\s|\Z)", md_text, re.S | re.M)
+    if not m:
+        return []
+    items = re.findall(r"###\s*\d*\.?\s*(.+?)\n\n(.+?)(?=\n###|\Z)", m.group(1), re.S)
+    return [(strip_md(q), strip_md(a)) for q, a in items]
+
 def first_paragraph(text):
     for para in re.split(r"\n\s*\n", text):
         p = para.strip()
@@ -375,6 +396,22 @@ def process_blog_posts():
                 ],
             },
         ]
+
+        # 可见 FAQ → FAQPage 结构化数据（与页面内容一一对应，合规）
+        faq_items = extract_faq(body_md)
+        if faq_items:
+            schemas.append({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a},
+                    }
+                    for q, a in faq_items
+                ],
+            })
 
         out = render_page(title=page_title, description=description,
                           canonical=canonical, body=body, schemas=schemas)

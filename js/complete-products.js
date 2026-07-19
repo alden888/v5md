@@ -1,15 +1,16 @@
 /**
  * Complete V5 Medical Product Database
  * Precise Image Mapping Version
- * @version 3.3.0
- * @updated 2024-12-16
+ * @version 3.4.0
+ * @updated 2026-07-19
+ * [3.4.0] 新增 pharmaceutical-packaging 分类（药盒/说明书/标签/防伪标签/吸塑托盘）
  */
 
 const completeProductDatabase = {
     metadata: {
-        version: '3.3.0',
-        lastUpdated: '2024-12-16',
-        totalProducts: 51
+        version: '3.4.0',
+        lastUpdated: '2026-07-19',
+        totalProducts: 56
     },
     
     categories: {
@@ -19,7 +20,8 @@ const completeProductDatabase = {
         'protective-equipment': 'Protective Equipment',
         'surgical-packs': 'Surgical Packs',
         'injection-infusion': 'Injection & Infusion',
-        'dental-products': 'Dental Products'
+        'dental-products': 'Dental Products',
+        'pharmaceutical-packaging': 'Pharmaceutical Packaging'
     },
     
     products: [],
@@ -95,7 +97,14 @@ const productData = [
     { name: "Perineal Care Kit", id: "perineal-care-kit", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
     { name: "Disposable Shaving Kit", id: "disposable-shaving-kit", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
     { name: "Sterile Dialysis Care Kit", id: "sterile-dialysis-care-kit", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
-    { name: "Uterine Suction Curettage Set", id: "uterine-suction-curettage-set", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" }
+    { name: "Uterine Suction Curettage Set", id: "uterine-suction-curettage-set", category: "surgical-packs", img: "images/products/surgical-packs/surgical-packs.jpg" },
+
+    // --- 8. Pharmaceutical Packaging ---
+    { name: "Pharmaceutical Folding Cartons", id: "pharma-folding-cartons", category: "pharmaceutical-packaging", img: "images/products/pharmaceutical-packaging/pharma-folding-cartons.jpg" },
+    { name: "Package Inserts (IFU)", id: "pharma-package-inserts", category: "pharmaceutical-packaging", img: "images/products/pharmaceutical-packaging/pharma-package-inserts.jpg" },
+    { name: "Self-Adhesive Pharmaceutical Labels", id: "pharma-adhesive-labels", category: "pharmaceutical-packaging", img: "images/products/pharmaceutical-packaging/pharma-adhesive-labels.jpg" },
+    { name: "Holographic Anti-Counterfeit Labels", id: "pharma-hologram-labels", category: "pharmaceutical-packaging", img: "images/products/pharmaceutical-packaging/pharma-hologram-labels.jpg" },
+    { name: "Pharmaceutical Blister Trays", id: "pharma-blister-trays", category: "pharmaceutical-packaging", img: "images/products/pharmaceutical-packaging/pharma-blister-trays.jpg" }
 ];
 
 // ==========================================
