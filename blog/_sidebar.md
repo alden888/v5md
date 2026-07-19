@@ -38,6 +38,12 @@
   <span class="category-tag tag-product">Packaging Solutions</span>
   <ul class="sidebar-list">
     <li class="sidebar-highlight">
+      <i class="fas fa-boxes sidebar-icon text-blue-500"></i> 
+      <a href="#/posts/pharmaceutical-secondary-packaging-guide.md">
+        Pharma Secondary Packaging Guide
+      </a>
+    </li>
+    <li class="sidebar-highlight">
       <i class="fas fa-box-open sidebar-icon text-blue-500"></i> 
       <a href="#/posts/comprehensive-packaging-solutions.md">
         Comprehensive Packaging Solutions

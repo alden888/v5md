@@ -282,6 +282,9 @@ def process_blog_posts():
     posts_dir = ROOT / "blog" / "posts"
     articles = []
     for md_file in sorted(posts_dir.glob("*.md")):
+        if md_file.stem.lower() in ("template", "readme"):
+            print(f"  [skip] {md_file.name} (模板/说明文件，不发布)")
+            continue
         slug = md_file.stem
         raw = md_file.read_text(encoding="utf-8")
         meta, body_md = parse_frontmatter(raw)
@@ -316,9 +319,12 @@ def process_blog_posts():
             convert_docsify_alerts(body_md),
             extensions=["tables", "fenced_code", "sane_lists"],
         )
+        # 文章内 .md 互链改为静态 .html 绝对路径（Docsify 相对链接在静态页会 404）
+        body_html = re.sub(r'href="(?:posts/)?([\w-]+)\.md"', r'href="/blog/posts/\1.html"', body_html)
 
         canonical = f"{BASE}/blog/posts/{slug}.html"
-        page_title = f"{title} | V5 Medical Blog"
+        # 支持 frontmatter 自定义 meta_title（控制在 ~60 字符以内最佳）
+        page_title = meta.get("meta_title") or f"{title} | V5 Medical Blog"
         if len(page_title) > 65:
             page_title = title if len(title) <= 65 else title[:62] + "..."
 
