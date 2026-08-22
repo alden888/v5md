@@ -66,6 +66,9 @@ www.v5md.com/* https://v5md.com/:splat 301!
 /pricelist   https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/price%20list.pdf 302
 /price       https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/price%20list.pdf 302
 
+# High-Purity Series Price List (shareable short link for customers)
+/highpurity  /pdf/V5_Medical_HighPurity_PriceList_EN.pdf 302
+
 # ------------------------------
 # MARKETING CAMPAIGN REDIRECTS
 # ------------------------------
