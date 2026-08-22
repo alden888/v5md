@@ -54,17 +54,20 @@ www.v5md.com/* https://v5md.com/:splat 301!
 # ------------------------------
 
 # Product Catalog
-/catalog-pdf https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf 302
-/pdf         https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf 302
-/download    https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Catalog.pdf 302
+/catalog-pdf /pdf/Catalog.pdf 302
+/pdf         /pdf/Catalog.pdf 302
+/download    /pdf/Catalog.pdf 302
 
 # Dental Kit
-/dental-kit  https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Quotations%20for%20dental%20products.pdf 302
-/dentalpdf   https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/Quotations%20for%20dental%20products.pdf 302
+/dental-kit  /pdf/quotations/Quotations%20for%20dental%20products.pdf 302
+/dentalpdf   /pdf/quotations/Quotations%20for%20dental%20products.pdf 302
 
 # Price List
-/pricelist   https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/price%20list.pdf 302
-/price       https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/price%20list.pdf 302
+/pricelist   /pdf/price%20list.pdf 302
+/price       /pdf/price%20list.pdf 302
+
+# Colostomy Bag Quotation (shareable short link for customers)
+/colostomy   /pdf/V5MED%20Colostomy%20Bag%20Quotation%20-%20V5M1014A1%20.pdf 302
 
 # High-Purity Series Price List (shareable short link for customers)
 /highpurity  /pdf/V5_Medical_HighPurity_PriceList_EN.pdf 302
