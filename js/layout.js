@@ -2,8 +2,12 @@
  * V5 Medical Layout Engine
  * (Unified Layout Manager)
  * Dynamically renders Header, Footer, and Floating elements.
- * @version 4.9.3 (Update: Site-wide GA4 auto-injection)
- * @updated 2026-07-18
+ * @version 4.9.5 (Update: Footer Quick Links entry)
+ * @updated 2026-08-22
+ *
+ * [CHANGELOG 4.9.5]
+ * - Footer Resources 栏目新增 "Quick Links & Price Lists" 入口（links.html），
+ *   方便访客和销售一键到达链接汇总页。
  *
  * [CHANGELOG 4.9.3]
  * - [SEO] 新增 _loadAnalytics()：所有使用 layout.js 的页面自动加载
@@ -268,6 +272,7 @@ const V5Layout = (() => {
                             <div>
                                 <h4 class="text-white font-bold uppercase tracking-wider text-xs mb-4">Resources</h4>
                                 <ul class="space-y-2 text-sm text-gray-400 mb-6">
+                                    <li><a href="links.html" class="footer-link block text-blue-400 font-bold"><i class="fas fa-link mr-1"></i> Quick Links &amp; Price Lists</a></li>
                                     <li><a href="catalog.html" class="footer-link block">Product Catalog</a></li>
                                     <li><a href="blog/" class="footer-link block">Compliance Knowledge Hub</a></li>
                                     <li><a href="payment.html" class="footer-link block text-green-400 font-bold"><i class="fas fa-credit-card mr-1"></i> Pay Invoice / Online</a></li>
