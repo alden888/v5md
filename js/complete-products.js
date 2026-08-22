@@ -1,15 +1,18 @@
 /**
  * Complete V5 Medical Product Database
  * Precise Image Mapping Version
- * @version 3.4.0
- * @updated 2026-07-19
+ * @version 3.5.0
+ * @updated 2026-08-22
+ * [3.5.0] 10 个 SKU 从 default-product.jpg 换成独立品牌卡片图；
+ *         新增 categoryProfiles：认证/规格/描述按分类差异化
+ *         （pharmaceutical-packaging 不再标注 Sterile/FDA）
  * [3.4.0] 新增 pharmaceutical-packaging 分类（药盒/说明书/标签/防伪标签/吸塑托盘）
  */
 
 const completeProductDatabase = {
     metadata: {
-        version: '3.4.0',
-        lastUpdated: '2026-07-19',
+        version: '3.5.0',
+        lastUpdated: '2026-08-22',
         totalProducts: 56
     },
     
@@ -66,23 +69,23 @@ const productData = [
     { name: "N95 / FFP2 Masks", id: "n95-ffp2-masks", category: "protective-equipment", img: "images/products/protective-equipment/n95-ffp2-masks.jpg" },
     { name: "Surgical Gowns", id: "surgical-gowns", category: "protective-equipment", img: "images/products/protective-equipment/surgical-gowns.jpg" },
     { name: "Protective Coveralls", id: "protective-coveralls", category: "protective-equipment", img: "images/products/protective-equipment/protective-coveralls.jpg" },
-    { name: "Disposable Caps", id: "disposable-caps", category: "protective-equipment", img: "images/products/default-product.jpg" },
-    { name: "Shoe Covers", id: "shoe-covers", category: "protective-equipment", img: "images/products/default-product.jpg" },
+    { name: "Disposable Caps", id: "disposable-caps", category: "protective-equipment", img: "images/products/protective-equipment/disposable-caps.jpg" },
+    { name: "Shoe Covers", id: "shoe-covers", category: "protective-equipment", img: "images/products/protective-equipment/shoe-covers.jpg" },
 
     // --- 5. Injection & Infusion ---
     { name: "Disposable Syringes", id: "disposable-syringes", category: "injection-infusion", img: "images/products/injection-infusion/disposable-syringes.jpg" },
     { name: "Insulin Syringes", id: "insulin-syringes", category: "injection-infusion", img: "images/products/injection-infusion/insulin-syringes.jpg" },
-    { name: "Hypodermic Needles", id: "hypodermic-needles", category: "injection-infusion", img: "images/products/default-product.jpg" },
-    { name: "IV Cannula", id: "iv-cannula", category: "injection-infusion", img: "images/products/default-product.jpg" },
-    { name: "Infusion Sets", id: "infusion-sets", category: "injection-infusion", img: "images/products/default-product.jpg" },
-    { name: "Blood Transfusion Sets", id: "blood-transfusion-sets", category: "injection-infusion", img: "images/products/default-product.jpg" },
+    { name: "Hypodermic Needles", id: "hypodermic-needles", category: "injection-infusion", img: "images/products/injection-infusion/hypodermic-needles.jpg" },
+    { name: "IV Cannula", id: "iv-cannula", category: "injection-infusion", img: "images/products/injection-infusion/iv-cannula.jpg" },
+    { name: "Infusion Sets", id: "infusion-sets", category: "injection-infusion", img: "images/products/injection-infusion/infusion-sets.jpg" },
+    { name: "Blood Transfusion Sets", id: "blood-transfusion-sets", category: "injection-infusion", img: "images/products/injection-infusion/blood-transfusion-sets.jpg" },
 
     // --- 6. Dental Products ---
     { name: "Dental Examination Kits", id: "dental-examination-kits", category: "dental-products", img: "images/products/dental-products/dental-examination-kits.jpg" },
-    { name: "Oral Care Kits", id: "oral-care-kits", category: "dental-products", img: "images/products/default-product.jpg" },
-    { name: "Saliva Ejectors", id: "saliva-ejectors", category: "dental-products", img: "images/products/default-product.jpg" },
-    { name: "Dental Bibs", id: "dental-bibs", category: "dental-products", img: "images/products/default-product.jpg" },
-    { name: "Impression Trays", id: "impression-trays", category: "dental-products", img: "images/products/default-product.jpg" },
+    { name: "Oral Care Kits", id: "oral-care-kits", category: "dental-products", img: "images/products/dental-products/oral-care-kits.jpg" },
+    { name: "Saliva Ejectors", id: "saliva-ejectors", category: "dental-products", img: "images/products/dental-products/saliva-ejectors.jpg" },
+    { name: "Dental Bibs", id: "dental-bibs", category: "dental-products", img: "images/products/dental-products/dental-bibs.jpg" },
+    { name: "Impression Trays", id: "impression-trays", category: "dental-products", img: "images/products/dental-products/impression-trays.jpg" },
 
     // --- 7. Surgical Packs (Main Image as fallback for sub-items) ---
     // Note: You have one main image 'images/products/surgical-packs/surgical-packs.jpg'
@@ -108,36 +111,126 @@ const productData = [
 ];
 
 // ==========================================
-// 2. Data Builder
+// 2. Category Profiles (certs / specs / copy per category)
+// ==========================================
+// 认证与规格按分类给出，避免"一刀切"宣称（如包装类产品标注 Sterile/FDA）。
+const categoryProfiles = {
+    'surgical-sutures': {
+        certifications: ["ISO 13485", "CE"],
+        desc: name => `${name} for general and specialty surgery, produced under ISO 13485 with CE technical documentation. Consistent tensile strength and reliable needle attachment. OEM needle-thread combinations and private labeling available for global distributors.`,
+        specifications: {
+            "Material": "PGA / PGLA / PDO / Catgut / Silk / Nylon / PP / PE",
+            "Sterility": "Sterile (EO Gas)",
+            "Quality Standard": "ISO 13485 / CE",
+            "Packaging": "Individual sterile pack, boxed",
+            "Origin": "China"
+        }
+    },
+    'surgical-instruments': {
+        certifications: ["ISO 13485", "CE"],
+        desc: name => `${name} for single-use clinical procedures, manufactured under ISO 13485 with full batch traceability. Sharpness and finish controlled to surgical standards. Bulk supply and OEM packaging for hospitals and distributors.`,
+        specifications: {
+            "Material": "Medical-grade stainless steel / polymer",
+            "Sterility": "Sterile (EO Gas)",
+            "Quality Standard": "ISO 13485 / CE",
+            "Packaging": "Individual sterile peel pack",
+            "Origin": "China"
+        }
+    },
+    'gauze-dressings': {
+        certifications: ["ISO 13485", "CE"],
+        desc: name => `${name} made from high-absorbency medical-grade materials, available sterile or non-sterile with EO sterilization and batch traceability. OEM branding and custom sizes supported.`,
+        specifications: {
+            "Material": "100% medical-grade cotton / non-woven",
+            "Sterility": "Sterile or non-sterile options",
+            "Quality Standard": "ISO 13485 / CE",
+            "Packaging": "Sterile pouch or bulk pack",
+            "Origin": "China"
+        }
+    },
+    'protective-equipment': {
+        certifications: ["ISO 13485", "CE"],
+        desc: name => `${name} for hospital and clinical protection, CE-compliant with test reports and export documentation. Suitable for tenders and high-volume procurement.`,
+        specifications: {
+            "Material": "Non-woven PP / SMS",
+            "Sterility": "Non-sterile (sterile on request)",
+            "Quality Standard": "ISO 13485 / CE",
+            "Packaging": "Bulk pack, OEM printing available",
+            "Origin": "China"
+        }
+    },
+    'surgical-packs': {
+        certifications: ["ISO 13485", "CE"],
+        desc: name => `${name} custom-configured to your procedure list, assembled with AAMI-level barrier materials and EO sterilization. Full validation documentation and private labeling available.`,
+        specifications: {
+            "Material": "AAMI-level SMS barrier materials",
+            "Sterility": "Sterile (EO Gas)",
+            "Quality Standard": "ISO 13485 / CE",
+            "Packaging": "Custom-configured sterile pack",
+            "Origin": "China"
+        }
+    },
+    'injection-infusion': {
+        certifications: ["ISO 13485", "CE"],
+        desc: name => `${name} manufactured under ISO 13485 with CE certification, EO-sterilized and individually packed. OEM and tender support for global distributors.`,
+        specifications: {
+            "Material": "Medical-grade PP / PVC / stainless needle",
+            "Sterility": "Sterile (EO Gas)",
+            "Quality Standard": "ISO 13485 / CE",
+            "Packaging": "Individual sterile blister / peel pack",
+            "Origin": "China"
+        }
+    },
+    'dental-products': {
+        certifications: ["ISO 13485", "CE"],
+        desc: name => `${name} for dental clinics and distributors — cost-effective, sterile-packed consumables with private-label packaging options.`,
+        specifications: {
+            "Material": "Medical-grade polymer / paper",
+            "Sterility": "Sterile (EO Gas)",
+            "Quality Standard": "ISO 13485 / CE",
+            "Packaging": "Individual sterile pack, boxed",
+            "Origin": "China"
+        }
+    },
+    'pharmaceutical-packaging': {
+        certifications: ["ISO 13485", "OEM Available"],
+        desc: name => `${name} as part of a complete pharmaceutical secondary packaging set — one supplier, one quality standard, one consolidated shipment. Custom printing, tamper-evident and serialization options available.`,
+        specifications: {
+            "Material": "Pharmaceutical-grade paperboard / PVC / PP",
+            "Sterility": "Non-sterile (secondary packaging)",
+            "Quality Standard": "ISO 13485 QMS",
+            "Packaging": "Export cartons, custom printing",
+            "Origin": "China"
+        }
+    }
+};
+
+// ==========================================
+// 3. Data Builder
 // ==========================================
 
 const completeProductData = productData.map(item => {
+    const profile = categoryProfiles[item.category];
     return {
         id: item.id,
         name: item.name,
         category: item.category,
         short: `High-quality ${item.name} for professional medical use. ISO 13485 certified.`,
-        description: `V5 Medical supplies premium ${item.name} manufactured under strict standards. Features excellent biocompatibility, sterility, and reliability. Available in various specifications to meet clinical requirements. Custom branding (OEM) available.`,
+        description: `V5 Medical supplies ${item.name}. ${profile.desc(item.name)}`,
         price: "Contact for Price",
         availability: "In Stock",
         stockLevel: "High",
-        certifications: ["ISO 13485", "CE", "FDA"],
+        certifications: profile.certifications,
         images: [
             item.img, // Primary mapped image
             "images/products/default-product.jpg" // Fallback
         ],
-        specifications: {
-            "Material": "Medical Grade",
-            "Sterility": "Sterile (EO Gas)",
-            "Quality Standard": "ISO 13485 / CE",
-            "Packaging": "Individual Sterile Pack",
-            "Origin": "China"
-        }
+        specifications: profile.specifications
     };
 });
 
 // ==========================================
-// 3. Initialization
+// 4. Initialization
 // ==========================================
 
 function initializeCompleteDatabase() {

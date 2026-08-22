@@ -5,7 +5,7 @@
 
 ---
 
-![June 2026 Greeting Card - V5 Medical](https://raw.githubusercontent.com/alden888/v5md/main/images/2026-Greeting-Card/2026-06-Greeting-Card-V5%20Medical.png)
+![June 2026 Greeting Card - V5 Medical](/images/2026-Greeting-Card/2026-06-Greeting-Card-V5-Medical.jpg)
 
 ---
 

@@ -1,7 +1,7 @@
 # V5 Medical LTD Robots.txt
 # Optimized for SEO & Security
 # Website: https://v5md.com
-# Last updated: 2026-07-18
+# Last updated: 2026-08-22
 #
 # [FIX] 合并为单一 User-agent: * 组。
 # 原文件存在独立的 Googlebot/Bingbot/Baiduspider 组，
@@ -23,9 +23,6 @@ Allow: /assets/
 # (Google 采用最长匹配优先：Allow /pdf/Catalog.pdf 优先于 Disallow: /pdf/)
 Disallow: /pdf/
 Allow: /pdf/Catalog.pdf
-
-# [SECURITY] Internal workbench must never be indexed
-Disallow: /workbench/
 
 # Block Cloudflare specific paths
 Disallow: /cdn-cgi/

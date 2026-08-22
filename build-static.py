@@ -27,15 +27,27 @@ V5 Medical 静态 SEO 页面生成器 (build-static.py)
     sitemap.xml              主站点地图（自动更新 lastmod）
     blog/sitemap.xml         博客站点地图
 
-@version 1.0.0
-@updated 2026-07-18
+@version 1.1.0
+@updated 2026-08-22
+
+[v1.1.0 变更]
+- load_products() 增加 fail-fast 校验：产品数量比对 metadata.totalProducts、
+  主图必须存在且 >1KB（防坏图/正则失配静默上线）
+- 认证/规格/产品描述按分类差异化（CATEGORIES[].certs/specs/desc），
+  pharmaceutical-packaging 不再标注 Sterile/FDA
+- og:type 按页型输出（article/product/website），补 og:site_name
+- 修复分类页 CTA 文案被隐式字符串拼接吞掉的 bug
+- sitemap：移除 noindex 的 payment.html；lastmod 改用 git 最后提交日期
+- WhatsApp 询盘链接改用 urllib.parse.quote 编码
 """
 
 import re
 import json
 import html as html_lib
 import datetime
+import subprocess
 from pathlib import Path
+from urllib.parse import quote
 
 import markdown
 
@@ -46,54 +58,151 @@ ROOT = Path(__file__).resolve().parent
 OG_IMAGE = "https://pub-224e4e74685e409e833e89d4ab5143fb.r2.dev/v5medlogo.png"
 GA_ID = "G-JE15YSMC2W"
 
+# ---------------- 工具函数 ----------------
+_lastmod_cache = {}
+
+def git_lastmod(relpath):
+    """文件最后的 git 提交日期（ISO），作为真实的 lastmod 信号；失败回退到今天。"""
+    relpath = str(relpath)
+    if relpath not in _lastmod_cache:
+        try:
+            out = subprocess.run(
+                ["git", "log", "-1", "--format=%cs", "--", relpath],
+                cwd=ROOT, capture_output=True, text=True, timeout=10,
+            ).stdout.strip()
+            _lastmod_cache[relpath] = out or TODAY
+        except Exception:
+            _lastmod_cache[relpath] = TODAY
+    return _lastmod_cache[relpath]
+
+def trunc(s, limit=155):
+    """截断到 limit 字符以内，尽量在词边界断开。"""
+    if len(s) <= limit:
+        return s
+    cut = s[:limit].rsplit(" ", 1)[0]
+    return cut.rstrip(" ,;—-") + "..."
+
 CATEGORIES = {
     "surgical-sutures": {
         "name": "Surgical Sutures",
         "title": "Surgical Sutures Manufacturer & Supplier (PGA, PDO, Silk, Nylon) | V5 Medical",
         "blurb": "V5 Medical supplies a full range of absorbable and non-absorbable surgical sutures — PGA, PGLA, PDO, Chromic & Plain Catgut, Silk, Nylon, Polypropylene and Polyester — manufactured under ISO 13485 with CE documentation. OEM needle-thread combinations and private labeling available for global distributors.",
         "keywords": "surgical sutures manufacturer, absorbable suture supplier, PGA suture factory, PDO suture OEM, surgical suture wholesale China",
+        "certs": ["ISO 13485", "CE"],
+        "desc": "{name} for general and specialty surgery, produced under ISO 13485 with CE technical documentation. Consistent tensile strength and reliable needle attachment. OEM needle-thread combinations and private labeling available for global distributors.",
+        "specs": {
+            "Material": "PGA / PGLA / PDO / Catgut / Silk / Nylon / PP / PE",
+            "Sterility": "Sterile (EO Gas)",
+            "Quality Standard": "ISO 13485 / CE",
+            "Packaging": "Individual sterile pack, boxed",
+            "Origin": "China",
+        },
     },
     "surgical-instruments": {
         "name": "Surgical Instruments",
         "title": "Disposable Surgical Instruments Supplier (Blades, Scalpels, Forceps) | V5 Medical",
         "blurb": "Sterile disposable surgical instruments — blades, scalpels, lancets, scissors, forceps and needle holders — produced under ISO 13485 quality management with full traceability. Bulk supply and OEM packaging for hospitals and distributors.",
         "keywords": "disposable surgical instruments supplier, surgical blades manufacturer, sterile scalpel wholesale, medical instruments China",
+        "certs": ["ISO 13485", "CE"],
+        "desc": "{name} for single-use clinical procedures, manufactured under ISO 13485 with full batch traceability. Sharpness and finish controlled to surgical standards. Bulk supply and OEM packaging for hospitals and distributors.",
+        "specs": {
+            "Material": "Medical-grade stainless steel / polymer",
+            "Sterility": "Sterile (EO Gas)",
+            "Quality Standard": "ISO 13485 / CE",
+            "Packaging": "Individual sterile peel pack",
+            "Origin": "China",
+        },
     },
     "gauze-dressings": {
         "name": "Gauze & Dressings",
         "title": "Medical Gauze & Wound Dressings Manufacturer | V5 Medical",
         "blurb": "Sterile and non-sterile gauze swabs, rolls, balls, abdominal pads, cotton rolls and non-woven sponges. High-absorbency medical cotton products with EO sterilization and batch traceability, ready for OEM branding.",
         "keywords": "medical gauze manufacturer, sterile gauze swabs supplier, wound dressing wholesale, abdominal pads factory China",
+        "certs": ["ISO 13485", "CE"],
+        "desc": "{name} made from high-absorbency medical-grade materials, available sterile or non-sterile with EO sterilization and batch traceability. OEM branding and custom sizes supported.",
+        "specs": {
+            "Material": "100% medical-grade cotton / non-woven",
+            "Sterility": "Sterile or non-sterile options",
+            "Quality Standard": "ISO 13485 / CE",
+            "Packaging": "Sterile pouch or bulk pack",
+            "Origin": "China",
+        },
     },
     "protective-equipment": {
         "name": "Protective Equipment",
         "title": "Medical Protective Equipment Supplier (Masks, Gowns, Coveralls) | V5 Medical",
         "blurb": "Surgical face masks, N95/FFP2 respirators, isolation gowns, protective coveralls, caps and shoe covers. CE-compliant PPE with test reports and export documentation for tenders and hospital procurement.",
         "keywords": "medical PPE supplier, surgical mask manufacturer, FFP2 mask wholesale, isolation gown factory China",
+        "certs": ["ISO 13485", "CE"],
+        "desc": "{name} for hospital and clinical protection, CE-compliant with test reports and export documentation. Suitable for tenders and high-volume procurement.",
+        "specs": {
+            "Material": "Non-woven PP / SMS",
+            "Sterility": "Non-sterile (sterile on request)",
+            "Quality Standard": "ISO 13485 / CE",
+            "Packaging": "Bulk pack, OEM printing available",
+            "Origin": "China",
+        },
     },
     "surgical-packs": {
         "name": "Surgical Packs",
         "title": "Sterile Surgical Packs & Procedure Kits Manufacturer | V5 Medical",
         "blurb": "Custom-configured sterile surgical packs and procedure kits — universal, C-section, orthopedic, dialysis care, wound dressing and examination kits. AAMI-level barrier materials, EO sterilization and full validation documentation.",
         "keywords": "sterile surgical packs manufacturer, custom procedure kits supplier, surgical pack OEM, disposable medical kits China",
+        "certs": ["ISO 13485", "CE"],
+        "desc": "{name} custom-configured to your procedure list, assembled with AAMI-level barrier materials and EO sterilization. Full validation documentation and private labeling available.",
+        "specs": {
+            "Material": "AAMI-level SMS barrier materials",
+            "Sterility": "Sterile (EO Gas)",
+            "Quality Standard": "ISO 13485 / CE",
+            "Packaging": "Custom-configured sterile pack",
+            "Origin": "China",
+        },
     },
     "injection-infusion": {
         "name": "Injection & Infusion",
         "title": "Disposable Syringes & Infusion Sets Manufacturer | V5 Medical",
         "blurb": "Disposable syringes, insulin syringes, hypodermic needles, IV cannulas, infusion and blood transfusion sets. CE-certified sterile injection devices manufactured under ISO 13485, with OEM and tender support.",
         "keywords": "disposable syringe manufacturer, infusion set supplier, insulin syringe wholesale, IV cannula factory China",
+        "certs": ["ISO 13485", "CE"],
+        "desc": "{name} manufactured under ISO 13485 with CE certification, EO-sterilized and individually packed. OEM and tender support for global distributors.",
+        "specs": {
+            "Material": "Medical-grade PP / PVC / stainless needle",
+            "Sterility": "Sterile (EO Gas)",
+            "Quality Standard": "ISO 13485 / CE",
+            "Packaging": "Individual sterile blister / peel pack",
+            "Origin": "China",
+        },
     },
     "dental-products": {
         "name": "Dental Products",
         "title": "Dental Consumables & Examination Kits Supplier | V5 Medical",
         "blurb": "Dental examination kits, oral care kits, saliva ejectors, dental bibs and impression trays. Cost-effective sterile dental consumables for clinics and distributors, with private-label packaging options.",
         "keywords": "dental consumables supplier, dental examination kit manufacturer, saliva ejector wholesale, dental products China",
+        "certs": ["ISO 13485", "CE"],
+        "desc": "{name} for dental clinics and distributors — cost-effective, sterile-packed consumables with private-label packaging options.",
+        "specs": {
+            "Material": "Medical-grade polymer / paper",
+            "Sterility": "Sterile (EO Gas)",
+            "Quality Standard": "ISO 13485 / CE",
+            "Packaging": "Individual sterile pack, boxed",
+            "Origin": "China",
+        },
     },
     "pharmaceutical-packaging": {
         "name": "Pharmaceutical Packaging",
         "title": "Pharmaceutical Packaging Supplier: Cartons, Labels & Blister Trays | V5 Medical",
         "blurb": "Complete secondary packaging sets for pharmaceutical companies — folding cartons, package inserts (IFU), self-adhesive labels, holographic anti-counterfeit labels and blister trays. One supplier, one quality standard, one consolidated shipment. Climate-engineered materials for Southeast Asia, with tamper-evident and serialization options.",
         "keywords": "pharmaceutical packaging supplier, medicine box manufacturer, pharma folding cartons, anti-counterfeit hologram labels, blister tray packaging, pharmaceutical secondary packaging China",
+        # 包装类产品不是无菌医疗器械：不标 Sterile，不打 FDA 徽章（合规宣称）
+        "certs": ["ISO 13485", "OEM Available"],
+        "desc": "{name} as part of a complete pharmaceutical secondary packaging set — one supplier, one quality standard, one consolidated shipment. Custom printing, tamper-evident and serialization options available.",
+        "specs": {
+            "Material": "Pharmaceutical-grade paperboard / PVC / PP",
+            "Sterility": "Non-sterile (secondary packaging)",
+            "Quality Standard": "ISO 13485 QMS",
+            "Packaging": "Export cartons, custom printing",
+            "Origin": "China",
+        },
     },
 }
 
@@ -199,7 +308,7 @@ def cta_box(title="Stop Gambling with Compliance", text="Get a comprehensive ISO
   <a class="btn" href="/contact.html?type=quote">Request a Quote &rarr;</a>
 </div>"""
 
-def render_page(*, title, description, canonical, body, schemas=(), extra_head=""):
+def render_page(*, title, description, canonical, body, schemas=(), extra_head="", og_type="website"):
     schema_html = "\n".join(jsonld(s) for s in schemas)
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -212,7 +321,8 @@ def render_page(*, title, description, canonical, body, schemas=(), extra_head="
 <link rel="canonical" href="{esc(canonical)}">
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(description)}">
-<meta property="og:type" content="article">
+<meta property="og:type" content="{esc(og_type)}">
+<meta property="og:site_name" content="V5 Medical LTD">
 <meta property="og:url" content="{esc(canonical)}">
 <meta property="og:image" content="{OG_IMAGE}">
 <meta name="twitter:card" content="summary_large_image">
@@ -329,7 +439,8 @@ def process_blog_posts():
         cm = re.search(r"\*\*Category:\*\*\s*(.+)", raw)
         if "category" not in meta and cm:
             category = cm.group(1).strip()
-        date = meta.get("date", TODAY)
+        date = meta.get("date") or git_lastmod(md_file.relative_to(ROOT))
+        modified = git_lastmod(md_file.relative_to(ROOT))
         description = meta.get("description") or meta.get("summary") or ""
         if not description:
             sm = re.search(r"\*\*Summary:\*\*\s*(.+)", raw)
@@ -382,7 +493,7 @@ def process_blog_posts():
                     "logo": {"@type": "ImageObject", "url": OG_IMAGE},
                 },
                 "datePublished": date,
-                "dateModified": TODAY,
+                "dateModified": modified,
                 "mainEntityOfPage": canonical,
                 "image": OG_IMAGE,
             },
@@ -414,9 +525,11 @@ def process_blog_posts():
             })
 
         out = render_page(title=page_title, description=description,
-                          canonical=canonical, body=body, schemas=schemas)
+                          canonical=canonical, body=body, schemas=schemas,
+                          og_type="article")
         (posts_dir / f"{slug}.html").write_text(out, encoding="utf-8")
-        articles.append({"slug": slug, "title": title, "date": date, "canonical": canonical})
+        articles.append({"slug": slug, "title": title, "date": date,
+                         "modified": modified, "canonical": canonical})
         print(f"  [blog] {slug}.html  ({title[:50]})")
     return articles
 
@@ -425,16 +538,10 @@ PRODUCT_RE = re.compile(
     r'\{\s*name:\s*"([^"]+)",\s*id:\s*"([^"]+)",\s*category:\s*"([^"]+)",\s*img:\s*"([^"]+)"\s*\}'
 )
 
-CERTS = ["ISO 13485", "CE", "FDA"]
-SPECS = {
-    "Material": "Medical Grade",
-    "Sterility": "Sterile (EO Gas)",
-    "Quality Standard": "ISO 13485 / CE",
-    "Packaging": "Individual Sterile Pack",
-    "Origin": "China",
-}
-
 def load_products():
+    """从 js/complete-products.js 提取产品数据，并做 fail-fast 校验：
+    1. 提取数量必须与 metadata.totalProducts 一致（防正则静默丢产品）；
+    2. 每个产品主图必须存在且 >1KB（防坏图/占位文本静默上线）。"""
     js = (ROOT / "js" / "complete-products.js").read_text(encoding="utf-8")
     products = [
         {"name": m[0], "id": m[1], "category": m[2], "img": m[3]}
@@ -442,16 +549,34 @@ def load_products():
     ]
     if not products:
         raise RuntimeError("未能从 js/complete-products.js 提取产品数据")
+
+    m = re.search(r"totalProducts:\s*(\d+)", js)
+    if m and int(m.group(1)) != len(products):
+        raise RuntimeError(
+            f"产品数量不匹配：metadata.totalProducts={m.group(1)}，"
+            f"正则提取到 {len(products)} 个。请检查 productData 条目格式是否与 PRODUCT_RE 一致。"
+        )
+
+    bad = []
+    for p in products:
+        if p["category"] not in CATEGORIES:
+            bad.append(f"  {p['id']}: 未知分类 {p['category']}")
+            continue
+        img = ROOT / p["img"]
+        if not img.is_file():
+            bad.append(f"  {p['id']}: 图片不存在 {p['img']}")
+        elif img.stat().st_size < 1024:
+            bad.append(f"  {p['id']}: 图片损坏/占位 ({img.stat().st_size}B) {p['img']}")
+    if bad:
+        raise RuntimeError("产品数据校验失败：\n" + "\n".join(bad))
     return products
 
-def product_description(p, cat_name):
-    return (f"{p['name']} — ISO 13485 certified {cat_name.lower()} from V5 Medical. "
-            f"Sterile, OEM-ready, with CE & FDA documentation for global distributors. "
-            f"Flexible MOQ. Request a quote today.")
+def product_description(p, cat):
+    return f"V5 Medical supplies {p['name']}. " + cat["desc"].replace("{name}", p["name"])
 
 def render_product_page(p, cat):
-    cat_name = CATEGORIES[p["category"]]["name"]
-    desc = product_description(p, cat_name)
+    cat_name = cat["name"]
+    desc = product_description(p, cat)
     canonical = f"{BASE}/products/{p['id']}.html"
     img_abs = f"{BASE}/{p['img']}"
     title = f"{p['name']} | ISO 13485 Certified | V5 Medical"
@@ -463,9 +588,9 @@ def render_product_page(p, cat):
 </nav>"""
 
     spec_rows = "\n".join(
-        f'<tr><th>{esc(k)}</th><td>{esc(v)}</td></tr>' for k, v in SPECS.items()
+        f'<tr><th>{esc(k)}</th><td>{esc(v)}</td></tr>' for k, v in cat["specs"].items()
     )
-    badges = "\n".join(f'<span class="badge">{esc(c)}</span>' for c in CERTS)
+    badges = "\n".join(f'<span class="badge">{esc(c)}</span>' for c in cat["certs"])
 
     body = f"""
 {crumbs}
@@ -481,7 +606,7 @@ def render_product_page(p, cat):
       <p style="margin-top:14px"><strong>Price:</strong> Contact for a quotation (flexible MOQ for trial orders)</p>
       <p style="margin-top:18px">
         <a class="btn" href="/contact.html?type=quote&amp;product={esc(p['id'])}">Request Quote &rarr;</a>
-        <a class="btn btn-green" href="https://wa.me/447895047944?text=Hi%20V5%20Medical%2C%20I%20am%20interested%20in%20{esc(p['name'].replace(' ', '%20'))}." rel="noopener">WhatsApp</a>
+        <a class="btn btn-green" href="https://wa.me/447895047944?text={quote('Hi V5 Medical, I am interested in ' + p['name'] + '.')}" rel="noopener">WhatsApp</a>
       </p>
     </div>
   </div>
@@ -508,7 +633,7 @@ def render_product_page(p, cat):
             "brand": {"@type": "Brand", "name": "V5 Medical"},
             "manufacturer": {"@type": "Organization", "name": "V5 Medical LTD", "url": BASE},
             "additionalProperty": [
-                {"@type": "PropertyValue", "name": "Certification", "value": c} for c in CERTS
+                {"@type": "PropertyValue", "name": "Certification", "value": c} for c in cat["certs"]
             ],
         },
         {
@@ -524,14 +649,14 @@ def render_product_page(p, cat):
     ]
 
     out = render_page(title=title, description=desc, canonical=canonical,
-                      body=body, schemas=schemas)
+                      body=body, schemas=schemas, og_type="product")
     (ROOT / "products" / f"{p['id']}.html").write_text(out, encoding="utf-8")
 
 def render_category_page(slug, products):
     cat = CATEGORIES[slug]
     items = [p for p in products if p["category"] == slug]
     canonical = f"{BASE}/categories/{slug}.html"
-    description = cat["blurb"][:155] + ("..." if len(cat["blurb"]) > 155 else "")
+    description = trunc(cat["blurb"], 155)
 
     crumbs = f"""
 <nav class="crumbs" aria-label="Breadcrumb">
@@ -552,7 +677,7 @@ def render_category_page(slug, products):
   <p style="color:#475569">{esc(cat['blurb'])}</p>
   <div class="grid">{cards}</div>
 </div>
-{cta_box(f"Sourcing {cat['name']} in bulk?" "Get tiered pricing, free samples and a full technical documentation package for your market.")}"""
+{cta_box(f"Sourcing {cat['name']} in bulk?", "Get tiered pricing, free samples and a full technical documentation package for your market.")}"""
 
     schemas = [
         {
@@ -583,7 +708,7 @@ def render_category_page(slug, products):
     (ROOT / "categories" / f"{slug}.html").write_text(out, encoding="utf-8")
 
 # ---------------- Sitemaps ----------------
-def url_entry(loc, priority, changefreq, image=None):
+def url_entry(loc, priority, changefreq, image=None, lastmod=TODAY):
     img_xml = ""
     if image:
         img_xml = f"""
@@ -592,27 +717,29 @@ def url_entry(loc, priority, changefreq, image=None):
         </image:image>"""
     return f"""    <url>
         <loc>{esc(loc)}</loc>
-        <lastmod>{TODAY}</lastmod>
+        <lastmod>{lastmod}</lastmod>
         <changefreq>{changefreq}</changefreq>
         <priority>{priority}</priority>{img_xml}
     </url>"""
 
 def write_sitemaps(products, articles):
-    # 主 sitemap
+    # lastmod 取数据源/页面文件的最后提交日期，避免全站统一刷成构建日期
+    products_lastmod = git_lastmod("js/complete-products.js")
+    # 主 sitemap（payment.html 有 noindex，不收录）
     entries = [
-        url_entry(f"{BASE}/", "1.0", "weekly"),
-        url_entry(f"{BASE}/about.html", "0.8", "monthly"),
-        url_entry(f"{BASE}/catalog.html", "0.9", "weekly"),
-        url_entry(f"{BASE}/contact.html", "0.8", "monthly"),
-        url_entry(f"{BASE}/payment.html", "0.5", "monthly"),
-        url_entry(f"{BASE}/privacy.html", "0.3", "yearly"),
-        url_entry(f"{BASE}/blog/", "0.9", "weekly"),
+        url_entry(f"{BASE}/", "1.0", "weekly", lastmod=git_lastmod("index.html")),
+        url_entry(f"{BASE}/about.html", "0.8", "monthly", lastmod=git_lastmod("about.html")),
+        url_entry(f"{BASE}/catalog.html", "0.9", "weekly", lastmod=git_lastmod("catalog.html")),
+        url_entry(f"{BASE}/contact.html", "0.8", "monthly", lastmod=git_lastmod("contact.html")),
+        url_entry(f"{BASE}/privacy.html", "0.3", "yearly", lastmod=git_lastmod("privacy.html")),
+        url_entry(f"{BASE}/blog/", "0.9", "weekly", lastmod=git_lastmod("blog/index.html")),
     ]
     for slug in CATEGORIES:
-        entries.append(url_entry(f"{BASE}/categories/{slug}.html", "0.9", "weekly"))
+        entries.append(url_entry(f"{BASE}/categories/{slug}.html", "0.9", "weekly",
+                                 lastmod=products_lastmod))
     for p in products:
         entries.append(url_entry(f"{BASE}/products/{p['id']}.html", "0.8", "monthly",
-                                 image=f"{BASE}/{p['img']}"))
+                                 image=f"{BASE}/{p['img']}", lastmod=products_lastmod))
 
     main = f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -624,7 +751,7 @@ def write_sitemaps(products, articles):
 
     # 博客 sitemap
     blog_entries = [
-        url_entry(a["canonical"], "0.7", "monthly") for a in articles
+        url_entry(a["canonical"], "0.7", "monthly", lastmod=a["modified"]) for a in articles
     ]
     blog = f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -652,7 +779,7 @@ def main():
 
     print("== 3/3 生成 sitemap ==")
     write_sitemaps(products, articles)
-    print(f"  sitemap.xml: {7 + len(CATEGORIES) + len(products)} 个 URL")
+    print(f"  sitemap.xml: {6 + len(CATEGORIES) + len(products)} 个 URL")
     print(f"  blog/sitemap.xml: {len(articles)} 个 URL")
     print("\n[OK] 构建完成")
 

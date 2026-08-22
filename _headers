@@ -1,16 +1,8 @@
 # ------------------------------
 # V5 Medical LTD - Cloudflare Pages 响应头配置
 # 适配：Docsify 渲染、Stripe 支付、静态资源缓存、安全防护
-# Last updated: 2026-07-18
+# Last updated: 2026-08-22
 # ------------------------------
-
-# ==============================
-# 0. [SEO FIX] 内部工具禁止索引
-# robots.txt 的 Disallow 只能阻止抓取，不能阻止索引；
-# X-Robots-Tag 才能确保 workbench 不出现在搜索结果中。
-# ==============================
-/workbench/*
-  X-Robots-Tag: noindex, nofollow
 
 # ==============================
 # 1. 全局安全响应头（全站生效）

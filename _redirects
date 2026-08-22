@@ -15,8 +15,6 @@ http://www.v5md.com/* https://v5md.com/:splat 301!
 # Force non-www (Choose one option)
 www.v5md.com/* https://v5md.com/:splat 301!
 
-/work   /workbench/index.html   301
-
 # ------------------------------
 # WHATSAPP CONTACT SHORTCUTS
 # ------------------------------

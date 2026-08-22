@@ -6,7 +6,7 @@
 > Factory Direct | ISO 13485 | CE | FDA Certified
 
 [![Website](https://img.shields.io/badge/Website-v5md.com-blue)](https://v5md.com)
-[![Version](https://img.shields.io/badge/Version-2.8.0-green)]()
+[![Version](https://img.shields.io/badge/Version-2.9.0-green)]()
 [![License](https://img.shields.io/badge/License-Proprietary-red)]()
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-38B2AC?logo=tailwind-css&logoColor=white)
@@ -72,14 +72,12 @@ The site is built as a **high-performance static web application**, optimized fo
 - **Bank Wire (T/T)**: For bulk orders (>$500)
 - **Dual-lane system**: Fast lane (Credit Card) for trials, Commercial lane (T/T) for production
 
-### 9. 🔒 Internal Workbench (Private)
-- **URL**: `/workbench/`
-- **Authentication**: Password-protected (SHA-256 hashed in `workbench-auth.js`) with brute-force protection
-- **Modules**: 
-  - Order management (`workbench-orders.js`)
-  - Pricing calculator, Finance Tools
-  - Config utilities (`workbench-config.js`)
-- **Storage**: Cloudflare Workers KV + localStorage fallback
+### 9. 🏭 Static SEO Page Generator
+- **`build-static.py`**: One command regenerates all crawlable pages from the single data source
+- **Outputs**: 56 static product pages (`products/<id>.html`), 8 category landing pages (`categories/<slug>.html`), static blog article pages (`blog/posts/<slug>.html`), and both sitemaps
+- **Fail-fast validation**: Product count must match `metadata.totalProducts`; every product image must exist and be >1KB
+- **Category-differentiated content**: Certifications, specs and descriptions per category (no blanket FDA/Sterile claims on packaging products)
+- **Real `lastmod`**: Sitemap dates come from each file's last git commit, not the build date
 
 ### 10. 📊 Performance Monitoring
 - **Core Web Vitals Tracking**: `performance-monitor.js` records TTFB, DOM Ready, Full Load metrics
@@ -101,44 +99,39 @@ v5md/
 │   ├── index.html          # Blog Entry Point
 │   ├── README.md           # Blog Homepage (Technical Specs & Guides)
 │   ├── _sidebar.md         # Navigation Sidebar
-│   └── posts/              # Markdown Articles
-│       ├── tyvek-vs-paper.md
-│       ├── payment-strategy-guide.md
-│       ├── ce-marking-process.md
-│       ├── surgical-pack-sterilization.md
+│   ├── sitemap.xml         # Blog Sitemap (static article pages)
+│   └── posts/              # Markdown Articles + generated static HTML
+│       ├── tyvek-vs-paper.md / .html
+│       ├── payment-strategy-guide.md / .html
+│       ├── ce-marking-process.md / .html
 │       └── ...
-├── workbench/              # Internal Tool (Password-Protected)
-│   ├── index.html          # Workbench Entry
-│   └── js/                 # Workbench Modules
-│       ├── workbench-auth.js       # Login with brute-force protection
-│       ├── workbench-dashboard.js
-│       ├── workbench-orders.js      # Order clearing & management
-│       ├── workbench-pricing.js
-│       ├── workbench-finance.js
-│       └── workbench-config.js      # Config helper methods
+├── products/               # 56 static product pages (generated, canonical)
+├── categories/             # 8 category landing pages (generated)
+├── build-static.py         # 🏭 Static SEO page generator (single data source → HTML + sitemaps)
 ├── js/                     # Core Logic
 │   ├── config.js           # 🔧 [CRITICAL] Global Settings & Paths
-│   ├── layout.js           # 🔧 [CRITICAL] Header/Footer Renderer
+│   ├── layout.js           # 🔧 [CRITICAL] Header/Footer Renderer (+ site-wide GA4 injection)
 │   ├── main.js             # General UI Interactions (Mobile Menu, Scroll)
-│   ├── complete-products.js# Product Database (51 SKUs)
+│   ├── complete-products.js# Product Database (56 SKUs, category-differentiated specs/certs)
 │   ├── image-utils.js      # Smart Image Loader (Triple Fallback)
 │   ├── seo-utils.js        # Dynamic SEO Manager (JSON-LD, Meta Tags)
 │   ├── product-loader.js   # Async Product Data Loader (dual DB support)
 │   ├── security-utils.js   # XSS Protection, Input Validation
-│   ├── seo-utils.js        # Page title/meta update & Schema injection
 │   ├── performance-monitor.js # Core Web Vitals tracking
 │   └── ...
 ├── css/
 │   └── style.css           # Custom Overrides for Tailwind
 ├── images/                 # Local Asset Fallbacks
-│   ├── products/           # Standardized Product Images (51 files)
+│   ├── products/           # Standardized Product Images (per-SKU files)
 │   │   ├── surgical-sutures/
 │   │   ├── surgical-instruments/
 │   │   ├── gauze-dressings/
 │   │   ├── protective-equipment/
 │   │   ├── injection-infusion/
 │   │   ├── dental-products/
+│   │   ├── pharmaceutical-packaging/
 │   │   └── surgical-packs/
+│   ├── 2026-Greeting-Card/ # Monthly greeting card artwork (optimized JPEG)
 │   ├── logo/
 │   │   └── v5logo.png
 │   ├── hero-bg.jpg
@@ -146,6 +139,7 @@ v5md/
 ├── pdf/                    # Downloadable Catalogs
 │   ├── Catalog.pdf
 │   ├── price list.pdf
+│   ├── V5_Medical_HighPurity_PriceList_EN.pdf
 │   └── V5_Medical_Capability_Statement.pdf
 ├── _headers                # Cloudflare Pages Headers (CSP, HSTS, CORS)
 ├── _redirects              # Cloudflare Pages Redirects (SEO, UTM)
@@ -162,17 +156,13 @@ v5md/
 Edit `js/config.js` → Change `CONTACT` object → Auto-updates Header, Footer, Contact Page.
 
 ### 2️⃣ Adding/Editing Products
-Edit `js/complete-products.js` → Add/modify object in `completeProductData` array → Catalog updates automatically:
+Edit `js/complete-products.js` → Add/modify an entry in the `productData` array → Catalog updates automatically:
 ```javascript
-{
-    id: 'new-product',
-    name: 'New Surgical Suture',
-    category: 'surgical-sutures', // Aligned with image directory structure
-    images: ['images/products/surgical-sutures/new-product.jpg'],
-    price: 'Contact for Price',
-    certifications: ['ISO 13485', 'CE']
-}
+{ name: "New Surgical Suture", id: "new-product", category: "surgical-sutures", img: "images/products/surgical-sutures/new-product.jpg" }
 ```
+- `category` must match a key in `categories` (aligned with the image directory structure)
+- Certifications / specs / descriptions come from `categoryProfiles` — edit them per category, not per product
+- After editing, run `python build-static.py` to regenerate static pages & sitemaps (it validates image files and product count, failing fast on problems)
 
 ### 3️⃣ Modifying Layout (Header/Footer)
 Edit `js/layout.js` → Update `renderHeader()` or `renderFooter()` → Changes apply site-wide.
@@ -192,11 +182,14 @@ Open specific HTML file → Edit content inside `<main>` tag → **Do not manual
    ---
    ```
 3. Update `blog/_sidebar.md` with link (e.g., technical specs for sterile barrier systems)
+4. Run `python build-static.py` to generate the static article page (`blog/posts/<slug>.html`) — this is what Google indexes; the Docsify hash route is for interactive reading
 
-### 6️⃣ Managing Internal Workbench
-- **Clear Orders**: Use `clearAllOrders()` in `workbench-orders.js` (with confirmation prompt)
-- **Auth Management**: `workbench-auth.js` handles login attempts, lockout logic (15min lockout after max attempts)
-- **Config Access**: Use `get()` method in `workbench-config.js` for safe nested config access
+### 6️⃣ Rebuilding Static SEO Pages
+```bash
+pip install markdown   # once (a venv is recommended)
+python build-static.py
+```
+Regenerates `products/`, `categories/`, `blog/posts/*.html`, `sitemap.xml` and `blog/sitemap.xml` from `js/complete-products.js` + `blog/posts/*.md`. The build **fails fast** if a product image is missing/corrupt or the product count doesn't match `metadata.totalProducts`.
 
 ---
 
@@ -263,11 +256,11 @@ npx http-server -p 8000
 
 ## 🔒 Security
 
-- **Content Security Policy (CSP)**: Enforced via `_headers`
+- **Content Security Policy (CSP)**: Enforced via `_headers` (single-line format — Cloudflare Pages does not support multi-line header values)
 - **HTTPS Only**: Cloudflare auto-redirect
 - **XSS Protection**: `security-utils.js` sanitizes inputs
 - **CSRF Protection**: Form nonces, SameSite cookies
-- **Workbench Security**: Password hashing, brute-force protection, lockout mechanism
+- **Payment Page**: Bank account details are NOT published on `payment.html` — customers are directed to their sales representative / Proforma Invoice (anti-fraud)
 
 ---
 
@@ -292,8 +285,8 @@ Compliant with GDPR (anonymous data, no PII).
 - [ ] Contact form submission (test mode)
 - [ ] Mobile responsiveness (375px → 1920px)
 - [ ] Cross-browser (Chrome, Firefox, Safari, Edge)
-- [ ] Workbench authentication & lockout logic
 - [ ] Product search in `catalog.html`
+- [ ] Static pages in `products/` / `categories/` / `blog/posts/*.html` are up to date (`python build-static.py`)
 - [ ] SEO meta tags update (verify via `seo-utils.js`)
 
 ### Performance Testing
@@ -355,6 +348,33 @@ lhci autorun --config=lighthouserc.json
 
 ## 🗓️ Changelog
 
+### [2.9.0] - 2026-08-22
+#### Added
+- Static SEO page generator `build-static.py` with fail-fast validation (product count + image integrity)
+- 56 static product pages, 8 category landing pages, static blog article pages (crawlable without JS)
+- Site-wide GA4 injection via `layout.js`; blog sitemap (`blog/sitemap.xml`)
+- `pharmaceutical-packaging` category (5 SKUs) with category-differentiated specs/certifications
+- Per-SKU branded placeholder images; compressed greeting-card artwork (5.8MB → 306KB, served locally)
+
+#### Changed
+- Catalog & related-product links now point to canonical static pages (`/products/<id>.html`)
+- Product schema no longer carries placeholder `price: "0"` offers; FAQ schema matches visible content only
+- Sitemap `lastmod` uses real git commit dates; `noindex` payment page removed from sitemap
+- Blanket "FDA"/"Sterile" badges removed from non-sterile packaging products
+- Bank account details removed from `payment.html` (anti-fraud: via sales rep / PI only)
+
+#### Fixed
+- Broken `default-product.jpg` (5-byte text file) and 4 corrupt/missing product images
+- Greeting card image blocked by CSP (was hotlinked from `raw.githubusercontent.com`)
+- Category CTA text swallowed by implicit string concatenation in generator
+- `og:type` hardcoded to `article` on all generated pages
+- Dead `/work` redirect to the removed workbench
+
+#### Removed
+- Internal workbench (`/workbench/`) — removed from repository
+
+---
+
 ### [2.8.0] - 2025-03-22
 #### Added
 - Product Catalog PDF online viewer (`catalog.html` sidebar)
@@ -398,6 +418,6 @@ lhci autorun --config=lighthouserc.json
 
 ---
 
-**Last Updated**: March 22, 2025  
+**Last Updated**: August 22, 2026  
 **Maintained by**: V5 Medical Development Team  
 **Build Status**: ✅ Stable (Production-Ready)

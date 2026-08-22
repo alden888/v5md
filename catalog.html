@@ -197,7 +197,7 @@
     <script src="js/layout.js?v=4.9.4"></script>
     <script src="js/image-utils.js?v=3.0.2"></script>
     <script src="js/seo-utils.js?v=3.1.3"></script>
-    <script src="js/complete-products.js?v=3.3.2"></script>
+    <script src="js/complete-products.js?v=3.5.0"></script>
     <script src="js/product-loader.js?v=2.0.2"></script>
     <script src="js/main.js?v=2.3.3"></script>
 
@@ -332,7 +332,7 @@
 
             return `
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col h-full transform hover:-translate-y-1">
-                <a href="product-detail.html?id=${product.id}" class="relative h-48 bg-gray-50 overflow-hidden block">
+                <a href="products/${product.id}.html" class="relative h-48 bg-gray-50 overflow-hidden block">
                     <img src="${pImg}" 
                          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                          alt="${product.name}" loading="lazy"
@@ -345,7 +345,7 @@
                 
                 <div class="p-5 flex flex-col flex-grow">
                     <h3 class="font-bold text-lg text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                        <a href="product-detail.html?id=${product.id}">${product.name}</a>
+                        <a href="products/${product.id}.html">${product.name}</a>
                     </h3>
                     
                     <ul class="text-xs text-gray-500 mb-4 space-y-1 border-l-2 border-gray-200 pl-2">
@@ -354,7 +354,7 @@
                     </ul>
                     
                     <div class="pt-4 mt-auto border-t border-gray-50 flex items-center justify-between gap-2">
-                        <a href="product-detail.html?id=${product.id}" class="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center">
+                        <a href="products/${product.id}.html" class="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center">
                             Details <i class="fas fa-arrow-right text-xs ml-1 transition-transform group-hover:translate-x-1"></i>
                         </a>
                         <a href="https://wa.me/447895047944?text=${waText}" target="_blank" 
