@@ -75,6 +75,22 @@ def git_lastmod(relpath):
             _lastmod_cache[relpath] = TODAY
     return _lastmod_cache[relpath]
 
+_firstmod_cache = {}
+
+def git_firstmod(relpath):
+    """文件首次提交的日期（ISO），作为 datePublished 回退值；失败回退到今天。"""
+    relpath = str(relpath)
+    if relpath not in _firstmod_cache:
+        try:
+            out = subprocess.run(
+                ["git", "log", "--diff-filter=A", "--format=%cs", "--", relpath],
+                cwd=ROOT, capture_output=True, text=True, timeout=10,
+            ).stdout.strip().splitlines()
+            _firstmod_cache[relpath] = (out[-1].strip() if out else "") or TODAY
+        except Exception:
+            _firstmod_cache[relpath] = TODAY
+    return _firstmod_cache[relpath]
+
 def trunc(s, limit=155):
     """截断到 limit 字符以内，尽量在词边界断开。"""
     if len(s) <= limit:
@@ -439,7 +455,7 @@ def process_blog_posts():
         cm = re.search(r"\*\*Category:\*\*\s*(.+)", raw)
         if "category" not in meta and cm:
             category = cm.group(1).strip()
-        date = meta.get("date") or git_lastmod(md_file.relative_to(ROOT))
+        date = meta.get("date") or git_firstmod(md_file.relative_to(ROOT))
         modified = git_lastmod(md_file.relative_to(ROOT))
         description = meta.get("description") or meta.get("summary") or ""
         if not description:
@@ -731,6 +747,7 @@ def write_sitemaps(products, articles):
         url_entry(f"{BASE}/about.html", "0.8", "monthly", lastmod=git_lastmod("about.html")),
         url_entry(f"{BASE}/catalog.html", "0.9", "weekly", lastmod=git_lastmod("catalog.html")),
         url_entry(f"{BASE}/contact.html", "0.8", "monthly", lastmod=git_lastmod("contact.html")),
+        url_entry(f"{BASE}/links.html", "0.6", "monthly", lastmod=git_lastmod("links.html")),
         url_entry(f"{BASE}/privacy.html", "0.3", "yearly", lastmod=git_lastmod("privacy.html")),
         url_entry(f"{BASE}/blog/", "0.9", "weekly", lastmod=git_lastmod("blog/index.html")),
     ]
@@ -779,7 +796,7 @@ def main():
 
     print("== 3/3 生成 sitemap ==")
     write_sitemaps(products, articles)
-    print(f"  sitemap.xml: {6 + len(CATEGORIES) + len(products)} 个 URL")
+    print(f"  sitemap.xml: {7 + len(CATEGORIES) + len(products)} 个 URL")
     print(f"  blog/sitemap.xml: {len(articles)} 个 URL")
     print("\n[OK] 构建完成")
 

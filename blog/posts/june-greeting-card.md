@@ -1,3 +1,10 @@
+---
+title: "June 2026 Greeting Card — Summer Partnership"
+date: "2026-06-01"
+author: "V5 Medical Team"
+category: "Company News"
+---
+
 # June 2026 Greeting Card — Summer Partnership
 
 > **Category:** Company News | Monthly Greeting
